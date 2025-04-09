@@ -1,11 +1,17 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { RouterProvider, createRouter, NotFoundRoute } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
+import { Route } from './routes/__root'
 
 import '@styles/tailwind.css'
 
-const router = createRouter({ routeTree })
+const notFoundRoute = new NotFoundRoute({
+  getParentRoute: () => Route,
+  component: () => '404 Not Found',
+})
+
+const router = createRouter({ routeTree, notFoundRoute })
 
 declare module '@tanstack/react-router' {
   interface Register {
