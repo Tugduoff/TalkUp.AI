@@ -1,11 +1,4 @@
 <!-- Pull requests with deleted elements will be marked invalid -->
-## Description
-
-<!--
-    Add a correct and syntaxic description of your PR in english.
-    It fixes/adds/removes the bug/feature/anomaly.
--->
-
 ## What type of PR is this? (check all applicable)
 
 - [ ] ✨ Feature
@@ -20,6 +13,13 @@
 - [ ] ✅ Test
 - [ ] 🔁 CI
 - [ ] ⏩ Revert
+
+## Description
+
+<!--
+    Add a correct and syntaxic description of your PR in english.
+    It fixes/adds/removes the bug/feature/anomaly.
+-->
 
 ## Linked Trello Ticket
 
