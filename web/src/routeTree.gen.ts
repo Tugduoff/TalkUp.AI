@@ -11,14 +11,42 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
+import { Route as SignupImport } from './routes/Signup'
+import { Route as ProfileImport } from './routes/Profile'
+import { Route as LoginImport } from './routes/Login'
+import { Route as DashboardImport } from './routes/Dashboard'
+import { Route as AboutImport } from './routes/About'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
+const SignupRoute = SignupImport.update({
+  id: '/Signup',
+  path: '/Signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileRoute = ProfileImport.update({
+  id: '/Profile',
+  path: '/Profile',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
+  id: '/Login',
+  path: '/Login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardRoute = DashboardImport.update({
+  id: '/Dashboard',
+  path: '/Dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
+  id: '/About',
+  path: '/About',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +67,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
+    '/About': {
+      id: '/About'
+      path: '/About'
+      fullPath: '/About'
       preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/Dashboard': {
+      id: '/Dashboard'
+      path: '/Dashboard'
+      fullPath: '/Dashboard'
+      preLoaderRoute: typeof DashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/Login': {
+      id: '/Login'
+      path: '/Login'
+      fullPath: '/Login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/Profile': {
+      id: '/Profile'
+      path: '/Profile'
+      fullPath: '/Profile'
+      preLoaderRoute: typeof ProfileImport
+      parentRoute: typeof rootRoute
+    }
+    '/Signup': {
+      id: '/Signup'
+      path: '/Signup'
+      fullPath: '/Signup'
+      preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +109,64 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/About': typeof AboutRoute
+  '/Dashboard': typeof DashboardRoute
+  '/Login': typeof LoginRoute
+  '/Profile': typeof ProfileRoute
+  '/Signup': typeof SignupRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/About': typeof AboutRoute
+  '/Dashboard': typeof DashboardRoute
+  '/Login': typeof LoginRoute
+  '/Profile': typeof ProfileRoute
+  '/Signup': typeof SignupRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/About': typeof AboutRoute
+  '/Dashboard': typeof DashboardRoute
+  '/Login': typeof LoginRoute
+  '/Profile': typeof ProfileRoute
+  '/Signup': typeof SignupRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths: '/' | '/About' | '/Dashboard' | '/Login' | '/Profile' | '/Signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/' | '/About' | '/Dashboard' | '/Login' | '/Profile' | '/Signup'
+  id:
+    | '__root__'
+    | '/'
+    | '/About'
+    | '/Dashboard'
+    | '/Login'
+    | '/Profile'
+    | '/Signup'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  DashboardRoute: typeof DashboardRoute
+  LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRoute
+  SignupRoute: typeof SignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  DashboardRoute: DashboardRoute,
+  LoginRoute: LoginRoute,
+  ProfileRoute: ProfileRoute,
+  SignupRoute: SignupRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +180,30 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/About",
+        "/Dashboard",
+        "/Login",
+        "/Profile",
+        "/Signup"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/About": {
+      "filePath": "About.tsx"
+    },
+    "/Dashboard": {
+      "filePath": "Dashboard.tsx"
+    },
+    "/Login": {
+      "filePath": "Login.tsx"
+    },
+    "/Profile": {
+      "filePath": "Profile.tsx"
+    },
+    "/Signup": {
+      "filePath": "Signup.tsx"
     }
   }
 }
