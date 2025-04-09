@@ -1,0 +1,14 @@
+{
+    "name": "my-project",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev:web": "cd web && npm run dev",
+        "format:check:web": "cd web && npm run format:check",
+        "format:web": "cd web && npm run format",
+        "lint:check:web": "cd web && npm run lint:check",
+        "lint:web": "cd web && npm run lint",
+        "build:web": "cd web && npm run build"
+    }
+}
