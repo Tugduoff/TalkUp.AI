@@ -9,7 +9,7 @@ export const SignUpForm = () => {
       confirmPassword: "",
     },
     onSubmit: ({ value }) => {
-      console.log(value);
+      console.log('SignUp:', value);
     },
   });
   return (
