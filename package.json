@@ -7,13 +7,15 @@
         "dev:web": "cd web && npm run dev",
         "dev:server": "cd server && npm run start:dev",
 
-        "format:check": "cd web && npm run format:check; cd ../server && npm run format:check",
+        "format:check": "cd web && npm run format:check && cd ../server && npm run format:check",
         "format": "cd web && npm run format; cd ../server && npm run format",
 
-        "lint:check": "cd web && npm run lint:check; cd ../server && npm run lint:check",
+        "lint:check": "cd web && npm run lint:check && cd ../server && npm run lint:check",
         "lint": "cd web && npm run lint; cd ../server && npm run lint",
 
         "build:web": "cd web && npm run build",
-        "build:server": "cd server && npm run build"
+        "build:server": "cd server && npm run build",
+
+        "tsc:check": "cd web && npm run tsc:check"
     }
 }
