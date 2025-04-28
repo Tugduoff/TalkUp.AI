@@ -1,5 +1,5 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { Link, Outlet, createRootRoute } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 const links = [
   { to: '/', label: 'Home' },
@@ -8,7 +8,7 @@ const links = [
   { to: '/signup', label: 'SignUp' },
   { to: '/profile', label: 'Profile' },
   { to: '/dashboard', label: 'Dashboard' },
-]
+];
 
 export const Route = createRootRoute({
   component: () => (
@@ -24,5 +24,5 @@ export const Route = createRootRoute({
       <Outlet />
       <TanStackRouterDevtools />
     </>
-  )
-})
+  ),
+});
