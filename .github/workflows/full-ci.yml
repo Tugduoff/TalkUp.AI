@@ -18,13 +18,15 @@ jobs:
         with:
           node-version: '23.x'
 
-      - name: Install web dependencies
-        working-directory: ./web
-        run: npm ci
+      - name: Setup and cache web dependencies
+        uses: ./.github/actions/setup-node-with-cache
+        with:
+          working-directory: ./web
 
-      - name: Install server dependencies
-        working-directory: ./server
-        run: npm ci
+      - name: Setup and cache server Dependencies
+        uses: ./.github/actions/setup-node-with-cache
+        with:
+          working-directory: ./server
 
       - name: Run Code Quality Check
         uses: ./.github/actions/run-quality-check
