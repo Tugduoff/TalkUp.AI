@@ -10,6 +10,8 @@
     "lint:check": "eslint './**/*.{ts,tsx}'",
     "format": "prettier --write \"./**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"./**/*.{ts,tsx}\"",
+    "tsc": "tsc -b",
+    "tsc:check": "tsc -b --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
