@@ -1,0 +1,17 @@
+name: Full CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Code Quality Check
+        uses: ./.github/actions/run-quality-check
