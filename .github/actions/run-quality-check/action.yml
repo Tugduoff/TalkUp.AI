@@ -1,0 +1,13 @@
+name: 'Code Quality Check'
+description: 'Run code quality checks'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Run linter'
+      run: npm run lint:check
+      shell: bash
+
+    - name: 'run prettier'
+      run: npm run format:check
+      shell: bash
