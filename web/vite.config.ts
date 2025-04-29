@@ -1,8 +1,8 @@
 import tailwindcss from '@tailwindcss/vite';
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
 import path from 'path';
+import { defineConfig } from 'vite';
 
 const aliases = {
   '@modules': path.resolve(__dirname, './src/modules'),
@@ -14,7 +14,7 @@ const aliases = {
   '@hooks': path.resolve(__dirname, './src/hooks'),
   '@stores': path.resolve(__dirname, './src/stores'),
   '@types': path.resolve(__dirname, './src/types'),
-  '@api': path.resolve(__dirname, './src/api')
+  '@api': path.resolve(__dirname, './src/api'),
 };
 
 export default defineConfig({
