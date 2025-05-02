@@ -11,42 +11,84 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SignUpImport } from './routes/SignUp'
-import { Route as ProfileImport } from './routes/Profile'
-import { Route as LoginImport } from './routes/Login'
-import { Route as DashboardImport } from './routes/Dashboard'
-import { Route as AboutImport } from './routes/About'
+import { Route as SimulationsImport } from './routes/simulations'
+import { Route as SignupImport } from './routes/signup'
+import { Route as ProgressionImport } from './routes/progression'
+import { Route as ProfileImport } from './routes/profile'
+import { Route as NotesImport } from './routes/notes'
+import { Route as LoginImport } from './routes/login'
+import { Route as DiaryImport } from './routes/diary'
+import { Route as DashboardImport } from './routes/dashboard'
+import { Route as CvAnalysisImport } from './routes/cv-analysis'
+import { Route as AiChatImport } from './routes/ai-chat'
+import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
-const SignUpRoute = SignUpImport.update({
-  id: '/SignUp',
-  path: '/SignUp',
+const SimulationsRoute = SimulationsImport.update({
+  id: '/simulations',
+  path: '/simulations',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignupRoute = SignupImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProgressionRoute = ProgressionImport.update({
+  id: '/progression',
+  path: '/progression',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ProfileRoute = ProfileImport.update({
-  id: '/Profile',
-  path: '/Profile',
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const NotesRoute = NotesImport.update({
+  id: '/notes',
+  path: '/notes',
   getParentRoute: () => rootRoute,
 } as any)
 
 const LoginRoute = LoginImport.update({
-  id: '/Login',
-  path: '/Login',
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DiaryRoute = DiaryImport.update({
+  id: '/diary',
+  path: '/diary',
   getParentRoute: () => rootRoute,
 } as any)
 
 const DashboardRoute = DashboardImport.update({
-  id: '/Dashboard',
-  path: '/Dashboard',
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CvAnalysisRoute = CvAnalysisImport.update({
+  id: '/cv-analysis',
+  path: '/cv-analysis',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AiChatRoute = AiChatImport.update({
+  id: '/ai-chat',
+  path: '/ai-chat',
   getParentRoute: () => rootRoute,
 } as any)
 
 const AboutRoute = AboutImport.update({
-  id: '/About',
-  path: '/About',
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,39 +109,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/About': {
-      id: '/About'
-      path: '/About'
-      fullPath: '/About'
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
-    '/Dashboard': {
-      id: '/Dashboard'
-      path: '/Dashboard'
-      fullPath: '/Dashboard'
+    '/ai-chat': {
+      id: '/ai-chat'
+      path: '/ai-chat'
+      fullPath: '/ai-chat'
+      preLoaderRoute: typeof AiChatImport
+      parentRoute: typeof rootRoute
+    }
+    '/cv-analysis': {
+      id: '/cv-analysis'
+      path: '/cv-analysis'
+      fullPath: '/cv-analysis'
+      preLoaderRoute: typeof CvAnalysisImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
     }
-    '/Login': {
-      id: '/Login'
-      path: '/Login'
-      fullPath: '/Login'
+    '/diary': {
+      id: '/diary'
+      path: '/diary'
+      fullPath: '/diary'
+      preLoaderRoute: typeof DiaryImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/Profile': {
-      id: '/Profile'
-      path: '/Profile'
-      fullPath: '/Profile'
+    '/notes': {
+      id: '/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof NotesImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
       preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
-    '/SignUp': {
-      id: '/SignUp'
-      path: '/SignUp'
-      fullPath: '/SignUp'
-      preLoaderRoute: typeof SignUpImport
+    '/progression': {
+      id: '/progression'
+      path: '/progression'
+      fullPath: '/progression'
+      preLoaderRoute: typeof ProgressionImport
+      parentRoute: typeof rootRoute
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupImport
+      parentRoute: typeof rootRoute
+    }
+    '/simulations': {
+      id: '/simulations'
+      path: '/simulations'
+      fullPath: '/simulations'
+      preLoaderRoute: typeof SimulationsImport
       parentRoute: typeof rootRoute
     }
   }
@@ -109,64 +193,124 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/About': typeof AboutRoute
-  '/Dashboard': typeof DashboardRoute
-  '/Login': typeof LoginRoute
-  '/Profile': typeof ProfileRoute
-  '/SignUp': typeof SignUpRoute
+  '/about': typeof AboutRoute
+  '/ai-chat': typeof AiChatRoute
+  '/cv-analysis': typeof CvAnalysisRoute
+  '/dashboard': typeof DashboardRoute
+  '/diary': typeof DiaryRoute
+  '/login': typeof LoginRoute
+  '/notes': typeof NotesRoute
+  '/profile': typeof ProfileRoute
+  '/progression': typeof ProgressionRoute
+  '/signup': typeof SignupRoute
+  '/simulations': typeof SimulationsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/About': typeof AboutRoute
-  '/Dashboard': typeof DashboardRoute
-  '/Login': typeof LoginRoute
-  '/Profile': typeof ProfileRoute
-  '/SignUp': typeof SignUpRoute
+  '/about': typeof AboutRoute
+  '/ai-chat': typeof AiChatRoute
+  '/cv-analysis': typeof CvAnalysisRoute
+  '/dashboard': typeof DashboardRoute
+  '/diary': typeof DiaryRoute
+  '/login': typeof LoginRoute
+  '/notes': typeof NotesRoute
+  '/profile': typeof ProfileRoute
+  '/progression': typeof ProgressionRoute
+  '/signup': typeof SignupRoute
+  '/simulations': typeof SimulationsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/About': typeof AboutRoute
-  '/Dashboard': typeof DashboardRoute
-  '/Login': typeof LoginRoute
-  '/Profile': typeof ProfileRoute
-  '/SignUp': typeof SignUpRoute
+  '/about': typeof AboutRoute
+  '/ai-chat': typeof AiChatRoute
+  '/cv-analysis': typeof CvAnalysisRoute
+  '/dashboard': typeof DashboardRoute
+  '/diary': typeof DiaryRoute
+  '/login': typeof LoginRoute
+  '/notes': typeof NotesRoute
+  '/profile': typeof ProfileRoute
+  '/progression': typeof ProgressionRoute
+  '/signup': typeof SignupRoute
+  '/simulations': typeof SimulationsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/About' | '/Dashboard' | '/Login' | '/Profile' | '/SignUp'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/ai-chat'
+    | '/cv-analysis'
+    | '/dashboard'
+    | '/diary'
+    | '/login'
+    | '/notes'
+    | '/profile'
+    | '/progression'
+    | '/signup'
+    | '/simulations'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/About' | '/Dashboard' | '/Login' | '/Profile' | '/SignUp'
+  to:
+    | '/'
+    | '/about'
+    | '/ai-chat'
+    | '/cv-analysis'
+    | '/dashboard'
+    | '/diary'
+    | '/login'
+    | '/notes'
+    | '/profile'
+    | '/progression'
+    | '/signup'
+    | '/simulations'
   id:
     | '__root__'
     | '/'
-    | '/About'
-    | '/Dashboard'
-    | '/Login'
-    | '/Profile'
-    | '/SignUp'
+    | '/about'
+    | '/ai-chat'
+    | '/cv-analysis'
+    | '/dashboard'
+    | '/diary'
+    | '/login'
+    | '/notes'
+    | '/profile'
+    | '/progression'
+    | '/signup'
+    | '/simulations'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AiChatRoute: typeof AiChatRoute
+  CvAnalysisRoute: typeof CvAnalysisRoute
   DashboardRoute: typeof DashboardRoute
+  DiaryRoute: typeof DiaryRoute
   LoginRoute: typeof LoginRoute
+  NotesRoute: typeof NotesRoute
   ProfileRoute: typeof ProfileRoute
-  SignUpRoute: typeof SignUpRoute
+  ProgressionRoute: typeof ProgressionRoute
+  SignupRoute: typeof SignupRoute
+  SimulationsRoute: typeof SimulationsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AiChatRoute: AiChatRoute,
+  CvAnalysisRoute: CvAnalysisRoute,
   DashboardRoute: DashboardRoute,
+  DiaryRoute: DiaryRoute,
   LoginRoute: LoginRoute,
+  NotesRoute: NotesRoute,
   ProfileRoute: ProfileRoute,
-  SignUpRoute: SignUpRoute,
+  ProgressionRoute: ProgressionRoute,
+  SignupRoute: SignupRoute,
+  SimulationsRoute: SimulationsRoute,
 }
 
 export const routeTree = rootRoute
@@ -180,30 +324,54 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/About",
-        "/Dashboard",
-        "/Login",
-        "/Profile",
-        "/SignUp"
+        "/about",
+        "/ai-chat",
+        "/cv-analysis",
+        "/dashboard",
+        "/diary",
+        "/login",
+        "/notes",
+        "/profile",
+        "/progression",
+        "/signup",
+        "/simulations"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/About": {
-      "filePath": "About.tsx"
+    "/about": {
+      "filePath": "about.tsx"
     },
-    "/Dashboard": {
-      "filePath": "Dashboard.tsx"
+    "/ai-chat": {
+      "filePath": "ai-chat.tsx"
     },
-    "/Login": {
-      "filePath": "Login.tsx"
+    "/cv-analysis": {
+      "filePath": "cv-analysis.tsx"
     },
-    "/Profile": {
-      "filePath": "Profile.tsx"
+    "/dashboard": {
+      "filePath": "dashboard.tsx"
     },
-    "/SignUp": {
-      "filePath": "SignUp.tsx"
+    "/diary": {
+      "filePath": "diary.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/notes": {
+      "filePath": "notes.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
+    },
+    "/progression": {
+      "filePath": "progression.tsx"
+    },
+    "/signup": {
+      "filePath": "signup.tsx"
+    },
+    "/simulations": {
+      "filePath": "simulations.tsx"
     }
   }
 }

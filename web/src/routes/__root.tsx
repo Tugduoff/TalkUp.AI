@@ -8,6 +8,12 @@ const links = [
   { to: '/signup', label: 'SignUp' },
   { to: '/profile', label: 'Profile' },
   { to: '/dashboard', label: 'Dashboard' },
+  { to: '/simulations', label: 'Simulations' },
+  { to: '/cv-analysis', label: 'CV Analysis' },
+  { to: '/ai-chat', label: 'AI Chat' },
+  { to: '/diary', label: 'Diary' },
+  { to: '/notes', label: 'Notes' },
+  { to: '/progression', label: 'Progression' },
 ];
 
 export const Route = createRootRoute({
