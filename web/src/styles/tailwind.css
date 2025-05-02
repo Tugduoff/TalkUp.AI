@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Saira&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -32,4 +33,6 @@
 
     --color-icon: #5f5f77;
     --color-icon-hover: #24242d;
+
+    --font-display: 'Saira', sans-serif;
 }
