@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 
 import LoginForm from '@components/molecules/auth/LoginForm';
 
-export const Route = createFileRoute('/Login')({
+export const Route = createFileRoute('/login')({
   component: Login,
 });
 

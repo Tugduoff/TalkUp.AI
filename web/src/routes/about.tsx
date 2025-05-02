@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { FaCircleInfo } from 'react-icons/fa6';
 
-export const Route = createFileRoute('/About')({
+export const Route = createFileRoute('/about')({
   component: About,
 });
 
