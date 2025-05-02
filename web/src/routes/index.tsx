@@ -8,7 +8,7 @@ function Index() {
   return (
     <div className="p-2">
       <h3 className="text-primary">Home</h3>
-      <p>Showcase page of the app...</p>
+      <p>Page vitrine</p>
     </div>
   );
 }

@@ -8,7 +8,7 @@ function Profile() {
   return (
     <div className="p-2">
       <h3 className="text-primary">Profile</h3>
-      <p>Login and Signup not working for now, profile can't be retrieved</p>
+      <p>Profil de l'utilisateur</p>
     </div>
   );
 }
