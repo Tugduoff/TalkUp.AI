@@ -14,14 +14,32 @@ async function bootstrap() {
 
   process.on("SIGINT", () => {
     process.stdout.write("\b\bServer is shutting down...\n"); // '\b\b' is used to remove the last two characters from the line (the Ctrl+C characters)
-    app.close();
-    process.exit(0);
+
+    (async () => {
+      try {
+        await app.close();
+      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        process.stdout.write(`Error shutting down server: ${error.message}\n`);
+      } finally {
+        process.exit(0);
+      }
+    })();
   });
 
   process.on("SIGUSR2", () => {
     process.stdout.write("\b\bServer is restarting...\n");
-    app.close();
-    process.exit(0);
+
+    (async () => {
+      try {
+        await app.close();
+      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        process.stdout.write(`Error restarting server: ${error.message}\n`);
+      } finally {
+        process.exit(0);
+      }
+    })();
   });
 }
 bootstrap();
