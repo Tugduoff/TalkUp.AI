@@ -9,6 +9,13 @@ async function bootstrap() {
   const port = process.env.SERVER_PORT || 3000;
 
   app.setGlobalPrefix("v1/api");
+  app.enableCors({
+    origin: process.env.CORS_ORIGIN || "*",
+    methods: process.env.CORS_METHODS || "GET,PUT,PATCH,POST,DELETE",
+    allowedHeaders: process.env.CORS_ALLOWED_HEADERS || "Content-Type, Accept",
+    exposedHeaders: process.env.CORS_EXPOSED_HEADERS || "Content-Type, Accept",
+  });
+
   await app.listen(port);
   process.stdout.write(`Server is running on ${await app.getUrl()}\n`); // if '::1', it means localhost (IPv6 equivalent of 127.0.0.1)
 
