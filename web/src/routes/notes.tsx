@@ -8,9 +8,7 @@ function Notes() {
   return (
     <div className="p-2">
       <h3 className="text-primary">Notes</h3>
-      <p>
-        Notes
-      </p>
+      <p>Notes</p>
     </div>
   );
 }

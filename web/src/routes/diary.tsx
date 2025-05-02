@@ -8,9 +8,7 @@ function Diary() {
   return (
     <div className="p-2">
       <h3 className="text-primary">Diary</h3>
-      <p>
-        Agenda
-      </p>
+      <p>Agenda</p>
     </div>
   );
 }

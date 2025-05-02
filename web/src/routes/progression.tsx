@@ -8,9 +8,7 @@ function Progression() {
   return (
     <div className="p-2">
       <h3 className="text-primary">Progression</h3>
-      <p>
-        Progression
-      </p>
+      <p>Progression</p>
     </div>
   );
 }
