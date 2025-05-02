@@ -10,6 +10,6 @@ async function bootstrap() {
 
   app.setGlobalPrefix("v1/api");
   await app.listen(port);
-  process.stdout.write(`Server is running on http://localhost:${port}\n`);
+  process.stdout.write(`Server is running on ${await app.getUrl()}\n`); // if '::1', it means localhost (IPv6 equivalent of 127.0.0.1)
 }
 bootstrap();
