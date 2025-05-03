@@ -1,5 +1,7 @@
 import { ButtonProps, Variant } from './types';
 import { ContainedButton } from './variants/contained';
+import { OutlinedButton } from './variants/outlined';
+import { TextButton } from './variants/text';
 
 interface Props extends ButtonProps {
   variant?: Variant;
@@ -7,7 +9,6 @@ interface Props extends ButtonProps {
 
 export const Button = ({
   variant = 'contained',
-  roundiness = 'rounded-sm',
   color = 'primary',
   disabled = false,
   loading = false,
@@ -21,7 +22,6 @@ export const Button = ({
         <ContainedButton
           {...props}
           color={color}
-          roundiness={roundiness}
           disabled={disabled}
           loading={loading}
           onClick={onClick}
@@ -29,32 +29,30 @@ export const Button = ({
           {children}
         </ContainedButton>
       );
-    // case 'outlined':
-    //   return (
-    //     <OutlinedButton
-    //       color={color}
-    //       roundiness={roundiness}
-    //       disabled={disabled}
-    //       loading={loading}
-    //       onClick={onClick}
-    //       {...props}
-    //     >
-    //       {children}
-    //     </OutlinedButton>
-    //   )
-    // case 'text':
-    //   return (
-    //     <TextButton
-    //       color={color}
-    //       roundiness={roundiness}
-    //       disabled={disabled}
-    //       loading={loading}
-    //       onClick={onClick}
-    //       {...props}
-    //     >
-    //       {children}
-    //     </TextButton>
-    //   )
+    case 'outlined':
+      return (
+        <OutlinedButton
+          {...props}
+          color={color}
+          disabled={disabled}
+          loading={loading}
+          onClick={onClick}
+        >
+          {children}
+        </OutlinedButton>
+      );
+    case 'text':
+      return (
+        <TextButton
+          {...props}
+          color={color}
+          disabled={disabled}
+          loading={loading}
+          onClick={onClick}
+        >
+          {children}
+        </TextButton>
+      );
     default:
       console.warn(`Unknown button variant: ${variant}`);
       return null;
