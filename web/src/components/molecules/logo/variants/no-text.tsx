@@ -1,15 +1,15 @@
 import LogoSvg from '@components/atoms/logo-svg';
 import { LogoColor } from '@components/atoms/logo-svg/types';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   color?: LogoColor;
 }
 
-export const NoTextLogo = ({ color = 'primary' }: Props) => {
+export const NoTextLogo = ({ color = 'primary', ...props }: Props) => {
   console.log('NoTextLogo', color);
 
   return (
-    <div className="flex items-center justify-center h-10">
+    <div {...props} className={`flex items-center justify-center h-10 ${props.className || ''}`}>
       <LogoSvg color={color} size={38} />
     </div>
   );

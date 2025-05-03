@@ -6,21 +6,21 @@ import { NoTextLogo } from './variants/no-text';
 
 type LogoVariant = 'line' | 'column' | 'no-text';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   variant?: LogoVariant;
   color?: LogoColor;
 }
 
-export const Logo = ({ variant = 'line', color = 'primary' }: Props) => {
+export const Logo = ({ variant = 'line', color = 'primary', ...props }: Props) => {
   console.log('Logo', variant, color);
 
   switch (variant) {
     case 'line':
-      return <LineLogo color={color} />;
+      return <LineLogo {...props} color={color} />;
     case 'column':
-      return <ColumnLogo color={color} />;
+      return <ColumnLogo {...props} color={color} />;
     case 'no-text':
-      return <NoTextLogo color={color} />;
+      return <NoTextLogo {...props} color={color} />;
     default:
       console.warn(`Unknown logo variant: ${variant}`);
       return null;
