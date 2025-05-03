@@ -1,8 +1,9 @@
-import { Logo as LogoTypes } from '@types/components/atoms/logo';
+type LogoVariant = 'line' | 'filled' | 'outline';
+type LogoColor = 'primary' | 'secondary' | 'tertiary';
 
 interface Props {
-  variant?: LogoTypes.Variant;
-  color?: LogoTypes.Color;
+  variant?: LogoVariant;
+  color?: LogoColor;
 }
 
 export const Logo = ({
