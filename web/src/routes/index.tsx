@@ -17,7 +17,7 @@ function Index() {
     <div className="p-2">
       <h3 className="text-primary">Home</h3>
       <p>Page vitrine</p>
-      <p className="text-text font-display">Change Logo color by cliking on it ^^</p>
+      <p className="text-text font-display">Change Logo color by clicking on it ^^</p>
       <div className="flex items-center justify-between w-full p-4">
         <Logo variant="line" color={color} onClick={() => setColor(color === 'accent' ? 'primary' : 'accent')} className="cursor-pointer" />
         <Logo variant="column" color={color2} onClick={() => setColor2(color2 === 'accent' ? 'primary' : 'accent')} className="cursor-pointer" />
