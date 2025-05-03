@@ -11,7 +11,11 @@ export const ColumnLogo = ({ color = 'primary' }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center gap-2 h-20">
       <LogoSvg color={color} size={32} />
-      <h1 className={`text-[20px] leading-[20px] text-${color} uppercase font-display font-extrabold tracking-tight`}>TalkUp</h1>
+      <h1
+        className={`text-[20px] leading-[20px] text-${color} uppercase font-display font-extrabold tracking-tight`}
+      >
+        TalkUp
+      </h1>
     </div>
   );
 };

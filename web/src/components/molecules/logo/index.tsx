@@ -1,7 +1,7 @@
 import { LogoColor } from '@components/atoms/logo-svg/types';
 
-import { LineLogo } from './variants/line';
 import { ColumnLogo } from './variants/column';
+import { LineLogo } from './variants/line';
 import { NoTextLogo } from './variants/no-text';
 
 type LogoVariant = 'line' | 'column' | 'no-text';
