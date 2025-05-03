@@ -1,5 +1,5 @@
-export type Variant = 'contained' | 'outlined' | 'text';
-export type Color =
+export type ButtonVariant = 'contained' | 'outlined' | 'text';
+export type ButtonColor =
   | 'primary'
   | 'accent'
   | 'black'
@@ -11,7 +11,7 @@ export type Color =
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: Color;
+  color?: ButtonColor;
   disabled?: boolean;
   loading?: boolean;
   children?: React.ReactNode;

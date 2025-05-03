@@ -1,10 +1,10 @@
-import { ButtonProps, Variant } from './types';
+import { ButtonProps, ButtonVariant } from './types';
 import { ContainedButton } from './variants/contained';
 import { OutlinedButton } from './variants/outlined';
 import { TextButton } from './variants/text';
 
 interface Props extends ButtonProps {
-  variant?: Variant;
+  variant?: ButtonVariant;
 }
 
 export const Button = ({
