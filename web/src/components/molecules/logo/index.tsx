@@ -12,8 +12,6 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Logo = ({ variant = 'line', color = 'primary', ...props }: Props) => {
-  console.log('Logo', variant, color);
-
   switch (variant) {
     case 'line':
       return <LineLogo {...props} color={color} />;

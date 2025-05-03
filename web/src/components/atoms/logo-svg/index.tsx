@@ -6,8 +6,6 @@ interface Props {
 }
 
 const LogoSvg = ({ color = 'primary', size = 100 }: Props) => {
-  console.log('LogoSvg fill color:', color);
-
   const fill = `fill-${color}`;
 
   return (

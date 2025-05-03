@@ -6,8 +6,6 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const ColumnLogo = ({ color = 'primary', ...props }: Props) => {
-  console.log('ColumnLogo', color);
-
   return (
     <div {...props} className={`flex flex-col items-center justify-center gap-2 h-20 ${props.className || ''}`}>
       <LogoSvg color={color} size={32} />
