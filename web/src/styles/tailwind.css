@@ -2,22 +2,26 @@
 @import "tailwindcss";
 
 @source inline('{text,fill}-{primary,accent}');
-@source inline('bg-{primary,accent,black,white,error,warning,success,neutral}');
-@source inline('hover:bg-{primary,accent,black,white,error,warning,success,neutral}-hover');
-@source inline('active:bg-{primary,accent,black,white,error,warning,success,neutral}-active');
+@source inline('{,hover:,active:}{bg,border,text}-{primary,accent,black,white,error,warning,success,neutral}{,-hover,-active,-weak,-weaker}');
 
 @theme {
   --color-primary: #29457a;
   --color-primary-hover: #1f2d5b;
   --color-primary-active: #162045;
+  --color-primary-weak: #e4e8f0;
+  --color-primary-weaker: #f0f4fa;
 
   --color-black: #1c1f1f;
-  --color-black-hover: #2a2a2a;
-  --color-black-active: #333;
+  --color-black-hover: #333;
+  --color-black-active: #444;
+  --color-black-weak: #e4e4e4;
+  --color-black-weaker: #ededed;
 
   --color-white: #fff;
   --color-white-hover: #ededed;
   --color-white-active: #e4e4e4;
+  --color-white-weak: #e4e4e4;
+  --color-white-weaker: #ededed;
 
   --color-disabled: #c7c7c7;
 
@@ -29,6 +33,8 @@
   --color-accent: #2b70c9;
   --color-accent-hover: #205497;
   --color-accent-active: #163865;
+  --color-accent-weak: #eff1f6;
+  --color-accent-weaker: #f0f4fa;
   --color-text-link: #2b70c9;
 
   --color-text: #24242d;
@@ -40,22 +46,26 @@
   --color-border-strong: #c8c8d4;
   --color-border-hover: #5f5f77;
 
-  --color-success-weak: #ddf9df;
+  --color-success-weak: #def7e3;
+  --color-success-weaker: #ebfbec;
   --color-success: #0f7b16;
   --color-success-hover: #0d6a13;
   --color-success-active: #0b5610;
 
-  --color-neutral-weak: #f0effb;
+  --color-neutral-weak: #d5dbe8;
+  --color-neutral-weaker: #e4e8f0;
   --color-neutral: #383850;
-  --color-neutral-hover: #24242d;
-  --color-neutral-active: #1f2d5b;
+  --color-neutral-hover: #303044;
+  --color-neutral-active: #272738;
 
   --color-warning-weak: #fbf5d3;
+  --color-warning-weaker: #fdf9e5;
   --color-warning: #b3881f;
   --color-warning-hover: #9f6e1a;
   --color-warning-active: #7f5414;
 
-  --color-error-weak: #fdded8;
+  --color-error-weak: #fbdedc;
+  --color-error-weaker: #feebe8;
   --color-error: #a32a15;
   --color-error-hover: #8b1f12;
   --color-error-active: #6e1610;
