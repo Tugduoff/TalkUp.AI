@@ -1,7 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Saira&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Saira:wght@400;700;800;900&display=swap");
 @import "tailwindcss";
 
+@source inline('{text,fill}-{primary,accent}');
+
 @theme {
+    --color-primary: #29457a;
+
     --color-background: #fff;
     --color-surface: #fff;
     --color-surface-raised: #fbfbfc;
