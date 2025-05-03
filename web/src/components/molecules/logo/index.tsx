@@ -11,7 +11,11 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   color?: LogoColor;
 }
 
-export const Logo = ({ variant = 'line', color = 'primary', ...props }: Props) => {
+export const Logo = ({
+  variant = 'line',
+  color = 'primary',
+  ...props
+}: Props) => {
   switch (variant) {
     case 'line':
       return <LineLogo {...props} color={color} />;
