@@ -6,6 +6,7 @@ export default (): PostgresConnectionOptions => {
     process.env.DOCKER_RUN === "true"
       ? process.env.POSTGRES_DOCKER_HOST
       : process.env.POSTGRES_HOST;
+  const sync = process.env.POSTGRES_SYNC === "true";
 
   return {
     type: "postgres",
@@ -13,7 +14,7 @@ export default (): PostgresConnectionOptions => {
     port: +port,
     username: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
-    entities: [__dirname + "/src/**/*.entity{.ts,.js}"],
-    synchronize: process.env.POSTGRES_SYNC === "true",
+    entities: [__dirname + "/../**/*.entity{.ts,.js}"],
+    synchronize: sync,
   };
 };
