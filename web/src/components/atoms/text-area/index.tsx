@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 import React from 'react';
 
 interface Props {
   placeholder?: string;
   name?: string;
-=======
-interface Props {
-  placeholder?: string;
->>>>>>> 844dcd4... feat: add textarea atom component
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   disabled?: boolean;
@@ -18,14 +13,9 @@ interface Props {
   cols?: number;
 }
 
-<<<<<<< HEAD
 export const TextArea: React.FC<Props> = ({
   placeholder = 'Enter text',
   name = 'textarea',
-=======
-export const TextArea = ({
-  placeholder = 'Enter text',
->>>>>>> 844dcd4... feat: add textarea atom component
   value = '',
   onChange = () => {},
   disabled = false,
