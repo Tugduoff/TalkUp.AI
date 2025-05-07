@@ -3,6 +3,7 @@ import React from 'react';
 interface Props {
   type?: string;
   placeholder?: string;
+  name?: string;
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
@@ -13,6 +14,7 @@ interface Props {
 export const BaseInput = ({
   type = 'text',
   placeholder = 'Enter text',
+  name = 'input',
   value = '',
   onChange = () => {},
   disabled = false,
@@ -23,8 +25,9 @@ export const BaseInput = ({
   return (
     <input
       {...props}
-      aria-label={placeholder}
-      id={placeholder}
+      aria-label={name}
+      id={name}
+      name={name}
       type={type}
       placeholder={placeholder}
       value={value}
