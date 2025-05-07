@@ -11,7 +11,7 @@ interface Props {
   required?: boolean;
 }
 
-export const BaseInput = ({
+export const BaseInput: React.FC<Props> = ({
   type = 'text',
   placeholder = 'Enter text',
   name = 'input',
