@@ -3,6 +3,9 @@ import { Length, IsPhoneNumber, IsStrongPassword } from "class-validator";
 
 export class CreateUserDto {
   @Length(1, 50)
+  username: string;
+
+  @Length(1, 50)
   @IsPhoneNumber("FR") // temporary, to be removed when internationalization is implemented
   phonenumber: string;
 
