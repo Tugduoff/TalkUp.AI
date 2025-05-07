@@ -1,5 +1,6 @@
 interface Props {
   placeholder?: string;
+  name?: string;
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   disabled?: boolean;
@@ -10,8 +11,9 @@ interface Props {
   cols?: number;
 }
 
-export const TextArea = ({
+export const TextArea: React.FC<Props> = ({
   placeholder = 'Enter text',
+  name = 'textarea',
   value = '',
   onChange = () => {},
   disabled = false,
@@ -25,6 +27,9 @@ export const TextArea = ({
   return (
     <textarea
       {...props}
+      aria-label={name}
+      id={name}
+      name={name}
       placeholder={placeholder}
       value={value}
       onChange={onChange}
