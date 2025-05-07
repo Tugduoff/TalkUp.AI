@@ -8,6 +8,7 @@ import { AuthService } from "./auth.service";
 
 @Controller("auth")
 export class AuthController {
+  // eslint-disable-next-line no-unused-vars
   constructor(private readonly authService: AuthService) {}
 
   @Post("register")
@@ -15,6 +16,6 @@ export class AuthController {
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async register(@Body() createUserDto: CreateUserDto) {
     // Call the authService to handle the registration logic
-    return "ok";
+    return await this.authService.register(createUserDto);
   }
 }
