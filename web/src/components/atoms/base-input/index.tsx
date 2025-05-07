@@ -21,6 +21,8 @@ export const BaseInput = ({
   return (
     <input
       {...props}
+      aria-label={placeholder}
+      id={placeholder}
       type={type}
       placeholder={placeholder}
       value={value}
