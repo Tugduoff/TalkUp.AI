@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { abortOnError: false });
   const port = process.env.SERVER_PORT || 3000;
 
   app.setGlobalPrefix("v1/api");
