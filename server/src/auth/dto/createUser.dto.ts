@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Length, IsPhoneNumber, IsStrongPassword } from "class-validator";
 
 export class CreateUserDto {

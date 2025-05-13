@@ -12,7 +12,6 @@ import { LoggerMiddleware } from "./common/utils/logger";
 
 @Module({
   imports: [
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     ConfigModule.forRoot({
       isGlobal: true,
       expandVariables: true,
