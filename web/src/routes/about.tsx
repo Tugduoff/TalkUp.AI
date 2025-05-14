@@ -58,14 +58,14 @@ function About() {
   return (
     <div className="p-4 space-y-6">
       <div className="flex items-center gap-2">
-        <h3 className="text-primary text-2xl font-display font-bold">About</h3>
+        <h3 className="text-2xl font-bold text-primary font-display">About</h3>
         <FaCircleInfo size={28} className="fill-primary" />
       </div>
       <p className="text-gray-600">
         Explore and customize button styles dynamically below.
       </p>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {colors.map((color) => (
           <Button
             key={color + roundiness}
@@ -80,11 +80,11 @@ function About() {
         ))}
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
         <Button
           color="neutral"
           variant="contained"
-          className="w-1/5 font-display font-semibold rounded-sm"
+          className="w-1/5 font-semibold rounded-sm font-display"
           onClick={() => setVariant(nextVariant(variant))}
         >
           Change Variant
@@ -92,7 +92,7 @@ function About() {
         <Button
           color="neutral"
           variant="contained"
-          className="w-1/5 font-display font-semibold rounded-sm"
+          className="w-1/5 font-semibold rounded-sm font-display"
           onClick={() => setRoundiness(nextRoundiness(roundiness))}
         >
           Change Roundness
@@ -100,7 +100,7 @@ function About() {
         <Button
           color="neutral"
           variant="contained"
-          className="w-1/5 font-display font-semibold rounded-sm"
+          className="w-1/5 font-semibold rounded-sm font-display"
           onClick={() => setDisabled(!disabled)}
         >
           {disabled ? 'Enable Buttons' : 'Disable Buttons'}

@@ -26,10 +26,10 @@ export const LoginForm = () => {
     },
   });
   return (
-    <div className="flex flex-col gap-4 py-8 px-6 max-w-92 w-full bg-white rounded-md shadow-lg">
+    <div className="flex flex-col w-full gap-4 px-6 py-8 bg-white rounded-md shadow-lg max-w-92">
       <header className="flex flex-col items-center justify-between mb-2">
         <h2 className="text-2xl font-bold text-gray-800">Login</h2>
-        <p className="text-gray-500 text-sm font-semibold">
+        <p className="text-sm font-semibold text-gray-500">
           Login to your account
         </p>
       </header>
@@ -46,7 +46,7 @@ export const LoginForm = () => {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="username"
-                className="text-gray-500 text-sm font-semibold"
+                className="text-sm font-semibold text-gray-500"
               >
                 Username
               </label>
@@ -55,16 +55,16 @@ export const LoginForm = () => {
                   id="username"
                   type="text"
                   value={field.state.value}
-                  className="w-full p-2 rounded-md border border-gray-300"
+                  className="w-full p-2 border border-gray-300 rounded-md"
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Your username"
                 />
                 {field.state.meta.isValidating && (
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin rounded-full border-2 border-t-transparent border-primary w-4 h-4" />
+                  <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
                 )}
               </div>
               {field.state.meta.errors && (
-                <span className="text-red-500 text-sm">
+                <span className="text-sm text-red-500">
                   {field.state.meta.errors}
                 </span>
               )}
@@ -77,7 +77,7 @@ export const LoginForm = () => {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="password"
-                className="text-gray-500 text-sm font-semibold"
+                className="text-sm font-semibold text-gray-500"
               >
                 Password
               </label>
@@ -86,16 +86,16 @@ export const LoginForm = () => {
                   id="password"
                   type="password"
                   value={field.state.value}
-                  className="w-full p-2 rounded-md border border-gray-300"
+                  className="w-full p-2 border border-gray-300 rounded-md"
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Your password"
                 />
                 {field.state.meta.isValidating && (
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin rounded-full border-2 border-t-transparent border-primary w-4 h-4" />
+                  <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
                 )}
               </div>
               {field.state.meta.errors && (
-                <span className="text-red-500 text-sm">
+                <span className="text-sm text-red-500">
                   {field.state.meta.errors}
                 </span>
               )}
@@ -105,12 +105,12 @@ export const LoginForm = () => {
         <form.Subscribe
           selector={(state) => state.errors}
           children={(errors) => (
-            <span className="text-red-500 text-sm">{errors}</span>
+            <span className="text-sm text-red-500">{errors}</span>
           )}
         />
       </form>
       <button
-        className="bg-primary text-white rounded-md p-2 cursor-pointer"
+        className="p-2 text-white rounded-md cursor-pointer bg-primary"
         type="submit"
         onClick={() => form.handleSubmit()}
       >
