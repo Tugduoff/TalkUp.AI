@@ -6,7 +6,7 @@ import {
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
-import '@styles/tailwind.css';
+import '@/styles/tailwind.css';
 
 import { routeTree } from './routeTree.gen';
 import { Route } from './routes/__root';

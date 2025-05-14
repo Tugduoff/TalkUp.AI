@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 
-import { LogoColor } from '@components/atoms/logo-svg/types';
-import { Logo } from '@components/molecules/logo';
+import { LogoColor } from '@/components/atoms/logo-svg/types';
+import { Logo } from '@/components/molecules/logo';
 
 export const Route = createFileRoute('/')({
   component: Index,
