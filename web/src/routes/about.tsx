@@ -1,10 +1,9 @@
+import { Button } from '@/components/atoms/button';
+import { ButtonColor, ButtonVariant } from '@/components/atoms/button/types';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { FaCircleInfo } from 'react-icons/fa6';
 import { FaSquareArrowUpRight } from 'react-icons/fa6';
-
-import { Button } from '@/components/atoms/button';
-import { ButtonColor, ButtonVariant } from '@/components/atoms/button/types';
 
 export const Route = createFileRoute('/about')({
   component: About,

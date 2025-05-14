@@ -1,6 +1,5 @@
-import { useForm } from '@tanstack/react-form';
-
 import { validateUsername } from '@/utils/validateUsername';
+import { useForm } from '@tanstack/react-form';
 
 export const SignUpForm = () => {
   const form = useForm({
