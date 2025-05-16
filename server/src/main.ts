@@ -31,8 +31,15 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle("TalkUp API")
     .setDescription("This is the API documentation of Talkup's backend")
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     .setVersion(version || "1.0.0")
+    .addGlobalResponse({
+      status: 500,
+      description: "Internal server error",
+    })
+    .addGlobalResponse({
+      status: 401,
+      description: "Unauthorized",
+    })
     .build();
 
   const options: SwaggerCustomOptions = {
