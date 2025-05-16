@@ -1,4 +1,4 @@
-import { LogoColor } from '@components/atoms/logo-svg/types';
+import { LogoColor } from '@/components/atoms/logo-svg/types';
 
 import { ColumnLogo } from './variants/column';
 import { LineLogo } from './variants/line';
