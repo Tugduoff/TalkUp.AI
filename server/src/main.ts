@@ -1,15 +1,8 @@
 import { NestFactory } from "@nestjs/core";
 
-import {
-  SwaggerModule,
-  DocumentBuilder,
-  SwaggerCustomOptions,
-} from "@nestjs/swagger";
-
 import { AppModule } from "./app.module";
 
-// used for swagger
-import { version } from "../package.json";
+import initSwagger from "./config/swagger.config";
 
 // dotenv
 import * as dotenv from "dotenv";
@@ -27,31 +20,7 @@ async function bootstrap() {
     exposedHeaders: process.env.CORS_EXPOSED_HEADERS || "Content-Type, Accept",
   });
 
-  // Swagger configuration
-  const config = new DocumentBuilder()
-    .setTitle("TalkUp API")
-    .setDescription("This is the API documentation of Talkup's backend")
-    .setVersion(version || "1.0.0")
-    .addGlobalResponse({
-      status: 500,
-      description: "Internal server error",
-    })
-    .addGlobalResponse({
-      status: 401,
-      description: "Unauthorized",
-    })
-    .addGlobalResponse({
-      status: 403,
-      description: "Forbidden",
-    })
-    .build();
-
-  const options: SwaggerCustomOptions = {
-    useGlobalPrefix: true, // tells the UI path to use the global prefix.
-  };
-
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("docs", app, documentFactory, options); // the UI will be loacted in /v1/api/docs
+  initSwagger(app);
 
   await app.listen(port);
   process.stdout.write(`Server is running on ${await app.getUrl()}\n`); // if '::1', it means localhost (IPv6 equivalent of 127.0.0.1)
