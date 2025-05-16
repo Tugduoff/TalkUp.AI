@@ -1,6 +1,5 @@
+import SignUpForm from '@/components/molecules/auth/SignUpForm';
 import { createFileRoute } from '@tanstack/react-router';
-
-import SignUpForm from '@components/molecules/auth/SignUpForm';
 
 export const Route = createFileRoute('/signup')({
   component: SignUp,
@@ -8,7 +7,7 @@ export const Route = createFileRoute('/signup')({
 
 function SignUp() {
   return (
-    <div className="p-2 flex flex-col items-center w-full gap-4">
+    <div className="flex flex-col items-center w-full gap-4 p-2">
       <SignUpForm />
     </div>
   );

@@ -1,7 +1,6 @@
+import { BaseInput } from '@/components/atoms/base-input';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
-
-import { BaseInput } from '@components/atoms/base-input';
 
 export const Route = createFileRoute('/diary')({
   component: Diary,
