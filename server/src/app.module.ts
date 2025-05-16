@@ -8,7 +8,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 
-import { LoggerMiddleware } from "./common/utils/logger";
+import { LoggerMiddleware } from "@common/utils/logger";
 
 @Module({
   imports: [
