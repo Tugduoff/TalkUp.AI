@@ -40,6 +40,10 @@ async function bootstrap() {
       status: 401,
       description: "Unauthorized",
     })
+    .addGlobalResponse({
+      status: 403,
+      description: "Forbidden",
+    })
     .build();
 
   const options: SwaggerCustomOptions = {
