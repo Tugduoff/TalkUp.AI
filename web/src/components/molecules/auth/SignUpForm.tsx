@@ -1,17 +1,27 @@
 import { validateUsername } from '@/utils/validateUsername';
+import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { useForm } from '@tanstack/react-form';
+import { usePostRegister } from '@/hooks/auth/useServices';
 
 export const SignUpForm = () => {
+  const { mutate: postRegister } = usePostRegister();
+
   const form = useForm({
     defaultValues: {
       username: '',
+      phoneNumber: '',
       password: '',
       confirmPassword: '',
     },
     onSubmit: ({ value }) => {
-      console.log('SignUp:', value);
+      postRegister({
+        username: value.username,
+        phoneNumber: value.phoneNumber,
+        password: value.password,
+      })
     },
   });
+
   return (
     <div className="flex flex-col w-full gap-4 px-6 py-8 bg-white rounded-md shadow-lg max-w-92">
       <header className="flex flex-col items-center justify-between mb-2">
@@ -60,6 +70,52 @@ export const SignUpForm = () => {
                   className="w-full p-2 border border-gray-300 rounded-md"
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Your username"
+                />
+                {field.state.meta.isValidating && (
+                  <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
+                )}
+              </div>
+              {field.state.meta.errors && (
+                <span className="text-sm text-red-500">
+                  {field.state.meta.errors}
+                </span>
+              )}
+            </div>
+          )}
+        />
+        <form.Field
+          name="phoneNumber"
+          validators={{
+            onChangeAsyncDebounceMs: 500,
+            onChangeAsync: ({ value }) => validatePhoneNumber(value),
+            onChange: ({ value }) => {
+              if (value.length < 10) {
+                return 'Phone number must be at least 10 characters long';
+              }
+              if (value.length > 15) {
+                return 'Phone number must be at most 15 characters long';
+              }
+              if (!/^[0-9]+$/.test(value)) {
+                return 'Phone number must contain only numbers';
+              }
+            },
+          }}
+          children={(field) => (
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="phoneNumber"
+                className="text-sm font-semibold text-gray-500"
+              >
+                Phone Number
+              </label>
+              <div className="relative">
+                <input
+                  id="phoneNumber"
+                  type="tel"
+                  value={field.state.value}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder="Your email"
                 />
                 {field.state.meta.isValidating && (
                   <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
