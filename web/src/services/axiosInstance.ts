@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { API_ROUTES } from './api';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -16,12 +17,12 @@ axiosInstance.defaults.headers.common['Accept'] = 'application/json';
 axiosInstance.interceptors.request.use(
   async (config) => {
     const idToken = localStorage.getItem('idToken');
-    const isAuthRoute = [`${API_ROUTES.auth}/login`, `${API_ROUTES.auth}/register`].some((route) =>
-      config.url?.includes(route),
-    );
+    const isAuthRoute = [
+      `${API_ROUTES.auth}/login`,
+      `${API_ROUTES.auth}/register`,
+    ].some((route) => config.url?.includes(route));
 
-    if (isAuthRoute)
-      return config;
+    if (isAuthRoute) return config;
 
     if (idToken) {
       config.headers.Authorization = `Bearer ${idToken}`;

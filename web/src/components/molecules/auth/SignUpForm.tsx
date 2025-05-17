@@ -1,7 +1,7 @@
-import { validateUsername } from '@/utils/validateUsername';
-import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
-import { useForm } from '@tanstack/react-form';
 import { usePostRegister } from '@/hooks/auth/useServices';
+import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
+import { validateUsername } from '@/utils/validateUsername';
+import { useForm } from '@tanstack/react-form';
 
 export const SignUpForm = () => {
   const { mutate: postRegister } = usePostRegister();
@@ -18,7 +18,7 @@ export const SignUpForm = () => {
         username: value.username,
         phoneNumber: value.phoneNumber,
         password: value.password,
-      })
+      });
     },
   });
 
