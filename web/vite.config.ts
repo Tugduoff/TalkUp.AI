@@ -14,6 +14,7 @@ const aliases = {
   '@/stores': path.resolve(__dirname, 'src/stores'),
   '@/types': path.resolve(__dirname, 'src/types'),
   '@/api': path.resolve(__dirname, 'src/api'),
+  '@/services': path.resolve(__dirname, 'src/services'),
 };
 
 export default defineConfig({
@@ -28,4 +29,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    port: 8080,
+  }
 });
