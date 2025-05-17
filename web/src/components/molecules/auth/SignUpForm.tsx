@@ -115,7 +115,7 @@ export const SignUpForm = () => {
                   value={field.state.value}
                   className="w-full p-2 border border-gray-300 rounded-md"
                   onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="Your email"
+                  placeholder="Your phone number"
                 />
                 {field.state.meta.isValidating && (
                   <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
