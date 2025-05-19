@@ -19,7 +19,7 @@ export const usePostRegister = () => {
         phoneNumber,
         password,
       );
-      const accessToken = result.access_token;
+      const accessToken = result.accessToken;
       localStorage.setItem('idToken', accessToken);
     },
     onSuccess: () => {
