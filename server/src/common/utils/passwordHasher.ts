@@ -6,7 +6,6 @@ export const hashPassword = async (password: string): Promise<string> => {
   }
 
   try {
-    // eslint-disable-next-line
     const hash: string = await bcrypt.hash(password, 10);
 
     return hash;
