@@ -39,7 +39,7 @@ export class AuthService {
   ): Promise<{ access_token: string }> {
     // Check if the user already exists
     const phoneNumberExists = await this.userPhoneNumberRepository.findOne({
-      where: { phonenumber: createUserDto.phoneNumber },
+      where: { phone_number: createUserDto.phoneNumber },
     });
 
     if (phoneNumberExists) {
