@@ -12,7 +12,7 @@ export class user {
   user_id: string;
 
   @Column({ nullable: false })
-  user_name: string;
+  username: string;
 
   @Column({
     nullable: true,

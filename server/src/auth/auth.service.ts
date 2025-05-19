@@ -32,7 +32,7 @@ export class AuthService {
    * Registers a new user and returns a JWT token.
    * @param createUserDto - The DTO containing user registration data.
    * @returns An object containing the access token.
-   * @throws BadRequestException if an account with the same phone number already exists.
+   * @throws ConflictException if an account with the same phone number already exists.
    */
   async register(
     createUserDto: CreateUserDto,
@@ -50,7 +50,7 @@ export class AuthService {
 
     // Create a new user, contains only the username
     const newUser = this.userRepository.create({
-      user_name: createUserDto.userName,
+      username: createUserDto.username,
     });
 
     // Save the user to the database, contains every user information
@@ -74,7 +74,7 @@ export class AuthService {
 
     const payload = {
       userId: savedUser.user_id,
-      userName: savedUser.user_name,
+      username: savedUser.username,
     };
 
     return {
