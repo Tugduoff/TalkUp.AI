@@ -2,7 +2,7 @@
 
 import { Repository } from "typeorm";
 
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
 
@@ -43,7 +43,7 @@ export class AuthService {
     });
 
     if (phoneNumberExists) {
-      throw new BadRequestException(
+      throw new ConflictException(
         "An account with this phone number already exists",
       );
     }

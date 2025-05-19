@@ -4,6 +4,7 @@ import { UsePipes } from "@nestjs/common/decorators/core/use-pipes.decorator";
 
 import {
   ApiBadRequestResponse,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiTags,
 } from "@nestjs/swagger";
@@ -24,8 +25,10 @@ export class AuthController {
     type: CreateUserDto,
   })
   @ApiBadRequestResponse({
-    description:
-      "Badly formatted parameter OR missing parameter OR user already exists.",
+    description: "Badly formatted parameter OR missing parameter.",
+  })
+  @ApiConflictResponse({
+    description: "User already exists.",
   })
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async register(@Body() createUserDto: CreateUserDto) {
