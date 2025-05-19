@@ -1,5 +1,4 @@
 import { usePostRegister } from '@/hooks/auth/useServices';
-import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { validateUsername } from '@/utils/validateUsername';
 import { useForm } from '@tanstack/react-form';
 
@@ -86,17 +85,9 @@ export const SignUpForm = () => {
         <form.Field
           name="phoneNumber"
           validators={{
-            onChangeAsyncDebounceMs: 500,
-            onChangeAsync: ({ value }) => validatePhoneNumber(value),
             onChange: ({ value }) => {
-              if (value.length < 10) {
-                return 'Phone number must be at least 10 characters long';
-              }
-              if (value.length > 15) {
-                return 'Phone number must be at most 15 characters long';
-              }
-              if (!/^[0-9]+$/.test(value)) {
-                return 'Phone number must contain only numbers';
+              if (!/^(\+\d{1,3})?\d{9,15}$/.test(value)) {
+                return 'Phone number must be in international format (e.g., +1234567890)';
               }
             },
           }}
