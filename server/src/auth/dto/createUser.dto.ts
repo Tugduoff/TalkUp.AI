@@ -13,7 +13,7 @@ export class CreateUserDto {
     minLength: 1,
     example: "AdminSys819",
   })
-  username: string;
+  userName: string;
 
   @Length(1, 50)
   @IsPhoneNumber("FR") // temporary, to be removed when internationalization is implemented
@@ -22,7 +22,7 @@ export class CreateUserDto {
       "The user's phone number. It will be used later for verification.",
     example: "+33123456789",
   })
-  phonenumber: string;
+  phoneNumber: string;
 
   @IsStrongPassword({
     minLength: 8,

@@ -39,7 +39,7 @@ export class AuthService {
   ): Promise<{ access_token: string }> {
     // Check if the user already exists
     const phoneNumberExists = await this.userPhoneNumberRepository.findOne({
-      where: { phonenumber: createUserDto.phonenumber },
+      where: { phonenumber: createUserDto.phoneNumber },
     });
 
     if (phoneNumberExists) {
@@ -50,7 +50,7 @@ export class AuthService {
 
     // Create a new user, contains only the username
     const newUser = this.userRepository.create({
-      username: createUserDto.username,
+      user_name: createUserDto.userName,
     });
 
     // Save the user to the database, contains every user information
@@ -64,7 +64,7 @@ export class AuthService {
 
     // create user_phonenumber
     const newUserPhoneNumber = this.userPhoneNumberRepository.create({
-      phonenumber: createUserDto.phonenumber,
+      phone_number: createUserDto.phoneNumber,
       user_id: savedUser.user_id,
     });
 
@@ -74,11 +74,11 @@ export class AuthService {
 
     const payload = {
       userId: savedUser.user_id,
-      userName: savedUser.username,
+      userName: savedUser.user_name,
     };
 
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      accessToken: await this.jwtService.signAsync(payload),
     };
   }
 }
