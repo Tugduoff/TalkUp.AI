@@ -9,7 +9,7 @@ export default class AuthService {
   ): Promise<{ access_token: string }> => {
     const response = await axiosInstance.post(`${API_ROUTES.auth}/register`, {
       username,
-      phonenumber: phoneNumber,
+      phoneNumber,
       password,
     });
     return response.data;
