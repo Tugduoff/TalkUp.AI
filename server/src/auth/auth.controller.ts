@@ -1,15 +1,17 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { ValidationPipe } from "@nestjs/common/pipes/validation.pipe";
 import { UsePipes } from "@nestjs/common/decorators/core/use-pipes.decorator";
 
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiUnprocessableEntityResponse,
   ApiTags,
 } from "@nestjs/swagger";
 
 import { CreateUserDto } from "./dto/createUser.dto";
+
+import { PostValidationPipe } from "../common/pipes/PostValidationPipe";
 
 import { AuthService } from "./auth.service";
 
@@ -25,12 +27,15 @@ export class AuthController {
     type: CreateUserDto,
   })
   @ApiBadRequestResponse({
-    description: "Badly formatted parameter OR missing parameter.",
+    description: "Badly formatted parameter.",
   })
   @ApiConflictResponse({
     description: "User already exists.",
   })
-  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  @ApiUnprocessableEntityResponse({
+    description: "Missing parameter in request.",
+  })
+  @UsePipes(new PostValidationPipe())
   async register(@Body() createUserDto: CreateUserDto) {
     // Call the authService to handle the registration logic
     return await this.authService.register(createUserDto);
