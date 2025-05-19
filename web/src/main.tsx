@@ -1,4 +1,6 @@
 import '@/styles/tailwind.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
   NotFoundRoute,
   RouterProvider,
@@ -9,6 +11,8 @@ import ReactDOM from 'react-dom/client';
 
 import { routeTree } from './routeTree.gen';
 import { Route } from './routes/__root';
+
+const queryClient = new QueryClient();
 
 const notFoundRoute = new NotFoundRoute({
   getParentRoute: () => Route,
@@ -28,7 +32,10 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </StrictMode>,
   );
 }
