@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 interface Country {
   name: string;
@@ -47,15 +47,16 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   onChange,
   defaultCountryCode = 'US',
   placeholder = 'Phone Number',
-  className,
-  inputClassName,
-  selectClassName,
-  readOnly,
-  disabled,
+  className = '',
+  inputClassName = '',
+  selectClassName = '',
+  readOnly = false,
+  disabled = false,
 }) => {
   const [selectedCountry, setSelectedCountry] = useState<string>(value?.countryCode || defaultCountryCode);
   const [phoneNumber, setPhoneNumber] = useState<string>(value?.phoneNumber || '');
 
+  // Update state when `value` prop changes
   useEffect(() => {
     if (value) {
       setSelectedCountry(value.countryCode);
@@ -63,6 +64,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
     }
   }, [value]);
 
+  // Handle country selection change
   const handleCountryChange = useCallback(
     (countryCode: string) => {
       setSelectedCountry(countryCode);
@@ -71,6 +73,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
     [onChange, phoneNumber]
   );
 
+  // Handle phone number input change
   const handlePhoneNumberChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newNumber = e.target.value;
@@ -80,15 +83,19 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
     [onChange, selectedCountry]
   );
 
-  const selectedCountryData = countries.find((c) => c.code === selectedCountry);
+  // Memoize the selected country's data for performance
+  const selectedCountryData = useMemo(
+    () => countries.find((c) => c.code === selectedCountry),
+    [selectedCountry]
+  );
 
   return (
-    <div className={`flex items-center gap-2 ${className || ''}`}>
-      {/* ⚠️ Tu dois remplacer ce <select> par une vraie UI si tu ne veux pas utiliser Select */}
+    <div className={`flex items-center gap-2 ${className}`}>
+      {/* Country selector */}
       <select
         value={selectedCountry}
         onChange={(e) => handleCountryChange(e.target.value)}
-        className={`h-10 rounded-md border px-2 ${selectClassName || ''}`}
+        className={`h-10 rounded-md border px-2 ${selectClassName}`}
         disabled={disabled}
       >
         {countries.map((country) => (
@@ -98,6 +105,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
         ))}
       </select>
 
+      {/* Phone number input */}
       <input
         type="tel"
         value={phoneNumber}
@@ -105,7 +113,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
         placeholder={placeholder}
         readOnly={readOnly}
         disabled={disabled}
-        className={`h-10 flex-1 rounded-md border px-3 ${inputClassName || ''}`}
+        className={`h-10 flex-1 rounded-md border px-3 ${inputClassName}`}
         aria-label="Phone Number"
       />
     </div>
