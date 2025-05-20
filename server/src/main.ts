@@ -18,7 +18,7 @@ async function bootstrap() {
     exposedHeaders: process.env.CORS_EXPOSED_HEADERS || "Content-Type, Accept",
   });
 
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   process.stdout.write(`Server is running on ${await app.getUrl()}\n`); // if '::1', it means localhost (IPv6 equivalent of 127.0.0.1)
 
   process.on("SIGINT", () => {

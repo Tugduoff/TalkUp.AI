@@ -12,15 +12,18 @@ export class AuthController {
   // eslint-disable-next-line no-unused-vars
   constructor(private readonly authService: AuthService) {}
 
-  @Post("register")
-  @Post("login")
   @HttpCode(200)
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  
+  @Post("register")
   async register(@Body() createUserDto: CreateUserDto) {
     // Call the authService to handle the registration logic
     return await this.authService.register(createUserDto);
   }
+
+  @Post("login")
   async login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+    const user = await this.authService.validateUser(loginDto.email, loginDto.password);
+    return this.authService.login(user);
   }
 }

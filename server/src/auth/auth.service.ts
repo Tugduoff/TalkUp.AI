@@ -8,6 +8,7 @@ import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from 'bcrypt';
 
 import { CreateUserDto } from "./dto/createUser.dto";
+import { UsersService } from 'src/users/users.service';
 import { LoginDto } from './dto/login.dto';
 
 import {
@@ -27,7 +28,7 @@ export class AuthService {
     @InjectRepository(user_phonenumber)
     private userPhoneNumberRepository: Repository<user_phonenumber>,
 
-    // private userService: UserService,
+    private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
@@ -86,26 +87,22 @@ export class AuthService {
   };
 
   async validateUser(email: string, password: string): Promise<any> {
-    const phone = await this.phoneRepo.findOne({
-      where: { phonenumber: email },
-    });
+    const result = await this.usersService.findUserWithPasswordByEmail(email);
 
-    if (!phone) return null;
+    if (!result) throw new UnauthorizedException('Email non trouvé');
 
-    const userId = phone.user_id;
+    const match = await bcrypt.compare(password, result.passwordHash);
+    if (!match) throw new UnauthorizedException('Mot de passe incorrect');
 
-    const passwordRecord = await this.passwordRepo.findOne({
-      where: { user_id: userId },
-    });
+    // Optionnel : tu peux retourner un "user safe"
+    const { passwordHash, ...user } = result;
+    return user;
+  }
 
-    if (!passwordRecord) return null;
-
-    const isPasswordMatch = await bcrypt.compare(password, passwordRecord.password);
-
-    if (!isPasswordMatch) return null;
-
-    const userData = await this.userRepo.findOne({ where: { user_id: userId } });
-
-    return userData;
+  async login(user: any) {
+    const payload = { sub: user.id, email: user.email };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

@@ -5,6 +5,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { AuthController } from "./auth.controller";
 
 import { AuthService } from "./auth.service";
+import { UsersModule } from 'src/users/users.module';
 
 import * as dotenv from "dotenv";
 dotenv.config(); // Load environment variables
@@ -18,6 +19,7 @@ import {
 
 @Module({
   imports: [
+    UsersModule,
     TypeOrmModule.forFeature([
       user,
       user_email,
@@ -32,5 +34,6 @@ import {
   ],
   controllers: [AuthController],
   providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}
