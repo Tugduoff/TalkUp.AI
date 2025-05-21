@@ -1,8 +1,12 @@
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from '@nestjs/common';
-import { AppModule } from "./app.module";
-import * as dotenv from "dotenv";
 
+import { AppModule } from "./app.module";
+
+import initSwagger from "./config/swagger.config";
+
+// dotenv
+import * as dotenv from "dotenv";
 dotenv.config();
 
 async function bootstrap() {
@@ -18,7 +22,9 @@ async function bootstrap() {
     exposedHeaders: process.env.CORS_EXPOSED_HEADERS || "Content-Type, Accept",
   });
 
-  await app.listen(port, '0.0.0.0');
+  initSwagger(app);
+
+  await app.listen(port);
   process.stdout.write(`Server is running on ${await app.getUrl()}\n`); // if '::1', it means localhost (IPv6 equivalent of 127.0.0.1)
 
   process.on("SIGINT", () => {

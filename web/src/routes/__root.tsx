@@ -19,7 +19,7 @@ const links = [
 export const Route = createRootRoute({
   component: () => (
     <>
-      <div className="p-2 flex gap-2 justify-around">
+      <div className="flex justify-around gap-2 p-2">
         {links.map(({ to, label }) => (
           <Link key={to} to={to} className="[&.active]:font-bold">
             {label}

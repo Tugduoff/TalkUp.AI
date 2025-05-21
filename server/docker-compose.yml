@@ -4,6 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    security_opt:
+      - seccomp:unconfined
+      - label:disable
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     environment:
