@@ -1,27 +1,9 @@
-import { BaseInput } from '@/components/atoms/base-input';
-import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/diary')({
-  component: Diary,
-});
+  component: RouteComponent,
+})
 
-function Diary() {
-  const [value, setValue] = useState('');
-
-  return (
-    <div className="p-2">
-      <h3 className="text-primary">Diary</h3>
-      <p>Agenda</p>
-      <BaseInput
-        type="text"
-        placeholder="Input"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        disabled={false}
-        readOnly={false}
-        required={true}
-      />
-    </div>
-  );
+function RouteComponent() {
+  return <div>Hello "/diary"!</div>
 }
