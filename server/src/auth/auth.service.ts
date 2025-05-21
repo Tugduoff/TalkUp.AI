@@ -2,14 +2,14 @@
 
 import { Repository } from "typeorm";
 
-import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
+import { ConflictException, Injectable, UnauthorizedException, } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from "bcrypt";
 
 import { CreateUserDto } from "./dto/createUser.dto";
-import { UsersService } from 'src/users/users.service';
-import { LoginDto } from './dto/login.dto';
+import { UsersService } from "src/users/users.service";
+import { LoginDto } from "./dto/login.dto";
 
 import {
   user,
@@ -84,15 +84,15 @@ export class AuthService {
     return {
       accessToken: await this.jwtService.signAsync(payload),
     };
-  };
+  }
 
   async validateUser(email: string, password: string): Promise<any> {
     const result = await this.usersService.findUserWithPasswordByEmail(email);
 
-    if (!result) throw new UnauthorizedException('Email non trouvé');
+    if (!result) throw new UnauthorizedException("Email non trouvé");
 
     const match = await bcrypt.compare(password, result.passwordHash);
-    if (!match) throw new UnauthorizedException('Mot de passe incorrect');
+    if (!match) throw new UnauthorizedException("Mot de passe incorrect");
 
     const { passwordHash, ...user } = result;
     return user;

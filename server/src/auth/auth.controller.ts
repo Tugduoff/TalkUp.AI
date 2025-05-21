@@ -10,7 +10,7 @@ import {
 } from "@nestjs/swagger";
 
 import { CreateUserDto } from "./dto/createUser.dto";
-import { LoginDto } from './dto/login.dto';
+import { LoginDto } from "./dto/login.dto";
 
 import { PostValidationPipe } from "../common/pipes/PostValidationPipe";
 
@@ -36,7 +36,6 @@ export class AuthController {
     description: "Missing parameter in request.",
   })
   @UsePipes(new PostValidationPipe())
-  
   @Post("register")
   async register(@Body() createUserDto: CreateUserDto) {
     // Call the authService to handle the registration logic
@@ -45,7 +44,8 @@ export class AuthController {
 
   @Post("login")
   async login(@Body() loginDto: LoginDto) {
-    const user = await this.authService.validateUser(loginDto.email, loginDto.password);
+    const user = await this.authService.validateUser(
+      loginDto.email, loginDto.password,);
     return this.authService.login(user);
   }
 }
