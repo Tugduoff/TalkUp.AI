@@ -12,7 +12,7 @@ import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
 
 import { CreateUserDto } from "./dto/createUser.dto";
-import { UsersService } from "src/users/users.service";
+import { UsersService } from "@src/users/users.service";
 import { LoginDto } from "./dto/login.dto";
 
 import { user, user_password, user_phonenumber } from "@entities/user.entity";
