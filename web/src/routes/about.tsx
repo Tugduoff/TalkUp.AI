@@ -13,6 +13,7 @@ function About() {
   const [variant, setVariant] = useState<ButtonVariant>('contained');
   const [roundiness, setRoundiness] = useState('rounded-sm');
   const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const colors: ButtonColor[] = [
     'primary',
@@ -71,6 +72,7 @@ function About() {
             key={color + roundiness}
             color={color}
             variant={variant}
+            loading={loading}
             className={`${roundiness} w-full font-display font-semibold flex items-center justify-center gap-2`}
             disabled={disabled}
           >
@@ -104,6 +106,14 @@ function About() {
           onClick={() => setDisabled(!disabled)}
         >
           {disabled ? 'Enable Buttons' : 'Disable Buttons'}
+        </Button>
+        <Button
+          color="neutral"
+          variant="contained"
+          className="w-1/5 font-semibold rounded-sm font-display"
+          onClick={() => setLoading(!loading)}
+        >
+          {loading ? 'Remove Loading' : 'Set Loading'}
         </Button>
       </div>
     </div>
