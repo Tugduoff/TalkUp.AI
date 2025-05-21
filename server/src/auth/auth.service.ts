@@ -2,7 +2,11 @@
 
 import { Repository } from "typeorm";
 
-import { ConflictException, Injectable, UnauthorizedException, } from "@nestjs/common";
+import { 
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
