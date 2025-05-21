@@ -16,6 +16,8 @@
         "build:web": "cd web && npm run build",
         "build:server": "cd server && npm run build",
 
-        "tsc:check": "cd web && npm run tsc:check"
+        "tsc:check": "cd web && npm run tsc:check",
+
+        "test": "cd server && npm run test"
     }
 }
