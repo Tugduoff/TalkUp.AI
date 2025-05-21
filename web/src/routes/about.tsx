@@ -11,7 +11,7 @@ export const Route = createFileRoute('/about')({
 
 function About() {
   const [variant, setVariant] = useState<ButtonVariant>('contained');
-  const [roundiness, setRoundiness] = useState('rounded-sm');
+  const [roundness, setRoundness] = useState('rounded-sm');
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +39,7 @@ function About() {
     }
   };
 
-  const nextRoundiness = (current: string): string => {
+  const nextRoundness = (current: string): string => {
     switch (current) {
       case 'rounded-sm':
         return 'rounded-md';
@@ -69,11 +69,11 @@ function About() {
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {colors.map((color) => (
           <Button
-            key={color + roundiness}
+            key={color + roundness}
             color={color}
             variant={variant}
             loading={loading}
-            className={`${roundiness} w-full font-display font-semibold flex items-center justify-center gap-2`}
+            className={`${roundness} w-full font-display font-semibold flex items-center justify-center gap-2`}
             disabled={disabled}
           >
             {color.charAt(0).toUpperCase() + color.slice(1)}
@@ -95,7 +95,7 @@ function About() {
           color="neutral"
           variant="contained"
           className="w-1/5 font-semibold rounded-sm font-display"
-          onClick={() => setRoundiness(nextRoundiness(roundiness))}
+          onClick={() => setRoundness(nextRoundness(roundness))}
         >
           Change Roundness
         </Button>
