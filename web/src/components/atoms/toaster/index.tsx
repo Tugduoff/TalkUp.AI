@@ -21,7 +21,7 @@ const ToasterConfig = () => (
         iconTheme: {
           primary: '#0f7b16',
           secondary: '#fff',
-        }
+        },
       },
       error: {
         style: {
@@ -30,7 +30,7 @@ const ToasterConfig = () => (
         iconTheme: {
           primary: '#a32a15',
           secondary: '#fff',
-        }
+        },
       },
       loading: {
         style: {
@@ -39,10 +39,10 @@ const ToasterConfig = () => (
         iconTheme: {
           primary: '#383850',
           secondary: '#fff',
-        }
+        },
       },
     }}
   />
-)
+);
 
 export default ToasterConfig;
