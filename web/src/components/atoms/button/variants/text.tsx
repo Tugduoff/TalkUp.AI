@@ -16,6 +16,7 @@ export const TextButton = ({
       disabled={disabled || loading}
       aria-label="button"
       aria-disabled={disabled || loading}
+      aria-busy={loading}
     >
       {children}
     </button>
