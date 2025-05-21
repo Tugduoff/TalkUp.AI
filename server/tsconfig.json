@@ -22,7 +22,6 @@
       "@entities/*": ["src/entities/*"],
       "@common/*": ["src/common/*"],
       "@config/*": ["src/config/*"],
-      "@dto/*": ["src/auth/dto/*"],
     }
   }
 }

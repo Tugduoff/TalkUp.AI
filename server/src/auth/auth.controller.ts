@@ -9,7 +9,7 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 
-import { CreateUserDto } from "@dto/createUser.dto";
+import { CreateUserDto } from "./dto/createUser.dto";
 
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
