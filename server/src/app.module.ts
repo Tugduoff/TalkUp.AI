@@ -8,11 +8,10 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 
-import { LoggerMiddleware } from "@common/utils/logger";
+import { LoggerMiddleware } from "@common/middleware/logger";
 
 @Module({
   imports: [
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     ConfigModule.forRoot({
       isGlobal: true,
       expandVariables: true,
@@ -28,6 +27,6 @@ import { LoggerMiddleware } from "@common/utils/logger";
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes("*");
+    consumer.apply(LoggerMiddleware).forRoutes("*path");
   }
 }

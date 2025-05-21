@@ -2,7 +2,7 @@
 
 import { Repository } from "typeorm";
 
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
 
@@ -28,18 +28,18 @@ export class AuthService {
    * Registers a new user and returns a JWT token.
    * @param createUserDto - The DTO containing user registration data.
    * @returns An object containing the access token.
-   * @throws BadRequestException if an account with the same phone number already exists.
+   * @throws ConflictException if an account with the same phone number already exists.
    */
   async register(
     createUserDto: CreateUserDto,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ accessToken: string }> {
     // Check if the user already exists
     const phoneNumberExists = await this.userPhoneNumberRepository.findOne({
-      where: { phonenumber: createUserDto.phonenumber },
+      where: { phone_number: createUserDto.phoneNumber },
     });
 
     if (phoneNumberExists) {
-      throw new BadRequestException(
+      throw new ConflictException(
         "An account with this phone number already exists",
       );
     }
@@ -60,7 +60,7 @@ export class AuthService {
 
     // create user_phonenumber
     const newUserPhoneNumber = this.userPhoneNumberRepository.create({
-      phonenumber: createUserDto.phonenumber,
+      phone_number: createUserDto.phoneNumber,
       user_id: savedUser.user_id,
     });
 
@@ -70,11 +70,11 @@ export class AuthService {
 
     const payload = {
       userId: savedUser.user_id,
-      userName: savedUser.username,
+      username: savedUser.username,
     };
 
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      accessToken: await this.jwtService.signAsync(payload),
     };
   }
 }
