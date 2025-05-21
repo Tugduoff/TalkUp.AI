@@ -8,6 +8,8 @@ import { AuthService } from "./auth.service";
 
 import { user, user_password, user_phonenumber } from "@entities/user.entity";
 
+import { UsersService } from "@src/users/users.service";
+
 describe("AuthController", () => {
   let controller: AuthController;
 
@@ -27,6 +29,18 @@ describe("AuthController", () => {
         {
           provide: getRepositoryToken(user_phonenumber),
           useClass: Repository,
+        },
+        {
+          provide: UsersService,
+          useValue: {
+            findOne: jest.fn().mockResolvedValue(null), // Mock findOne method
+            create: jest
+              .fn()
+              .mockResolvedValue({ id: 1, email: "test@example.com" }), // Mock create method
+            update: jest
+              .fn()
+              .mockResolvedValue({ id: 1, email: "updated@example.com" }), // Mock update method
+          },
         },
         {
           provide: JwtService,
