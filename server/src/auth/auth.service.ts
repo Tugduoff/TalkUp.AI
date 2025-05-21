@@ -6,7 +6,7 @@ import { ConflictException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
 
-import { CreateUserDto } from "./dto/createUser.dto";
+import { CreateUserDto } from "@dto/createUser.dto";
 
 import { user, user_password, user_phonenumber } from "@entities/user.entity";
 

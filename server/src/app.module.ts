@@ -2,7 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule } from "@nestjs/config";
 
-import pgConfig from "./config/postgres.config";
+import pgConfig from "@config/postgres.config";
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
