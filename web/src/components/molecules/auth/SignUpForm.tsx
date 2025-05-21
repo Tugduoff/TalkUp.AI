@@ -1,4 +1,5 @@
 import { usePostRegister } from '@/hooks/auth/useServices';
+import PhoneNumberInput from '@/components/molecules/phonenumber/phonenumber';
 import { validateUsername } from '@/utils/validateUsername';
 import { useForm } from '@tanstack/react-form';
 
@@ -8,14 +9,14 @@ export const SignUpForm = () => {
   const form = useForm({
     defaultValues: {
       username: '',
-      phoneNumber: '',
+      phoneNumber: { countryCode: 'FR', phoneNumber: '' },
       password: '',
       confirmPassword: '',
     },
     onSubmit: ({ value }) => {
       postRegister({
         username: value.username,
-        phoneNumber: value.phoneNumber,
+        phoneNumber: value.phoneNumber.phoneNumber, 
         password: value.password,
       });
     },
@@ -84,13 +85,8 @@ export const SignUpForm = () => {
         />
         <form.Field
           name="phoneNumber"
-          validators={{
-            onChange: ({ value }) => {
-              if (!/^(\+\d{1,3})?\d{9,15}$/.test(value)) {
-                return 'Phone number must be in international format (e.g., +1234567890)';
-              }
-            },
-          }}
+          // Supprimez la validation regex ici car le composant PhoneNumberInput gérera son propre formatage/validation
+          // Si vous souhaitez une validation spécifique après la composition du numéro (code + numéro), vous pouvez l'ajouter ici
           children={(field) => (
             <div className="flex flex-col gap-2">
               <label
@@ -100,13 +96,13 @@ export const SignUpForm = () => {
                 Phone Number
               </label>
               <div className="relative">
-                <input
-                  id="phoneNumber"
-                  type="tel"
-                  value={field.state.value}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  onChange={(e) => field.handleChange(e.target.value)}
+                <PhoneNumberInput
+                  value={field.state.value} // Passez l'objet { countryCode, phoneNumber }
+                  onChange={(value) => field.handleChange(value)} // Mettez à jour le champ avec l'objet complet
                   placeholder="Your phone number"
+                  className="w-full" // Styles pour le conteneur du composant
+                  inputClassName="shadow-sm focus:ring-blue-500 focus:border-blue-500" // Styles pour l'input
+                  selectClassName="bg-gray-50 border-gray-300 text-gray-900" // Styles pour le select
                 />
                 {field.state.meta.isValidating && (
                   <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />

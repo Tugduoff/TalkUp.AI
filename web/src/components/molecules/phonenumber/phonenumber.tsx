@@ -74,20 +74,14 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   );
 
   // Handle phone number input change
-  const handlePhoneNumberChange = useCallback(
+const handlePhoneNumberChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newNumber = e.target.value;
-      setPhoneNumber(newNumber);
-      onChange?.({ countryCode: selectedCountry, phoneNumber: newNumber });
+        const newNumber = e.target.value;
+        setPhoneNumber(newNumber);
+        onChange?.({ countryCode: selectedCountry, phoneNumber: newNumber });
     },
     [onChange, selectedCountry]
-  );
-
-  // Memoize the selected country's data for performance
-  const selectedCountryData = useMemo(
-    () => countries.find((c) => c.code === selectedCountry),
-    [selectedCountry]
-  );
+);
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
