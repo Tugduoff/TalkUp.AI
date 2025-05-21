@@ -11,6 +11,7 @@ import ReactDOM from 'react-dom/client';
 
 import { routeTree } from './routeTree.gen';
 import { Route } from './routes/__root';
+import ToasterConfig from '@/components/atoms/toaster';
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
+        <ToasterConfig />
         <RouterProvider router={router} />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
