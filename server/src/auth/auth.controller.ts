@@ -12,7 +12,7 @@ import {
 import { CreateUserDto } from "./dto/createUser.dto";
 import { LoginDto } from "./dto/login.dto";
 
-import { PostValidationPipe } from "../common/pipes/PostValidationPipe";
+import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
 import { AuthService } from "./auth.service";
 

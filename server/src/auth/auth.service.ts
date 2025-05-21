@@ -15,13 +15,9 @@ import { CreateUserDto } from "./dto/createUser.dto";
 import { UsersService } from "src/users/users.service";
 import { LoginDto } from "./dto/login.dto";
 
-import {
-  user,
-  user_password,
-  user_phonenumber,
-} from "src/entities/user.entity";
+import { user, user_password, user_phonenumber } from "@entities/user.entity";
 
-import { hashPassword } from "src/common/utils/passwordHasher";
+import { hashPassword } from "@common/utils/passwordHasher";
 
 @Injectable()
 export class AuthService {

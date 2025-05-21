@@ -30,3 +30,28 @@ jobs:
 
       - name: Run Code Quality Check
         uses: ./.github/actions/run-quality-check
+
+  tests_run:
+    needs: code-quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23.x'
+
+      - name: Setup and cache web dependencies
+        uses: ./.github/actions/setup-node-with-cache
+        with:
+          working-directory: ./web
+
+      - name: Setup and cache server Dependencies
+        uses: ./.github/actions/setup-node-with-cache
+        with:
+          working-directory: ./server
+
+      - name: Run units tests command
+        uses: ./.github/actions/run-units-tests

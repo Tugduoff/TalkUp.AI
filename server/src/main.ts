@@ -3,7 +3,7 @@ import { ValidationPipe } from "@nestjs/common";
 
 import { AppModule } from "./app.module";
 
-import initSwagger from "./config/swagger.config";
+import initSwagger from "@config/swagger.config";
 
 // dotenv
 import * as dotenv from "dotenv";
