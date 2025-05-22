@@ -1,6 +1,25 @@
 import { validateLogin } from '@/utils/validateLogin';
 import { useForm } from '@tanstack/react-form';
 
+/**
+ * A component that renders a login form with username and password fields.
+ * 
+ * This form uses a custom form hook that handles validation and submission.
+ * It performs both client-side validation (checking for empty fields) and
+ * potentially asynchronous validation through the validateLogin function.
+ * 
+ * The form includes:
+ * - Username input field with validation
+ * - Password input field with validation
+ * - Form-level error messages
+ * - Loading indicators during validation
+ * - Submit button
+ * 
+ * Visual styling is done with Tailwind CSS, creating a clean, shadowed card
+ * with consistent spacing and typography.
+ * 
+ * @returns A login form component with validation and styling
+ */
 export const LoginForm = () => {
   const form = useForm({
     defaultValues: {

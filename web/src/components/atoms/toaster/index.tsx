@@ -1,5 +1,17 @@
 import { Toaster } from 'react-hot-toast';
 
+/**
+ * Component for configuring toast notifications.
+ * 
+ * Renders a Toaster component with specific configurations for position,
+ * duration, styling, and different toast types (success, error, loading).
+ * 
+ * Toast notifications appear at the top-center of the screen for 5 seconds
+ * with custom styling including background colors, text colors, and icons
+ * for different notification states.
+ * 
+ * @returns {JSX.Element} A configured Toaster component
+ */
 const ToasterConfig = () => (
   <Toaster
     position="top-center"
@@ -7,7 +19,7 @@ const ToasterConfig = () => (
       duration: 5000,
       style: {
         background: '#fff',
-        color: '#29457a',
+        color: '#24242d',
       },
       iconTheme: {
         primary: '#29457a',

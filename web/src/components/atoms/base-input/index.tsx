@@ -11,6 +11,22 @@ interface Props {
   required?: boolean;
 }
 
+/**
+ * A base input component for form elements.
+ * 
+ * @component
+ * @param {Object} props - The component props
+ * @param {string} [props.type='text'] - The type of the input
+ * @param {string} [props.placeholder='Enter text'] - The placeholder text
+ * @param {string} [props.name='input'] - The name of the input field
+ * @param {string} [props.value=''] - The value of the input
+ * @param {function} [props.onChange=() => {}] - Function called when input value changes
+ * @param {boolean} [props.disabled=false] - Whether the input is disabled
+ * @param {boolean} [props.readOnly=false] - Whether the input is read-only
+ * @param {boolean} [props.required=false] - Whether the input is required
+ * 
+ * @returns {JSX.Element} The rendered input component
+ */
 export const BaseInput: React.FC<Props> = ({
   type = 'text',
   placeholder = 'Enter text',
