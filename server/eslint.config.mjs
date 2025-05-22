@@ -1,4 +1,7 @@
 // @ts-check
+
+import eslintNestJs from "@darraghor/eslint-plugin-nestjs-typed";
+
 import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
@@ -41,4 +44,5 @@ export default tseslint.config(
       'no-unused-vars': 'warn',
     },
   },
+  eslintNestJs.configs.flatRecommended
 );
