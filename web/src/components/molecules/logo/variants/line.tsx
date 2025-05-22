@@ -12,7 +12,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
  * @component
  * @param {Object} props - Component properties
  * @param {'primary' | 'accent'} [props.color='primary'] - The color theme for the logo
- * @param {React.HTMLAttributes<HTMLDivElement>} props - All other div properties are passed through
+ * @param {React.HTMLAttributes<HTMLDivElement>} props.props - All other div properties are passed through
  *
  * @returns {JSX.Element} A horizontal logo component with SVG and text
  */

@@ -24,6 +24,7 @@ interface Props {
  * @param {boolean} [props.disabled=false] - Whether the input is disabled
  * @param {boolean} [props.readOnly=false] - Whether the input is read-only
  * @param {boolean} [props.required=false] - Whether the input is required
+ * @param {Object} props.props - Additional HTML input attributes to be spread to the input element
  *
  * @returns {JSX.Element} The rendered input component
  */

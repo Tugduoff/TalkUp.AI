@@ -11,7 +11,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
  * @component
  * @param {Object} props - The component props
  * @param {'primary' | 'accent'} [props.color='primary'] - The color of the logo
- * @param {React.HTMLAttributes<HTMLDivElement>} props - HTML div element attributes spread to the container
+ * @param {React.HTMLAttributes<HTMLDivElement>} props.props - HTML div element attributes spread to the container
  *
  * @returns {JSX.Element} A div container with the logo SVG
  */
