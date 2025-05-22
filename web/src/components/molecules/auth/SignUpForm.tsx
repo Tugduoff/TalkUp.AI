@@ -4,7 +4,7 @@ import { useForm } from '@tanstack/react-form';
 
 /**
  * A form component for user registration.
- * 
+ *
  * The SignUpForm component provides a user interface for new account registration with the following features:
  * - Username input with validation (minimum 3 characters, maximum 20 characters, alphanumeric only)
  * - Phone number input with international format validation
@@ -13,10 +13,10 @@ import { useForm } from '@tanstack/react-form';
  * - Asynchronous validation for username
  * - Real-time validation feedback with loading indicators
  * - Form submission handling
- * 
+ *
  * The component uses a custom form hook for managing form state and validation.
  * When submitted, it calls the `postRegister` mutation with the user's registration details.
- * 
+ *
  * @returns A signup form component with validation and styling
  */
 export const SignUpForm = () => {

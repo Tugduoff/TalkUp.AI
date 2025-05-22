@@ -7,12 +7,12 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 
 /**
  * A variant of the logo that only displays the SVG icon without any accompanying text.
- * 
+ *
  * @component
  * @param {Object} props - The component props
  * @param {'primary' | 'accent'} [props.color='primary'] - The color of the logo
  * @param {React.HTMLAttributes<HTMLDivElement>} props - HTML div element attributes spread to the container
- * 
+ *
  * @returns {JSX.Element} A div container with the logo SVG
  */
 export const NoTextLogo = ({ color = 'primary', ...props }: Props) => {

@@ -19,7 +19,7 @@ interface Props extends ButtonProps {
  * @param {React.ReactNode} props.children - The content to be displayed inside the button
  * @param {Function} [props.onClick=() => {}] - Callback fired when the button is clicked
  * @param {Object} props.props - Additional HTML button attributes to be spread to the button element
- * 
+ *
  * @returns {JSX.Element | null} The button component or null if variant is unknown
  */
 export const Button = ({

@@ -13,7 +13,7 @@ interface Props {
 
 /**
  * A base input component for form elements.
- * 
+ *
  * @component
  * @param {Object} props - The component props
  * @param {string} [props.type='text'] - The type of the input
@@ -24,7 +24,7 @@ interface Props {
  * @param {boolean} [props.disabled=false] - Whether the input is disabled
  * @param {boolean} [props.readOnly=false] - Whether the input is read-only
  * @param {boolean} [props.required=false] - Whether the input is required
- * 
+ *
  * @returns {JSX.Element} The rendered input component
  */
 export const BaseInput: React.FC<Props> = ({

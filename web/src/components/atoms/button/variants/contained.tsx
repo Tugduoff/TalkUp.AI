@@ -2,7 +2,7 @@ import { ButtonProps as Props } from '../types';
 
 /**
  * A contained button component with customizable color, disabled and loading states.
- * 
+ *
  * @component
  * @param {Object} props - The component props.
  * @param {'primary' | 'accent' | 'black' | 'white' | 'error' | 'warning' | 'neutral' | 'success'} [props.color='primary'] - The color scheme of the button
@@ -11,7 +11,7 @@ import { ButtonProps as Props } from '../types';
  * @param {React.ReactNode} props.children - The content to be rendered inside the button.
  * @param {Function} [props.onClick=() => {}] - The function to call when the button is clicked.
  * @param {Object} props.props - Additional HTML button attributes to be spread to the button element
- * 
+ *
  * @returns {JSX.Element} A styled button component with the specified properties.
  */
 export const ContainedButton = ({

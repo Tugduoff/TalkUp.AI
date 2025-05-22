@@ -6,17 +6,17 @@ const authService = new AuthService();
 
 /**
  * Custom hook for user registration functionality.
- * 
+ *
  * This hook uses the React Query's useMutation to handle the registration process.
  * It takes username, phoneNumber, and password as inputs, sends them to the authentication service,
  * and stores the returned access token in localStorage.
- * 
+ *
  * @returns A mutation object that can be used to trigger the registration process
  * and monitor its state.
- * 
+ *
  * @example
  * const registerMutation = usePostRegister();
- * 
+ *
  * // Later in a component:
  * const handleRegister = () => {
  *   registerMutation.mutate({

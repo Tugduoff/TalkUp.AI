@@ -13,12 +13,12 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 
 /**
  * Logo component that renders a specific variant of the logo.
- * 
+ *
  * @component
  * @param {Object} props - The component props
  * @param {'line' | 'column' | 'no-text'} [props.variant='line'] - The logo layout variant
  * @param {'primary' | 'accent'} [props.color='primary'] - The color scheme for the logo
- * 
+ *
  * @returns {JSX.Element | null} The logo component or null if variant is unknown
  */
 export const Logo = ({
