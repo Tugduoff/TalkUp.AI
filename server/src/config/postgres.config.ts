@@ -1,7 +1,7 @@
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 
 export default (): PostgresConnectionOptions => {
-  const port = process.env.POSTGRES_PORT || "5432";
+  const port = process.env.POSTGRES_PORT ?? "5432";
   const host =
     process.env.DOCKER_RUN === "true"
       ? process.env.POSTGRES_DOCKER_HOST
