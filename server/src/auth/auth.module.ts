@@ -5,6 +5,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { AuthController } from "./auth.controller";
 
 import { AuthService } from "./auth.service";
+import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
 import * as dotenv from "dotenv";
 dotenv.config(); // Load environment variables
@@ -31,6 +32,6 @@ import {
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, PostValidationPipe],
 })
 export class AuthModule {}
