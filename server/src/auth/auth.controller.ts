@@ -18,7 +18,6 @@ import { AuthService } from "./auth.service";
 @ApiTags("Auth")
 @Controller("auth")
 export class AuthController {
-  // eslint-disable-next-line no-unused-vars
   constructor(private readonly authService: AuthService) {}
 
   @Post("register")
