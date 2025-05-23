@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { Repository } from "typeorm";
 
 import {

@@ -5,6 +5,17 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   color?: LogoColor;
 }
 
+/**
+ * A logo component that displays the TalkUp logo in a column layout.
+ * Consists of a LogoSvg component above the "TalkUp" text.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {'primary' | 'accent'} [props.color='primary'] - The color theme for the logo (applies to both SVG and text)
+ * @param {React.HTMLAttributes<HTMLDivElement>} props.props - HTML div element attributes spread to the container
+ *
+ * @returns {JSX.Element} A column-oriented logo with SVG icon and text
+ */
 export const ColumnLogo = ({ color = 'primary', ...props }: Props) => {
   return (
     <div

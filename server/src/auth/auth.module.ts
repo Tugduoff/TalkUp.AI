@@ -6,6 +6,7 @@ import { AuthController } from "./auth.controller";
 
 import { AuthService } from "./auth.service";
 import { UsersModule } from "@src/users/users.module";
+import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
 import * as dotenv from "dotenv";
 dotenv.config(); // Load environment variables
@@ -33,7 +34,7 @@ import {
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, PostValidationPipe],
   exports: [AuthService],
 })
 export class AuthModule {}

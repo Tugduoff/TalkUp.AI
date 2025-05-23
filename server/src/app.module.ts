@@ -4,8 +4,6 @@ import { ConfigModule } from "@nestjs/config";
 
 import pgConfig from "@config/postgres.config";
 
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 
 import { LoggerMiddleware } from "@common/middleware/logger";
@@ -22,8 +20,8 @@ import { LoggerMiddleware } from "@common/middleware/logger";
       useFactory: pgConfig,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
