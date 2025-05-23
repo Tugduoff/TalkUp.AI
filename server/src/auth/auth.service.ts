@@ -83,16 +83,16 @@ export class AuthService {
     };
   }
 
-  async validateUser(
-    phoneNumber: string, 
-    password: string
-  ): Promise<user> {
+  async validateUser(phoneNumber: string, password: string): Promise<user> {
     const result = await this.usersService.findUserWithPasswordByPhoneNumber(phoneNumber);
-
-    if (!result) throw new UnauthorizedException("Phone number not found");
+    if (!result) {
+      throw new UnauthorizedException("Phone number not found");
+    }
 
     const match = await bcrypt.compare(password, result.passwordHash);
-    if (!match) throw new UnauthorizedException("Invalid password");
+    if (!match) {
+      throw new UnauthorizedException("Invalid password");
+    }
 
     return result.user;
   }

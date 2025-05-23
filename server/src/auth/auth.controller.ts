@@ -7,6 +7,7 @@ import {
   ApiCreatedResponse,
   ApiUnprocessableEntityResponse,
   ApiTags,
+  ApiOkResponse
 } from "@nestjs/swagger";
 
 import { CreateUserDto } from "./dto/createUser.dto";
@@ -41,6 +42,10 @@ export class AuthController {
     return await this.authService.register(createUserDto);
   }
 
+  @ApiOkResponse({
+    description: "User successfully logged in.",
+    type: String,
+  })
   @Post("login")
   async login(@Body() loginDto: LoginDto) {
     const user = await this.authService.validateUser(
