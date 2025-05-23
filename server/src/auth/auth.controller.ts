@@ -7,7 +7,7 @@ import {
   ApiCreatedResponse,
   ApiUnprocessableEntityResponse,
   ApiTags,
-  ApiOkResponse
+  ApiOkResponse,
 } from "@nestjs/swagger";
 
 import { CreateUserDto } from "./dto/createUser.dto";

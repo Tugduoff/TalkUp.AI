@@ -24,7 +24,7 @@ export class LoginDto {
   })
   @Length(8, 50)
   @ApiProperty({
-    description: 
+    description:
       "The user's password. It will be hashed before added to the database.",
     minLength: 8,
     example: "Hello@2012",

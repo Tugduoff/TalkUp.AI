@@ -84,7 +84,8 @@ export class AuthService {
   }
 
   async validateUser(phoneNumber: string, password: string): Promise<user> {
-    const result = await this.usersService.findUserWithPasswordByPhoneNumber(phoneNumber);
+    const result =
+      await this.usersService.findUserWithPasswordByPhoneNumber(phoneNumber);
     if (!result) {
       throw new UnauthorizedException("Phone number not found");
     }
@@ -98,7 +99,7 @@ export class AuthService {
   }
 
   login(user: user) {
-    const payload = { sub: user.user_id};
+    const payload = { sub: user.user_id };
     return {
       access_token: this.jwtService.sign(payload),
     };
