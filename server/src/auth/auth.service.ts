@@ -13,7 +13,6 @@ import * as bcrypt from "bcrypt";
 
 import { CreateUserDto } from "./dto/createUser.dto";
 import { UsersService } from "@src/users/users.service";
-import { LoginDto } from "./dto/login.dto";
 
 import { user, user_password, user_phonenumber } from "@entities/user.entity";
 
@@ -86,20 +85,22 @@ export class AuthService {
     };
   }
 
-  async validateUser(email: string, password: string): Promise<any> {
-    const result = await this.usersService.findUserWithPasswordByEmail(email);
+  async validateUser(
+    phoneNumber: string, 
+    password: string
+  ): Promise<user> {
+    const result = await this.usersService.findUserWithPasswordByPhoneNumber(phoneNumber);
 
-    if (!result) throw new UnauthorizedException("Email non trouvé");
+    if (!result) throw new UnauthorizedException("Phone number not found");
 
     const match = await bcrypt.compare(password, result.passwordHash);
-    if (!match) throw new UnauthorizedException("Mot de passe incorrect");
+    if (!match) throw new UnauthorizedException("Invalid password");
 
-    const { passwordHash, ...user } = result;
-    return user;
+    return result.user;
   }
 
-  async login(user: any) {
-    const payload = { sub: user.id, email: user.email };
+  login(user: user) {
+    const payload = { sub: user.user_id};
     return {
       access_token: this.jwtService.sign(payload),
     };

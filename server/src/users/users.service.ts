@@ -2,14 +2,14 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { user } from "../entities/user.entity";
-import { user_email } from "../entities/user.entity";
+import { user_phonenumber } from "../entities/user.entity";
 import { user_password } from "../entities/user.entity";
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(user_email)
-    private emailRepo: Repository<user_email>,
+    @InjectRepository(user_phonenumber)
+    private phoneNumberRepo: Repository<user_phonenumber>,
 
     @InjectRepository(user_password)
     private passwordRepo: Repository<user_password>,
@@ -18,22 +18,22 @@ export class UsersService {
     private userRepo: Repository<user>,
   ) {}
 
-  async findUserWithPasswordByEmail(email: string): Promise<{
+  async findUserWithPasswordByPhoneNumber(phone_number: string): Promise<{
     user: user;
     passwordHash: string;
   } | null> {
-    const emailEntity = await this.emailRepo.findOne({
-      where: { email },
+    const phoneNumberEntity = await this.phoneNumberRepo.findOne({
+      where: { phone_number },
     });
 
-    if (!emailEntity) return null;
+    if (!phoneNumberEntity) return null;
 
     const passwordEntity = await this.passwordRepo.findOne({
-      where: { user_id: emailEntity.user_id },
+      where: { user_id: phoneNumberEntity.user_id },
     });
 
     const userEntity = await this.userRepo.findOne({
-      where: { user_id: emailEntity.user_id },
+      where: { user_id: phoneNumberEntity.user_id },
     });
 
     if (!passwordEntity || !userEntity) return null;
