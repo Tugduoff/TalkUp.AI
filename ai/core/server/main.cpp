@@ -6,8 +6,7 @@
 */
 
 #include <iostream>
-
-#include <unistd.h>
+#include <crow.h>
 
 /**
  * @brief Main function of the microservices manager server.
@@ -17,9 +16,7 @@
  */
 int main(void)
 {
-    while(1) {
-        std::cout << "Microservices server is runing" << std::endl;
-        sleep(5);
-    }
+    crow::SimpleApp app;
+
     return EXIT_SUCCESS;
 }
