@@ -8,9 +8,7 @@
 import time
 
 def main() -> bool:
-    while True:
-        print("Text to speech microservice is runing", end="\n")
-        time.sleep(5)
+    print("Text to speech check", end="\n")
     return True
 
 if __name__ == "__main__":

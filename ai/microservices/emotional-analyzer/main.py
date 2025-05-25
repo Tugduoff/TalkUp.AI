@@ -8,9 +8,7 @@
 import time
 
 def main() -> bool:
-    while True:
-        print("Emotional analyzer microservice is runing", end="\n")
-        time.sleep(5)
+    print("Emotional analyzer check", end="\n")
     return True
 
 if __name__ == "__main__":
