@@ -21,8 +21,8 @@ jobs:
           title: "📥 Pull Request Opened"
           color: 3447003
           description: |
-            **Author:** `${{ github.actor }}`
-            **Title:** `${{ github.event.pull_request.title }}`
+            **Author:** `${{ github.actor }}`\n
+            **Title:** `${{ github.event.pull_request.title }}`\n
             **Link:** [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
 
       - name: Notify reviewer requested
@@ -45,8 +45,8 @@ jobs:
           title: "💬 Pull Request Reviewed"
           color: 3066993
           description: |
-            **Reviewer:** `${{ github.actor }}`
-            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
+            **Reviewer:** `${{ github.actor }}`\n
+            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
             **Title:** `${{ github.event.pull_request.title }}`
 
       - name: Notify PR merged
@@ -57,6 +57,6 @@ jobs:
           title: "✅ Pull Request Merged"
           color: 15158332
           description: |
-            **Author:** `${{ github.actor }}`
-            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
+            **Author:** `${{ github.actor }}`\n
+            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
             **Title:** `${{ github.event.pull_request.title }}`
