@@ -34,7 +34,9 @@ jobs:
           color: 16776960
           description: |
             **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
+
             **Requested Reviewer:** `${{ github.event.requested_reviewer.login }}`
+
             **By:** `${{ github.actor }}`
 
       - name: Notify PR reviewed
