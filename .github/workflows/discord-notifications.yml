@@ -10,6 +10,9 @@ jobs:
   notify-discord:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Notify PR opened
         if: github.event.action == 'opened'
         uses: ./.github/actions/notify-discord
