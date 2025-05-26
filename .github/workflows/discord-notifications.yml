@@ -19,7 +19,7 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
           title: "📥 Pull Request Opened"
-          color: 3447003
+          color: 65535
           description: |
             **Author:** `${{ github.actor }}`\n
             **Title:** `${{ github.event.pull_request.title }}`\n
@@ -45,7 +45,7 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
           title: "💬 Pull Request Reviewed"
-          color: 3066993
+          color: ${{ github.event.review.state == 'approved' && 3066993 || github.event.review.state == 'changes_requested' && 16711680 || 5393746 }}
           description: |
             **Reviewer:** `${{ github.actor }}`\n
             **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
@@ -59,7 +59,7 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
           title: "✅ Pull Request Merged"
-          color: 15158332
+          color: 2490126
           description: |
             **Author:** `${{ github.actor }}`\n
             **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
