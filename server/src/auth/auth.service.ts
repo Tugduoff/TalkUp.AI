@@ -1,10 +1,16 @@
 import { Repository } from "typeorm";
 
-import { ConflictException, Injectable } from "@nestjs/common";
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
+import * as bcrypt from "bcrypt";
 
 import { CreateUserDto } from "./dto/createUser.dto";
+import { UsersService } from "@src/users/users.service";
 
 import { user, user_password, user_phonenumber } from "@entities/user.entity";
 
@@ -19,6 +25,7 @@ export class AuthService {
     @InjectRepository(user_phonenumber)
     private userPhoneNumberRepository: Repository<user_phonenumber>,
 
+    private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
@@ -73,6 +80,28 @@ export class AuthService {
 
     return {
       accessToken: await this.jwtService.signAsync(payload),
+    };
+  }
+
+  async validateUser(phoneNumber: string, password: string): Promise<user> {
+    const result =
+      await this.usersService.findUserWithPasswordByPhoneNumber(phoneNumber);
+    if (!result) {
+      throw new UnauthorizedException("Phone number not found");
+    }
+
+    const match = await bcrypt.compare(password, result.passwordHash);
+    if (!match) {
+      throw new UnauthorizedException("Invalid password");
+    }
+
+    return result.user;
+  }
+
+  login(user: user) {
+    const payload = { sub: user.user_id };
+    return {
+      access_token: this.jwtService.sign(payload),
     };
   }
 }

@@ -5,6 +5,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { AuthController } from "./auth.controller";
 
 import { AuthService } from "./auth.service";
+import { UsersModule } from "@src/users/users.module";
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
 import * as dotenv from "dotenv";
@@ -19,6 +20,7 @@ import {
 
 @Module({
   imports: [
+    UsersModule,
     TypeOrmModule.forFeature([
       user,
       user_email,
@@ -33,5 +35,6 @@ import {
   ],
   controllers: [AuthController],
   providers: [AuthService, PostValidationPipe],
+  exports: [AuthService],
 })
 export class AuthModule {}

@@ -7,9 +7,11 @@ import {
   ApiCreatedResponse,
   ApiUnprocessableEntityResponse,
   ApiTags,
+  ApiOkResponse,
 } from "@nestjs/swagger";
 
 import { CreateUserDto } from "./dto/createUser.dto";
+import { LoginDto } from "./dto/login.dto";
 
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
@@ -20,7 +22,6 @@ import { AuthService } from "./auth.service";
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post("register")
   @ApiCreatedResponse({
     description: "The user has been successfully created.",
     type: CreateUserDto,
@@ -35,8 +36,22 @@ export class AuthController {
     description: "Missing parameter in request.",
   })
   @UsePipes(new PostValidationPipe())
+  @Post("register")
   async register(@Body() createUserDto: CreateUserDto) {
     // Call the authService to handle the registration logic
     return await this.authService.register(createUserDto);
+  }
+
+  @ApiOkResponse({
+    description: "User successfully logged in.",
+    type: String,
+  })
+  @Post("login")
+  async login(@Body() loginDto: LoginDto) {
+    const user = await this.authService.validateUser(
+      loginDto.phoneNumber,
+      loginDto.password,
+    );
+    return this.authService.login(user);
   }
 }
