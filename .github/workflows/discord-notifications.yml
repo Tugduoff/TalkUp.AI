@@ -24,6 +24,7 @@ jobs:
             **Author:** `${{ github.actor }}`\n
             **Title:** `${{ github.event.pull_request.title }}`\n
             **Link:** [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
+          usernames: ${{ github.actor }}
 
       - name: Notify reviewer requested
         if: github.event.action == 'review_requested'
@@ -36,6 +37,7 @@ jobs:
             **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
             **Requested Reviewer:** `${{ github.event.requested_reviewer.login }}`\n
             **By:** `${{ github.actor }}`
+          usernames: ${{ github.event.requested_reviewer.login }}
 
       - name: Notify PR reviewed
         if: github.event.action == 'submitted'
@@ -47,7 +49,9 @@ jobs:
           description: |
             **Reviewer:** `${{ github.actor }}`\n
             **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
+            **Status:** `${{ github.event.review.state }}`\n
             **Title:** `${{ github.event.pull_request.title }}`
+          usernames: ${{ github.event.pull_request.user.login }}
 
       - name: Notify PR merged
         if: github.event.action == 'closed' && github.event.pull_request.merged == true
@@ -60,3 +64,5 @@ jobs:
             **Author:** `${{ github.actor }}`\n
             **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
             **Title:** `${{ github.event.pull_request.title }}`
+          usernames: "${{ github.actor }} ${{ github.event.pull_request.user.login }}"
+

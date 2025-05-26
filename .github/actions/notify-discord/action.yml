@@ -15,6 +15,10 @@ inputs:
   webhook:
     description: 'Discord webhook URL'
     required: true
+  usernames:
+    description: 'list (separated by space) of GitHub usernames to mention'
+    required: false
+    default: ''
 
 runs:
   using: 'composite'
@@ -22,8 +26,24 @@ runs:
     - name: Send Discord Embed
       shell: bash
       run: |
+        #!/bin/bash
+
+        MENTION_FILE=".github/discord_users.json"
+
+        USERNAMES_TO_MENTION="$USERNAMES"
+
+        # Build mention string
+        MENTION_STRING=""
+        for USER in $USERNAMES_TO_MENTION; do
+          DISCORD_TAG=$(jq -r --arg user "$USER" '.[$user] // empty' "$MENTION_FILE")
+          if [ -n "$DISCORD_TAG" ]; then
+            MENTION_STRING="$MENTION_STRING $DISCORD_TAG"
+          fi
+        done
+
         cat <<EOF > payload.json
         {
+          "content": "$MENTION_STRING",
           "embeds": [{
             "title": "$TITLE",
             "description": "$DESCRIPTION",
@@ -41,3 +61,4 @@ runs:
         DESCRIPTION: ${{ inputs.description }}
         COLOR: ${{ inputs.color }}
         WEBHOOK: ${{ inputs.webhook }}
+        USERNAMES: ${{ inputs.usernames }}
