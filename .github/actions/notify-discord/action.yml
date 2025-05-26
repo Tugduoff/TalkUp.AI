@@ -1,0 +1,43 @@
+name: 'Notify discord'
+description: 'Send discord embed message'
+
+inputs:
+  title:
+    description: 'Embed title'
+    required: true
+  description:
+    description: 'Embed description (can be multiline)'
+    required: true
+  color:
+    description: 'Embed color in decimal (ex: 3066993 for green)'
+    required: false
+    default: '3447003'
+  webhook:
+    description: 'Discord webhook URL'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Send Discord Embed
+      shell: bash
+      run: |
+        cat <<EOF > payload.json
+        {
+          "embeds": [{
+            "title": "$TITLE",
+            "description": "$DESCRIPTION",
+            "color": $COLOR
+          }]
+        }
+        EOF
+
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d @payload.json \
+             "$WEBHOOK"
+      env:
+        TITLE: ${{ inputs.title }}
+        DESCRIPTION: ${{ inputs.description }}
+        COLOR: ${{ inputs.color }}
+        WEBHOOK: ${{ inputs.webhook }}
