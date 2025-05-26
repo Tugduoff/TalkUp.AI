@@ -28,7 +28,7 @@ jobs:
                 title: 'Build Notification'
                 description: 'The build has completed successfully.'
                 color: '3066993' # Optional, default is 3066993 (blue)
-                usernames: 'BhuvanArn' # Opional, it is used to mention users in the Discord channel
+                usernames: 'BhuvanArn' # Optional, it is used to mention users in the Discord channel
 ```
 
 Be aware to use 'if' condition if you want to use it for a specific event, such as PR merge...
