@@ -84,9 +84,9 @@ export class user_password {
  * This allows for a one-to-one relationship between a user and their phone number.
  */
 @Entity()
-export class user_phonenumber {
+export class user_phone_number {
   @PrimaryGeneratedColumn()
-  phonenumber_id: number;
+  phone_number_id: number;
 
   @OneToOne(() => user)
   @JoinColumn({ name: "user_id" })
