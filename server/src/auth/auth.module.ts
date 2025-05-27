@@ -15,7 +15,7 @@ import {
   user,
   user_email,
   user_password,
-  user_phonenumber,
+  user_phone_number,
 } from "src/entities/user.entity";
 
 @Module({
@@ -25,7 +25,7 @@ import {
       user,
       user_email,
       user_password,
-      user_phonenumber,
+      user_phone_number,
     ]),
     JwtModule.register({
       global: true,
