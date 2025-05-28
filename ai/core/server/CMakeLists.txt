@@ -36,6 +36,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(json)
 
 set(SOURCES
+    src/Server.cpp
     src/Notifications.cpp
     src/network/Router.cpp
     src/network/MicroservicesManager.cpp
