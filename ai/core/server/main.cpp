@@ -19,7 +19,6 @@ int main(void)
     crow::SimpleApp app;
     talkup_network::Server server("TalkUp.AI Server", "1.0.0", 8088);
 
-    if(!server.is_running)
-        server.start_server(std::ref(app));
+    server.start_server(std::ref(app));
     return EXIT_SUCCESS;
 }

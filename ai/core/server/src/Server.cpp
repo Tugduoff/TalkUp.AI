@@ -27,13 +27,16 @@ bool talkup_network::Server::start_server(crow::SimpleApp &app)
 {
     try
     {
+        if(is_running) {
+            throw std::runtime_error("Server is already running.");
+        }
         router->set_routes_definitions(app);
         talkup_network::MicroservicesManager::load_microservices_info(
             "services.json");
         if (__console_notification) {
             talkup_network::Notifications::send_start_notification();
         }
-        app.port(8088).multithreaded().run();
+        app.port(__port).multithreaded().run();
         is_running = true;
     }
     catch (const std::exception &e)

@@ -14,7 +14,7 @@ std::string talkup_network::MicroservicesManager::get_microservice_url(
     if (service_name == "example_service") {
         return "http://localhost:8080";
     }
-    return "null";
+    return "";
 }
 
 void talkup_network::MicroservicesManager::load_microservices_info(
@@ -40,7 +40,7 @@ void talkup_network::MicroservicesManager::load_microservices_info(
     }
 }
 
-std::unordered_map<std::string, std::unordered_map<std::string, std::string>>
+const std::unordered_map<std::string, std::unordered_map<std::string, std::string>>&
     talkup_network::MicroservicesManager::get_services_list()
 {
     return __services_list;

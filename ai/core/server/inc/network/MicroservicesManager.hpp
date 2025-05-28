@@ -51,8 +51,8 @@ namespace talkup_network {
              *
              * @return std::unordered_map<std::string, std::string>
              */
-            static std::unordered_map<std::string,
-                std::unordered_map<std::string, std::string>> get_services_list();
+            static const std::unordered_map<std::string,
+                std::unordered_map<std::string, std::string>>& get_services_list();
 
         protected:
         private:
