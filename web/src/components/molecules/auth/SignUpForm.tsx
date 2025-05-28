@@ -1,17 +1,43 @@
+import { usePostRegister } from '@/hooks/auth/useServices';
 import { validateUsername } from '@/utils/validateUsername';
 import { useForm } from '@tanstack/react-form';
 
+/**
+ * A form component for user registration.
+ *
+ * The SignUpForm component provides a user interface for new account registration with the following features:
+ * - Username input with validation (minimum 3 characters, maximum 20 characters, alphanumeric only)
+ * - Phone number input with international format validation
+ * - Password input with complex validation rules (length, case, numbers)
+ * - Password confirmation input that ensures it matches the password
+ * - Asynchronous validation for username
+ * - Real-time validation feedback with loading indicators
+ * - Form submission handling
+ *
+ * The component uses a custom form hook for managing form state and validation.
+ * When submitted, it calls the `postRegister` mutation with the user's registration details.
+ *
+ * @returns A signup form component with validation and styling
+ */
 export const SignUpForm = () => {
+  const { mutate: postRegister } = usePostRegister();
+
   const form = useForm({
     defaultValues: {
       username: '',
+      phoneNumber: '',
       password: '',
       confirmPassword: '',
     },
     onSubmit: ({ value }) => {
-      console.log('SignUp:', value);
+      postRegister({
+        username: value.username,
+        phoneNumber: value.phoneNumber,
+        password: value.password,
+      });
     },
   });
+
   return (
     <div className="flex flex-col w-full gap-4 px-6 py-8 bg-white rounded-md shadow-lg max-w-92">
       <header className="flex flex-col items-center justify-between mb-2">
@@ -60,6 +86,44 @@ export const SignUpForm = () => {
                   className="w-full p-2 border border-gray-300 rounded-md"
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Your username"
+                />
+                {field.state.meta.isValidating && (
+                  <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
+                )}
+              </div>
+              {field.state.meta.errors && (
+                <span className="text-sm text-red-500">
+                  {field.state.meta.errors}
+                </span>
+              )}
+            </div>
+          )}
+        />
+        <form.Field
+          name="phoneNumber"
+          validators={{
+            onChange: ({ value }) => {
+              if (!/^(\+\d{1,3})?\d{9,15}$/.test(value)) {
+                return 'Phone number must be in international format (e.g., +1234567890)';
+              }
+            },
+          }}
+          children={(field) => (
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="phoneNumber"
+                className="text-sm font-semibold text-gray-500"
+              >
+                Phone Number
+              </label>
+              <div className="relative">
+                <input
+                  id="phoneNumber"
+                  type="tel"
+                  value={field.state.value}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder="Your phone number"
                 />
                 {field.state.meta.isValidating && (
                   <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />

@@ -1,20 +1,20 @@
-/* eslint-disable no-unused-vars */
-
 import { Repository } from "typeorm";
 
-import { BadRequestException, Injectable } from "@nestjs/common";
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
+import * as bcrypt from "bcrypt";
 
 import { CreateUserDto } from "./dto/createUser.dto";
+import { UsersService } from "@src/users/users.service";
 
-import {
-  user,
-  user_password,
-  user_phonenumber,
-} from "src/entities/user.entity";
+import { user, user_password, user_phone_number } from "@entities/user.entity";
 
-import { hashPassword } from "src/common/utils/passwordHasher";
+import { hashPassword } from "@common/utils/passwordHasher";
 
 @Injectable()
 export class AuthService {
@@ -22,9 +22,10 @@ export class AuthService {
     @InjectRepository(user) private userRepository: Repository<user>,
     @InjectRepository(user_password)
     private userPasswordRepository: Repository<user_password>,
-    @InjectRepository(user_phonenumber)
-    private userPhoneNumberRepository: Repository<user_phonenumber>,
+    @InjectRepository(user_phone_number)
+    private userPhoneNumberRepository: Repository<user_phone_number>,
 
+    private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
@@ -32,18 +33,18 @@ export class AuthService {
    * Registers a new user and returns a JWT token.
    * @param createUserDto - The DTO containing user registration data.
    * @returns An object containing the access token.
-   * @throws BadRequestException if an account with the same phone number already exists.
+   * @throws ConflictException if an account with the same phone number already exists.
    */
   async register(
     createUserDto: CreateUserDto,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ accessToken: string }> {
     // Check if the user already exists
     const phoneNumberExists = await this.userPhoneNumberRepository.findOne({
-      where: { phonenumber: createUserDto.phonenumber },
+      where: { phone_number: createUserDto.phoneNumber },
     });
 
     if (phoneNumberExists) {
-      throw new BadRequestException(
+      throw new ConflictException(
         "An account with this phone number already exists",
       );
     }
@@ -64,7 +65,7 @@ export class AuthService {
 
     // create user_phonenumber
     const newUserPhoneNumber = this.userPhoneNumberRepository.create({
-      phonenumber: createUserDto.phonenumber,
+      phone_number: createUserDto.phoneNumber,
       user_id: savedUser.user_id,
     });
 
@@ -74,11 +75,33 @@ export class AuthService {
 
     const payload = {
       userId: savedUser.user_id,
-      userName: savedUser.username,
+      username: savedUser.username,
     };
 
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      accessToken: await this.jwtService.signAsync(payload),
+    };
+  }
+
+  async validateUser(phoneNumber: string, password: string): Promise<user> {
+    const result =
+      await this.usersService.findUserWithPasswordByPhoneNumber(phoneNumber);
+    if (!result) {
+      throw new UnauthorizedException("Phone number not found");
+    }
+
+    const match = await bcrypt.compare(password, result.passwordHash);
+    if (!match) {
+      throw new UnauthorizedException("Invalid password");
+    }
+
+    return result.user;
+  }
+
+  login(user: user) {
+    const payload = { sub: user.user_id };
+    return {
+      access_token: this.jwtService.sign(payload),
     };
   }
 }

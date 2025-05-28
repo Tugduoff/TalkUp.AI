@@ -1,0 +1,68 @@
+name: PR Notifications
+
+on:
+  pull_request:
+    types: [opened, review_requested, closed]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Notify PR opened
+        if: github.event.action == 'opened'
+        uses: ./.github/actions/notify-discord
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: "📥 Pull Request Opened"
+          color: 65535
+          description: |
+            **Author:** `${{ github.actor }}`\n
+            **Title:** `${{ github.event.pull_request.title }}`\n
+            **Link:** [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
+          usernames: ${{ github.actor }}
+
+      - name: Notify reviewer requested
+        if: github.event.action == 'review_requested'
+        uses: ./.github/actions/notify-discord
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: "👀 Reviewer Requested"
+          color: 16776960
+          description: |
+            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
+            **Requested Reviewer:** `${{ github.event.requested_reviewer.login }}`\n
+            **By:** `${{ github.actor }}`
+          usernames: ${{ github.event.requested_reviewer.login }}
+
+      - name: Notify PR reviewed
+        if: github.event.action == 'submitted'
+        uses: ./.github/actions/notify-discord
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: "💬 Pull Request Reviewed"
+          color: ${{ github.event.review.state == 'approved' && 3066993 || github.event.review.state == 'changes_requested' && 16711680 || 5393746 }}
+          description: |
+            **Reviewer:** `${{ github.actor }}`\n
+            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
+            **Status:** `${{ github.event.review.state }}`\n
+            **Title:** `${{ github.event.pull_request.title }}`
+          usernames: ${{ github.event.pull_request.user.login }}
+
+      - name: Notify PR merged
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true
+        uses: ./.github/actions/notify-discord
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: "✅ Pull Request Merged"
+          color: 2490126
+          description: |
+            **Author:** `${{ github.actor }}`\n
+            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
+            **Title:** `${{ github.event.pull_request.title }}`
+          usernames: "${{ github.actor }} ${{ github.event.pull_request.user.login }}"
+

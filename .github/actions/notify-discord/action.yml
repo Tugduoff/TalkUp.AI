@@ -1,0 +1,64 @@
+name: 'Notify discord'
+description: 'Send discord embed message'
+
+inputs:
+  title:
+    description: 'Embed title'
+    required: true
+  description:
+    description: 'Embed description (can be multiline)'
+    required: true
+  color:
+    description: 'Embed color in decimal (ex: 3066993 for green)'
+    required: false
+    default: '3447003'
+  webhook:
+    description: 'Discord webhook URL'
+    required: true
+  usernames:
+    description: 'list (separated by space) of GitHub usernames to mention'
+    required: false
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Send Discord Embed
+      shell: bash
+      run: |
+        #!/bin/bash
+
+        MENTION_FILE=".github/discord_users.json"
+
+        USERNAMES_TO_MENTION="$USERNAMES"
+
+        # Build mention string
+        MENTION_STRING=""
+        for USER in $USERNAMES_TO_MENTION; do
+          DISCORD_TAG=$(jq -r --arg user "$USER" '.[$user] // empty' "$MENTION_FILE")
+          if [ -n "$DISCORD_TAG" ]; then
+            MENTION_STRING="$MENTION_STRING $DISCORD_TAG"
+          fi
+        done
+
+        cat <<EOF > payload.json
+        {
+          "content": "$MENTION_STRING",
+          "embeds": [{
+            "title": "$TITLE",
+            "description": "$DESCRIPTION",
+            "color": $COLOR
+          }]
+        }
+        EOF
+
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d @payload.json \
+             "$WEBHOOK"
+      env:
+        TITLE: ${{ inputs.title }}
+        DESCRIPTION: ${{ inputs.description }}
+        COLOR: ${{ inputs.color }}
+        WEBHOOK: ${{ inputs.webhook }}
+        USERNAMES: ${{ inputs.usernames }}

@@ -1,0 +1,9 @@
+name: 'Units Tests'
+description: 'Run units Tests'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Run npm test'
+      run: npm run test
+      shell: bash
