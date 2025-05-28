@@ -8,6 +8,7 @@
 #include <iostream>
 #include "Router.hpp"
 #include "MicroservicesManager.hpp"
+#include "Notifications.hpp"
 
 /**
  * @brief Main function of the microservices manager server.
@@ -23,7 +24,7 @@ int main(void)
     router.set_routes_definitions(app);
     talkup_network::MicroservicesManager::load_microservices_info(
         "services.json");
-
+    talkup_network::Notifications::send_start_notification();
     app.port(8088).multithreaded().run();
     return EXIT_SUCCESS;
 }
