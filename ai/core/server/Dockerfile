@@ -11,7 +11,7 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.31.6/cmake-3.31.6
 WORKDIR /app
 COPY . .
 
-RUN cmake -B build -S . && cmake --build build
+RUN rm -rf build && cmake -B build -S . && cmake --build build
 
 FROM debian:bullseye-slim
 
