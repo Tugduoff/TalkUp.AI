@@ -36,8 +36,8 @@ bool talkup_network::Server::start_server(crow::SimpleApp &app)
         if (__console_notification) {
             talkup_network::Notifications::send_start_notification();
         }
-        app.port(__port).multithreaded().run();
         is_running = true;
+        app.port(__port).multithreaded().run();
     }
     catch (const std::exception &e)
     {
