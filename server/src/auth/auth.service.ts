@@ -12,7 +12,7 @@ import * as bcrypt from "bcrypt";
 import { CreateUserDto } from "./dto/createUser.dto";
 import { UsersService } from "@src/users/users.service";
 
-import { user, user_password, user_phonenumber } from "@entities/user.entity";
+import { user, user_password, user_phone_number } from "@entities/user.entity";
 
 import { hashPassword } from "@common/utils/passwordHasher";
 
@@ -22,8 +22,8 @@ export class AuthService {
     @InjectRepository(user) private userRepository: Repository<user>,
     @InjectRepository(user_password)
     private userPasswordRepository: Repository<user_password>,
-    @InjectRepository(user_phonenumber)
-    private userPhoneNumberRepository: Repository<user_phonenumber>,
+    @InjectRepository(user_phone_number)
+    private userPhoneNumberRepository: Repository<user_phone_number>,
 
     private usersService: UsersService,
     private jwtService: JwtService,

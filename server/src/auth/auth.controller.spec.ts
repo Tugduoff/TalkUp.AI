@@ -6,7 +6,7 @@ import { Repository } from "typeorm";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 
-import { user, user_password, user_phonenumber } from "@entities/user.entity";
+import { user, user_password, user_phone_number } from "@entities/user.entity";
 
 import { UsersService } from "@src/users/users.service";
 
@@ -27,7 +27,7 @@ describe("AuthController", () => {
           useClass: Repository,
         },
         {
-          provide: getRepositoryToken(user_phonenumber),
+          provide: getRepositoryToken(user_phone_number),
           useClass: Repository,
         },
         {
