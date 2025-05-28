@@ -6,9 +6,7 @@
 */
 
 #include <iostream>
-#include "Router.hpp"
-#include "MicroservicesManager.hpp"
-#include "Notifications.hpp"
+#include <Server.hpp>
 
 /**
  * @brief Main function of the microservices manager server.
@@ -19,12 +17,9 @@
 int main(void)
 {
     crow::SimpleApp app;
-    talkup_network::Router router;
+    talkup_network::Server server("TalkUp.AI Server", "1.0.0", 8088);
 
-    router.set_routes_definitions(app);
-    talkup_network::MicroservicesManager::load_microservices_info(
-        "services.json");
-    talkup_network::Notifications::send_start_notification();
-    app.port(8088).multithreaded().run();
+    if(!server.is_running)
+        server.start_server(std::ref(app));
     return EXIT_SUCCESS;
 }
