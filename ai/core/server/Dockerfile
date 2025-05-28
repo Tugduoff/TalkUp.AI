@@ -21,5 +21,6 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 COPY --from=builder /app/build/talkup_ai_mic_server /app/talkup_ai_mic_server
+COPY --from=builder /app/services.json /app/services.json
 
 CMD ["./talkup_ai_mic_server"]
