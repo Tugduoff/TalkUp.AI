@@ -1,51 +1,18 @@
+
+
 import React from 'react';
 import { BaseInput } from '@/components/atoms/base-input';
 import { SelectorInput } from '@/components/atoms/selector-input';
 import { TextArea } from '@/components/atoms/text-area';
 import { CheckboxInput } from '@/components/atoms/checkbox-input';
-
-type InputType = 'base' | 'selector' | 'textarea' | 'checkbox';
-
-interface SelectorOption {
-  value: string;
-  label: string;
-}
-
-interface InputMoleculeProps {
-  type: InputType;
-  id: string; // Required for accessibility (htmlFor)
-  label?: string;
-  helperText?: string;
-  name?: string; // name attribute for the actual input element
-  
-  // Common input props
-  value?: string | boolean; // value for base, selector, textarea; checked for checkbox
-  onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
-  disabled?: boolean;
-  readOnly?: boolean;
-  required?: boolean;
-
-  // Specific props for base/textarea
-  placeholder?: string;
-  
-  // Specific props for selector
-  options?: SelectorOption[];
-
-  // Specific props for textarea
-  resize?: boolean;
-  rows?: number;
-  cols?: number;
-
-  // Additional props to pass directly to the underlying input element
-  [key: string]: any;
-}
+import { InputType, InputMoleculeProps, SelectorOption } from './type';
 
 export const InputMolecule: React.FC<InputMoleculeProps> = ({
   type,
   id,
   label,
   helperText,
-  name = id, // Default name to id if not provided
+  name = id, 
   value,
   onChange,
   disabled,
@@ -70,12 +37,12 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
             readOnly={readOnly}
             required={required}
             placeholder={placeholder}
-            {...rest}
+            {...rest} // Pass additional props to BaseInput
           />
         );
       case 'selector':
         if (!options) {
-          console.error("InputMolecule: 'options' prop is required for 'selector' type.");
+          console.error(`InputMolecule (${id}): 'options' prop is required for 'selector' type.`);
           return null;
         }
         return (
@@ -87,7 +54,7 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
             disabled={disabled}
             readOnly={readOnly}
             required={required}
-            {...rest}
+            {...rest} // Pass additional props to SelectorInput
           />
         );
       case 'textarea':
@@ -103,7 +70,7 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
             resize={resize}
             rows={rows}
             cols={cols}
-            {...rest}
+            {...rest} // Pass additional props to TextArea
           />
         );
       case 'checkbox':
@@ -116,7 +83,7 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
               disabled={disabled}
               readOnly={readOnly}
               required={required}
-              {...rest}
+              {...rest} // Pass additional props to CheckboxInput
             />
             {label && ( // For checkbox, the label is usually next to the input
               <label htmlFor={id} className="text-sm font-semibold text-text">
@@ -126,7 +93,7 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
           </div>
         );
       default:
-        console.warn(`InputMolecule: Unknown input type: ${type}`);
+        console.warn(`InputMolecule (${id}): Unknown input type: ${type}`);
         return null;
     }
   };
