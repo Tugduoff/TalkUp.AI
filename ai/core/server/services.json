@@ -1,0 +1,27 @@
+{
+    "stt": {
+        "Name": "Speech To Text",
+        "Description": "Converts audio to text",
+        "Url": "http://localhost:5053/"
+    },
+    "ba": {
+        "Name": "Behavior Analyzer",
+        "Description": "Analyzes user behavior",
+        "Url": "http://localhost:5051/"
+    },
+    "ea": {
+        "Name": "Emotion Analyzer",
+        "Description": "Analyzes emotions of the user (visual)",
+        "Url": "http://localhost:5052/"
+    },
+    "tts": {
+        "Name": "Text To Speech",
+        "Description": "Converts text to audio",
+        "Url": "http://localhost:5054/"
+    },
+    "va": {
+        "Name": "Verbal Analyzer",
+        "Description": "Analyzes verbal communication",
+        "Url": "http://localhost:5055/"
+    }
+}
