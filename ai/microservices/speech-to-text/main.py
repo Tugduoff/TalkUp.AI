@@ -5,10 +5,12 @@
 ## This is the main.py of the speech-to-text microservice.
 ##
 
-import time
+import engine.sttServices
 
 def main() -> bool:
-    print("Speech to text check", end="\n")
+    stt = engine.sttServices.STT("fr")
+
+    stt.start_stt_process()
     return True
 
 if __name__ == "__main__":
