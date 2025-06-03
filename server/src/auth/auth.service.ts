@@ -98,7 +98,10 @@ export class AuthService {
     return result.user;
   }
 
-  async changeUserPassword(phone_number: string, newUserPassword: string): Promise<boolean> {
+  async changeUserPassword(
+    phone_number: string,
+    newUserPassword: string,
+  ): Promise<boolean> {
     const phoneNumberEntity = await this.userPhoneNumberRepository.findOne({
       where: { phone_number },
     });
@@ -106,12 +109,10 @@ export class AuthService {
     if (!phoneNumberEntity) return false;
 
     const passwordEntity = await this.userPasswordRepository.findOne({
-      where: {user_id: phoneNumberEntity.user_id}
+      where: { user_id: phoneNumberEntity.user_id },
     });
 
     if (!passwordEntity) return false;
-
-    console.log("the user is "+  phone_number + "and there is " + newUserPassword);
 
     const hashedPassword = await hashPassword(newUserPassword);
     passwordEntity.password = hashedPassword;

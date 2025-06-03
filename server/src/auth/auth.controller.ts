@@ -60,17 +60,24 @@ export class AuthController {
     type: String,
   })
   @Post("resetPassword")
-  async resetPassword(@Body() body: {phoneNumber: string; newPassword: string}) {
-    const success = await this.authService.changeUserPassword(body.phoneNumber, body.newPassword);
+  async resetPassword(
+    @Body() body: { phoneNumber: string; newPassword: string },
+  ) {
+    const success = await this.authService.changeUserPassword(
+      body.phoneNumber,
+      body.newPassword,
+    );
 
     if (!success) {
       return {
-        success: false, message: "User don't exist"
+        success: false,
+        message: "User don't exist",
       };
     }
 
     return {
-      success: true, message: "The password has successfull changed"
-    }
+      success: true,
+      message: "The password has successfull changed",
+    };
   }
 }
