@@ -12,8 +12,6 @@ import sys
 import os
 import sounddevice as sd
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../core/microservices/')))
-
 from notifications import Notifications
 from enumMcs import MicroservicesNames
 from vosk import Model, KaldiRecognizer
