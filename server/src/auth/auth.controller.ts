@@ -54,4 +54,23 @@ export class AuthController {
     );
     return this.authService.login(user);
   }
+
+  @ApiOkResponse({
+    description: "The password has successfull changed",
+    type: String,
+  })
+  @Post("resetPassword")
+  async resetPassword(@Body() body: {phoneNumber: string; newPassword: string}) {
+    const success = await this.authService.changeUserPassword(body.phoneNumber, body.newPassword);
+
+    if (!success) {
+      return {
+        success: false, message: "User don't exist"
+      };
+    }
+
+    return {
+      success: true, message: "The password has successfull changed"
+    }
+  }
 }
