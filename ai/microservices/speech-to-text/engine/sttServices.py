@@ -8,12 +8,10 @@
 import queue
 import sys
 import json
-import sys
-import os
 import sounddevice as sd
 
-from notifications import Notifications
-from enumMcs import MicroservicesNames
+from .notifications import Notifications
+from .enumMcs import MicroservicesNames
 from vosk import Model, KaldiRecognizer
 
 class STT():
@@ -55,4 +53,5 @@ class STT():
                             #dump_fn.write(data)
 
         except Exception as e:
+            print(sd.query_devices())
             print(f"[ERROR] ❌ : {e}")
