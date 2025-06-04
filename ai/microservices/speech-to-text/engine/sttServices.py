@@ -67,8 +67,6 @@ class STT():
                         if rec.AcceptWaveform(data):
                             token = json.loads(rec.FinalResult())
                             print(token['text'])
-                        #if dump_fn is not None:
-                            #dump_fn.write(data)
 
         except Exception as e:
             print(f"[ERROR] ❌ : {e}")
