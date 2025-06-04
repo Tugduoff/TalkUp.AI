@@ -5,7 +5,7 @@
 ## Handles notifications for the TalkUp AI microservices.
 ##
 
-from enumMcs import MicroservicesNames
+from .enumMcs import MicroservicesNames
 
 class Notifications():
     def __init__(self):
