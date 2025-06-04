@@ -13,3 +13,8 @@ class MicroservicesNames(Enum):
     STT = 2
     TTS = 3
     VA = 4
+
+class NotificationTypes(Enum):
+    LOG = 0
+    ERROR = 1
+    INFO = 2
