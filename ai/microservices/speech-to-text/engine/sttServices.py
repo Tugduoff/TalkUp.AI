@@ -9,9 +9,9 @@ import queue
 import sys
 import json
 import sounddevice as sd
+import engine.enumMcs as enumMcs
 
 from .notifications import Notifications
-from .enumMcs import MicroservicesNames
 from vosk import Model, KaldiRecognizer
 
 class STT():
@@ -39,11 +39,19 @@ class STT():
         """
         self.running = False
         self.q.put(None)
-        self.n.send_notification(MicroservicesNames.STT, "Service stopped successfully!")
+        self.n.send_notification(enumMcs.MicroservicesNames.STT, "Service stopped successfully!",
+            enumMcs.NotificationTypes.INFO)
 
     def start_stt_process(self) -> None:
         """
+        Process:
         Start the speech-to-text process.
+        This function initializes the audio input stream and processes the audio data
+        using the Vosk speech recognition model.
+        It listens for audio input, converts it to text, and prints the recognized text (as token).
+
+        Exeptions:
+        If an error occurs, it prints the error message.
         """
         try:
             device_info = sd.query_devices(None, "input")
@@ -51,7 +59,8 @@ class STT():
 
             with sd.RawInputStream(samplerate=self.samplerate, blocksize = 8000, device=None,
                 dtype="int16", channels=1, callback=self.callback):
-                    self.n.send_notification(MicroservicesNames.STT, "Service started successfuly!")
+                    self.n.send_notification(enumMcs.MicroservicesNames.STT,
+                        "Service started successfully!", enumMcs.NotificationTypes.INFO)
                     rec = KaldiRecognizer(self.model, self.samplerate)
                     while self.running:
                         data = self.q.get()

@@ -5,7 +5,7 @@
 ## Handles notifications for the TalkUp AI microservices.
 ##
 
-from .enumMcs import MicroservicesNames
+import engine.enumMcs as enumMcs
 
 class Notifications():
     def __init__(self):
@@ -14,13 +14,14 @@ class Notifications():
         """
         pass
 
-    def send_notification(self, service: MicroservicesNames, msg: str) -> None:
+    def send_notification(self, service: enumMcs.MicroservicesNames, msg: str,
+            type: enumMcs.NotificationTypes) -> None:
         """
         Send a notification to the console.
         """
-        print(f"[{service.name}] 💡 {msg}", end='\n')
+        print(f"[{type.name}|{service.name}] 💡 {msg}", end='\n')
 
-    def send_start_notification(self, service: MicroservicesNames, successful: bool)-> None:
+    def send_start_notification(self, service: enumMcs.MicroservicesNames, successful: bool)-> None:
         """
         Send a start notification to the console with the status of the service.
         """
