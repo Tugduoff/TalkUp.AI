@@ -106,13 +106,17 @@ export class AuthService {
       where: { phone_number },
     });
 
-    if (!phoneNumberEntity) return false;
+    if (!phoneNumberEntity) {
+      throw new UnauthorizedException("There is no user with that phone number");
+    }
 
     const passwordEntity = await this.userPasswordRepository.findOne({
       where: { user_id: phoneNumberEntity.user_id },
     });
 
-    if (!passwordEntity) return false;
+    if (!passwordEntity) {
+      throw new UnauthorizedException("The user don't have a password");
+    }
 
     const hashedPassword = await hashPassword(newUserPassword);
     passwordEntity.password = hashedPassword;

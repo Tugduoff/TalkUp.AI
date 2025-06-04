@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Put } from "@nestjs/common";
 import { UsePipes } from "@nestjs/common/decorators/core/use-pipes.decorator";
 
 import {
@@ -56,28 +56,16 @@ export class AuthController {
   }
 
   @ApiOkResponse({
-    description: "The password has successfull changed",
+    description: "The password has successfully changed",
     type: String,
   })
-  @Post("resetPassword")
-  async resetPassword(
+  @Put("updatePassword")
+  async updatePassword(
     @Body() body: { phoneNumber: string; newPassword: string },
   ) {
-    const success = await this.authService.changeUserPassword(
+    return this.authService.changeUserPassword(
       body.phoneNumber,
       body.newPassword,
     );
-
-    if (!success) {
-      return {
-        success: false,
-        message: "User don't exist",
-      };
-    }
-
-    return {
-      success: true,
-      message: "The password has successfull changed",
-    };
   }
 }
