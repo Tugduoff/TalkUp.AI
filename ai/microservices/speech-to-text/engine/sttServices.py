@@ -23,6 +23,7 @@ class STT():
         self.model: str = Model(lang=model_type)
         self.samplerate: int = None
         self.n: Notifications = Notifications()
+        self.running: bool = True
 
     def callback(self, indata, frames, time, status) -> None:
         """
@@ -31,6 +32,14 @@ class STT():
         if status:
             print(status, file=sys.stderr)
         self.q.put(bytes(indata))
+
+    def stop_stt_process(self) -> None:
+        """
+        Stop the speech-to-text process.
+        """
+        self.running = False
+        self.q.put(None)
+        self.n.send_notification(MicroservicesNames.STT, "Service stopped successfully!")
 
     def start_stt_process(self) -> None:
         """
@@ -44,7 +53,7 @@ class STT():
                 dtype="int16", channels=1, callback=self.callback):
                     self.n.send_notification(MicroservicesNames.STT, "Service started successfuly!")
                     rec = KaldiRecognizer(self.model, self.samplerate)
-                    while True:
+                    while self.running:
                         data = self.q.get()
                         if rec.AcceptWaveform(data):
                             token = json.loads(rec.FinalResult())
@@ -53,5 +62,4 @@ class STT():
                             #dump_fn.write(data)
 
         except Exception as e:
-            print(sd.query_devices())
             print(f"[ERROR] ❌ : {e}")
