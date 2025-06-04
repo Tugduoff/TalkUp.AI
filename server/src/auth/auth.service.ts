@@ -107,7 +107,9 @@ export class AuthService {
     });
 
     if (!phoneNumberEntity) {
-      throw new UnauthorizedException("There is no user with that phone number");
+      throw new UnauthorizedException(
+        "There is no user with that phone number",
+      );
     }
 
     const passwordEntity = await this.userPasswordRepository.findOne({
