@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 /**
@@ -52,9 +51,13 @@ export interface InputMoleculeProps {
   label?: string;
   helperText?: string;
   name?: string;
- 
-  value?: string | boolean; 
-  onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+
+  value?: string | boolean;
+  onChange?: (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => void;
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;

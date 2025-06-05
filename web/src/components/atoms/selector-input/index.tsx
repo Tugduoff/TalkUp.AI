@@ -31,7 +31,7 @@ interface Props {
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
-  className?: string; 
+  className?: string;
 }
 
 /**
@@ -50,7 +50,7 @@ export const SelectorInput: React.FC<Props> = ({
   disabled = false,
   readOnly = false,
   required = false,
-  className = '', 
+  className = '',
   ...props
 }: Props) => {
   return (

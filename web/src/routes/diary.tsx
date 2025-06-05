@@ -1,4 +1,5 @@
-import { InputMolecule } from '@/components/molecules/input-molecule'; // Import the new component
+import { InputMolecule } from '@/components/molecules/input-molecule';
+// Import the new component
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 
@@ -14,9 +15,12 @@ function Diary() {
 
   return (
     <div className="p-4 space-y-6">
-      <h3 className="text-primary text-2xl font-bold font-display">Input Molecule Showcase</h3>
+      <h3 className="text-primary text-2xl font-bold font-display">
+        Input Molecule Showcase
+      </h3>
       <p className="text-gray-600">
-        This page demonstrates the versatile `InputMolecule` component, capable of rendering various input types with labels and helper text.
+        This page demonstrates the versatile `InputMolecule` component, capable
+        of rendering various input types with labels and helper text.
       </p>
 
       {/* Base Input Example */}
@@ -39,7 +43,9 @@ function Diary() {
         helperText="Provide a brief description of your project (max 200 characters)."
         placeholder="Start typing here..."
         value={textareaValue}
-        onChange={(e) => setTextareaValue((e.target as HTMLTextAreaElement).value)}
+        onChange={(e) =>
+          setTextareaValue((e.target as HTMLTextAreaElement).value)
+        }
         rows={5}
         resize={true}
         maxLength={200}
@@ -52,7 +58,9 @@ function Diary() {
         label="Choose Your Favorite Fruit"
         helperText="Select one option from the dropdown list."
         value={selectorValue}
-        onChange={(e) => setSelectorValue((e.target as HTMLSelectElement).value)}
+        onChange={(e) =>
+          setSelectorValue((e.target as HTMLSelectElement).value)
+        }
         options={[
           { value: 'option1', label: 'Apple' },
           { value: 'option2', label: 'Banana' },
@@ -67,7 +75,9 @@ function Diary() {
         label="Subscribe to our Newsletter"
         helperText="Tick this box to receive email updates and promotions."
         value={checkboxValue}
-        onChange={(e) => setCheckboxValue((e.target as HTMLInputElement).checked)}
+        onChange={(e) =>
+          setCheckboxValue((e.target as HTMLInputElement).checked)
+        }
       />
 
       {/* Example with only helper text */}

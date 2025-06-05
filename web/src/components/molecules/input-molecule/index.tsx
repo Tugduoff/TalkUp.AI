@@ -1,18 +1,17 @@
-
-
-import React from 'react';
 import { BaseInput } from '@/components/atoms/base-input';
+import { CheckboxInput } from '@/components/atoms/checkbox-input';
 import { SelectorInput } from '@/components/atoms/selector-input';
 import { TextArea } from '@/components/atoms/text-area';
-import { CheckboxInput } from '@/components/atoms/checkbox-input';
-import { InputType, InputMoleculeProps, SelectorOption } from './type';
+import React from 'react';
+
+import { InputMoleculeProps, InputType, SelectorOption } from './type';
 
 export const InputMolecule: React.FC<InputMoleculeProps> = ({
   type,
   id,
   label,
   helperText,
-  name = id, 
+  name = id,
   value,
   onChange,
   disabled,
@@ -32,24 +31,30 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
           <BaseInput
             name={name}
             value={value as string}
-            onChange={onChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
+            onChange={
+              onChange as (e: React.ChangeEvent<HTMLInputElement>) => void
+            }
             disabled={disabled}
             readOnly={readOnly}
             required={required}
             placeholder={placeholder}
-            {...rest} 
+            {...rest}
           />
         );
       case 'selector':
         if (!options) {
-          console.error(`InputMolecule (${id}): 'options' prop is required for 'selector' type.`);
+          console.error(
+            `InputMolecule (${id}): 'options' prop is required for 'selector' type.`,
+          );
           return null;
         }
         return (
           <SelectorInput
             name={name}
             value={value as string}
-            onChange={onChange as (e: React.ChangeEvent<HTMLSelectElement>) => void}
+            onChange={
+              onChange as (e: React.ChangeEvent<HTMLSelectElement>) => void
+            }
             options={options}
             disabled={disabled}
             readOnly={readOnly}
@@ -62,7 +67,9 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
           <TextArea
             name={name}
             value={value as string}
-            onChange={onChange as (e: React.ChangeEvent<HTMLTextAreaElement>) => void}
+            onChange={
+              onChange as (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+            }
             disabled={disabled}
             readOnly={readOnly}
             required={required}
@@ -79,7 +86,9 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
             <CheckboxInput
               name={name}
               checked={value as boolean}
-              onChange={onChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
+              onChange={
+                onChange as (e: React.ChangeEvent<HTMLInputElement>) => void
+              }
               disabled={disabled}
               readOnly={readOnly}
               required={required}
@@ -97,7 +106,6 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
         return null;
     }
   };
-
 
   const shouldRenderExternalLabel = type !== 'checkbox' && label;
 
