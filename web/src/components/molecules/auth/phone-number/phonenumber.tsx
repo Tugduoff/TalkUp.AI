@@ -1,11 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Country, PhoneNumberInputProps } from './type'; //
 
-interface Country {
-  name: string;
-  code: string;
-  flag: string;
-  dialCode: string;
-}
 const countries: Country[] = [
   { name: 'United States', code: 'US', flag: '🇺🇸', dialCode: '+1' },
   { name: 'Canada', code: 'CA', flag: '🇨🇦', dialCode: '+1' },
@@ -28,18 +23,6 @@ const countries: Country[] = [
   { name: 'Switzerland', code: 'CH', flag: '🇨🇭', dialCode: '+41' },
   { name: 'Argentina', code: 'AR', flag: '🇦🇷', dialCode: '+54' },
 ];
-
-interface PhoneNumberInputProps {
-  value?: { countryCode: string; phoneNumber: string };
-  onChange?: (value: { countryCode: string; phoneNumber: string }) => void;
-  defaultCountryCode?: string;
-  placeholder?: string;
-  className?: string;
-  inputClassName?: string;
-  selectClassName?: string;
-  readOnly?: boolean;
-  disabled?: boolean;
-}
 
 /**
  * A reusable input component for phone numbers with country code selection.
@@ -73,12 +56,8 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   readOnly = false,
   disabled = false,
 }) => {
-  const [selectedCountry, setSelectedCountry] = useState<string>(
-    value?.countryCode || defaultCountryCode,
-  );
-  const [phoneNumber, setPhoneNumber] = useState<string>(
-    value?.phoneNumber || '',
-  );
+  const [selectedCountry, setSelectedCountry] = useState<string>(value?.countryCode || defaultCountryCode);
+  const [phoneNumber, setPhoneNumber] = useState<string>(value?.phoneNumber || '');
 
   useEffect(() => {
     if (value) {
@@ -92,7 +71,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
       setSelectedCountry(countryCode);
       onChange?.({ countryCode, phoneNumber });
     },
-    [onChange, phoneNumber],
+    [onChange, phoneNumber]
   );
 
   const handlePhoneNumberChange = useCallback(
@@ -101,7 +80,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
       setPhoneNumber(newNumber);
       onChange?.({ countryCode: selectedCountry, phoneNumber: newNumber });
     },
-    [onChange, selectedCountry],
+    [onChange, selectedCountry]
   );
 
   return (
