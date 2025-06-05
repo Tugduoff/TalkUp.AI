@@ -37,7 +37,7 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
             readOnly={readOnly}
             required={required}
             placeholder={placeholder}
-            {...rest} // Pass additional props to BaseInput
+            {...rest} 
           />
         );
       case 'selector':
@@ -54,7 +54,7 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
             disabled={disabled}
             readOnly={readOnly}
             required={required}
-            {...rest} // Pass additional props to SelectorInput
+            {...rest}
           />
         );
       case 'textarea':
@@ -70,7 +70,7 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
             resize={resize}
             rows={rows}
             cols={cols}
-            {...rest} // Pass additional props to TextArea
+            {...rest}
           />
         );
       case 'checkbox':
@@ -83,9 +83,9 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
               disabled={disabled}
               readOnly={readOnly}
               required={required}
-              {...rest} // Pass additional props to CheckboxInput
+              {...rest}
             />
-            {label && ( // For checkbox, the label is usually next to the input
+            {label && (
               <label htmlFor={id} className="text-sm font-semibold text-text">
                 {label}
               </label>
@@ -98,7 +98,7 @@ export const InputMolecule: React.FC<InputMoleculeProps> = ({
     }
   };
 
-  // For non-checkbox types, render the label above the input
+
   const shouldRenderExternalLabel = type !== 'checkbox' && label;
 
   return (

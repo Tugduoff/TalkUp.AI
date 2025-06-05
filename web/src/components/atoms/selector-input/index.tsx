@@ -29,9 +29,9 @@ interface Props {
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   options: SelectorOption[];
   disabled?: boolean;
-  readOnly?: boolean; // Note: readOnly has limited practical effect on <select> elements in most browsers.
+  readOnly?: boolean;
   required?: boolean;
-  className?: string; // Added className prop for external styling
+  className?: string; 
 }
 
 /**
@@ -48,22 +48,21 @@ export const SelectorInput: React.FC<Props> = ({
   onChange = () => {},
   options,
   disabled = false,
-  readOnly = false, // Included for consistency, but be aware of its limited effect on <select>
+  readOnly = false,
   required = false,
-  className = '', // Destructure 'className' and initialize it to an empty string
-  ...props // Capture all other props not specifically destructured
+  className = '', 
+  ...props
 }: Props) => {
   return (
     <select
-      {...props} // Pass all other props to the native select element
+      {...props}
       aria-label={name}
       id={name}
       name={name}
       value={value}
       onChange={onChange}
       disabled={disabled}
-      required={required} // 'required' works as expected for select elements
-      // Concatenate default classes with classes passed via the 'className' prop
+      required={required}
       className={`px-4 py-2 text-sm font-normal transition-colors duration-200 ease-in-out border rounded-sm border-border-strong font-display focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50 ${className}`}
     >
       {options.map((option) => (

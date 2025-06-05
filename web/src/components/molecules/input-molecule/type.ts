@@ -48,29 +48,24 @@ export interface SelectorOption {
  */
 export interface InputMoleculeProps {
   type: InputType;
-  id: string; // Required for accessibility (htmlFor)
+  id: string;
   label?: string;
   helperText?: string;
-  name?: string; // name attribute for the actual input element
-
-  // Common input props
-  value?: string | boolean; // value for base, selector, textarea; checked for checkbox
+  name?: string;
+ 
+  value?: string | boolean; 
   onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
 
-  // Specific props for base/textarea
   placeholder?: string;
 
-  // Specific props for selector
   options?: SelectorOption[];
 
-  // Specific props for textarea
   resize?: boolean;
   rows?: number;
   cols?: number;
 
-  // Additional props to pass directly to the underlying input element
   [key: string]: any;
 }
