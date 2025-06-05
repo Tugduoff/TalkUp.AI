@@ -14,18 +14,22 @@ class Notifications():
         """
         pass
 
-    def send_notification(self, service: enumMcs.MicroservicesNames, msg: str,
-            type: enumMcs.NotificationTypes) -> None:
+    def send_notification(self, service: enumMcs.MicroservicesNames, type_id: int,
+            msg: str) -> None:
         """
-        Send a notification to the console.
+        Send a notification to the console
         """
-        print(f"[{type.name}|{service.name}] 💡 {msg}", end='\n')
+        type = enumMcs.NotificationTypes()
+
+        print(f"[{type.get_type(type_id)}|{service.name}] {type.get_emoji(type_id)} {msg}", end='\n')
 
     def send_start_notification(self, service: enumMcs.MicroservicesNames, successful: bool)-> None:
         """
         Send a start notification to the console with the status of the service.
         """
+        type = enumMcs.NotificationTypes()
+
         if (successful):
-            print (f"[SERVICES] 💡 {service.name} started successfully!")
+            print (f"[SERVICES] {type.get_emoji(0)} {service.name} started successfully!")
         else:
-            print (f"[SERVICES] 💡 Failed to start {service.name}")
+            print (f"[SERVICES] {type.get_emoji(2)} Failed to start {service.name}")

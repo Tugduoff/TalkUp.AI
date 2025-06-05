@@ -39,8 +39,8 @@ class STT():
         """
         self.running = False
         self.q.put(None)
-        self.n.send_notification(enumMcs.MicroservicesNames.STT, "Service stopped successfully!",
-            enumMcs.NotificationTypes.INFO)
+        self.n.send_notification(enumMcs.MicroservicesNames.STT, 0,
+            "Service stopped successfully!")
 
     def start_stt_process(self) -> None:
         """
@@ -59,8 +59,8 @@ class STT():
 
             with sd.RawInputStream(samplerate=self.samplerate, blocksize = 8000, device=None,
                 dtype="int16", channels=1, callback=self.callback):
-                    self.n.send_notification(enumMcs.MicroservicesNames.STT,
-                        "Service started successfully!", enumMcs.NotificationTypes.INFO)
+                    self.n.send_notification(enumMcs.MicroservicesNames.STT, 0,
+                        "Service started successfully!")
                     rec = KaldiRecognizer(self.model, self.samplerate)
                     while self.running:
                         data = self.q.get()
