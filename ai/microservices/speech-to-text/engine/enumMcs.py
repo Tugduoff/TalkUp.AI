@@ -2,7 +2,7 @@
 ## Talkup Project, 2025
 ## TalkUp.AI
 ## File description:
-## This module defines the enumeration for microservices.
+## This file defines the enumerations for microservices.
 ##
 
 from enum import Enum
