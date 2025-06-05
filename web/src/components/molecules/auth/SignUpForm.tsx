@@ -1,22 +1,38 @@
 import { usePostRegister } from '@/hooks/auth/useServices';
-import PhoneNumberInput from '@/components/molecules/phonenumber/phonenumber';
 import { validateUsername } from '@/utils/validateUsername';
 import { useForm } from '@tanstack/react-form';
 
+/**
+ * A form component for user registration.
+ *
+ * The SignUpForm component provides a user interface for new account registration with the following features:
+ * - Username input with validation (minimum 3 characters, maximum 20 characters, alphanumeric only)
+ * - Phone number input with international format validation
+ * - Password input with complex validation rules (length, case, numbers)
+ * - Password confirmation input that ensures it matches the password
+ * - Asynchronous validation for username
+ * - Real-time validation feedback with loading indicators
+ * - Form submission handling
+ *
+ * The component uses a custom form hook for managing form state and validation.
+ * When submitted, it calls the `postRegister` mutation with the user's registration details.
+ *
+ * @returns A signup form component with validation and styling
+ */
 export const SignUpForm = () => {
   const { mutate: postRegister } = usePostRegister();
 
   const form = useForm({
     defaultValues: {
       username: '',
-      phoneNumber: { countryCode: 'FR', phoneNumber: '' },
+      phoneNumber: '',
       password: '',
       confirmPassword: '',
     },
     onSubmit: ({ value }) => {
       postRegister({
         username: value.username,
-        phoneNumber: value.phoneNumber.phoneNumber, 
+        phoneNumber: value.phoneNumber,
         password: value.password,
       });
     },
@@ -85,8 +101,13 @@ export const SignUpForm = () => {
         />
         <form.Field
           name="phoneNumber"
-          // Supprimez la validation regex ici car le composant PhoneNumberInput gérera son propre formatage/validation
-          // Si vous souhaitez une validation spécifique après la composition du numéro (code + numéro), vous pouvez l'ajouter ici
+          validators={{
+            onChange: ({ value }) => {
+              if (!/^(\+\d{1,3})?\d{9,15}$/.test(value)) {
+                return 'Phone number must be in international format (e.g., +1234567890)';
+              }
+            },
+          }}
           children={(field) => (
             <div className="flex flex-col gap-2">
               <label
@@ -96,13 +117,13 @@ export const SignUpForm = () => {
                 Phone Number
               </label>
               <div className="relative">
-                <PhoneNumberInput
-                  value={field.state.value} // Passez l'objet { countryCode, phoneNumber }
-                  onChange={(value) => field.handleChange(value)} // Mettez à jour le champ avec l'objet complet
+                <input
+                  id="phoneNumber"
+                  type="tel"
+                  value={field.state.value}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Your phone number"
-                  className="w-full" // Styles pour le conteneur du composant
-                  inputClassName="shadow-sm focus:ring-blue-500 focus:border-blue-500" // Styles pour l'input
-                  selectClassName="bg-gray-50 border-gray-300 text-gray-900" // Styles pour le select
                 />
                 {field.state.meta.isValidating && (
                   <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />

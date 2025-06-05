@@ -56,7 +56,6 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   const [selectedCountry, setSelectedCountry] = useState<string>(value?.countryCode || defaultCountryCode);
   const [phoneNumber, setPhoneNumber] = useState<string>(value?.phoneNumber || '');
 
-  // Update state when `value` prop changes
   useEffect(() => {
     if (value) {
       setSelectedCountry(value.countryCode);
@@ -64,7 +63,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
     }
   }, [value]);
 
-  // Handle country selection change
+
   const handleCountryChange = useCallback(
     (countryCode: string) => {
       setSelectedCountry(countryCode);
@@ -73,7 +72,6 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
     [onChange, phoneNumber]
   );
 
-  // Handle phone number input change
 const handlePhoneNumberChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
         const newNumber = e.target.value;
