@@ -1,4 +1,3 @@
-// web/src/components/molecules/input-molecule/types.ts
 
 import React from 'react';
 
