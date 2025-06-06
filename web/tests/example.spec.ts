@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test('Go to About page', async ({ page }) => {
   await page.goto('http://localhost:8080/');
@@ -8,5 +8,7 @@ test('Go to About page', async ({ page }) => {
   await page.getByRole('link', { name: 'About' }).click();
   await page.waitForLoadState('networkidle');
   await expect(page).toHaveURL('http://localhost:8080/about');
-  await expect(page.getByRole('heading', { name: 'About' })).toContainText('About');
+  await expect(page.getByRole('heading', { name: 'About' })).toContainText(
+    'About',
+  );
 });
