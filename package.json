@@ -18,6 +18,9 @@
 
         "tsc:check": "cd web && npm run tsc:check",
 
-        "test": "cd server && npm run test"
+        "test": "cd server && npm run test",
+
+        "e2e:web": "cd web && npm run e2e",
+        "e2e:web:ui": "cd web && npm run e2e:ui"
     }
 }
