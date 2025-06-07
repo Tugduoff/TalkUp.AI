@@ -55,7 +55,11 @@ describe('BaseInput', () => {
   });
 
   it('calls onChange handler with correct value on input change', () => {
-    const handleChange = vi.fn();
+    let capturedValue: string | undefined;
+    const handleChange = vi.fn((event: React.ChangeEvent<HTMLInputElement>) => {
+      capturedValue = event.target.value;
+    });
+
     render(<BaseInput onChange={handleChange} />);
 
     const inputElement = screen.getByRole('textbox', { name: 'input' });
@@ -64,11 +68,16 @@ describe('BaseInput', () => {
     fireEvent.change(inputElement, { target: { value: newValue } });
 
     expect(handleChange).toHaveBeenCalledTimes(1);
-    expect(handleChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        target: expect.objectContaining({ value: newValue }),
-      })
-    );
+    expect(capturedValue).toBe(newValue);
+  });
+
+  it('does not throw when onChange is not provided and input value changes', () => {
+    render(<BaseInput />);
+    const inputElement = screen.getByRole('textbox', { name: 'input' });
+
+    expect(() => {
+      fireEvent.change(inputElement, { target: { value: 'some new text' } });
+    }).not.toThrow();
   });
 
   it('renders as disabled when disabled prop is true', () => {
@@ -77,6 +86,7 @@ describe('BaseInput', () => {
     expect(inputElement).toBeDisabled();
     expect(inputElement).toHaveClass('disabled:cursor-not-allowed');
     expect(inputElement).toHaveClass('disabled:bg-disabled');
+    expect(inputElement).toHaveAttribute('aria-disabled', 'true');
   });
 
   it('renders as read-only when readOnly prop is true', () => {
