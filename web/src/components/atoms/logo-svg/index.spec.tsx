@@ -4,8 +4,12 @@ import { describe, expect, it } from 'vitest';
 import LogoSvg from './index';
 import { LogoColor } from './types';
 
+/**
+ * Test suite for the LogoSvg component.
+ * Verifies that the SVG renders correctly with default and custom colors and sizes,
+ * and maintains appropriate accessibility attributes.
+ */
 describe('LogoSvg', () => {
-  // Test 1: Renders with default props (primary color, size 100)
   it('renders with default primary color and size 100', () => {
     render(<LogoSvg />);
 
@@ -17,7 +21,6 @@ describe('LogoSvg', () => {
     expect(svgElement).toHaveAttribute('height', '100');
   });
 
-  // Test 2: Renders with a custom color
   it('renders with a custom accent color', () => {
     const customColor: LogoColor = 'accent';
     render(<LogoSvg color={customColor} />);
@@ -29,7 +32,6 @@ describe('LogoSvg', () => {
     expect(svgElement).not.toHaveClass('fill-primary');
   });
 
-  // Test 3: Renders with a custom size
   it('renders with a custom size of 50', () => {
     render(<LogoSvg size={50} />);
 
@@ -40,8 +42,7 @@ describe('LogoSvg', () => {
     expect(svgElement).toHaveAttribute('height', '50');
   });
 
-  // Test 4: Renders with both custom color and size
-  it('renders with custom color and size', () => {
+  it('renders with both custom color and size', () => {
     const customColor: LogoColor = 'accent';
     const customSize = 75;
     render(<LogoSvg color={customColor} size={customSize} />);
@@ -54,7 +55,6 @@ describe('LogoSvg', () => {
     expect(svgElement).toHaveAttribute('height', customSize.toString());
   });
 
-  // Test 5: Accessibility check - ensuring it has a role
   it('has an appropriate role for accessibility', () => {
     render(<LogoSvg />);
     expect(screen.getByRole('img')).toBeInTheDocument();
