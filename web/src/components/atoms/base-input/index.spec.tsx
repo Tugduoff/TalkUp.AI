@@ -1,5 +1,6 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+
 import { BaseInput } from './index';
 
 /**
@@ -97,10 +98,10 @@ describe('BaseInput', () => {
   });
 
   it('renders as required when required prop is true', () => {
-      render(<BaseInput required />);
-      const inputElement = screen.getByRole('textbox', { name: 'input' });
-      expect(inputElement).toHaveAttribute('required');
-      expect(inputElement).toHaveAttribute('aria-required', 'true');
+    render(<BaseInput required />);
+    const inputElement = screen.getByRole('textbox', { name: 'input' });
+    expect(inputElement).toHaveAttribute('required');
+    expect(inputElement).toHaveAttribute('aria-required', 'true');
   });
 
   it('passes additional HTML attributes to the input element', () => {

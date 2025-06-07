@@ -1,5 +1,6 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+
 import { TextArea } from './index';
 
 /**
@@ -109,7 +110,6 @@ describe('TextArea', () => {
     const textarea = screen.getByRole('textbox', { name: 'textarea' });
     expect(textarea).toHaveClass('my-custom-class');
   });
-
 
   it('does not throw when onChange is not provided and textarea value changes', () => {
     render(<TextArea />);

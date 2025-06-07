@@ -1,6 +1,10 @@
 import { render } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
-import type { ToasterProps } from 'react-hot-toast'; 
+import { JSX } from 'react';
+import type { ToasterProps } from 'react-hot-toast';
+import { Toaster as ToasterComponentFromHotToast } from 'react-hot-toast';
+import { Mock, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import ToasterConfig from './index';
 
 /**
  * Mocks the `Toaster` component from 'react-hot-toast'.
@@ -14,11 +18,9 @@ vi.mock('react-hot-toast', () => {
   };
 });
 
-import ToasterConfig from './index';
-import { Toaster as ToasterComponentFromHotToast } from 'react-hot-toast';
-import { JSX } from 'react';
-
-const MockedToasterComponent = ToasterComponentFromHotToast as Mock<(props: ToasterProps) => JSX.Element>;
+const MockedToasterComponent = ToasterComponentFromHotToast as Mock<
+  (props: ToasterProps) => JSX.Element
+>;
 
 /**
  * Test suite for the ToasterConfig component.
@@ -63,7 +65,7 @@ describe('ToasterConfig', () => {
           }),
         }),
       }),
-      undefined
+      undefined,
     );
   });
 });

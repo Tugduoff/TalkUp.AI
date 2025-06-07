@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Button } from './index';
 
@@ -60,14 +60,22 @@ describe('Button (Integration Test)', () => {
   });
 
   it('passes color prop correctly to OutlinedButton', () => {
-    render(<Button variant="outlined" color="accent">Test Color</Button>);
+    render(
+      <Button variant="outlined" color="accent">
+        Test Color
+      </Button>,
+    );
     const buttonElement = screen.getByRole('button', { name: 'Test Color' });
     expect(buttonElement).toBeInTheDocument();
     // OPTIONAL: expect(buttonElement).toHaveClass('border-accent');
   });
 
   it('passes color prop correctly to TextButton', () => {
-    render(<Button variant="text" color="accent">Test Color</Button>);
+    render(
+      <Button variant="text" color="accent">
+        Test Color
+      </Button>,
+    );
     const buttonElement = screen.getByRole('button', { name: 'Test Color' });
     expect(buttonElement).toBeInTheDocument();
     // OPTIONAL: expect(buttonElement).toHaveClass('text-accent');
@@ -81,13 +89,21 @@ describe('Button (Integration Test)', () => {
   });
 
   it('passes disabled prop correctly to OutlinedButton', () => {
-    render(<Button variant="outlined" disabled>Test Disabled</Button>);
+    render(
+      <Button variant="outlined" disabled>
+        Test Disabled
+      </Button>,
+    );
     const buttonElement = screen.getByRole('button', { name: 'Test Disabled' });
     expect(buttonElement).toBeDisabled();
   });
 
   it('passes disabled prop correctly to TextButton', () => {
-    render(<Button variant="text" disabled>Test Disabled</Button>);
+    render(
+      <Button variant="text" disabled>
+        Test Disabled
+      </Button>,
+    );
     const buttonElement = screen.getByRole('button', { name: 'Test Disabled' });
     expect(buttonElement).toBeDisabled();
   });
@@ -101,13 +117,21 @@ describe('Button (Integration Test)', () => {
   });
 
   it('passes loading prop correctly to OutlinedButton', () => {
-    render(<Button variant="outlined" loading>Test Loading</Button>);
+    render(
+      <Button variant="outlined" loading>
+        Test Loading
+      </Button>,
+    );
     const buttonElement = screen.getByRole('button', { name: 'Test Loading' });
     expect(buttonElement).toBeInTheDocument();
   });
 
   it('passes loading prop correctly to TextButton', () => {
-    render(<Button variant="text" loading>Test Loading</Button>);
+    render(
+      <Button variant="text" loading>
+        Test Loading
+      </Button>,
+    );
     const buttonElement = screen.getByRole('button', { name: 'Test Loading' });
     expect(buttonElement).toBeInTheDocument();
   });
@@ -123,7 +147,11 @@ describe('Button (Integration Test)', () => {
 
   it('passes onClick prop correctly and fires it on OutlinedButton click', () => {
     const handleClick = vi.fn();
-    render(<Button variant="outlined" onClick={handleClick}>Test Click</Button>);
+    render(
+      <Button variant="outlined" onClick={handleClick}>
+        Test Click
+      </Button>,
+    );
     const buttonElement = screen.getByRole('button', { name: 'Test Click' });
     fireEvent.click(buttonElement);
     expect(handleClick).toHaveBeenCalledTimes(1);
@@ -131,7 +159,11 @@ describe('Button (Integration Test)', () => {
 
   it('passes onClick prop correctly and fires it on TextButton click', () => {
     const handleClick = vi.fn();
-    render(<Button variant="text" onClick={handleClick}>Test Click</Button>);
+    render(
+      <Button variant="text" onClick={handleClick}>
+        Test Click
+      </Button>,
+    );
     const buttonElement = screen.getByRole('button', { name: 'Test Click' });
     fireEvent.click(buttonElement);
     expect(handleClick).toHaveBeenCalledTimes(1);
@@ -139,22 +171,46 @@ describe('Button (Integration Test)', () => {
 
   // --- Additional HTML Attributes Tests (including className) ---
   it('passes additional HTML attributes to ContainedButton', () => {
-    render(<Button aria-label="contained-button-label" id="c-btn">Contained Test</Button>);
-    const buttonElement = screen.getByRole('button', { name: 'contained-button-label' });
-    expect(buttonElement).toHaveAttribute('aria-label', 'contained-button-label');
+    render(
+      <Button aria-label="contained-button-label" id="c-btn">
+        Contained Test
+      </Button>,
+    );
+    const buttonElement = screen.getByRole('button', {
+      name: 'contained-button-label',
+    });
+    expect(buttonElement).toHaveAttribute(
+      'aria-label',
+      'contained-button-label',
+    );
     expect(buttonElement).toHaveAttribute('id', 'c-btn');
   });
 
   it('passes additional HTML attributes to OutlinedButton', () => {
-    render(<Button variant="outlined" aria-label="outlined-button-label" id="o-btn">Outlined Test</Button>);
-    const buttonElement = screen.getByRole('button', { name: 'outlined-button-label' });
-    expect(buttonElement).toHaveAttribute('aria-label', 'outlined-button-label');
+    render(
+      <Button variant="outlined" aria-label="outlined-button-label" id="o-btn">
+        Outlined Test
+      </Button>,
+    );
+    const buttonElement = screen.getByRole('button', {
+      name: 'outlined-button-label',
+    });
+    expect(buttonElement).toHaveAttribute(
+      'aria-label',
+      'outlined-button-label',
+    );
     expect(buttonElement).toHaveAttribute('id', 'o-btn');
   });
 
   it('passes additional HTML attributes to TextButton', () => {
-    render(<Button variant="text" aria-label="text-button-label" id="t-btn">Text Test</Button>);
-    const buttonElement = screen.getByRole('button', { name: 'text-button-label' });
+    render(
+      <Button variant="text" aria-label="text-button-label" id="t-btn">
+        Text Test
+      </Button>,
+    );
+    const buttonElement = screen.getByRole('button', {
+      name: 'text-button-label',
+    });
     expect(buttonElement).toHaveAttribute('aria-label', 'text-button-label');
     expect(buttonElement).toHaveAttribute('id', 't-btn');
   });
@@ -171,15 +227,25 @@ describe('Button (Integration Test)', () => {
 
   // Test for color="white" branch in className (for OutlinedButton)
   it('renders OutlinedButton with text-black and border-black when color is white', () => {
-    render(<Button variant="outlined" color="white">White Outlined</Button>);
-    const buttonElement = screen.getByRole('button', { name: 'White Outlined' });
+    render(
+      <Button variant="outlined" color="white">
+        White Outlined
+      </Button>,
+    );
+    const buttonElement = screen.getByRole('button', {
+      name: 'White Outlined',
+    });
     expect(buttonElement).toHaveClass('!text-black');
     expect(buttonElement).toHaveClass('!border-black');
   });
 
   // Test for color="white" branch in className (for TextButton)
   it('renders TextButton with text-black when color is white', () => {
-    render(<Button variant="text" color="white">White Text</Button>);
+    render(
+      <Button variant="text" color="white">
+        White Text
+      </Button>,
+    );
     const buttonElement = screen.getByRole('button', { name: 'White Text' });
     expect(buttonElement).toHaveClass('!text-black');
   });
@@ -193,32 +259,45 @@ describe('Button (Integration Test)', () => {
 
   // Test for props.className being present (for OutlinedButton)
   it('applies custom className to OutlinedButton', () => {
-    render(<Button variant="outlined" className="my-custom-outlined-class">Custom Outlined</Button>);
-    const buttonElement = screen.getByRole('button', { name: 'Custom Outlined' });
+    render(
+      <Button variant="outlined" className="my-custom-outlined-class">
+        Custom Outlined
+      </Button>,
+    );
+    const buttonElement = screen.getByRole('button', {
+      name: 'Custom Outlined',
+    });
     expect(buttonElement).toHaveClass('my-custom-outlined-class');
   });
 
   // Test for props.className being present (for TextButton)
   it('applies custom className to TextButton', () => {
-    render(<Button variant="text" className="my-custom-text-class">Custom Text</Button>);
+    render(
+      <Button variant="text" className="my-custom-text-class">
+        Custom Text
+      </Button>,
+    );
     const buttonElement = screen.getByRole('button', { name: 'Custom Text' });
     expect(buttonElement).toHaveClass('my-custom-text-class');
   });
-
 
   // --- Edge Cases / Default Behavior ---
   it('warns and returns null for an unknown variant', () => {
     render(<Button variant={'unknown' as any}>Invalid</Button>);
     expect(console.warn).toHaveBeenCalledTimes(1);
-    expect(console.warn).toHaveBeenCalledWith('Unknown button variant: unknown');
+    expect(console.warn).toHaveBeenCalledWith(
+      'Unknown button variant: unknown',
+    );
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
   it('does not throw when onClick is not provided and button is clicked', () => {
     render(<Button>No Click Handler</Button>);
-    const buttonElement = screen.getByRole('button', { name: 'No Click Handler' });
+    const buttonElement = screen.getByRole('button', {
+      name: 'No Click Handler',
+    });
     expect(() => {
       fireEvent.click(buttonElement);
     }).not.toThrow();
-  });  
+  });
 });
