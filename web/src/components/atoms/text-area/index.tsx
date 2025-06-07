@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface Props {
+interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   placeholder?: string;
   name?: string;
   value?: string;
@@ -59,7 +59,7 @@ export const TextArea: React.FC<Props> = ({
       required={required}
       rows={rows}
       cols={cols}
-      className={`${!resize ? 'resize-none' : 'resize'} disabled:resize-none px-4 py-2 border border-border-strong placeholder:text rounded-sm font-display font-normal text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-colors duration-200 ease-in-out disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50`}
+      className={`${(!resize || disabled) ? 'resize-none' : 'resize'} disabled:resize-none px-4 py-2 border border-border-strong placeholder:text rounded-sm font-display font-normal text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-colors duration-200 ease-in-out disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50 ${props.className || ''}`}
     />
   );
 };
