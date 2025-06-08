@@ -52,13 +52,7 @@ export const LoginForm = () => {
           Login to your account
         </p>
       </header>
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-      >
+      <form className="flex flex-col gap-4">
         <form.Field
           name="username"
           children={(field) => (
