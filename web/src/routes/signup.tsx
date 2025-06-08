@@ -1,4 +1,4 @@
-import SignUpForm from '@/components/molecules/auth/SignUpForm';
+import SignUpForm from '@/components/molecules/auth/sign-up-form';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/signup')({
