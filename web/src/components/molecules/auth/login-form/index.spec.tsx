@@ -10,6 +10,11 @@ import { MockedFunction, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LoginForm } from '.';
 
+/**
+ * Mocks the `validateLogin` utility function.
+ * This mock simulates an asynchronous operation that resolves after a 100ms delay.
+ * It allows controlled testing of loading states and successful/failed login scenarios.
+ */
 vi.mock('@/utils/validateLogin', () => ({
   validateLogin: vi.fn(() => {
     return new Promise((resolve) => setTimeout(resolve, 100));
@@ -18,11 +23,21 @@ vi.mock('@/utils/validateLogin', () => ({
 
 const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
+/**
+ * Test suite for the LoginForm component.
+ * This suite covers rendering, client-side validation, asynchronous validation,
+ * user interactions, and accessibility aspects of the form.
+ */
 describe('LoginForm', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
+  /**
+   * Test Group: Initial Render and Basic Structure
+   * Verifies that all essential elements of the LoginForm are correctly rendered
+   * when the component is first mounted.
+   */
   describe('Initial Render and Basic Structure', () => {
     it('renders the login form elements correctly', () => {
       render(<LoginForm />);
@@ -41,6 +56,11 @@ describe('LoginForm', () => {
     });
   });
 
+  /**
+   * Test Group: Client-Side Validation (Synchronous Validators)
+   * This group focuses on testing the immediate, synchronous validation rules
+   * applied to the form fields on submission.
+   */
   describe('Client-Side Validation (Sync Validators)', () => {
     it('displays "Username and password are required" error when both fields are empty on submit', async () => {
       render(<LoginForm />);
@@ -106,6 +126,11 @@ describe('LoginForm', () => {
     });
   });
 
+  /**
+   * Test Group: Asynchronous Validation (validateLogin)
+   * This group verifies the behavior of the form when interacting with the
+   * mocked `validateLogin` function, including error display and successful outcomes.
+   */
   describe('Asynchronous Validation (validateLogin)', () => {
     const mockedValidateLogin = validateLogin as MockedFunction<
       typeof validateLogin
@@ -170,6 +195,11 @@ describe('LoginForm', () => {
     });
   });
 
+  /**
+   * Test Group: User Interactions
+   * This group focuses on verifying the component's responsiveness to common
+   * user input actions such as typing into fields and submitting the form.
+   */
   describe('User Interactions', () => {
     it('allows typing into username and password fields', async () => {
       render(<LoginForm />);
@@ -215,6 +245,11 @@ describe('LoginForm', () => {
     });
   });
 
+  /**
+   * Test Group: Accessibility
+   * This group ensures that the LoginForm adheres to basic accessibility standards,
+   * specifically checking for correct labeling and input associations.
+   */
   describe('Accessibility', () => {
     it('ensures correct htmlFor attributes on labels and id on inputs', () => {
       render(<LoginForm />);
