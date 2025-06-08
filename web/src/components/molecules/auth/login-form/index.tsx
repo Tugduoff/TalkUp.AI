@@ -78,9 +78,6 @@ export const LoginForm = () => {
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Your username"
                 />
-                {field.state.meta.isValidating && (
-                  <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
-                )}
               </div>
               {field.state.meta.errors && (
                 <span className="text-sm text-red-500">
@@ -109,9 +106,6 @@ export const LoginForm = () => {
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Your password"
                 />
-                {field.state.meta.isValidating && (
-                  <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
-                )}
               </div>
               {field.state.meta.errors && (
                 <span className="text-sm text-red-500">
