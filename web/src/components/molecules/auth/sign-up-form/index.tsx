@@ -47,12 +47,7 @@ export const SignUpForm = () => {
         </p>
       </header>
       <form
-        className="flex flex-col gap-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-      >
+        className="flex flex-col gap-4">
         <form.Field
           name="username"
           validators={{
@@ -88,7 +83,10 @@ export const SignUpForm = () => {
                   placeholder="Your username"
                 />
                 {field.state.meta.isValidating && (
-                  <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
+                  <div
+                    data-testid="username-loading-spinner"
+                    className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary"
+                  />
                 )}
               </div>
               {field.state.meta.errors && (
@@ -125,9 +123,6 @@ export const SignUpForm = () => {
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Your phone number"
                 />
-                {field.state.meta.isValidating && (
-                  <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
-                )}
               </div>
               {field.state.meta.errors && (
                 <span className="text-sm text-red-500">
@@ -175,9 +170,6 @@ export const SignUpForm = () => {
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Your password"
                 />
-                {field.state.meta.isValidating && (
-                  <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
-                )}
               </div>
               {field.state.meta.errors && (
                 <span className="text-sm text-red-500">
@@ -212,11 +204,8 @@ export const SignUpForm = () => {
                   value={field.state.value}
                   className="w-full p-2 border border-gray-300 rounded-md"
                   onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="Your password"
+                  placeholder="Confirm your password"
                 />
-                {field.state.meta.isValidating && (
-                  <div className="absolute w-4 h-4 -translate-y-1/2 border-2 rounded-full right-4 top-1/2 animate-spin border-t-transparent border-primary" />
-                )}
               </div>
               {field.state.meta.errors && (
                 <span className="text-sm text-red-500">
@@ -230,6 +219,11 @@ export const SignUpForm = () => {
       <button
         className="p-2 text-white rounded-md cursor-pointer bg-primary"
         type="submit"
+        disabled={
+          !form.state.isValid ||
+          form.state.isSubmitting ||
+          form.state.isValidating
+        }
         onClick={() => form.handleSubmit()}
       >
         Sign Up
