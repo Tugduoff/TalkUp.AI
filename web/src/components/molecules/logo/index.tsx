@@ -21,7 +21,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
  *
  * @returns {JSX.Element | null} The logo component or null if variant is unknown
  */
-export const Logo = ({
+const Logo = ({
   variant = 'line',
   color = 'primary',
   ...props
@@ -38,3 +38,5 @@ export const Logo = ({
       return null;
   }
 };
+
+export default Logo;
