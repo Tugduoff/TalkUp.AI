@@ -4,7 +4,7 @@ import { ColumnLogo } from './variants/column';
 import { LineLogo } from './variants/line';
 import { NoTextLogo } from './variants/no-text';
 
-type LogoVariant = 'line' | 'column' | 'no-text';
+export type LogoVariant = 'line' | 'column' | 'no-text';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   variant?: LogoVariant;
@@ -21,11 +21,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
  *
  * @returns {JSX.Element | null} The logo component or null if variant is unknown
  */
-const Logo = ({
-  variant = 'line',
-  color = 'primary',
-  ...props
-}: Props) => {
+const Logo = ({ variant = 'line', color = 'primary', ...props }: Props) => {
   switch (variant) {
     case 'line':
       return <LineLogo {...props} color={color} />;
