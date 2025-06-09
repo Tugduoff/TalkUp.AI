@@ -46,8 +46,7 @@ export const SignUpForm = () => {
           Create a new account
         </p>
       </header>
-      <form
-        className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4">
         <form.Field
           name="username"
           validators={{
