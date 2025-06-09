@@ -2,7 +2,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 
 const aliases = {
   '@/components': path.resolve(__dirname, 'src/components'),
@@ -31,5 +31,33 @@ export default defineConfig({
   },
   server: {
     port: process.env.VITE_PORT ? parseInt(process.env.VITE_PORT) : 8080,
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/tests/setupTests.ts',
+    css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/',
+        'dist/',
+        'build/',
+        '*.config.ts',
+        '*.d.ts',
+        'src/main.tsx',
+        'src/App.tsx',
+        'src/routeTree.gen.ts',
+        'src/vite-env.d.ts',
+        'eslint.config.js',
+      ],
+      thresholds: {
+        statements: 80,
+        branches: 80,
+        functions: 80,
+        lines: 80,
+      },
+    },
   },
 });

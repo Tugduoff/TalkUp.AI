@@ -31,6 +31,7 @@ const LogoSvg = ({ color = 'primary', size = 100 }: Props) => {
       className={fill}
       width={size}
       height={size}
+      role="img"
       viewBox="0 0 78 75"
       xmlns="http://www.w3.org/2000/svg"
     >

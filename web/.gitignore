@@ -25,3 +25,6 @@ dist-ssr
 
 .vite
 .env
+
+# Vitest coverage
+coverage/
