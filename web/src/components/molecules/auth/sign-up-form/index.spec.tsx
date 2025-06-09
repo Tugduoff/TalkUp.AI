@@ -1,4 +1,3 @@
-import { usePostRegister } from '@/hooks/auth/useServices';
 import { validateUsername } from '@/utils/validateUsername';
 import {
   act,
