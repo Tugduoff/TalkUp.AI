@@ -1,6 +1,10 @@
-import { render, screen, act } from '@testing-library/react';
-import { describe, it, expect, beforeEach } from 'vitest';
-import { createMemoryHistory, createRouter, RouterProvider } from '@tanstack/react-router';
+import {
+  RouterProvider,
+  createMemoryHistory,
+  createRouter,
+} from '@tanstack/react-router';
+import { act, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Route as CVAnalysisRoute } from './cv-analysis';
 
@@ -20,7 +24,7 @@ const router = createRouter({
 describe('CVAnalysis', () => {
   beforeEach(async () => {
     router.history.push('/cv-analysis');
-    
+
     await act(async () => {
       await router.load();
     });
@@ -28,7 +32,9 @@ describe('CVAnalysis', () => {
 
   it('renders the main heading correctly', async () => {
     render(<RouterProvider router={router} />);
-    expect(await screen.findByRole('heading', { name: /Analyse CV/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: /Analyse CV/i }),
+    ).toBeInTheDocument();
   });
 
   it('renders the descriptive paragraph correctly', async () => {
@@ -38,7 +44,9 @@ describe('CVAnalysis', () => {
 
   it('renders both heading and paragraph in the document', async () => {
     const { container } = render(<RouterProvider router={router} />);
-    expect(await screen.findByRole('heading', { name: /Analyse CV/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: /Analyse CV/i }),
+    ).toBeInTheDocument();
     expect(await screen.findByText(/Analyse de CV/i)).toBeInTheDocument();
 
     expect(container.firstChild).toHaveClass('p-2');

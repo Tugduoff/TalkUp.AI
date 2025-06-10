@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
 import { validateUsername } from './validateUsername';
 
 /**
@@ -9,7 +10,7 @@ import { validateUsername } from './validateUsername';
 describe('validateUsername', () => {
   it('should return an error message if the username already exists', async () => {
     const existingUsername = 'admin';
-    const result = await validateUsername(existingUsername); 
+    const result = await validateUsername(existingUsername);
 
     expect(result).toBe('Username already exists');
   });
@@ -23,7 +24,7 @@ describe('validateUsername', () => {
 
   it('should be an asynchronous operation that resolves after its internal delay', async () => {
     const username = 'someUser';
-    const result = await validateUsername(username); 
+    const result = await validateUsername(username);
 
     expect(result).toBeUndefined();
   });

@@ -1,6 +1,10 @@
-import { render, screen, act } from '@testing-library/react';
-import { describe, it, expect, beforeEach } from 'vitest';
-import { createMemoryHistory, createRouter, RouterProvider } from '@tanstack/react-router';
+import {
+  RouterProvider,
+  createMemoryHistory,
+  createRouter,
+} from '@tanstack/react-router';
+import { act, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Route as SimulationsRoute } from './simulations';
 
@@ -20,7 +24,7 @@ const router = createRouter({
 describe('Simulations', () => {
   beforeEach(async () => {
     router.history.push('/simulations');
-    
+
     await act(async () => {
       await router.load();
     });
@@ -28,19 +32,23 @@ describe('Simulations', () => {
 
   it('renders the main heading correctly', async () => {
     render(<RouterProvider router={router} />);
-    expect(await screen.findByRole('heading', { name: /Simulations/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: /Simulations/i }),
+    ).toBeInTheDocument();
   });
 
   it('renders the descriptive paragraph correctly', async () => {
     render(<RouterProvider router={router} />);
     // Use findAllByText and then filter by tag name to specifically find the paragraph
-    const simulationsParagraph = (await screen.findAllByText(/Simulations/i)).find(el => el.tagName === 'P');
+    const simulationsParagraph = (
+      await screen.findAllByText(/Simulations/i)
+    ).find((el) => el.tagName === 'P');
     expect(simulationsParagraph).toBeInTheDocument();
   });
 
   it('renders both heading and paragraph in the document', async () => {
     const { container } = render(<RouterProvider router={router} />);
-    
+
     // Use findAllByText to get all elements with the text "Simulations"
     const simulationsTexts = await screen.findAllByText(/Simulations/i);
 

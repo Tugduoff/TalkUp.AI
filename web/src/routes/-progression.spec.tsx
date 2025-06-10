@@ -1,6 +1,10 @@
-import { render, screen, act } from '@testing-library/react';
-import { describe, it, expect, beforeEach } from 'vitest';
-import { createMemoryHistory, createRouter, RouterProvider } from '@tanstack/react-router';
+import {
+  RouterProvider,
+  createMemoryHistory,
+  createRouter,
+} from '@tanstack/react-router';
+import { act, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Route as ProgressionRoute } from './progression';
 
@@ -20,7 +24,7 @@ const router = createRouter({
 describe('Progression', () => {
   beforeEach(async () => {
     router.history.push('/progression');
-    
+
     await act(async () => {
       await router.load();
     });
@@ -28,18 +32,22 @@ describe('Progression', () => {
 
   it('renders the main heading correctly', async () => {
     render(<RouterProvider router={router} />);
-    expect(await screen.findByRole('heading', { name: /Progression/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: /Progression/i }),
+    ).toBeInTheDocument();
   });
 
   it('renders the descriptive paragraph correctly', async () => {
     render(<RouterProvider router={router} />);
-    const progressionParagraph = (await screen.findAllByText(/Progression/i)).find(el => el.tagName === 'P');
+    const progressionParagraph = (
+      await screen.findAllByText(/Progression/i)
+    ).find((el) => el.tagName === 'P');
     expect(progressionParagraph).toBeInTheDocument();
   });
 
   it('renders both heading and paragraph in the document', async () => {
     const { container } = render(<RouterProvider router={router} />);
-    
+
     const progressionTexts = await screen.findAllByText(/Progression/i);
 
     expect(progressionTexts).toHaveLength(2);
