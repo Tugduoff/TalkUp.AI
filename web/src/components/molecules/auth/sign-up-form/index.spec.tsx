@@ -11,6 +11,15 @@ import { MockedFunction, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SignUpForm } from '.';
 
 /**
+ * Mocks the `usePostRegister` hook.
+ */
+vi.mock('@/hooks/auth/useServices', () => ({
+  usePostRegister: vi.fn(() => ({
+    mutate: vi.fn(),
+  })),
+}));
+
+/**
  * Mocks the `validateUsername` utility function.
  * This mock simulates async validation by resolving with an error message for a specific user
  * and resolving with `undefined` for others, which is how react-hook-form expects async validators to work.
