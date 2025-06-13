@@ -6,6 +6,8 @@ import {
   JoinColumn,
 } from "typeorm";
 
+import { AuthProvider } from "@common/enums/AuthProvider";
+
 @Entity()
 export class user {
   @PrimaryGeneratedColumn("uuid")
@@ -40,6 +42,15 @@ export class user {
 
   @Column({ default: new Date() })
   updated_at: Date;
+
+  @Column({
+    enum: AuthProvider,
+    type: "enum",
+    nullable: false,
+    default: AuthProvider.MANUAL,
+    comment: "Authentication provider (e.g., manual, linkedin)",
+  })
+  provider: string;
 }
 
 /**
