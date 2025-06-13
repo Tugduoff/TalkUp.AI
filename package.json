@@ -21,6 +21,7 @@
         "test:server": "cd server && npm run test",
         "test:web": "cd web && npm run test",
 
+        "test:coverage:server": "cd server && npm run test:coverage",
         "test:coverage:web": "cd web && npm run test:coverage",
 
         "e2e:web": "cd web && npm run e2e",
