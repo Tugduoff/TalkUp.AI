@@ -53,8 +53,8 @@ jobs:
         with:
           working-directory: ./server
 
-      - name: Run units tests command
-        uses: ./.github/actions/run-units-tests
+      # - name: Run units tests command
+      #   uses: ./.github/actions/run-units-tests - # Uncomment this line to run unit tests but they are already run by the coverage check
 
       - name: Run units tests coverage command
         uses: ./.github/actions/run-coverage-check
