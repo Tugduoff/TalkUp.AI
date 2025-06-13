@@ -26,6 +26,7 @@ import {
 } from "@entities/user.entity";
 
 import { hashPassword } from "@common/utils/passwordHasher";
+import { LinkedInProfile, LinkedInTokenDatas } from "@common/utils/types";
 import { AuthProvider } from "@common/enums/AuthProvider";
 
 @Injectable()
@@ -131,12 +132,12 @@ export class AuthService {
   /**
    * Fetches the access token data from LinkedIn using the authorization code.
    * @param code - The authorization code (query) received from LinkedIn OAuth.
-   * @returns An object containing the access token, expiration time, and scope.
+   * @returns {Promise<LinkedInTokenDatas>} An object containing the access token, expiration time, and scope.
    * @throws InternalServerErrorException if the access token cannot be fetched.
    */
-  async getAccessTokenDatas(
+  async getAccessTokenDatasFromQueryCode(
     code: string,
-  ): Promise<{ access_token: string; expires_in: string; scope: string }> {
+  ): Promise<LinkedInTokenDatas> {
     const params = new URLSearchParams();
 
     params.append("grant_type", "authorization_code");
@@ -167,36 +168,21 @@ export class AuthService {
 
   /**
    * Fetches the LinkedIn profile using the access token.
-   * @param accessToken - The access token obtained from LinkedIn OAuth.
-   * @returns The LinkedIn profile data.
+   * @param {string} accessToken - The access token obtained from LinkedIn OAuth.
+   * @returns {Promise<LinkedInProfile>} profile - The LinkedIn profile data.
    * @throws InternalServerErrorException if the profile cannot be fetched.
    */
-  async getLinkedInProfile(accessToken: string): Promise<{
-    sub: string;
-    email_verified: boolean;
-    name: string;
-    locale: { country: string; language: string };
-    given_name: string;
-    family_name: string;
-    email: string;
-    picture: string;
-  }> {
+  async getLinkedInProfileFromAccessToken(
+    accessToken: string,
+  ): Promise<LinkedInProfile> {
     try {
-      const profile: AxiosResponse<{
-        sub: string;
-        email_verified: boolean;
-        name: string;
-        locale: { country: string; language: string };
-        given_name: string;
-        family_name: string;
-        email: string;
-        picture: string;
-      }> = await this.httpService.axiosRef.get(
-        "https://api.linkedin.com/v2/userinfo",
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        },
-      );
+      const profile: AxiosResponse<LinkedInProfile> =
+        await this.httpService.axiosRef.get(
+          "https://api.linkedin.com/v2/userinfo",
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          },
+        );
 
       return profile.data;
     } catch (error) {
@@ -209,20 +195,14 @@ export class AuthService {
 
   /**
    * Saves the OAuth token data for a user.
-   * @param userId - The ID of the user.
-   * @param tokenData - The token data to save.
+   * @param {string} userId - The ID of the user.
+   * @param {LinkedInTokenDatas} tokenData - The token data to save.
+   * @return {Promise<void>} A promise that resolves when the token data is saved.
+   * @throws InternalServerErrorException if there is an error saving the token data.
    */
-  async saveTokenData(
+  async saveTokenDataFromUser(
     userId: string,
-    tokenData: {
-      access_token: string;
-      expires_in: string;
-      scope: string;
-      refresh_token?: string;
-      refresh_token_expires_in?: string;
-      token_type?: string;
-      id_token?: string;
-    },
+    tokenData: LinkedInTokenDatas,
   ): Promise<void> {
     const oauthData = this.userOauthRepository.create({
       user_id: userId,
@@ -239,28 +219,13 @@ export class AuthService {
 
   /**
    * Saves a LinkedIn user profile and returns a JWT token.
-   * @param linkedInProfile - The LinkedIn profile data.
-   * @param tokenData - The OAuth token data.
-   * @returns An object containing the access token.
+   * @param {LinkedInProfile} linkedInProfile - The LinkedIn profile data.
+   * @param {LinkedInTokenDatas} tokenData - The OAuth token data.
+   * @returns {Promise<{ accessToken: string;}>} token JWT.
    */
   async saveLinkedInUser(
-    linkedInProfile: {
-      sub: string;
-      email_verified: boolean;
-      name: string;
-      locale: { country: string; language: string };
-      email: string;
-      picture: string;
-    },
-    tokenData: {
-      access_token: string;
-      expires_in: string;
-      scope: string;
-      refresh_token?: string;
-      refresh_token_expires_in?: string;
-      token_type?: string;
-      id_token?: string;
-    },
+    linkedInProfile: LinkedInProfile,
+    tokenData: LinkedInTokenDatas,
   ): Promise<{ accessToken: string }> {
     // Check if the user already exists
     const existingUser = await this.userRepository.findOne({
@@ -290,19 +255,19 @@ export class AuthService {
 
     try {
       // Create OAuth data
-      await this.saveTokenData(savedUser.user_id, tokenData);
+      await this.saveTokenDataFromUser(savedUser.user_id, tokenData);
     } catch (error) {
       this.logger.error("Error saving OAuth data:", error);
       throw new InternalServerErrorException("Failed to save OAuth data");
     }
 
-    // Create user_password with a dummy password
+    // Create user_email entity
     const newUserEmail = this.userEmailRepository.create({
       email: linkedInProfile.email,
       user_id: newUser.user_id,
     });
 
-    // Save the password to the database
+    // Save the email to the database
     await this.userEmailRepository.save(newUserEmail);
 
     const payload = {

@@ -70,9 +70,9 @@ export class AuthController {
       access_token: string;
       expires_in: string;
       scope: string;
-    } = await this.authService.getAccessTokenDatas(code);
+    } = await this.authService.getAccessTokenDatasFromQueryCode(code);
 
-    const profile = await this.authService.getLinkedInProfile(
+    const profile = await this.authService.getLinkedInProfileFromAccessToken(
       tokenData.access_token,
     );
 
