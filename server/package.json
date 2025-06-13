@@ -69,6 +69,14 @@
     "typescript-eslint": "^8.32.1"
   },
   "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 18,
+        "functions": 10,
+        "lines": 36,
+        "statements": 40
+      }
+    },
     "moduleFileExtensions": [
       "js",
       "json",
