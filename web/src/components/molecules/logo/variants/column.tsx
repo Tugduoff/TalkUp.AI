@@ -21,6 +21,7 @@ export const ColumnLogo = ({ color = 'primary', ...props }: Props) => {
     <div
       {...props}
       className={`flex flex-col items-center justify-center gap-2 h-20 ${props.className || ''}`}
+      data-testid="column-logo"
     >
       <LogoSvg color={color} size={32} />
       <h1

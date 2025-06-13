@@ -4,6 +4,6 @@ description: 'Run units Tests'
 runs:
   using: 'composite'
   steps:
-    - name: 'Run npm test'
-      run: npm run test
+    - name: 'Run npm test server'
+      run: npm run test:server
       shell: bash
