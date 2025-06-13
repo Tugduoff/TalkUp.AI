@@ -37,6 +37,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/tests/setupTests.ts',
     css: true,
+    exclude: ['tests/', 'node_modules/', 'dist/'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
@@ -51,6 +52,7 @@ export default defineConfig({
         'src/routeTree.gen.ts',
         'src/vite-env.d.ts',
         'eslint.config.js',
+        'tests/',
       ],
       thresholds: {
         statements: 80,
