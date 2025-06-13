@@ -59,6 +59,9 @@ jobs:
       - name: Run units tests command
         uses: ./.github/actions/run-units-tests
 
+      - name: Run e2e tests command
+        uses: ./.github/actions/run-e2e-tests
+
   push_mirror:
     needs: tests_run
     runs-on: ubuntu-latest
