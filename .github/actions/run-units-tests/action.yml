@@ -11,3 +11,7 @@ runs:
     - name: 'Run unit tests web'
       run: npm run test:web
       shell: bash
+
+    - name: 'Run unit tests coverage report'
+      run: npm run test:coverage:web
+      shell: bash
