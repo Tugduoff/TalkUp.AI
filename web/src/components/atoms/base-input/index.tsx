@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface Props {
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   type?: string;
   placeholder?: string;
   name?: string;
@@ -29,14 +29,14 @@ interface Props {
  * @returns {JSX.Element} The rendered input component
  */
 export const BaseInput: React.FC<Props> = ({
-  type = 'text',
-  placeholder = 'Enter text',
-  name = 'input',
   value = '',
-  onChange = () => {},
+  type = 'text',
+  name = 'input',
+  placeholder = 'Enter text',
   disabled = false,
   readOnly = false,
   required = false,
+  onChange = () => {},
   ...props
 }: Props) => {
   return (
@@ -46,13 +46,17 @@ export const BaseInput: React.FC<Props> = ({
       id={name}
       name={name}
       type={type}
+      role="textbox"
       placeholder={placeholder}
       value={value}
       onChange={onChange}
       disabled={disabled}
+      aria-disabled={disabled}
       readOnly={readOnly}
+      aria-readonly={readOnly}
       required={required}
-      className="px-4 py-2 text-sm font-normal transition-colors duration-200 ease-in-out border rounded-sm border-border-strong placeholder:text font-display focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50"
+      aria-required={required}
+      className={`px-4 py-2 text-sm font-normal transition-colors duration-200 ease-in-out border rounded-sm border-border-strong placeholder:text font-display focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50 ${props.className || ''}`}
     />
   );
 };

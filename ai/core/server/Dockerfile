@@ -11,7 +11,7 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.31.6/cmake-3.31.6
 WORKDIR /app
 COPY . .
 
-RUN cmake -B build -S . && cmake --build build
+RUN rm -rf build && cmake -B build -S . && cmake --build build
 
 FROM debian:bullseye-slim
 
@@ -21,5 +21,6 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 COPY --from=builder /app/build/talkup_ai_mic_server /app/talkup_ai_mic_server
+COPY --from=builder /app/services.json /app/services.json
 
 CMD ["./talkup_ai_mic_server"]
