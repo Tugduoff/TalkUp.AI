@@ -1,3 +1,8 @@
+/**
+ * Interface representing the structure of a LinkedIn profile.
+ * This interface defines the properties that are expected in the LinkedIn profile
+ * response after a successful LinkedIn OAuth 2.0 authentication flow.
+ */
 export interface LinkedInProfile {
   sub: string;
   email_verified: boolean;
