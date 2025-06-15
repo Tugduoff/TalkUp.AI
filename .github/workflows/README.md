@@ -31,6 +31,27 @@ This job runs on an `ubuntu-latest` runner and performs the following steps:
      - **Prettier Formatting**: Verifies that the code is properly formatted.
      - **TypeScript Checks**: Runs TypeScript type-checking to catch type errors in the `web` folder.
 
+### 2. Tests Run Job
+
+This job depends on the successful completion of the `Code Quality Job` and runs on an `ubuntu-latest` runner. It performs the following steps:
+
+#### Steps:
+1. **Checkout Code**:
+   - Uses the [actions/checkout](https://github.com/actions/checkout) action to clone the repository into the runner.
+
+2. **Set Up Node.js and Cache Dependencies**:
+   - Uses the custom `setup-node-with-cache` action to:
+     - Set up Node.js version `23.x`.
+     - Cache and install dependencies for the `web` and `server` subprojects:
+       - `web`: Installs dependencies in the `web/` directory.
+       - `server`: Installs dependencies in the `server/` directory.
+
+3. **Run Unit Tests Coverage**:
+   - Executes the custom `run-coverage-check` action to run unit tests and check code coverage.
+
+4. **Run End-to-End (E2E) Tests**:
+   - Executes the custom `run-e2e-tests` action to run end-to-end tests.
+
 ## Custom Actions
 
 ### 1. `setup-node-with-cache`
@@ -49,3 +70,13 @@ This custom action is defined in `.github/actions/run-quality-check/action.yml`.
 - Runs ESLint to check for linting issues.
 - Runs Prettier to check for formatting issues.
 - Runs TypeScript (`tsc`) to ensure type safety in the `web` folder.
+
+### 3. `run-coverage-check`
+
+This custom action is defined in `.github/actions/run-coverage-check/action.yml`. It performs the following tasks:
+- Runs unit tests and generates a code coverage report.
+
+### 4. `run-e2e-tests`
+
+This custom action is defined in `.github/actions/run-e2e-tests/action.yml`. It performs the following tasks:
+- Runs end-to-end tests to validate the application's functionality.
