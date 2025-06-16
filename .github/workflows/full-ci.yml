@@ -72,7 +72,7 @@ jobs:
           fetch-depth: 0  # fetch full history to copy everything to mirror
 
       - name: Push to mirror repo action
-        uses: ./.github/actions/push-mirror
+        uses: ./.github/actions/push-to-mirror
         with:
           target_repo_url: ${{ env.MIRROR_REPO_URL }}
           ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
