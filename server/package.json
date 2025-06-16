@@ -17,7 +17,7 @@
     "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:coverage": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
@@ -69,6 +69,14 @@
     "typescript-eslint": "^8.32.1"
   },
   "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 18,
+        "functions": 10,
+        "lines": 36,
+        "statements": 40
+      }
+    },
     "moduleFileExtensions": [
       "js",
       "json",
