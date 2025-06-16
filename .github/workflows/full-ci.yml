@@ -6,6 +6,9 @@ on:
       - main
   pull_request:
 
+env:
+  MIRROR_REPO_URL: "git@github.com:EpitechPromo2027/G-EIP-600-NAN-6-1-eip-tugdual.de-reviers.git"
+
 jobs:
   code-quality:
     runs-on: ubuntu-latest
@@ -65,3 +68,6 @@ jobs:
     steps:
       - name: Push to mirror repo action
         uses: ./.github/actions/push-mirror
+        with:
+          target_repo_url: ${{ env.MIRROR_REPO_URL }}
+          ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
