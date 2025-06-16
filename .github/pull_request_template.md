@@ -21,10 +21,10 @@
     It fixes/adds/removes the bug/feature/anomaly.
 -->
 
-## Linked Github Ticket
+## Linked GitHub Ticket
 
 <!--
-    Insert id of the linked github ticket after the hastag (e.g. #30)
+    Insert id of the linked GitHub ticket after the hashtag (e.g. #30)
 -->
 
 Closes EpitechPromo2027/G-EIP-600-NAN-6-1-eip-tugdual.de-reviers#
