@@ -1,8 +1,13 @@
 name: 'Push to mirror Repository'
 description: 'Push to the Epitech mirror repository'
 
-env:
-  MIRROR_URL: "git@github.com:EpitechPromo2027/G-EIP-600-NAN-6-1-eip-tugdual.de-reviers.git"
+inputs:
+  target_repo_url:
+    description: 'The URL of the target repository to push to'
+    required: true
+  ssh_private_key:
+    description: 'The SSH private key (located in a secret in the mirror repository) for authentication with the target repository'
+    required: true
 
 runs:
   using: 'composite'
@@ -15,6 +20,6 @@ runs:
     - uses: pixta-dev/repository-mirroring-action@v1
       with:
         target_repo_url:
-          ${{ env.MIRROR_URL}}
+          ${{ inputs.target_repo_url }}
         ssh_private_key:
-          ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+          ${{ inputs.ssh_private_key }}
