@@ -66,6 +66,11 @@ jobs:
     # Only push to mirror if this is a merge of a pull request
     # if: github.event.action == 'closed' && github.event.pull_request.merged == true
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # fetch full history to copy everything to mirror
+
       - name: Push to mirror repo action
         uses: ./.github/actions/push-mirror
         with:
