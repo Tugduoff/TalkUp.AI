@@ -69,8 +69,8 @@ jobs:
     needs: tests_run
     runs-on: ubuntu-latest
 
-    # Only push to mirror if this is a merge of a pull request
-    if: github.event.action == 'closed' && github.event.pull_request.merged == true
+    # Only push to mirror if this targets main branch
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
