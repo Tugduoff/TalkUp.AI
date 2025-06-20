@@ -21,6 +21,7 @@ export const LineLogo = ({ color = 'primary', ...props }: Props) => {
     <div
       {...props}
       className={`flex items-center justify-center gap-3 h-10 ${props.className || ''}`}
+      data-testid="line-logo"
     >
       <LogoSvg color={color} size={38} />
       <h1

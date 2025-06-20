@@ -20,6 +20,7 @@ export const NoTextLogo = ({ color = 'primary', ...props }: Props) => {
     <div
       {...props}
       className={`flex items-center justify-center h-10 ${props.className || ''}`}
+      data-testid="no-text-logo"
     >
       <LogoSvg color={color} size={38} />
     </div>

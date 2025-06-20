@@ -1,4 +1,5 @@
-import { Body, Controller, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Query, Res } from "@nestjs/common";
+import { Response } from "express";
 import { UsePipes } from "@nestjs/common/decorators/core/use-pipes.decorator";
 
 import {
@@ -8,10 +9,12 @@ import {
   ApiUnprocessableEntityResponse,
   ApiTags,
   ApiOkResponse,
+  ApiInternalServerErrorResponse,
 } from "@nestjs/swagger";
 
 import { CreateUserDto } from "./dto/createUser.dto";
 import { LoginDto } from "./dto/login.dto";
+import { UpdatePasswordDto } from "./dto/updatePassword.dto";
 
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
@@ -60,12 +63,37 @@ export class AuthController {
     type: String,
   })
   @Put("updatePassword")
-  async updatePassword(
-    @Body() body: { phoneNumber: string; newPassword: string },
-  ) {
+  async updatePassword(@Body() body: UpdatePasswordDto) {
     return this.authService.changeUserPassword(
       body.phoneNumber,
       body.newPassword,
+    );
+  }
+
+  @ApiOkResponse({
+    description: "Redirects to LinkedIn for OAuth authentication.",
+    type: String,
+  })
+  @ApiInternalServerErrorResponse({
+    description: "Internal server error (problem fetching code).",
+  })
+  @Get("linkedin/callback")
+  async linkedInCallback(@Query("code") code: string, @Res() res: Response) {
+    const tokenData: {
+      access_token: string;
+      expires_in: string;
+      scope: string;
+    } = await this.authService.getAccessTokenDatasFromQueryCode(code);
+
+    const profile = await this.authService.getLinkedInProfileFromAccessToken(
+      tokenData.access_token,
+    );
+
+    const data: { accessToken: string } =
+      await this.authService.saveLinkedInUser(profile, tokenData);
+
+    res.redirect(
+      `${process.env.FRONTEND_URL}/linkedin-oauth-test.html?token=${data.accessToken}`,
     );
   }
 }
