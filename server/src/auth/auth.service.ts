@@ -150,6 +150,7 @@ export class AuthService {
       await this.userPasswordRepository.save(newUserPassword);
     } else {
       passwordEntity.password = hashedPassword;
+      await this.userPasswordRepository.save(passwordEntity);
     }
 
     return true;
