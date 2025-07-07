@@ -23,30 +23,39 @@ runs:
       run: |
         cat <<EOF > card.json
         {
-          "\$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-          "type": "AdaptiveCard",
-          "version": "1.5",
-          "body": [
-            {
-              "type": "TextBlock",
-              "size": "Large",
-              "weight": "Bolder",
-              "text": "$TITLE",
-              "wrap": true
-            },
-            {
-              "type": "TextBlock",
-              "text": "$DESCRIPTION",
-              "wrap": true
+        "type": "message",
+        "attachments": [
+          {
+            "contentType": "application/vnd.microsoft.card.adaptive",
+            "contentUrl": null,
+            "content": {
+              "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+              "type": "AdaptiveCard",
+              "version": "1.5",
+              "body": [
+                {
+                  "type": "TextBlock",
+                  "size": "Large",
+                  "weight": "Bolder",
+                  "text": "$TITLE",
+                  "wrap": true
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "$DESCRIPTION",
+                  "wrap": true
+                }
+              ],
+              "actions": [
+                {
+                  "type": "Action.OpenUrl",
+                  "title": "View Pull Request",
+                  "url": "$URL"
+                }
+              ]
             }
-          ],
-          "actions": [
-            {
-              "type": "Action.OpenUrl",
-              "title": "View Pull Request",
-              "url": "$URL"
-            }
-          ]
+          }
+        ]
         }
         EOF
 
