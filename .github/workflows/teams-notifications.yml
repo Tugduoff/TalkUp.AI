@@ -1,0 +1,62 @@
+name: PR Teams Notifications
+
+on:
+  pull_request:
+    types: [opened, review_requested, closed]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  notify-teams:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Notify PR opened
+        if: github.event.action == 'opened'
+        uses: ./.github/actions/notify-teams
+        with:
+          webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          title: "📥 New Pull Request Opened"
+          color: 65535
+          description: |
+            **By:** `${{ github.actor }}`
+            **Title:** `${{ github.event.pull_request.title }}`
+          url: ${{ github.event.pull_request.html_url }}
+
+      - name: Notify reviewer requested
+        if: github.event.action == 'review_requested'
+        uses: ./.github/actions/notify-teams
+        with:
+          webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          title: "👀 Review Requested"
+          description: |
+            **Requested:** `${{ github.event.requested_reviewer.login }}`
+            **By:** `${{ github.actor }}`
+          url: ${{ github.event.pull_request.html_url }}
+
+      - name: Notify PR reviewed
+        if: github.event.action == 'submitted'
+        uses: ./.github/actions/notify-teams
+        with:
+          webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          title: "💬 Pull Request Reviewed"
+          description: |
+            **Reviewer:** `${{ github.actor }}`
+            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
+            **Status:** `${{ github.event.review.state }}`
+            **Title:** `${{ github.event.pull_request.title }}`
+          url: ${{ github.event.pull_request.html_url }}
+
+      - name: Notify PR Merged
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true
+        uses: ./.github/actions/notify-teams
+        with:
+          webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          title: "✅ PR Merged"
+          description: |
+            **By:** `${{ github.actor }}`
+            **Title:** `${{ github.event.pull_request.title }}`
+          url: ${{ github.event.pull_request.html_url }}
+

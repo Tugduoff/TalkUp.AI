@@ -1,0 +1,34 @@
+# Teams notifications Action
+
+This custom GitHub Action is designed to send notifications to a Microsoft Teams channel. It can be used to inform about various events such as build completions, test results, or deployment statuses.
+
+## Features
+
+This action performs the following:
+- **Teams Notifications**: Sends messages to a specified Microsoft Teams channel using a webhook URL.
+- **Customizable Messages**: Allows customization of the message content, including title, description, and color.
+
+## Usage
+To use this action, you can include it as follows:
+
+```yaml
+name: Notify Teams
+on:
+  push:
+    branches:
+      - main
+jobs:
+    notify:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Notify Teams
+            uses: ./.github/actions/notify-teams
+            with:
+                webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
+                title: 'Build Notification'
+                description: 'The build has completed successfully.'
+                color: '3066993' # Optional, default is 3066993 (blue)
+                usernames: 'BhuvanArn' # Optional, it is used to mention users in the Teams channel
+```
+
+Be aware to use 'if' condition if you want to use it for a specific event, such as PR merge...
