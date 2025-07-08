@@ -18,7 +18,7 @@ jobs:
         uses: ./.github/actions/notify-teams
         with:
           webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
-          title: "📥 New Pull Request Opened : ${github.event.pull_request.title}"
+          title: "📥 New Pull Request Opened : ${{ github.event.pull_request.title }}"
           type: "opened"
           author: ${{ github.event.pull_request.user.login }}
           avatar_url: ${{ github.event.pull_request.user.avatar_url }}
@@ -54,7 +54,7 @@ jobs:
         uses: ./.github/actions/notify-teams
         with:
           webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
-          title: "✅ PR Merged : ${github.event.pull_request.title}"
+          title: "✅ PR Merged : ${{ github.event.pull_request.title }}"
           type: "closed"
           author: ${{ github.event.pull_request.user.login }}
           merger: ${{ github.event.pull_request.merged_by.login }}
