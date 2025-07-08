@@ -71,14 +71,16 @@ runs:
                       ]
                     }
                   ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": "Action.OpenUrl",
+                  "title": "View Pull Request",
+                  "url": "$PR_URL"
+                }
+              ]
             }
-          }
-        ]
-        "actions": [
-          {
-            "type": "Action.OpenUrl",
-            "title": "View Pull Request",
-            "url": "$PR_URL"
           }
         ]
         }
