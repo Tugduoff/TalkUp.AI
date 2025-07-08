@@ -17,7 +17,7 @@ inputs:
   avatar_url:
     description: 'Avatar URL for the card image (default is GitHub logo)'
     required: false
-    default: 'https://images.seeklogo.com/logo-png/27/2/github-logo
+    default: 'https://images.seeklogo.com/logo-png/27/2/github-logo-png_seeklogo-273183.png'
 
 runs:
   using: 'composite'
