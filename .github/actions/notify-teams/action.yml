@@ -1,99 +1,50 @@
-name: 'Notify Teams (Adaptive Card)'
-description: 'Send a Teams Adaptive Card message'
+name: 'Notify Teams'
+description: 'Send a Teams adaptive message'
 
 inputs:
-  title:
-    description: 'Card title'
+  webhook:
+    description: "Microsoft Teams webhook URL"
     required: true
-  description:
-    description: 'Main message content'
+  type:
+    description: "Type of notification: opened, closed, review_requested, reviewed"
     required: true
   pr_url:
-    description: 'URL for the action button (PR link)'
-    required: true
-  webhook:
-    description: 'Teams Incoming Webhook URL'
+    description: "URL to the Pull Request"
     required: true
   avatar_url:
-    description: 'Avatar URL for the card image (default is GitHub logo)'
+    description: "URL of the user avatar"
     required: false
-    default: 'https://images.seeklogo.com/logo-png/27/2/github-logo-png_seeklogo-273183.png'
+  author:
+    description: "GitHub username of the PR author"
+    required: false
+  merger:
+    description: "GitHub username of the merger"
+    required: false
+  reviewer:
+    description: "GitHub username of the reviewer"
+    required: false
+  review_state:
+    description: "State of the review (approved, changes_requested, commented)"
+    required: false
+  pr_title:
+    description: "Title of the Pull Request"
+    required: false
 
 runs:
   using: 'composite'
   steps:
-    - name: Send Adaptive Card to Teams
+    - name: Send message to Teams using script
       shell: bash
       run: |
-        cat <<EOF > card.json
-        {
-        "type": "message",
-        "attachments": [
-          {
-            "contentType": "application/vnd.microsoft.card.adaptive",
-            "contentUrl": null,
-            "content": {
-              "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-              "type": "AdaptiveCard",
-              "version": "1.5",
-              "body": [
-                {
-                  "type": "ColumnSet",
-                  "columns": [
-                    {
-                      "type": "Column",
-                      "width": "auto",
-                      "items": [
-                        {
-                          "type": "Image",
-                          "url": "$AVATAR_URL",
-                          "size": "Small",
-                          "style": "Person"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "Column",
-                      "width": "stretch",
-                      "items": [
-                        {
-                          "type": "TextBlock",
-                          "text": "$TITLE",
-                          "wrap": true,
-                          "weight": "Bolder",
-                          "size": "Medium"
-                        },
-                        {
-                          "type": "TextBlock",
-                          "text": "$DESCRIPTION",
-                          "wrap": true
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "actions": [
-                {
-                  "type": "Action.OpenUrl",
-                  "title": "View Pull Request",
-                  "url": "$PR_URL"
-                }
-              ]
-            }
-          }
-        ]
-        }
-        EOF
-
-        curl -H "Content-Type: application/json" \
-             -X POST \
-             -d @card.json \
-             "$WEBHOOK"
+        chmod +x ${{ github.action_path }}/entrypoint.sh
+        ${{ github.action_path }}/entrypoint.sh
       env:
-        TITLE: ${{ inputs.title }}
-        DESCRIPTION: ${{ inputs.description }}
-        PR_URL: ${{ inputs.pr_url }}
-        WEBHOOK: ${{ inputs.webhook }}
-        AVATAR_URL: ${{ inputs.avatar_url }}
-
+        TYPE: "${{ inputs.type }}"
+        WEBHOOK: "${{ inputs.webhook }}"
+        PR_URL: "${{ inputs.pr_url }}"
+        AVATAR_URL: "${{ inputs.avatar_url }}"
+        AUTHOR: "${{ inputs.author }}"
+        MERGER: "${{ inputs.merger }}"
+        REVIEWER: "${{ inputs.reviewer }}"
+        REVIEW_STATE: "${{ inputs.review_state }}"
+        PR_TITLE: "${{ inputs.pr_title }}"

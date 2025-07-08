@@ -18,12 +18,10 @@ jobs:
         uses: ./.github/actions/notify-teams
         with:
           webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
-          title: "📥 New Pull Request Opened"
+          title: "📥 New Pull Request Opened : ${github.event.pull_request.title}"
+          type: "opened"
+          author: ${{ github.event.pull_request.user.login }}
           avatar_url: ${{ github.event.pull_request.user.avatar_url }}
-          color: 65535
-          description: |
-            **By:** `${{ github.actor }}`
-            **Title:** `${{ github.event.pull_request.title }}`
           pr_url: ${{ github.event.pull_request.html_url }}
 
       - name: Notify reviewer requested
@@ -33,10 +31,9 @@ jobs:
           webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
           title: "👀 Review Requested"
           avatar_url: ${{ github.event.pull_request.user.avatar_url }}
-          color: 65535
-          description: |
-            **Requested:** `${{ github.event.requested_reviewer.login }}`
-            \n**By:** `${{ github.actor }}`
+          type: "review_requested"
+          author: ${{ github.event.pull_request.user.login }}
+          reviewer: ${{ github.event.requested_reviewer.login }}
           pr_url: ${{ github.event.pull_request.html_url }}
 
       - name: Notify PR reviewed
@@ -45,12 +42,11 @@ jobs:
         with:
           webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
           title: "💬 Pull Request Reviewed"
-          avatar_url: ${{ github.event.pull_request.user.avatar_url }}
-          description: |
-            **Reviewer:** `${{ github.actor }}`
-            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
-            **Status:** `${{ github.event.review.state }}`
-            **Title:** `${{ github.event.pull_request.title }}`
+          avatar_url: ${{ github.event.review.user.avatar_url }}
+          type: "reviewed"
+          author: ${{ github.event.pull_request.user.login }}
+          reviewer: ${{ github.event.review.user.login }}
+          review_state: ${{ github.event.review.state }}
           pr_url: ${{ github.event.pull_request.html_url }}
 
       - name: Notify PR Merged
@@ -58,10 +54,10 @@ jobs:
         uses: ./.github/actions/notify-teams
         with:
           webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
-          title: "✅ PR Merged"
-          avatar_url: ${{ github.event.pull_request.user.avatar_url }}
-          description: |
-            **By:** `${{ github.actor }}`
-            **Title:** `${{ github.event.pull_request.title }}`
+          title: "✅ PR Merged : ${github.event.pull_request.title}"
+          type: "closed"
+          author: ${{ github.event.pull_request.user.login }}
+          merger: ${{ github.event.pull_request.merged_by.login }}
+          avatar_url: ${{ github.event.pull_request.merged_by.avatar_url }}
           pr_url: ${{ github.event.pull_request.html_url }}
 
