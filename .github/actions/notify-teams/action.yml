@@ -14,6 +14,10 @@ inputs:
   webhook:
     description: 'Teams Incoming Webhook URL'
     required: true
+  avatar_url:
+    description: 'Avatar URL for the card image (default is GitHub logo)'
+    required: false
+    default: 'https://images.seeklogo.com/logo-png/27/2/github-logo
 
 runs:
   using: 'composite'
@@ -66,15 +70,15 @@ runs:
                         }
                       ]
                     }
-                  ],
-              "actions": [
-                {
-                  "type": "Action.OpenUrl",
-                  "title": "View Pull Request",
-                  "url": "$PR_URL"
-                }
-              ]
+                  ]
             }
+          }
+        ]
+        "actions": [
+          {
+            "type": "Action.OpenUrl",
+            "title": "View Pull Request",
+            "url": "$PR_URL"
           }
         ]
         }
@@ -89,5 +93,5 @@ runs:
         DESCRIPTION: ${{ inputs.description }}
         PR_URL: ${{ inputs.pr_url }}
         WEBHOOK: ${{ inputs.webhook }}
-        AVATAR_URL: ${{ inputs.avatar_url || 'https://images.seeklogo.com/logo-png/27/2/github-logo-png_seeklogo-273183.png' }}
+        AVATAR_URL: ${{ inputs.avatar_url }}
 
