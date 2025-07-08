@@ -14,18 +14,18 @@ MERGER="${MERGER:-}"
 REVIEWER="${REVIEWER:-}"
 REVIEW_STATE="${REVIEW_STATE:-}"  # "approved", "changes_requested", etc.
 
-# Compute color depending on review state if relevant
+# Compute color depending on review state if exists
 if [[ "$TYPE" == "reviewed" ]]; then
   case "$REVIEW_STATE" in
-    approved) CARD_COLOR="#36A64F" ;;            # Green
-    changes_requested) CARD_COLOR="#E03E2F" ;;   # Red
-    *) CARD_COLOR="#808080" ;;                   # Gray (neutral)
+    approved) CARD_COLOR="Good" ;;
+    changes_requested) CARD_COLOR="Attention" ;;
+    *) CARD_COLOR="Warning" ;;
   esac
 else
-  CARD_COLOR="#0078D4"  # Default blue for Teams
+  CARD_COLOR="#0078D4" # default
 fi
 
-# Compose message body based on type
+# message body based on type
 BODY_TEXT=""
 
 case "$TYPE" in
