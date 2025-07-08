@@ -25,10 +25,13 @@ jobs:
             uses: ./.github/actions/notify-teams
             with:
                 webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
-                title: 'Build Notification'
-                description: 'The build has completed successfully.'
-                color: '3066993' # Optional, default is 3066993 (blue)
-                usernames: 'BhuvanArn' # Optional, it is used to mention users in the Teams channel
+                title: 'Pull Request Merged'
+                description: 'A pull request has been merged successfully.'
+                merger: ${{ github.actor }}
+                type: 'closed'
+                author: ${{ github.event.pull_request.user.login }}
+                avatar_url: ${{ github.actor.avatar_url }}
+                pr_url: ${{ github.event.pull_request.html_url }}
 ```
 
 Be aware to use 'if' condition if you want to use it for a specific event, such as PR merge...
