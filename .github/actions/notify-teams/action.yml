@@ -8,8 +8,8 @@ inputs:
   description:
     description: 'Main message content'
     required: true
-  url:
-    description: 'URL for the action button (e.g., PR link)'
+  pr_url:
+    description: 'URL for the action button (PR link)'
     required: true
   webhook:
     description: 'Teams Incoming Webhook URL'
@@ -34,23 +34,44 @@ runs:
               "version": "1.5",
               "body": [
                 {
-                  "type": "TextBlock",
-                  "size": "Large",
-                  "weight": "Bolder",
-                  "text": "$TITLE",
-                  "wrap": true
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "$DESCRIPTION",
-                  "wrap": true
-                }
-              ],
+                  "type": "ColumnSet",
+                  "columns": [
+                    {
+                      "type": "Column",
+                      "width": "auto",
+                      "items": [
+                        {
+                          "type": "Image",
+                          "url": "$AVATAR_URL",
+                          "size": "Small",
+                          "style": "Person"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Column",
+                      "width": "stretch",
+                      "items": [
+                        {
+                          "type": "TextBlock",
+                          "text": "$TITLE",
+                          "wrap": true,
+                          "weight": "Bolder",
+                          "size": "Medium"
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "$DESCRIPTION",
+                          "wrap": true
+                        }
+                      ]
+                    }
+                  ],
               "actions": [
                 {
                   "type": "Action.OpenUrl",
                   "title": "View Pull Request",
-                  "url": "$URL"
+                  "url": "$PR_URL"
                 }
               ]
             }
@@ -66,5 +87,7 @@ runs:
       env:
         TITLE: ${{ inputs.title }}
         DESCRIPTION: ${{ inputs.description }}
-        URL: ${{ inputs.url }}
+        PR_URL: ${{ inputs.pr_url }}
         WEBHOOK: ${{ inputs.webhook }}
+        AVATAR_URL: ${{ inputs.avatar_url || 'https://images.seeklogo.com/logo-png/27/2/github-logo-png_seeklogo-273183.png' }}
+
