@@ -17,6 +17,7 @@ runs:
 
     - name: Cache npm Modules
       uses: actions/cache@v4
+      id: npm-cache
       with:
         path: |
           ${{ inputs.working-directory }}/node_modules
@@ -26,6 +27,7 @@ runs:
           ${{ runner.os }}-node-
 
     - name: Install Dependencies
+      if: steps.npm-cache.outputs.cache-hit != 'true'
       shell: bash
       run: npm ci
       working-directory: ${{ inputs.working-directory }}
