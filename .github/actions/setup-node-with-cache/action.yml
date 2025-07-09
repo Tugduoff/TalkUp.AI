@@ -1,10 +1,11 @@
 name: 'Setup Node.js with Cache for npm Dependencies'
-description: 'Sets up Node.js (v23.x) and caches/installs npm dependencies in a subdirectory'
+description: 'Sets up Node.js (v23.x) and caches/installs npm dependencies for workspace or subdirectory'
 
 inputs:
   working-directory:
-    description: 'The subdirectory containing the package.json and node_modules'
-    required: true
+    description: 'The subdirectory containing the package.json and node_modules (optional, defaults to root for workspace)'
+    required: false
+    default: '.'
 
 runs:
   using: 'composite'
@@ -17,11 +18,12 @@ runs:
     - name: Cache npm Modules
       uses: actions/cache@v4
       with:
-        path: ${{ inputs.working-directory }}/node_modules
+        path: |
+          ${{ inputs.working-directory }}/node_modules
+          ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles(format('{0}/package-lock.json', inputs.working-directory)) }}
         restore-keys: |
           ${{ runner.os }}-node-
-          ${{ runner.os }}-
 
     - name: Install Dependencies
       shell: bash
