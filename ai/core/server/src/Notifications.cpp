@@ -24,27 +24,27 @@ void talkup_network::Notifications::send_notification(const std::string &message
 
 void talkup_network::Notifications::send_start_notification(void)
 {
-    Notifications n = Notifications();
+    Notifications notif = Notifications();
 
-    std::cout << "[SERVER] " + n.types[0].second + " TalkUp.AI server started successfully!" << std::endl;
+    std::cout << "[SERVER] " + notif.types[0].second + " TalkUp.AI server started successfully!" << std::endl;
     auto services_list = talkup_network::MicroservicesManager::get_services_list();
-    std::cout << "[SERVER] " + n.types[0].second + " Microservices loaded: " << services_list.size() << std::endl;
+    std::cout << "[SERVER] " + notif.types[0].second + " Microservices loaded: " << services_list.size() << std::endl;
     for (const auto &service : services_list) {
-        std::cout << "[SERVICES] "+ n.types[0].second + " Service: " << service.first << std::endl;
+        std::cout << "[SERVICES] "+ notif.types[0].second + " Service: " << service.first << std::endl;
         for (const auto &info : service.second) {
             std::cout << "  " << info.first << ": " << info.second << std::endl;
         }
     }
 }
 
-std::string talkup_network::Notifications::get_notification_type(int id) const
+std::string talkup_network::Notifications::get_notification_type_by_id(int id) const
 {
     if (id < 0 || id >= static_cast<int>(types.size()))
         return "UNKNOWN";
     return types.at(id).first;
 }
 
-std::string talkup_network::Notifications::get_notification_emoji(int id) const
+std::string talkup_network::Notifications::get_notification_emoji_by_id(int id) const
 {
     if (id < 0 || id >= static_cast<int>(types.size()))
         return "❓";

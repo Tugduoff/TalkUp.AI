@@ -47,7 +47,7 @@ namespace talkup_network {
              * @param id The ID of the notification type.
              * @return Notification The notification type.
              */
-            std::string get_notification_type(int id) const;
+            std::string get_notification_type_by_id(int id) const;
 
             /**
              * @brief Get the notification emoji by its ID.
@@ -55,7 +55,7 @@ namespace talkup_network {
              * @param id The ID of the notification type.
              * @return std::string The emoji associated with the notification type.
              */
-            std::string get_notification_emoji(int id) const;
+            std::string get_notification_emoji_by_id(int id) const;
 
             std::unordered_map<int, std::pair<std::string, std::string>> types;
 
