@@ -42,9 +42,6 @@ src/**/*.d.ts
 !src/**/*.test.js
 !src/vite-env.d.ts
 
-# Note: routeTree.gen.ts should be committed (it's source code)
-# but routeTree.gen.d.ts should be ignored (it's a build artifact)
-
 # TypeScript build info
 *.tsbuildinfo
 
