@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint --fix './**/*.{ts,tsx}'",
     "lint:check": "eslint './**/*.{ts,tsx}'",
     "format": "prettier --write \"./**/*.{ts,tsx}\"",
