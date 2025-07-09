@@ -16,15 +16,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js and Cache Dependencies
+      - name: Setup Node.js and Install Dependencies
         uses: ./.github/actions/setup-node-with-cache
-        with:
-          working-directory: ./web
-
-      - name: Setup Node.js and Cache Dependencies for Server
-        uses: ./.github/actions/setup-node-with-cache
-        with:
-          working-directory: ./server
 
       - name: Run Code Quality Check
         uses: ./.github/actions/run-quality-check
@@ -36,18 +29,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js and Cache Dependencies
+      - name: Setup Node.js and Install Dependencies
         uses: ./.github/actions/setup-node-with-cache
-        with:
-          working-directory: ./web
 
-      - name: Setup Node.js and Cache Dependencies for Server
-        uses: ./.github/actions/setup-node-with-cache
-        with:
-          working-directory: ./server
-
-      # - name: Run units tests command
-      #   uses: ./.github/actions/run-units-tests - # Uncomment this line to run unit tests but they are already run by the coverage check
+      - name: Run units tests command
+        uses: ./.github/actions/run-units-tests
 
       - name: Run units tests coverage command
         uses: ./.github/actions/run-coverage-check
