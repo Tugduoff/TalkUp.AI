@@ -1,0 +1,29 @@
+name: "Task"
+description: "Create a new task"
+title: "[Task] <title>"
+labels: [task]
+body:
+  - type: input
+    id: task-summary
+    attributes:
+      label: "What needs to be done?"
+      description: "Short summary."
+      placeholder: "e.g. Refactor authentication module"
+    validations:
+      required: true
+  - type: textarea
+    id: task-details
+    attributes:
+      label: "Details"
+      description: "Describe the task and any requirements."
+      placeholder: "What, how, and any specifics."
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: "Extra info (optional)"
+      description: "Links, context, or notes."
+      placeholder: "Context, related issues, or dependencies."
+    validations:
+      required: false
