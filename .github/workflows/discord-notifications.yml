@@ -63,6 +63,7 @@ jobs:
           description: |
             **Author:** `${{ github.actor }}`\n
             **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
-            **Title:** `${{ github.event.pull_request.title }}`
-          usernames: "${{ github.actor }} ${{ github.event.pull_request.user.login }}"
+            **Title:** `${{ github.event.pull_request.title }}`\n
+            **Merged By:** `${{ github.event.pull_request.merged_by.login }}`
+          usernames: "${{ github.actor }}"
 
