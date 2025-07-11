@@ -1,7 +1,6 @@
 import { ButtonProps, ButtonVariant } from './types';
-import { ContainedButton } from './variants/contained';
-import { OutlinedButton } from './variants/outlined';
-import { TextButton } from './variants/text';
+import { buttonVariants } from './variants';
+import { twMerge } from 'tailwind-merge';
 
 interface Props extends ButtonProps {
   variant?: ButtonVariant;
@@ -20,7 +19,7 @@ interface Props extends ButtonProps {
  * @param {Function} [props.onClick=() => {}] - Callback fired when the button is clicked
  * @param {Object} props.props - Additional HTML button attributes to be spread to the button element
  *
- * @returns {JSX.Element | null} The button component or null if variant is unknown
+ * @returns {JSX.Element} The button component
  */
 export const Button = ({
   variant = 'contained',
@@ -31,45 +30,28 @@ export const Button = ({
   onClick = () => {},
   ...props
 }: Props) => {
-  switch (variant) {
-    case 'contained':
-      return (
-        <ContainedButton
-          {...props}
-          color={color}
-          disabled={disabled}
-          loading={loading}
-          onClick={onClick}
-        >
-          {children}
-        </ContainedButton>
-      );
-    case 'outlined':
-      return (
-        <OutlinedButton
-          {...props}
-          color={color}
-          disabled={disabled}
-          loading={loading}
-          onClick={onClick}
-        >
-          {children}
-        </OutlinedButton>
-      );
-    case 'text':
-      return (
-        <TextButton
-          {...props}
-          color={color}
-          disabled={disabled}
-          loading={loading}
-          onClick={onClick}
-        >
-          {children}
-        </TextButton>
-      );
-    default:
-      console.warn(`Unknown button variant: ${variant}`);
-      return null;
-  }
+  const styles = twMerge(
+    buttonVariants({
+      variant,
+      color,
+      disabled,
+      loading
+    }),
+    props.className
+  );
+
+  return (
+    <button
+      {...props}
+      className={styles}
+      disabled={disabled || loading}
+      onClick={disabled || loading ? undefined : onClick}
+      role="button"
+      aria-disabled={disabled || loading}
+      aria-busy={loading}
+    >
+      {loading && !disabled && <span className="loader" />}
+      {children}
+    </button>
+  );
 };

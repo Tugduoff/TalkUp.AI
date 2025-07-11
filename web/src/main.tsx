@@ -1,5 +1,6 @@
 import ToasterConfig from '@/components/atoms/toaster';
 import '@/styles/tailwind.css';
+import '@/styles/loader.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
