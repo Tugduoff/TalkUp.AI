@@ -14,7 +14,7 @@ import {
   user_phone_number,
 } from "@entities/user.entity";
 import { UsersService } from "@src/users/users.service";
-import { Mocked } from 'jest-mock';
+import { Mocked } from "jest-mock";
 
 describe("AuthService", () => {
   let service: AuthService;
@@ -59,8 +59,12 @@ describe("AuthService", () => {
           provide: UsersService,
           useValue: {
             findOne: jest.fn().mockResolvedValue(null),
-            create: jest.fn().mockResolvedValue({ id: 1, email: "test@example.com" }),
-            update: jest.fn().mockResolvedValue({ id: 1, email: "updated@example.com" }),
+            create: jest
+              .fn()
+              .mockResolvedValue({ id: 1, email: "test@example.com" }),
+            update: jest
+              .fn()
+              .mockResolvedValue({ id: 1, email: "updated@example.com" }),
           },
         },
         {
