@@ -34,3 +34,21 @@ coverage/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# TypeScript compiled output in source directories
+src/**/*.js
+src/**/*.d.ts
+!src/**/*.spec.js
+!src/**/*.test.js
+!src/vite-env.d.ts
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Vite config build artifacts
+vite.config.js
+vite.config.d.ts
+
+# Build cache directories
+.tanstack/
+.vite/
