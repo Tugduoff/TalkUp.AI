@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Res } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Query, Res } from "@nestjs/common";
 import { Response } from "express";
 import { UsePipes } from "@nestjs/common/decorators/core/use-pipes.decorator";
 
@@ -14,6 +14,7 @@ import {
 
 import { CreateUserDto } from "./dto/createUser.dto";
 import { LoginDto } from "./dto/login.dto";
+import { UpdatePasswordDto } from "./dto/updatePassword.dto";
 
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
@@ -55,6 +56,18 @@ export class AuthController {
       loginDto.password,
     );
     return this.authService.login(user);
+  }
+
+  @ApiOkResponse({
+    description: "The password has successfully changed",
+    type: String,
+  })
+  @Put("updatePassword")
+  async updatePassword(@Body() body: UpdatePasswordDto) {
+    return this.authService.changeUserPassword(
+      body.phoneNumber,
+      body.newPassword,
+    );
   }
 
   @ApiOkResponse({
