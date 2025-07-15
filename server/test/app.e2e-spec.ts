@@ -22,10 +22,10 @@ describe("AppController (e2e)", () => {
       .expect(200)
       .expect("Hello World!");
   });
-  it("/updatePassword (PUT)", async () => {
+  it("/auth/updatePassword (PUT)", async () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     await request(app.getHttpServer())
-      .post("/register")
+      .post("/auth/register")
       .send({
         username: "name",
         phoneNumber: "0600000000",
@@ -34,7 +34,7 @@ describe("AppController (e2e)", () => {
       .expect(201);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const res = await request(app.getHttpServer())
-      .put("/updatePassword")
+      .put("/auth/updatePassword")
       .send({
         phoneNumber: "0600000000",
         newPassword: "newSecurePassword123",
@@ -42,10 +42,10 @@ describe("AppController (e2e)", () => {
       .expect(200);
     expect(res.body as boolean).toEqual(true);
   });
-  it("/updatePassword (PUT)", async () => {
+  it("/auth/updatePassword (PUT)", async () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const res = await request(app.getHttpServer())
-      .put("/updatePassword")
+      .put("/auth/updatePassword")
       .send({
         phoneNumber: "0999999999", // non-existent number
         newPassword: "somePassword",
@@ -55,10 +55,10 @@ describe("AppController (e2e)", () => {
       "There is no user with that phone number",
     );
   });
-  it("/updatePassword (PUT)", async () => {
+  it("/auth/updatePassword (PUT)", async () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     await request(app.getHttpServer())
-      .put("/updatePassword")
+      .put("/auth/updatePassword")
       .send({}) // no data send
       .expect(400);
   });
