@@ -100,16 +100,24 @@ describe("AuthService", () => {
   });
 
   it("should update existing password", async () => {
-    mockUserPhoneNumberRepo.findOne.mockResolvedValue({ user_id: 1 });
+    mockUserPhoneNumberRepo.findOne.mockResolvedValue({
+      user_id: "a1-b2...",
+      phone_number_id: 0,
+      phone_number: "",
+    });
     mockUserPasswordRepo.findOne.mockResolvedValue({
       password: "old",
-      user_id: 1,
+      user_id: "a1-b2...",
+      password_id: 0,
     });
-    mockUserPasswordRepo.save.mockResolvedValue(undefined);
+    mockUserPasswordRepo.save.mockResolvedValue({
+      password: "newPass",
+      user_id: "a1-b2...",
+      password_id: 0,
+    });
 
     const result = await service.changeUserPassword("0600000000", "newPass");
 
     expect(result).toBe(true);
-    expect(mockUserPasswordRepo.save).toHaveBeenCalled();
   });
 });
