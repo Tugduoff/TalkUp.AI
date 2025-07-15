@@ -122,6 +122,40 @@ export class AuthService {
     return result.user;
   }
 
+  async changeUserPassword(
+    phone_number: string,
+    newUserPassword: string,
+  ): Promise<boolean> {
+    const phoneNumberEntity = await this.userPhoneNumberRepository.findOne({
+      where: { phone_number },
+    });
+
+    if (!phoneNumberEntity) {
+      throw new UnauthorizedException(
+        "There is no user with that phone number",
+      );
+    }
+
+    const hashedPassword = await hashPassword(newUserPassword);
+
+    const passwordEntity = await this.userPasswordRepository.findOne({
+      where: { user_id: phoneNumberEntity.user_id },
+    });
+
+    if (!passwordEntity) {
+      const newUserPassword = this.userPasswordRepository.create({
+        password: hashedPassword,
+        user_id: phoneNumberEntity.user_id,
+      });
+      await this.userPasswordRepository.save(newUserPassword);
+    } else {
+      passwordEntity.password = hashedPassword;
+      await this.userPasswordRepository.save(passwordEntity);
+    }
+
+    return true;
+  }
+
   login(user: user) {
     const payload = { sub: user.user_id };
     return {
