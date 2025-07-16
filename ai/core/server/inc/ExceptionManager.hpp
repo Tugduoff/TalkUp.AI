@@ -46,6 +46,11 @@ class ExceptionManager {
                 const char *what() const noexcept override;
         };
 
+        class ServerAlreadyRunningException : public std::exception {
+            public:
+                const char *what() const noexcept override;
+        };
+
     protected:
     private:
 };
