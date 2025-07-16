@@ -24,7 +24,13 @@ describe('Logo Component', () => {
       const { getByTestId } = render(<Logo />);
       const lineLogo = getByTestId('line-logo');
       expect(lineLogo).toBeInTheDocument();
-      expect(lineLogo).toHaveClass('flex', 'items-center', 'justify-center', 'gap-3', 'h-10');
+      expect(lineLogo).toHaveClass(
+        'flex',
+        'items-center',
+        'justify-center',
+        'gap-3',
+        'h-10',
+      );
       expect(lineLogo).toHaveClass('flex-row');
     });
 
@@ -32,7 +38,13 @@ describe('Logo Component', () => {
       const { getByTestId } = render(<Logo variant="line" />);
       const lineLogo = getByTestId('line-logo');
       expect(lineLogo).toBeInTheDocument();
-      expect(lineLogo).toHaveClass('flex', 'items-center', 'justify-center', 'gap-3', 'h-10');
+      expect(lineLogo).toHaveClass(
+        'flex',
+        'items-center',
+        'justify-center',
+        'gap-3',
+        'h-10',
+      );
       expect(lineLogo).toHaveClass('flex-row');
 
       const logoText = lineLogo.querySelector('h1');
@@ -44,7 +56,13 @@ describe('Logo Component', () => {
       const { getByTestId } = render(<Logo variant="column" />);
       const columnLogo = getByTestId('column-logo');
       expect(columnLogo).toBeInTheDocument();
-      expect(columnLogo).toHaveClass('flex', 'items-center', 'justify-center', 'gap-2', 'h-20');
+      expect(columnLogo).toHaveClass(
+        'flex',
+        'items-center',
+        'justify-center',
+        'gap-2',
+        'h-20',
+      );
       expect(columnLogo).toHaveClass('flex-col');
 
       const logoText = columnLogo.querySelector('h1');
@@ -56,17 +74,28 @@ describe('Logo Component', () => {
       const { getByTestId } = render(<Logo variant="no-text" />);
       const noTextLogo = getByTestId('no-text-logo');
       expect(noTextLogo).toBeInTheDocument();
-      expect(noTextLogo).toHaveClass('flex', 'items-center', 'justify-center', 'h-10');
+      expect(noTextLogo).toHaveClass(
+        'flex',
+        'items-center',
+        'justify-center',
+        'h-10',
+      );
 
       const logoText = noTextLogo.querySelector('h1');
       expect(logoText).not.toBeInTheDocument();
     });
 
     it('renders with custom className', () => {
-      const { getByTestId } = render(<Logo variant="line" className="custom-class" />);
+      const { getByTestId } = render(
+        <Logo variant="line" className="custom-class" />,
+      );
       const logoContainer = getByTestId('line-logo');
       expect(logoContainer).toHaveClass('custom-class');
-      expect(logoContainer).toHaveClass('flex', 'items-center', 'justify-center');
+      expect(logoContainer).toHaveClass(
+        'flex',
+        'items-center',
+        'justify-center',
+      );
     });
   });
 
@@ -146,7 +175,12 @@ describe('Logo Component', () => {
       const logoText = getByTestId('line-logo').querySelector('h1');
       expect(logoText).toBeInTheDocument();
       expect(logoText).toHaveTextContent('TalkUp');
-      expect(logoText).toHaveClass('text-primary', 'uppercase', 'font-display', 'font-extrabold');
+      expect(logoText).toHaveClass(
+        'text-primary',
+        'uppercase',
+        'font-display',
+        'font-extrabold',
+      );
     });
 
     it('shows text for column variant', () => {
@@ -154,7 +188,12 @@ describe('Logo Component', () => {
       const logoText = getByTestId('column-logo').querySelector('h1');
       expect(logoText).toBeInTheDocument();
       expect(logoText).toHaveTextContent('TalkUp');
-      expect(logoText).toHaveClass('text-primary', 'uppercase', 'font-display', 'font-extrabold');
+      expect(logoText).toHaveClass(
+        'text-primary',
+        'uppercase',
+        'font-display',
+        'font-extrabold',
+      );
     });
 
     it('does not show text for no-text variant', () => {
@@ -172,7 +211,7 @@ describe('Logo Component', () => {
   describe('Additional HTML Attributes', () => {
     it('passes additional props to the container', () => {
       const { getByTestId } = render(
-        <Logo variant="line" id="custom-id" data-custom="test" />
+        <Logo variant="line" id="custom-id" data-custom="test" />,
       );
       const logoContainer = getByTestId('line-logo');
       expect(logoContainer).toHaveAttribute('id', 'custom-id');
@@ -181,7 +220,7 @@ describe('Logo Component', () => {
 
     it('applies aria attributes correctly', () => {
       const { getByTestId } = render(
-        <Logo variant="column" aria-label="Company Logo" />
+        <Logo variant="column" aria-label="Company Logo" />,
       );
       const logoContainer = getByTestId('column-logo');
       expect(logoContainer).toHaveAttribute('aria-label', 'Company Logo');

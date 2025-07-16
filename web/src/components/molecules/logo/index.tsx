@@ -1,8 +1,8 @@
-import { cn } from '@/utils/cn';
 import LogoSvg from '@/components/atoms/logo-svg';
 import { LogoColor } from '@/components/atoms/logo-svg/types';
+import { cn } from '@/utils/cn';
 
-import { logoVariants, logoSizeMap, shouldShowText } from './variants';
+import { logoSizeMap, logoVariants, shouldShowText } from './variants';
 
 export type LogoVariant = 'line' | 'column' | 'no-text';
 
@@ -22,7 +22,12 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
  *
  * @returns {JSX.Element} The logo component
  */
-const Logo = ({ variant = 'line', color = 'primary', className, ...props }: Props) => {
+const Logo = ({
+  variant = 'line',
+  color = 'primary',
+  className,
+  ...props
+}: Props) => {
   const logoSize = logoSizeMap[variant];
   const showText = shouldShowText(variant);
 

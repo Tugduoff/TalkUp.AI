@@ -2,9 +2,7 @@ import { type VariantProps, cva } from 'class-variance-authority';
 
 export const logoVariants = cva(
   // Base styles
-  [
-    'flex items-center justify-center',
-  ],
+  ['flex items-center justify-center'],
   {
     variants: {
       variant: {
@@ -21,7 +19,7 @@ export const logoVariants = cva(
       variant: 'line',
       color: 'primary',
     },
-  }
+  },
 );
 
 export type LogoVariants = VariantProps<typeof logoVariants>;
