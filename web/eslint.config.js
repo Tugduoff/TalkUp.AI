@@ -9,7 +9,7 @@ export default tseslint.config(
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
-    ignores: ['src/routeTree.gen.ts'],
+    ignores: ['src/routeTree.gen.ts', 'src/routeTree.gen.d.ts'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
