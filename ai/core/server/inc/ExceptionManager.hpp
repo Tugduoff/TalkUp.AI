@@ -16,13 +16,13 @@ class ExceptionManager {
          * @brief Construct a new Exception Manager object
          *
          */
-        ExceptionManager();
+        ExceptionManager() = default;
 
         /**
          * @brief Destroy the Exception Manager object
          *
          */
-        ~ExceptionManager();
+        ~ExceptionManager() = default;
 
         // Notifications Categories
 

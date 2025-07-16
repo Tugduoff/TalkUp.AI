@@ -7,14 +7,6 @@
 
 #include "ExceptionManager.hpp"
 
-ExceptionManager::ExceptionManager()
-{
-}
-
-ExceptionManager::~ExceptionManager()
-{
-}
-
 const char *ExceptionManager::StartServerException::what() const noexcept
 {
     return "Failed to start the server.";
