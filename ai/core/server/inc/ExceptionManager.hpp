@@ -29,7 +29,7 @@ class ExceptionManager {
         // Server Categories
 
         /**
-         * @brief Exception thrown when if starting the server fails.
+         * @brief Throws an exception if the server does not start correctly
          *
          */
         class StartServerException : public std::exception {
@@ -38,7 +38,7 @@ class ExceptionManager {
         };
 
         /**
-         * @brief Exception thrown when if stopping the server fails.
+         * @brief Throws an exception if the server does not stop correctly
          *
          */
         class StopServerException : public std::exception {
