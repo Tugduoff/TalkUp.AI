@@ -28,6 +28,10 @@ protected:
     }
 };
 
+/**
+ * @brief Test the initialization of the server.
+ *
+ */
 TEST_F(ServerTest, ServerInitialization) {
     MockServer server("TalkUp.AI Server", "1.0.0", 8088);
     crow::SimpleApp app;
