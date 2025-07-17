@@ -20,7 +20,7 @@ namespace talkup_network {
              * @brief Construct a new Notifications object
              *
              */
-            Notifications() = default;
+            Notifications();
 
             /**
              * @brief Destroy the Notifications object
@@ -40,6 +40,24 @@ namespace talkup_network {
              * This will be called when the server starts.
              */
             static void send_start_notification(void);
+
+            /**
+             * @brief Get the notification type by its ID.
+             *
+             * @param id The ID of the notification type.
+             * @return Notification The notification type.
+             */
+            std::string get_notification_type_by_id(int id) const;
+
+            /**
+             * @brief Get the notification emoji by its ID.
+             *
+             * @param id The ID of the notification type.
+             * @return std::string The emoji associated with the notification type.
+             */
+            std::string get_notification_emoji_by_id(int id) const;
+
+            std::unordered_map<int, std::pair<std::string, std::string>> types;
 
         protected:
         private:

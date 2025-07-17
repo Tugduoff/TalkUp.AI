@@ -17,9 +17,11 @@ talkup_network::Server::Server(const std::string &server_name,
 
 talkup_network::Server::~Server()
 {
+    Notifications n = Notifications();
+
     if (__console_notification) {
         talkup_network::Notifications::send_notification(
-            "[INFO] 💡 TalkUp.AI server stopped successfully!");
+            "[SERVER] " + n.types[0].second + " TalkUp.AI server stopped successfully!");
     }
 }
 
@@ -41,7 +43,9 @@ bool talkup_network::Server::start_server(crow::SimpleApp &app)
     }
     catch (const std::exception &e)
     {
-        std::cerr << "[ERROR] " << e.what() << std::endl;
+        Notifications notif = Notifications();
+
+        std::cerr << "[ERROR]  " + notif.types[2].second + " " << e.what() << std::endl;
         return false;
     }
     return true;
@@ -49,9 +53,11 @@ bool talkup_network::Server::start_server(crow::SimpleApp &app)
 
 bool talkup_network::Server::stop_server(void)
 {
+    Notifications notif = Notifications();
+
     if (__console_notification) {
         talkup_network::Notifications::send_notification(
-            "[INFO] 💡 TalkUp.AI server is stopping...");
+            "[SERVER] " + notif.types[0].second + " Stopping TalkUp.AI server...");
     }
     is_running = false;
     return true;
@@ -74,12 +80,14 @@ int talkup_network::Server::get_port_number(void) const
 
 void talkup_network::Server::set_console_notification(const bool value)
 {
+    Notifications notif = Notifications();
+
     __console_notification = value;
     if (__console_notification) {
         talkup_network::Notifications::send_notification(
-            "[INFO] 💡 Console notifications enabled.");
+            "[SERVER] " + notif.types[0].second + " Console notifications enabled.");
     } else {
         talkup_network::Notifications::send_notification(
-            "[INFO] 💡 Console notifications disabled.");
+            "[SERVER] " + notif.types[0].second + " Console notifications disabled.");
     }
 }

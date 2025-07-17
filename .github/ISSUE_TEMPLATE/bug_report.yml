@@ -1,0 +1,45 @@
+name: "Bug Report"
+description: "Report a bug"
+title: "[Bug] <title>"
+labels: [bug]
+body:
+  - type: input
+    id: bug-summary
+    attributes:
+      label: "What's wrong?"
+      description: "Short summary."
+      placeholder: "e.g. App crashes on login"
+    validations:
+      required: true
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: "Steps to Reproduce"
+      description: "How do we trigger it?"
+      placeholder: "1. Go to...\n2. Click on...\n3. See error..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: "Expected"
+      description: "What should happen?"
+      placeholder: "Describe what you expected."
+    validations:
+      required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: "Actual"
+      description: "What actually happens?"
+      placeholder: "Describe what actually happens."
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: "Extra info (optional)"
+      description: "Logs, screenshots, or notes."
+      placeholder: "Context, screenshots, or related issues."
+    validations:
+      required: false

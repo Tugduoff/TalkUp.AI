@@ -1,5 +1,5 @@
 import { LogoColor } from '@/components/atoms/logo-svg/types';
-import { Logo } from '@/components/molecules/logo';
+import Logo from '@/components/molecules/logo';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import React from 'react';

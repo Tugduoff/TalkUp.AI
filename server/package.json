@@ -17,11 +17,12 @@
     "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:coverage": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/axios": "^4.0.0",
     "@nestjs/common": "^11.1.0",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.0",
@@ -29,6 +30,7 @@
     "@nestjs/platform-express": "^11.1.0",
     "@nestjs/swagger": "^11.2.0",
     "@nestjs/typeorm": "^11.0.0",
+    "axios": "^1.9.0",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -67,6 +69,14 @@
     "typescript-eslint": "^8.32.1"
   },
   "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 18,
+        "functions": 10,
+        "lines": 36,
+        "statements": 40
+      }
+    },
     "moduleFileExtensions": [
       "js",
       "json",
@@ -75,10 +85,20 @@
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.(t|j)s$": [
+        "ts-jest", {
+          "tsconfig": "tsconfig.json",
+          "useESM": true,
+          "isolatedModules": false
+        }
+      ]
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(t|j)s",
+      "!**/*.module.(t|j)s",
+      "!main.(t|j)s",
+      "!**/config/**",
+      "!**/entities/**"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
