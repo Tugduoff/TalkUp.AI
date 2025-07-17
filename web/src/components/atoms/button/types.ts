@@ -9,11 +9,13 @@ export type ButtonColor =
   | 'neutral'
   | 'error';
 
+export type ButtonSize = 'sm' | 'md' | 'lg';
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant;
   color?: ButtonColor;
-  disabled?: boolean;
+  size?: ButtonSize;
   loading?: boolean;
   children?: React.ReactNode;
-  onClick?: () => void;
 }
