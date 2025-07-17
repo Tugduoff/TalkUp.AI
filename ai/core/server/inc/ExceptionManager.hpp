@@ -29,7 +29,7 @@ class ExceptionManager {
         // Server Categories
 
         /**
-         * @brief Exception thrown when starting the server fails.
+         * @brief Exception thrown when if starting the server fails.
          *
          */
         class StartServerException : public std::exception {
@@ -38,7 +38,7 @@ class ExceptionManager {
         };
 
         /**
-         * @brief Exception thrown when stopping the server fails.
+         * @brief Exception thrown when if stopping the server fails.
          *
          */
         class StopServerException : public std::exception {
@@ -46,6 +46,10 @@ class ExceptionManager {
                 const char *what() const noexcept override;
         };
 
+        /**
+         * @brief Exception thrown when the server is already running.
+         *
+         */
         class ServerAlreadyRunningException : public std::exception {
             public:
                 const char *what() const noexcept override;
