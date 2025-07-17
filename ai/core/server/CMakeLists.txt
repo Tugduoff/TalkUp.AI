@@ -38,6 +38,7 @@ FetchContent_MakeAvailable(json)
 set(SOURCES
     src/Server.cpp
     src/Notifications.cpp
+    src/ExceptionManager.cpp
     src/network/Router.cpp
     src/network/MicroservicesManager.cpp
     main.cpp
