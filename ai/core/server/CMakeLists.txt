@@ -35,6 +35,17 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(json)
 
+# Google Test
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG release-1.12.1 # Utilisez une version stable
+)
+# Rendre Google Test disponible
+FetchContent_MakeAvailable(googletest)
+
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
 set(SOURCES
     src/Server.cpp
     src/Notifications.cpp
@@ -44,9 +55,19 @@ set(SOURCES
     main.cpp
 )
 
+set(SOURCES_TESTS
+    src/Server.cpp
+    src/Notifications.cpp
+    src/network/Router.cpp
+    src/network/MicroservicesManager.cpp
+)
+
 include_directories(${CMAKE_SOURCE_DIR}/inc)
 
 add_executable(talkup_ai_mic_server ${SOURCES})
+add_executable(tests tests/test_server_init.cpp
+              ${SOURCES_TESTS}
+              )
 
 file(GLOB_RECURSE HEADER_FILES "${CMAKE_SOURCE_DIR}/inc/*.hpp")
 
@@ -67,4 +88,26 @@ target_link_libraries(talkup_ai_mic_server
         cpr::cpr
         nlohmann_json::nlohmann_json
         pthread
+)
+
+# Tests setup
+target_include_directories(tests
+    PRIVATE
+        ${crow_SOURCE_DIR}/include
+        ${INCLUDE_DIRS}
+)
+
+target_link_libraries(tests
+    PRIVATE
+        cpr::cpr
+        nlohmann_json::nlohmann_json
+        pthread
+)
+
+target_link_libraries(tests
+  PRIVATE
+    GTest::gtest
+    GTest::gmock
+    GTest::gtest_main
+    GTest::gmock_main
 )
