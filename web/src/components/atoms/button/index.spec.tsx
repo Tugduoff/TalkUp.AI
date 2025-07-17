@@ -211,7 +211,7 @@ describe('Button Component', () => {
         name: 'Loading Primary',
       });
       expect(buttonElement).toHaveClass('cursor-wait');
-      expect(buttonElement).not.toHaveClass('opacity-50'); // Should not have disabled opacity
+      expect(buttonElement).not.toHaveClass('opacity-50');
     });
   });
 

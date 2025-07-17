@@ -30,8 +30,8 @@ describe('Logo Component', () => {
         'justify-center',
         'gap-3',
         'h-10',
+        'flex-row',
       );
-      expect(lineLogo).toHaveClass('flex-row');
     });
 
     it('renders line variant', () => {
@@ -44,8 +44,8 @@ describe('Logo Component', () => {
         'justify-center',
         'gap-3',
         'h-10',
+        'flex-row',
       );
-      expect(lineLogo).toHaveClass('flex-row');
 
       const logoText = lineLogo.querySelector('h1');
       expect(logoText).toBeInTheDocument();
@@ -62,8 +62,8 @@ describe('Logo Component', () => {
         'justify-center',
         'gap-2',
         'h-20',
+        'flex-col',
       );
-      expect(columnLogo).toHaveClass('flex-col');
 
       const logoText = columnLogo.querySelector('h1');
       expect(logoText).toBeInTheDocument();
@@ -90,8 +90,8 @@ describe('Logo Component', () => {
         <Logo variant="line" className="custom-class" />,
       );
       const logoContainer = getByTestId('line-logo');
-      expect(logoContainer).toHaveClass('custom-class');
       expect(logoContainer).toHaveClass(
+        'custom-class',
         'flex',
         'items-center',
         'justify-center',
