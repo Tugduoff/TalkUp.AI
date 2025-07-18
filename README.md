@@ -21,7 +21,9 @@ TalkUp.AI is an innovative artificial intelligence-powered platform designed to 
 
 ## Team & Origin
 
-This project is developed as part of the **Epitech Innovation Project (EIP)** program, representing a cutting-edge approach to AI-assisted communication training. The platform integrates multiple AI microservices to create a comprehensive solution for improving verbal and non-verbal communication skills.
+This project is developed as part of the **Epitech Innovative Project (EIP)** program, a two-year initiative spanning our **4th and 5th years** at Epitech. The EIP challenges students to **propose innovative solutions to real-world problems**, encouraging entrepreneurial thinking and technical excellence.
+
+Our team identified the critical need for effective communication training in professional environments and developed TalkUp.AI as a comprehensive AI-powered solution. The platform integrates multiple AI microservices to create a comprehensive solution for improving verbal and non-verbal communication skills.
 
 ## Project Idea
 
