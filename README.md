@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Visitor Count](https://profile-counter.glitch.me/Tugduoff/count.svg)
+![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=Tugduoff.TalkUp.AI)
 
 ## Tech Stack
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -75,23 +75,22 @@ The platform features a full-stack architecture with:
 - **AI Core**: C++ server managing multiple specialized microservices
 - **Microservices**: Python-based analyzers for speech, emotion, and behavior
 
-## Project GitHub Stats
+## Team Contributors
 
 <div align="center">
 
-![GitHub Repo Stats](https://github-readme-stats.vercel.app/api/pin/?username=Tugduoff&repo=TalkUp.AI&theme=radical)
+<a href="https://github.com/Tugduoff">
+  <img src="https://github.com/Tugduoff.png" width="60" height="60" style="border-radius: 50%; margin: 10px;" alt="Tugduoff"/>
+</a>
 
-![Repository Activity](https://github-readme-stats.vercel.app/api?username=Tugduoff&show_icons=true&theme=radical&include_all_commits=true&count_private=true)
+<!-- Add more team members here when they join -->
+<!-- 
+<a href="https://github.com/username2">
+  <img src="https://github.com/username2.png" width="60" height="60" style="border-radius: 50%; margin: 10px;" alt="username2"/>
+</a>
+-->
 
-![Code Frequency](https://github-readme-stats.vercel.app/api/top-langs/?username=Tugduoff&layout=compact&theme=radical&langs_count=8)
-
-</div>
-
-## Contributors
-
-<div align="center">
-
-[![Contributors](https://contrib.rocks/image?repo=Tugduoff/TalkUp.AI)](https://github.com/Tugduoff/TalkUp.AI/graphs/contributors)
+<p><em>Click on profile pictures to visit team member profiles</em></p>
 
 </div>
 
