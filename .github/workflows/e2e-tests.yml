@@ -9,6 +9,7 @@ on:
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
+    if: github.repository == 'Tugduoff/TalkUp.AI'
     container:
       image: mcr.microsoft.com/playwright:v1.53.2-jammy
     steps:
