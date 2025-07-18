@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Visitor Count](https://profile-counter.glitch.me/tugdual/count.svg)
+![Visitor Count](https://profile-counter.glitch.me/Tugduoff/count.svg)
 
 ## Tech Stack
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -13,10 +13,10 @@
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 
 ## Project Stats
-![GitHub stars](https://img.shields.io/github/stars/tugdual/TalkUp.AI?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/tugdual/TalkUp.AI?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/tugdual/TalkUp.AI?style=for-the-badge)
-![GitHub license](https://img.shields.io/github/license/tugdual/TalkUp.AI?style=for-the-badge)
+![GitHub stars](https://img.shields.io/github/stars/Tugduoff/TalkUp.AI?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/Tugduoff/TalkUp.AI?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/Tugduoff/TalkUp.AI?style=for-the-badge)
+![GitHub license](https://img.shields.io/github/license/Tugduoff/TalkUp.AI?style=for-the-badge)
 
 ## Daily Dev Quote
 [![Readme Quotes](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical)](https://github.com/piyushsuthar/github-readme-quotes)
@@ -75,13 +75,15 @@ The platform features a full-stack architecture with:
 - **AI Core**: C++ server managing multiple specialized microservices
 - **Microservices**: Python-based analyzers for speech, emotion, and behavior
 
-## GitHub Stats
+## Project GitHub Stats
 
 <div align="center">
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=tugdual&show_icons=true&theme=radical&include_all_commits=true&count_private=true)
+![GitHub Repo Stats](https://github-readme-stats.vercel.app/api/pin/?username=Tugduoff&repo=TalkUp.AI&theme=radical)
 
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=tugdual&layout=compact&theme=radical)
+![Repository Activity](https://github-readme-stats.vercel.app/api?username=Tugduoff&show_icons=true&theme=radical&include_all_commits=true&count_private=true)
+
+![Code Frequency](https://github-readme-stats.vercel.app/api/top-langs/?username=Tugduoff&layout=compact&theme=radical&langs_count=8)
 
 </div>
 
@@ -89,7 +91,7 @@ The platform features a full-stack architecture with:
 
 <div align="center">
 
-[![Contributors](https://contrib.rocks/image?repo=tugdual/TalkUp.AI)](https://github.com/tugdual/TalkUp.AI/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=Tugduoff/TalkUp.AI)](https://github.com/Tugduoff/TalkUp.AI/graphs/contributors)
 
 </div>
 
