@@ -2,8 +2,6 @@
 
 <div align="center">
 
-![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=Tugduoff.TalkUp.AI)
-
 ## Tech Stack
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
@@ -13,6 +11,7 @@
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 
 ## Project Stats
+![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=Tugduoff.TalkUp.AI)
 ![GitHub stars](https://img.shields.io/github/stars/Tugduoff/TalkUp.AI?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/Tugduoff/TalkUp.AI?style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues/Tugduoff/TalkUp.AI?style=for-the-badge)
@@ -80,15 +79,20 @@ The platform features a full-stack architecture with:
 <div align="center">
 
 <a href="https://github.com/Tugduoff">
-  <img src="https://github.com/Tugduoff.png" width="60" height="60" style="border-radius: 50%; margin: 10px;" alt="Tugduoff"/>
+  <img src="https://github.com/Tugduoff.png" width="60" height="60" alt="Tugduoff"/>
 </a>
-
-<!-- Add more team members here when they join -->
-<!-- 
-<a href="https://github.com/username2">
-  <img src="https://github.com/username2.png" width="60" height="60" style="border-radius: 50%; margin: 10px;" alt="username2"/>
+<a href="https://github.com/BhuvanArn">
+  <img src="https://github.com/BhuvanArn.png" width="60" height="60" alt="BhuvanArn"/>
 </a>
--->
+<a href="https://github.com/Andriamanampisoa">
+  <img src="https://github.com/Andriamanampisoa.png" width="60" height="60" alt="Andriamanampisoa"/>
+</a>
+<a href="https://github.com/eregine">
+  <img src="https://github.com/eregine.png" width="60" height="60" alt="eregine"/>
+</a>
+<a href="https://github.com/badarouzia">
+  <img src="https://github.com/badarouzia.png" width="60" height="60" alt="badarouzia"/>
+</a>
 
 <p><em>Click on profile pictures to visit team member profiles</em></p>
 
