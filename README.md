@@ -10,15 +10,8 @@
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 
-## Project Stats
-![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=Tugduoff.TalkUp.AI)
-![GitHub stars](https://img.shields.io/github/stars/Tugduoff/TalkUp.AI?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/Tugduoff/TalkUp.AI?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/Tugduoff/TalkUp.AI?style=for-the-badge)
-![GitHub license](https://img.shields.io/github/license/Tugduoff/TalkUp.AI?style=for-the-badge)
-
 ## Daily Dev Quote
-[![Readme Quotes](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical)](https://github.com/piyushsuthar/github-readme-quotes)
+[![Readme Quotes](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=react)](https://github.com/piyushsuthar/github-readme-quotes)
 
 </div>
 
