@@ -2,11 +2,6 @@ import { usePostRegister } from '@/hooks/auth/useServices';
 import { validateUsername } from '@/utils/validateUsername';
 import { useForm } from '@tanstack/react-form';
 
-<<<<<<< HEAD:web/src/components/molecules/auth/SignUpForm.tsx
-import { Country, PhoneNumberInputProps } from './phone-number/type';
-
-=======
->>>>>>> main:web/src/components/molecules/auth/sign-up-form/index.tsx
 /**
  * A form component for user registration.
  *

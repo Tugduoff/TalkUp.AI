@@ -1,5 +1,8 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Country, PhoneNumberInputProps } from './type'; //
+import React, { useCallback, useEffect, useState } from 'react';
+
+import { Country, PhoneNumberInputProps } from './type';
+
+//
 
 const countries: Country[] = [
   { name: 'United States', code: 'US', flag: '🇺🇸', dialCode: '+1' },
@@ -56,8 +59,12 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   readOnly = false,
   disabled = false,
 }) => {
-  const [selectedCountry, setSelectedCountry] = useState<string>(value?.countryCode || defaultCountryCode);
-  const [phoneNumber, setPhoneNumber] = useState<string>(value?.phoneNumber || '');
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    value?.countryCode || defaultCountryCode,
+  );
+  const [phoneNumber, setPhoneNumber] = useState<string>(
+    value?.phoneNumber || '',
+  );
 
   useEffect(() => {
     if (value) {
@@ -71,7 +78,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
       setSelectedCountry(countryCode);
       onChange?.({ countryCode, phoneNumber });
     },
-    [onChange, phoneNumber]
+    [onChange, phoneNumber],
   );
 
   const handlePhoneNumberChange = useCallback(
@@ -80,7 +87,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
       setPhoneNumber(newNumber);
       onChange?.({ countryCode: selectedCountry, phoneNumber: newNumber });
     },
-    [onChange, selectedCountry]
+    [onChange, selectedCountry],
   );
 
   return (
