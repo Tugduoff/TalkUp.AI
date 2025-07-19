@@ -1,0 +1,17 @@
+name: 'Playwright Tests'
+description: 'Run Playwright e2e tests'
+runs:
+  using: 'composite'
+  steps:
+    - name: Run Playwright e2e tests web
+      shell: bash
+      run: npm run e2e --workspace=web
+      env:
+        HOME: /root
+
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: ./web/playwright-report/
+        retention-days: 14

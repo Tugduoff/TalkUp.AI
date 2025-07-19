@@ -1,30 +1,52 @@
+import LogoSvg from '@/components/atoms/logo-svg';
 import { LogoColor } from '@/components/atoms/logo-svg/types';
+import { cn } from '@/utils/cn';
 
-import { ColumnLogo } from './variants/column';
-import { LineLogo } from './variants/line';
-import { NoTextLogo } from './variants/no-text';
+import { logoSizeMap, logoVariants, shouldShowText } from './variants';
 
-type LogoVariant = 'line' | 'column' | 'no-text';
+export type LogoVariant = 'line' | 'column' | 'no-text';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   variant?: LogoVariant;
   color?: LogoColor;
 }
 
-export const Logo = ({
+/**
+ * Logo component that renders different variants of the TalkUp logo using CVA.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {'line' | 'column' | 'no-text'} [props.variant='line'] - The logo layout variant
+ * @param {'primary' | 'accent'} [props.color='primary'] - The color scheme for the logo
+ * @param {string} [props.className] - Additional CSS classes
+ *
+ * @returns {JSX.Element} The logo component
+ */
+const Logo = ({
   variant = 'line',
   color = 'primary',
+  className,
   ...props
 }: Props) => {
-  switch (variant) {
-    case 'line':
-      return <LineLogo {...props} color={color} />;
-    case 'column':
-      return <ColumnLogo {...props} color={color} />;
-    case 'no-text':
-      return <NoTextLogo {...props} color={color} />;
-    default:
-      console.warn(`Unknown logo variant: ${variant}`);
-      return null;
-  }
+  const logoSize = logoSizeMap[variant];
+  const showText = shouldShowText(variant);
+
+  return (
+    <div
+      {...props}
+      className={cn(logoVariants({ variant }), className)}
+      data-testid={`${variant}-logo`}
+    >
+      <LogoSvg color={color} size={logoSize} />
+      {showText && (
+        <h1
+          className={`text-[20px] leading-[20px] text-${color} uppercase font-display font-extrabold tracking-tight select-none`}
+        >
+          TalkUp
+        </h1>
+      )}
+    </div>
+  );
 };
+
+export default Logo;

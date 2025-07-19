@@ -5,6 +5,24 @@ interface Props {
   size?: number;
 }
 
+/**
+ * A component that renders the TalkUp.AI logo as an SVG.
+ *
+ * @component
+ * @param {Object} props - The component props
+ * @param {'primary' | 'accent'} [props.color='primary'] - The color of the logo. This is used as a CSS class in the format `fill-${color}`.
+ * @param {number} [props.size=100] - The size of the logo in pixels. Applied to both width and height.
+ *
+ * @returns {JSX.Element} An SVG element representing the TalkUp.AI logo
+ *
+ * @example
+ * // Default usage
+ * <LogoSvg />
+ *
+ * @example
+ * // With custom color and size
+ * <LogoSvg color="secondary" size={50} />
+ */
 const LogoSvg = ({ color = 'primary', size = 100 }: Props) => {
   const fill = `fill-${color}`;
 
@@ -13,6 +31,7 @@ const LogoSvg = ({ color = 'primary', size = 100 }: Props) => {
       className={fill}
       width={size}
       height={size}
+      role="img"
       viewBox="0 0 78 75"
       xmlns="http://www.w3.org/2000/svg"
     >

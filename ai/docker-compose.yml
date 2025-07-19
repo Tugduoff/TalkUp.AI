@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+
+  server_cpp:
+    build:
+      context: ./core/server
+      dockerfile: Dockerfile
+    container_name: ai_server
+    ports:
+      - "8083:8083"
+    depends_on:
+      - behavior_analyzer
+      - emotional_analyzer
+      - speech_to_text
+      - text_to_speech
+      - verbal_analyzer
+
+  behavior_analyzer:
+    build:
+      context: ./microservices/behavior-analyzer
+    container_name: behavior_analyzer_services
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "5051:5000"
+
+  emotional_analyzer:
+    build:
+      context: ./microservices/emotional-analyzer
+    container_name: emotional_analyzer_services
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "5052:5000"
+
+  speech_to_text:
+    build:
+      context: ./microservices/speech-to-text
+    container_name: speech_to_text_services
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "5053:5000"
+
+  text_to_speech:
+    build:
+      context: ./microservices/text-to-speech
+    container_name: text_to_speech_services
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "5054:5000"
+
+  verbal_analyzer:
+    build:
+      context: ./microservices/verbal-analyzer
+    container_name: verbal_analyzer_services
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "5055:5000"

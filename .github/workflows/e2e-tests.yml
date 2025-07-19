@@ -1,0 +1,23 @@
+name: End-to-End Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+    if: github.repository == 'Tugduoff/TalkUp.AI'
+    container:
+      image: mcr.microsoft.com/playwright:v1.53.2-jammy
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js and Install Dependencies
+        uses: ./.github/actions/setup-node-with-cache
+
+      - name: Run e2e tests command
+        uses: ./.github/actions/run-e2e-tests

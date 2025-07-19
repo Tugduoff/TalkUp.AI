@@ -6,6 +6,8 @@ import {
   JoinColumn,
 } from "typeorm";
 
+import { AuthProvider } from "@common/enums/AuthProvider";
+
 @Entity()
 export class user {
   @PrimaryGeneratedColumn("uuid")
@@ -40,6 +42,52 @@ export class user {
 
   @Column({ default: new Date() })
   updated_at: Date;
+
+  @Column({
+    enum: AuthProvider,
+    type: "enum",
+    nullable: false,
+    default: AuthProvider.MANUAL,
+    comment: "Authentication provider (e.g., manual, linkedin)",
+  })
+  provider: string;
+}
+
+@Entity()
+export class user_oauth {
+  @PrimaryGeneratedColumn()
+  oauth_id: number;
+
+  @Column({
+    enum: AuthProvider,
+    type: "enum",
+    nullable: false,
+    default: AuthProvider.LINKEDIN,
+    comment: "Authentication provider (e.g., manual, linkedin)",
+  })
+  provider: string;
+
+  @Column({ nullable: false })
+  access_token: string;
+
+  @Column({ nullable: true })
+  refresh_token: string;
+
+  @Column({ nullable: true })
+  expires_in: string;
+
+  @Column({ nullable: true })
+  refresh_token_expires_in: string;
+
+  @Column({ nullable: true })
+  scope: string; // Scopes granted by oauth
+
+  @OneToOne(() => user)
+  @JoinColumn({ name: "user_id" })
+  user_id: string;
+
+  @Column({ nullable: true, default: new Date() })
+  last_updated_at: Date;
 }
 
 /**
@@ -84,9 +132,9 @@ export class user_password {
  * This allows for a one-to-one relationship between a user and their phone number.
  */
 @Entity()
-export class user_phonenumber {
+export class user_phone_number {
   @PrimaryGeneratedColumn()
-  phonenumber_id: number;
+  phone_number_id: number;
 
   @OneToOne(() => user)
   @JoinColumn({ name: "user_id" })

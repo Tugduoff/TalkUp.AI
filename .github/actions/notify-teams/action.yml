@@ -1,0 +1,50 @@
+name: 'Notify Teams'
+description: 'Send a Teams adaptive message'
+
+inputs:
+  webhook:
+    description: "Microsoft Teams webhook URL"
+    required: true
+  type:
+    description: "Type of notification: opened, closed, review_requested, reviewed"
+    required: true
+  pr_url:
+    description: "URL to the Pull Request"
+    required: true
+  avatar_url:
+    description: "URL of the user avatar"
+    required: false
+  author:
+    description: "GitHub username of the PR author"
+    required: false
+  merger:
+    description: "GitHub username of the merger"
+    required: false
+  reviewer:
+    description: "GitHub username of the reviewer"
+    required: false
+  review_state:
+    description: "State of the review (approved, changes_requested, commented)"
+    required: false
+  title:
+    description: "Title of the teams message"
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Send message to Teams using script
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/entrypoint.sh
+        ${{ github.action_path }}/entrypoint.sh
+      env:
+        TYPE: "${{ inputs.type }}"
+        WEBHOOK: "${{ inputs.webhook }}"
+        PR_URL: "${{ inputs.pr_url }}"
+        AVATAR_URL: "${{ inputs.avatar_url }}"
+        AUTHOR: "${{ inputs.author }}"
+        MERGER: "${{ inputs.merger }}"
+        REVIEWER: "${{ inputs.reviewer }}"
+        REVIEW_STATE: "${{ inputs.review_state }}"
+        TITLE: "${{ inputs.title }}"

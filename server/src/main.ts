@@ -1,8 +1,9 @@
 import { NestFactory } from "@nestjs/core";
+import { ValidationPipe } from "@nestjs/common";
 
 import { AppModule } from "./app.module";
 
-import initSwagger from "./config/swagger.config";
+import initSwagger from "@config/swagger.config";
 
 // dotenv
 import * as dotenv from "dotenv";
@@ -10,14 +11,15 @@ dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
-  const port = process.env.SERVER_PORT || 3000;
+  const port = process.env.SERVER_PORT ?? 3000;
 
+  app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix("v1/api");
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || "*",
-    methods: process.env.CORS_METHODS || "GET,PUT,PATCH,POST,DELETE",
-    allowedHeaders: process.env.CORS_ALLOWED_HEADERS || "Content-Type, Accept",
-    exposedHeaders: process.env.CORS_EXPOSED_HEADERS || "Content-Type, Accept",
+    origin: process.env.CORS_ORIGIN ?? "*",
+    methods: process.env.CORS_METHODS ?? "GET,PUT,PATCH,POST,DELETE",
+    allowedHeaders: process.env.CORS_ALLOWED_HEADERS ?? "Content-Type, Accept",
+    exposedHeaders: process.env.CORS_EXPOSED_HEADERS ?? "Content-Type, Accept",
   });
 
   initSwagger(app);

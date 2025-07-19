@@ -1,0 +1,20 @@
+name: 'Push to mirror Repository'
+description: 'Push to the Epitech mirror repository'
+
+inputs:
+  target_repo_url:
+    description: 'The URL of the target repository to push to'
+    required: true
+  ssh_private_key:
+    description: 'The SSH private key (located in a secret in the mirror repository) for authentication with the target repository'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: pixta-dev/repository-mirroring-action@v1
+      with:
+        target_repo_url:
+          ${{ inputs.target_repo_url }}
+        ssh_private_key:
+          ${{ inputs.ssh_private_key }}

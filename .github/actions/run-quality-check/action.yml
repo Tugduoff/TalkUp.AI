@@ -12,6 +12,6 @@ runs:
       run: npm run format:check
       shell: bash
 
-    - name: 'Run tsc check in web'
+    - name: 'Run tsc check'
       run: npm run tsc:check
       shell: bash
