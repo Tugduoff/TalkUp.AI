@@ -6,6 +6,7 @@
 */
 
 #include "Server.hpp"
+#include "ExceptionManager.hpp"
 
 talkup_network::Server::Server(const std::string &server_name,
     const std::string &server_version, int port) : __server_name(server_name),
@@ -30,7 +31,7 @@ bool talkup_network::Server::start_server(crow::SimpleApp &app)
     try
     {
         if(is_running) {
-            throw std::runtime_error("Server is already running.");
+            throw ExceptionManager::ServerAlreadyRunningException();
         }
         router->set_routes_definitions(app);
         talkup_network::MicroservicesManager::load_microservices_info(

@@ -1,0 +1,21 @@
+name: Code Quality Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    if: github.repository == 'Tugduoff/TalkUp.AI'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js and Install Dependencies
+        uses: ./.github/actions/setup-node-with-cache
+
+      - name: Run Code Quality Check
+        uses: ./.github/actions/run-quality-check
