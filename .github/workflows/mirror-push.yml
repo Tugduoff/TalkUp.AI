@@ -1,0 +1,30 @@
+name: Mirror Repository
+
+on:
+  workflow_run:
+    workflows: ["Code Quality Check", "Unit Tests", "End-to-End Tests"]
+    types:
+      - completed
+    branches:
+      - main
+
+env:
+  MIRROR_REPO_URL: "git@github.com:EpitechPromo2027/G-EIP-600-NAN-6-1-eip-tugdual.de-reviers.git"
+
+jobs:
+  push_mirror:
+    runs-on: ubuntu-latest
+    
+    # Only push to mirror if all workflows succeeded and this is on main branch
+    if: github.repository == 'Tugduoff/TalkUp.AI' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # fetch full history to copy everything to mirror
+
+      - name: Push to mirror repo action
+        uses: ./.github/actions/push-to-mirror
+        with:
+          target_repo_url: ${{ env.MIRROR_REPO_URL }}
+          ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
