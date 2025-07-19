@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { Country, PhoneNumberInputProps } from './type';
 
-//
-
 const countries: Country[] = [
   { name: 'United States', code: 'US', flag: '🇺🇸', dialCode: '+1' },
   { name: 'Canada', code: 'CA', flag: '🇨🇦', dialCode: '+1' },
