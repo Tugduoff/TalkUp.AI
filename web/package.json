@@ -28,13 +28,8 @@
     "@tanstack/react-query-devtools": "^5.76.1",
     "@tanstack/react-router": "^1.115.2",
     "axios": "^1.9.0",
-<<<<<<< HEAD
-    "countries-ts": "^1.0.3",
-    "country-codes-list": "^2.0.0",
-=======
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
->>>>>>> main
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
