@@ -8,80 +8,188 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as SimulationsRouteImport } from './routes/simulations'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as ProgressionRouteImport } from './routes/progression'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as NotesRouteImport } from './routes/notes'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as DiaryRouteImport } from './routes/diary'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as CvAnalysisRouteImport } from './routes/cv-analysis'
-import { Route as AiChatRouteImport } from './routes/ai-chat'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
+// Import Routes
 
-const SimulationsRoute = SimulationsRouteImport.update({
+import { Route as rootRoute } from './routes/__root'
+import { Route as SimulationsImport } from './routes/simulations'
+import { Route as SignupImport } from './routes/signup'
+import { Route as ProgressionImport } from './routes/progression'
+import { Route as ProfileImport } from './routes/profile'
+import { Route as NotesImport } from './routes/notes'
+import { Route as LoginImport } from './routes/login'
+import { Route as DiaryImport } from './routes/diary'
+import { Route as DashboardImport } from './routes/dashboard'
+import { Route as CvAnalysisImport } from './routes/cv-analysis'
+import { Route as AiChatImport } from './routes/ai-chat'
+import { Route as AboutImport } from './routes/about'
+import { Route as IndexImport } from './routes/index'
+
+// Create/Update Routes
+
+const SimulationsRoute = SimulationsImport.update({
   id: '/simulations',
   path: '/simulations',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const SignupRoute = SignupRouteImport.update({
+
+const SignupRoute = SignupImport.update({
   id: '/signup',
   path: '/signup',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const ProgressionRoute = ProgressionRouteImport.update({
+
+const ProgressionRoute = ProgressionImport.update({
   id: '/progression',
   path: '/progression',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const ProfileRoute = ProfileRouteImport.update({
+
+const ProfileRoute = ProfileImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const NotesRoute = NotesRouteImport.update({
+
+const NotesRoute = NotesImport.update({
   id: '/notes',
   path: '/notes',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const LoginRoute = LoginRouteImport.update({
+
+const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const DiaryRoute = DiaryRouteImport.update({
+
+const DiaryRoute = DiaryImport.update({
   id: '/diary',
   path: '/diary',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
+
+const DashboardRoute = DashboardImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const CvAnalysisRoute = CvAnalysisRouteImport.update({
+
+const CvAnalysisRoute = CvAnalysisImport.update({
   id: '/cv-analysis',
   path: '/cv-analysis',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const AiChatRoute = AiChatRouteImport.update({
+
+const AiChatRoute = AiChatImport.update({
   id: '/ai-chat',
   path: '/ai-chat',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const AboutRoute = AboutRouteImport.update({
+
+const AboutRoute = AboutImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+
+const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
+
+// Populate the FileRoutesByPath interface
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/ai-chat': {
+      id: '/ai-chat'
+      path: '/ai-chat'
+      fullPath: '/ai-chat'
+      preLoaderRoute: typeof AiChatImport
+      parentRoute: typeof rootRoute
+    }
+    '/cv-analysis': {
+      id: '/cv-analysis'
+      path: '/cv-analysis'
+      fullPath: '/cv-analysis'
+      preLoaderRoute: typeof CvAnalysisImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/diary': {
+      id: '/diary'
+      path: '/diary'
+      fullPath: '/diary'
+      preLoaderRoute: typeof DiaryImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/notes': {
+      id: '/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof NotesImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
+      parentRoute: typeof rootRoute
+    }
+    '/progression': {
+      id: '/progression'
+      path: '/progression'
+      fullPath: '/progression'
+      preLoaderRoute: typeof ProgressionImport
+      parentRoute: typeof rootRoute
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupImport
+      parentRoute: typeof rootRoute
+    }
+    '/simulations': {
+      id: '/simulations'
+      path: '/simulations'
+      fullPath: '/simulations'
+      preLoaderRoute: typeof SimulationsImport
+      parentRoute: typeof rootRoute
+    }
+  }
+}
+
+// Create and export the route tree
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -97,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/simulations': typeof SimulationsRoute
 }
+
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
@@ -111,8 +220,9 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/simulations': typeof SimulationsRoute
 }
+
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
+  __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-chat': typeof AiChatRoute
@@ -126,6 +236,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/simulations': typeof SimulationsRoute
 }
+
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
@@ -171,6 +282,7 @@ export interface FileRouteTypes {
     | '/simulations'
   fileRoutesById: FileRoutesById
 }
+
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
@@ -184,95 +296,6 @@ export interface RootRouteChildren {
   ProgressionRoute: typeof ProgressionRoute
   SignupRoute: typeof SignupRoute
   SimulationsRoute: typeof SimulationsRoute
-}
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/simulations': {
-      id: '/simulations'
-      path: '/simulations'
-      fullPath: '/simulations'
-      preLoaderRoute: typeof SimulationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/progression': {
-      id: '/progression'
-      path: '/progression'
-      fullPath: '/progression'
-      preLoaderRoute: typeof ProgressionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notes': {
-      id: '/notes'
-      path: '/notes'
-      fullPath: '/notes'
-      preLoaderRoute: typeof NotesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/diary': {
-      id: '/diary'
-      path: '/diary'
-      fullPath: '/diary'
-      preLoaderRoute: typeof DiaryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cv-analysis': {
-      id: '/cv-analysis'
-      path: '/cv-analysis'
-      fullPath: '/cv-analysis'
-      preLoaderRoute: typeof CvAnalysisRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ai-chat': {
-      id: '/ai-chat'
-      path: '/ai-chat'
-      fullPath: '/ai-chat'
-      preLoaderRoute: typeof AiChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -289,6 +312,67 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   SimulationsRoute: SimulationsRoute,
 }
-export const routeTree = rootRouteImport
+
+export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/about",
+        "/ai-chat",
+        "/cv-analysis",
+        "/dashboard",
+        "/diary",
+        "/login",
+        "/notes",
+        "/profile",
+        "/progression",
+        "/signup",
+        "/simulations"
+      ]
+    },
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/about": {
+      "filePath": "about.tsx"
+    },
+    "/ai-chat": {
+      "filePath": "ai-chat.tsx"
+    },
+    "/cv-analysis": {
+      "filePath": "cv-analysis.tsx"
+    },
+    "/dashboard": {
+      "filePath": "dashboard.tsx"
+    },
+    "/diary": {
+      "filePath": "diary.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/notes": {
+      "filePath": "notes.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
+    },
+    "/progression": {
+      "filePath": "progression.tsx"
+    },
+    "/signup": {
+      "filePath": "signup.tsx"
+    },
+    "/simulations": {
+      "filePath": "simulations.tsx"
+    }
+  }
+}
+ROUTE_MANIFEST_END */

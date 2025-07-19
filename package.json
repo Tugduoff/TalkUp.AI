@@ -10,28 +10,32 @@
   "scripts": {
     "dev:web": "npm run dev --workspace=web",
     "dev:server": "npm run start:dev --workspace=server",
-
     "format:check": "npm run format:check --workspaces --if-present",
     "format": "npm run format --workspaces --if-present",
-
     "lint:check": "npm run lint:check --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
-
     "build:web": "npm run build --workspace=web",
     "build:server": "npm run build --workspace=server",
-
     "tsc:check": "npm run tsc:check --workspaces --if-present",
     "tsc:check:web": "npm run tsc:check --workspace=web",
-
     "test:server": "npm run test --workspace=server",
     "test:web": "npm run test --workspace=web",
     "test": "npm run test --workspaces --if-present",
-
     "test:coverage:server": "npm run test:coverage --workspace=server",
     "test:coverage:web": "npm run test:coverage --workspace=web",
     "test:coverage": "npm run test:coverage --workspaces --if-present",
-
     "e2e:web": "npm run e2e --workspace=web",
     "e2e:web:ui": "npm run e2e:ui --workspace=web"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/jest": "^30.0.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "jest": "^30.0.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "ts-jest": "^29.4.0"
   }
 }
