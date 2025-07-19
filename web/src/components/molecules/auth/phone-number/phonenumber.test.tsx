@@ -1,7 +1,7 @@
-// src/components/molecules/auth/phone-number/phonenumber.spec.tsx
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import React from 'react';
+
 import PhoneNumber from './phonenumber';
 
 describe('PhoneNumber', () => {
@@ -26,23 +26,43 @@ describe('PhoneNumber', () => {
   });
 
   it('calls onChange when country changes', async () => {
-    render(<PhoneNumber value={{ countryCode: 'US', phoneNumber: '123' }} onChange={mockOnChange} />);
+    render(
+      <PhoneNumber
+        value={{ countryCode: 'US', phoneNumber: '123' }}
+        onChange={mockOnChange}
+      />,
+    );
     fireEvent.change(screen.getByRole('combobox'), { target: { value: 'FR' } });
     await waitFor(() => {
-      expect(mockOnChange).toHaveBeenCalledWith({ countryCode: 'FR', phoneNumber: '123' });
+      expect(mockOnChange).toHaveBeenCalledWith({
+        countryCode: 'FR',
+        phoneNumber: '123',
+      });
     });
   });
 
   it('calls onChange when phone number changes', async () => {
-    render(<PhoneNumber value={{ countryCode: 'FR', phoneNumber: '' }} onChange={mockOnChange} />);
-    fireEvent.change(screen.getByLabelText('Phone Number'), { target: { value: '0600000000' } });
+    render(
+      <PhoneNumber
+        value={{ countryCode: 'FR', phoneNumber: '' }}
+        onChange={mockOnChange}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('Phone Number'), {
+      target: { value: '0600000000' },
+    });
     await waitFor(() => {
-      expect(mockOnChange).toHaveBeenCalledWith({ countryCode: 'FR', phoneNumber: '0600000000' });
+      expect(mockOnChange).toHaveBeenCalledWith({
+        countryCode: 'FR',
+        phoneNumber: '0600000000',
+      });
     });
   });
 
   it('updates when value prop changes', () => {
-    const { rerender } = render(<PhoneNumber value={{ countryCode: 'FR', phoneNumber: '111' }} />);
+    const { rerender } = render(
+      <PhoneNumber value={{ countryCode: 'FR', phoneNumber: '111' }} />,
+    );
     rerender(<PhoneNumber value={{ countryCode: 'DE', phoneNumber: '222' }} />);
     expect(screen.getByRole('combobox')).toHaveValue('DE');
     expect(screen.getByLabelText('Phone Number')).toHaveValue('222');
@@ -65,11 +85,13 @@ describe('PhoneNumber', () => {
         className="container"
         inputClassName="input"
         selectClassName="select"
-      />
+      />,
     );
     expect(screen.getByRole('combobox')).toHaveClass('select');
     expect(screen.getByLabelText('Phone Number')).toHaveClass('input');
-    expect(screen.getByRole('combobox').closest('div')).toHaveClass('container');
+    expect(screen.getByRole('combobox').closest('div')).toHaveClass(
+      'container',
+    );
   });
 
   it('uses defaultCountryCode when no value is given', () => {
@@ -79,6 +101,9 @@ describe('PhoneNumber', () => {
 
   it('uses custom placeholder', () => {
     render(<PhoneNumber placeholder="Enter your phone" />);
-    expect(screen.getByLabelText('Phone Number')).toHaveAttribute('placeholder', 'Enter your phone');
+    expect(screen.getByLabelText('Phone Number')).toHaveAttribute(
+      'placeholder',
+      'Enter your phone',
+    );
   });
 });
