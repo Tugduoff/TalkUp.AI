@@ -97,6 +97,8 @@ The platform features a full-stack architecture with:
 
 For development guidelines, branching strategies, and contribution workflows, please refer to our [CONTRIBUTING.MD](./CONTRIBUTING.MD) file.
 
+Our internal development documentation is available on : [Confluence](https://talkup-ai.atlassian.net/wiki/spaces/Talkup/pages/65762/)
+
 ## Architecture
 
 The project follows a microservices architecture with:
