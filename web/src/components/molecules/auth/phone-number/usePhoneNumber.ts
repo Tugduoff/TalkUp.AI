@@ -1,14 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import type { PhoneNumberValue } from './type';
+
+interface UsePhoneNumberParams {
+  value?: PhoneNumberValue;
+  onChange?: (value: PhoneNumberValue) => void;
+  defaultCountryCode?: string;
+}
+
 export function usePhoneNumber({
   value,
   onChange,
   defaultCountryCode = 'US',
-}: {
-  value?: { countryCode: string; phoneNumber: string };
-  onChange?: (value: { countryCode: string; phoneNumber: string }) => void;
-  defaultCountryCode?: string;
-}) {
+}: UsePhoneNumberParams) {
   const [selectedCountry, setSelectedCountry] = useState<string>(
     value?.countryCode || defaultCountryCode,
   );

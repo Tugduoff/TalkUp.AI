@@ -5,9 +5,14 @@ export interface Country {
   dialCode: string;
 }
 
+export type PhoneNumberValue = {
+  countryCode: string;
+  phoneNumber: string;
+};
+
 export interface PhoneNumberInputProps {
-  value?: { countryCode: string; phoneNumber: string };
-  onChange?: (value: { countryCode: string; phoneNumber: string }) => void;
+  value?: PhoneNumberValue;
+  onChange?: (value: PhoneNumberValue) => void;
   defaultCountryCode?: string;
   placeholder?: string;
   className?: string;
