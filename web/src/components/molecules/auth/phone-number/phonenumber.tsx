@@ -1,3 +1,4 @@
+import { cn } from '@/utils/cn';
 import React from 'react';
 
 import { Country, PhoneNumberInputProps } from './type';
@@ -70,7 +71,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
       <select
         value={selectedCountry}
         onChange={(e) => handleCountryChange(e.target.value)}
-        className={`h-10 rounded-md border px-2 ${selectClassName}`}
+        className={cn('h-10 rounded-md border px-2', selectClassName)}
         disabled={disabled}
       >
         {countries.map((country) => (
@@ -87,7 +88,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
         placeholder={placeholder}
         readOnly={readOnly}
         disabled={disabled}
-        className={`h-10 flex-1 rounded-md border px-3 ${inputClassName}`}
+        className={cn('h-10 flex-1 rounded-md border px-3', inputClassName)}
         aria-label="Phone Number"
       />
     </div>
