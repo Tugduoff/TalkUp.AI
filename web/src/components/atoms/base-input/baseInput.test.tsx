@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import '@testing-library/jest-dom/vitest'; // ✅ compatibilité matchers avec Vitest
+import { vi, describe, it, expect } from 'vitest'; // ✅ importer depuis vitest
 import { BaseInput } from './index';
 
 describe('BaseInput', () => {
-  test('renders with default type, name, placeholder, and empty value', () => {
+  it('renders with default type, name, placeholder, and empty value', () => {
     render(<BaseInput />);
     const inputElement = screen.getByRole('textbox');
 
@@ -19,7 +19,7 @@ describe('BaseInput', () => {
     expect(inputElement).not.toHaveAttribute('required');
   });
 
-  test('renders with custom type, name, placeholder, and value', () => {
+  it('renders with custom type, name, placeholder, and value', () => {
     render(
       <BaseInput
         type="email"
@@ -38,7 +38,7 @@ describe('BaseInput', () => {
     expect(inputElement).toHaveValue('test@example.com');
   });
 
-  test('calls onChange handler when input value changes', () => {
+  it('calls onChange handler when input value changes', () => {
     const handleChange = vi.fn();
     render(<BaseInput name="my-input" onChange={handleChange} />);
     const inputElement = screen.getByRole('textbox', { name: /my-input/i });
@@ -55,7 +55,7 @@ describe('BaseInput', () => {
     );
   });
 
-  test('renders as disabled when disabled prop is true', () => {
+  it('renders as disabled when disabled prop is true', () => {
     render(<BaseInput disabled />);
     const inputElement = screen.getByRole('textbox');
 
@@ -63,7 +63,7 @@ describe('BaseInput', () => {
     expect(inputElement).toHaveAttribute('aria-disabled', 'true');
   });
 
-  test('renders as read-only when readOnly prop is true', () => {
+  it('renders as read-only when readOnly prop is true', () => {
     render(<BaseInput readOnly />);
     const inputElement = screen.getByRole('textbox');
 
@@ -71,7 +71,7 @@ describe('BaseInput', () => {
     expect(inputElement).toHaveAttribute('aria-readonly', 'true');
   });
 
-  test('renders as required when required prop is true', () => {
+  it('renders as required when required prop is true', () => {
     render(<BaseInput required />);
     const inputElement = screen.getByRole('textbox');
 
@@ -79,7 +79,7 @@ describe('BaseInput', () => {
     expect(inputElement).toHaveAttribute('aria-required', 'true');
   });
 
-  test('passes additional HTML attributes to the input element', () => {
+  it('passes additional HTML attributes to the input element', () => {
     render(<BaseInput data-testid="custom-input" className="extra-class" />);
     const inputElement = screen.getByTestId('custom-input');
 
@@ -88,21 +88,21 @@ describe('BaseInput', () => {
     expect(inputElement).toHaveClass('px-4 py-2');
   });
 
-  test('merges provided className with default classes', () => {
+  it('merges provided className with default classes', () => {
     render(<BaseInput className="my-custom-class" />);
     const inputElement = screen.getByRole('textbox');
     expect(inputElement).toHaveClass('my-custom-class');
     expect(inputElement).toHaveClass('px-4 py-2');
   });
 
-  test('renders correctly for type="password"', () => {
+  it('renders correctly for type="password"', () => {
     render(<BaseInput type="password" name="password-input" />);
     const inputElement = screen.getByLabelText('password-input');
     expect(inputElement).toHaveAttribute('type', 'password');
     expect(inputElement).toHaveAttribute('role', 'textbox');
   });
 
-  test('renders correctly for type="number"', () => {
+  it('renders correctly for type="number"', () => {
     render(<BaseInput type="number" name="age-input" />);
     const inputElement = screen.getByLabelText('age-input');
     expect(inputElement).toHaveAttribute('type', 'number');
