@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 
 import { Country, PhoneNumberInputProps } from './type';
+import { usePhoneNumber } from './usePhoneNumber';
 
 const countries: Country[] = [
   { name: 'United States', code: 'US', flag: '🇺🇸', dialCode: '+1' },
@@ -57,36 +58,12 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   readOnly = false,
   disabled = false,
 }) => {
-  const [selectedCountry, setSelectedCountry] = useState<string>(
-    value?.countryCode || defaultCountryCode,
-  );
-  const [phoneNumber, setPhoneNumber] = useState<string>(
-    value?.phoneNumber || '',
-  );
-
-  useEffect(() => {
-    if (value) {
-      setSelectedCountry(value.countryCode);
-      setPhoneNumber(value.phoneNumber);
-    }
-  }, [value]);
-
-  const handleCountryChange = useCallback(
-    (countryCode: string) => {
-      setSelectedCountry(countryCode);
-      onChange?.({ countryCode, phoneNumber });
-    },
-    [onChange, phoneNumber],
-  );
-
-  const handlePhoneNumberChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newNumber = e.target.value;
-      setPhoneNumber(newNumber);
-      onChange?.({ countryCode: selectedCountry, phoneNumber: newNumber });
-    },
-    [onChange, selectedCountry],
-  );
+  const {
+    selectedCountry,
+    phoneNumber,
+    handleCountryChange,
+    handlePhoneNumberChange,
+  } = usePhoneNumber({ value, onChange, defaultCountryCode });
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
@@ -106,7 +83,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
       <input
         type="tel"
         value={phoneNumber}
-        onChange={handlePhoneNumberChange}
+        onChange={(e) => handlePhoneNumberChange(e.target.value)}
         placeholder={placeholder}
         readOnly={readOnly}
         disabled={disabled}
@@ -116,5 +93,4 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
     </div>
   );
 };
-
 export default PhoneNumberInput;
