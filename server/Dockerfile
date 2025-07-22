@@ -3,7 +3,7 @@ FROM node:23-slim
 WORKDIR /app
 
 COPY package* ./
-RUN npm ci --production
+RUN npm i --omit=dev
 
 COPY . .
 

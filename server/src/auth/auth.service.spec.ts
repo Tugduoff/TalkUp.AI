@@ -104,6 +104,7 @@ describe("AuthService", () => {
       user_id: "a1-b2...",
       phone_number_id: 0,
       phone_number: "",
+      is_verified: false,
     });
     mockUserPasswordRepo.findOne.mockResolvedValue({
       password: "old",
