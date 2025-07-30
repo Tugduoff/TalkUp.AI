@@ -430,13 +430,7 @@ export class AuthService {
    * @returns Authentication result with JWT token
    */
   async authenticateWithSSO(ssoUser: SsoUser): Promise<SsoAuthResult> {
-    return this.ssoAuthenticationService.authenticateWithSSO(
-      ssoUser,
-      (identifier) =>
-        this.userRepositoryService.findUserByAnyIdentifier(identifier),
-      (user, organization) =>
-        this.generateOrganizationToken(user, organization),
-    );
+    return this.ssoAuthenticationService.authenticateWithSSO(ssoUser);
   }
 
   /**

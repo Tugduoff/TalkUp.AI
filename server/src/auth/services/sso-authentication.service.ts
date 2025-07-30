@@ -11,7 +11,12 @@ import { organization } from "@entities/organization.entity";
 import { SsoUser, SsoAuthResult } from "../interfaces/sso-user.interface";
 import { AuthProvider } from "@common/enums/AuthProvider";
 import { OrganizationService } from "../../organization/organization.service";
+import { UserRepositoryService } from "./user-repository.service";
+import { TokenService } from "./token.service";
 
+/**
+ * Service for handling SSO authentication and user management
+ */
 @Injectable()
 export class SSOAuthenticationService {
   constructor(
@@ -21,28 +26,20 @@ export class SSOAuthenticationService {
     @InjectRepository(user_oauth)
     private userOauthRepository: Repository<user_oauth>,
     private organizationService: OrganizationService,
+    private userRepositoryService: UserRepositoryService,
+    private tokenService: TokenService,
   ) {}
 
   /**
    * Authenticate user via SSO and link to organization
    * @param ssoUser - SSO user profile
-   * @param findUserByAnyIdentifier - Function to find user by email/phone
-   * @param generateOrganizationToken - Function to generate JWT token
    * @returns Authentication result with JWT token
    */
-  async authenticateWithSSO(
-    ssoUser: SsoUser,
-    findUserByAnyIdentifier: (identifier: string) => Promise<user | null>,
-    generateOrganizationToken: (
-      user: user,
-      organization?: organization,
-    ) => Promise<{ access_token: string }>,
-  ): Promise<SsoAuthResult> {
+  async authenticateWithSSO(ssoUser: SsoUser): Promise<SsoAuthResult> {
     let organization: organization | undefined;
     let user: user;
     let isNewUser = false;
 
-    // Find organization based on SSO provider identifier
     if (ssoUser.organizationIdentifier) {
       organization =
         await this.organizationService.findOrganizationBySsoIdentifier(
@@ -51,24 +48,19 @@ export class SSOAuthenticationService {
         );
     }
 
-    // Find existing user by email OR phone (unified lookup)
-    const existingUser = await findUserByAnyIdentifier(ssoUser.email);
+    const existingUser =
+      await this.userRepositoryService.findUserByAnyIdentifier(ssoUser.email);
 
     if (existingUser) {
       user = existingUser;
 
-      // Update OAuth information
       await this.updateOrCreateOAuthRecord(user.user_id, ssoUser);
-
-      // Ensure user has email record for SSO (if they only had phone before)
       await this.ensureUserHasEmail(user.user_id, ssoUser.email);
     } else {
-      // Create new user
       isNewUser = true;
       user = await this.createUserFromSSO(ssoUser);
     }
 
-    // Link user to organization if found and not already linked
     if (organization) {
       await this.organizationService.linkUserToOrganization(
         user.user_id,
@@ -76,8 +68,10 @@ export class SSOAuthenticationService {
       );
     }
 
-    // Generate JWT token with organization context
-    const tokenResult = await generateOrganizationToken(user, organization);
+    const tokenResult = await this.tokenService.generateOrganizationToken(
+      user,
+      organization,
+    );
 
     return {
       user,
@@ -88,7 +82,7 @@ export class SSOAuthenticationService {
   }
 
   /**
-   * Create a new user from SSO profile
+   * Create a new user from SSO data
    * @param ssoUser - SSO user profile
    * @returns Created user entity
    */
@@ -119,7 +113,7 @@ export class SSOAuthenticationService {
   }
 
   /**
-   * Update or create OAuth record for user
+   * Update or create OAuth record for the user
    * @param userId - User ID
    * @param ssoUser - SSO user profile
    */
@@ -134,14 +128,12 @@ export class SSOAuthenticationService {
     });
 
     if (oauthRecord) {
-      // Update existing record
       oauthRecord.access_token =
         ssoUser.accessToken ?? oauthRecord.access_token;
       oauthRecord.refresh_token =
         ssoUser.refreshToken ?? oauthRecord.refresh_token;
       await this.userOauthRepository.save(oauthRecord);
     } else {
-      // Create new record
       oauthRecord = this.userOauthRepository.create({
         user_id: userId,
         provider,
@@ -155,31 +147,30 @@ export class SSOAuthenticationService {
   /**
    * Map SSO provider to AuthProvider enum
    * @param ssoProvider - SSO provider string
-   * @returns AuthProvider enum value
+   * @returns Corresponding AuthProvider enum value
    */
   private mapSsoProviderToAuthProvider(ssoProvider: string): AuthProvider {
     switch (ssoProvider) {
       case "azure-ad":
-        return AuthProvider.MICROSOFT; // Assuming you have this in your enum
+        return AuthProvider.MICROSOFT;
       case "google-workspace":
-        return AuthProvider.GOOGLE; // Assuming you have this in your enum
+        return AuthProvider.GOOGLE;
       case "saml":
-        return AuthProvider.SAML; // You might need to add this to your enum
+        return AuthProvider.SAML;
       default:
-        return AuthProvider.LINKEDIN; // Fallback
+        return AuthProvider.LINKEDIN;
     }
   }
 
   /**
-   * Ensure user has email record (for users who only had phone number)
+   * Ensure user has an email record, creating it if necessary
    * @param userId - User ID
-   * @param email - Email to add
+   * @param email - User email
    */
   private async ensureUserHasEmail(
     userId: string,
     email: string,
   ): Promise<void> {
-    // First check if user already has any email record
     const userEmailRecord = await this.userEmailRepository.findOne({
       where: { user_id: userId },
     });
