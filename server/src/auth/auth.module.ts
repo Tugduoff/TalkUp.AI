@@ -25,10 +25,16 @@ import { UserOrganization } from "src/entities/userOrganization.entity";
 import { AzureAdStrategy } from "./strategies/azure-ad.strategy";
 import { GoogleWorkspaceStrategy } from "./strategies/google-workspace.strategy";
 import { SamlStrategy } from "./strategies/saml.strategy";
+import { LinkedInOAuthService } from "./services/linkedin-oauth.service";
+import { SSOAuthenticationService } from "./services/sso-authentication.service";
+import { UserRepositoryService } from "./services/user-repository.service";
+import { TokenService } from "./services/token.service";
+import { OrganizationModule } from "../organization/organization.module";
 
 @Module({
   imports: [
     UsersModule,
+    OrganizationModule,
     TypeOrmModule.forFeature([
       user,
       user_email,
@@ -57,6 +63,10 @@ import { SamlStrategy } from "./strategies/saml.strategy";
     AzureAdStrategy,
     GoogleWorkspaceStrategy,
     SamlStrategy,
+    LinkedInOAuthService,
+    SSOAuthenticationService,
+    UserRepositoryService,
+    TokenService,
   ],
   exports: [AuthService],
 })

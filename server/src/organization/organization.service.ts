@@ -176,4 +176,111 @@ export class OrganizationService {
       relations: ["user"],
     });
   }
+
+  /**
+   * Find organization by domain for SSO authentication (case-insensitive)
+   * @param domain - Organization domain
+   * @returns Organization entity
+   */
+  async findOrganizationByDomain(domain: string): Promise<organization> {
+    const org = await this.organizationRepository.findOne({
+      where: { domain: domain.toLowerCase() },
+    });
+
+    if (!org) {
+      throw new NotFoundException(
+        `Organization with domain ${domain} not found`,
+      );
+    }
+
+    return org;
+  }
+
+  /**
+   * Find organization by SSO identifier (domain, tenant ID, etc.)
+   * @param identifier - SSO identifier
+   * @param provider - SSO provider type
+   * @returns Organization entity
+   */
+  async findOrganizationBySsoIdentifier(
+    identifier: string,
+    provider: string,
+  ): Promise<organization | undefined> {
+    // This is a simplified approach. In reality, you might store SSO configuration
+    // in the organization entity and query based on that.
+    const org = await this.organizationRepository
+      .createQueryBuilder("org")
+      .where("org.sso_provider = :provider", { provider })
+      .andWhere("org.sso_config->>'identifier' = :identifier", { identifier })
+      .getOne();
+
+    return org ?? undefined;
+  }
+
+  /**
+   * Link user to organization
+   * @param userId - User ID
+   * @param orgId - Organization ID
+   * @param role - User role (default: 'user')
+   */
+  async linkUserToOrganization(
+    userId: string,
+    orgId: string,
+    role = "user",
+  ): Promise<void> {
+    // Check if relationship already exists
+    const existingLink = await this.userOrganizationRepository.findOne({
+      where: { user_id: userId, org_id: orgId },
+    });
+
+    if (!existingLink) {
+      // Get user and organization entities for proper relationships
+      const user = await this.userRepository.findOne({
+        where: { user_id: userId },
+      });
+      const organization = await this.organizationRepository.findOne({
+        where: { org_id: orgId },
+      });
+
+      if (!user || !organization) {
+        throw new Error("User or organization not found");
+      }
+
+      const userOrg = this.userOrganizationRepository.create({
+        user_id: userId,
+        org_id: orgId,
+        role,
+        user: user,
+        organization: organization,
+      });
+      await this.userOrganizationRepository.save(userOrg);
+    }
+  }
+
+  /**
+   * Check if user belongs to organization
+   * @param userId - User ID
+   * @param orgId - Organization ID
+   * @returns UserOrganization entity if found
+   */
+  async getUserOrganizationRelation(
+    userId: string,
+    orgId: string,
+  ): Promise<UserOrganization | null> {
+    return await this.userOrganizationRepository.findOne({
+      where: { user_id: userId, org_id: orgId },
+      relations: ["organization"],
+    });
+  }
+
+  /**
+   * Get organization by ID
+   * @param orgId - Organization ID
+   * @returns Organization entity
+   */
+  async findOrganizationById(orgId: string): Promise<organization | null> {
+    return await this.organizationRepository.findOne({
+      where: { org_id: orgId },
+    });
+  }
 }

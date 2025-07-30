@@ -16,6 +16,11 @@ import {
 } from "@entities/user.entity";
 import { organization } from "@entities/organization.entity";
 import { UserOrganization } from "@entities/userOrganization.entity";
+import { LinkedInOAuthService } from "./services/linkedin-oauth.service";
+import { OrganizationService } from "../organization/organization.service";
+import { SSOAuthenticationService } from "./services/sso-authentication.service";
+import { UserRepositoryService } from "./services/user-repository.service";
+import { TokenService } from "./services/token.service";
 
 import { UsersService } from "@src/users/users.service";
 
@@ -79,6 +84,46 @@ describe("AuthController", () => {
             get: jest.fn().mockResolvedValue({
               data: { access_token: "mocked-access-token" },
             }),
+          },
+        },
+        {
+          provide: LinkedInOAuthService,
+          useValue: {
+            getAccessTokenDatasFromQueryCode: jest.fn(),
+            getLinkedInProfileFromAccessToken: jest.fn(),
+            saveTokenDataFromUser: jest.fn(),
+            saveLinkedInUser: jest.fn(),
+          },
+        },
+        {
+          provide: OrganizationService,
+          useValue: {
+            findOrganizationByDomain: jest.fn(),
+            findOrganizationBySsoIdentifier: jest.fn(),
+            linkUserToOrganization: jest.fn(),
+            getUserOrganizationRelation: jest.fn(),
+            findOrganizationById: jest.fn(),
+          },
+        },
+        {
+          provide: SSOAuthenticationService,
+          useValue: {
+            authenticateWithSSO: jest.fn(),
+          },
+        },
+        {
+          provide: UserRepositoryService,
+          useValue: {
+            findUserByAnyIdentifier: jest.fn(),
+            getAllUsers: jest.fn(),
+            getUserById: jest.fn(),
+          },
+        },
+        {
+          provide: TokenService,
+          useValue: {
+            login: jest.fn(),
+            generateOrganizationToken: jest.fn(),
           },
         },
       ],
