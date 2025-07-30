@@ -13,6 +13,8 @@ import {
   user_password,
   user_phone_number,
 } from "@entities/user.entity";
+import { organization } from "@entities/organization.entity";
+import { UserOrganization } from "@entities/userOrganization.entity";
 import { UsersService } from "@src/users/users.service";
 import { Mocked } from "jest-mock";
 
@@ -53,6 +55,14 @@ describe("AuthService", () => {
         },
         {
           provide: getRepositoryToken(user_oauth),
+          useValue: {},
+        },
+        {
+          provide: getRepositoryToken(organization),
+          useValue: {},
+        },
+        {
+          provide: getRepositoryToken(UserOrganization),
           useValue: {},
         },
         {

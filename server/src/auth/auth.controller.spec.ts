@@ -14,6 +14,8 @@ import {
   user_password,
   user_phone_number,
 } from "@entities/user.entity";
+import { organization } from "@entities/organization.entity";
+import { UserOrganization } from "@entities/userOrganization.entity";
 
 import { UsersService } from "@src/users/users.service";
 
@@ -43,6 +45,14 @@ describe("AuthController", () => {
         },
         {
           provide: getRepositoryToken(user_oauth),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(organization),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(UserOrganization),
           useClass: Repository,
         },
         {
