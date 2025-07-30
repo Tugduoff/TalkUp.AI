@@ -64,9 +64,7 @@ set(SOURCES_TESTS
 include_directories(${CMAKE_SOURCE_DIR}/inc)
 
 add_executable(talkup_ai_mic_server ${SOURCES})
-add_executable(tests tests/test_server_init.cpp
-              ${SOURCES_TESTS}
-              )
+add_executable(tests tests/test_server_init.cpp ${SOURCES_TESTS})
 
 file(GLOB_RECURSE HEADER_FILES "${CMAKE_SOURCE_DIR}/inc/*.hpp")
 
@@ -98,15 +96,15 @@ target_include_directories(tests
 
 target_link_libraries(tests
     PRIVATE
-        cpr::cpr
-        nlohmann_json::nlohmann_json
-        pthread
+      cpr::cpr
+      nlohmann_json::nlohmann_json
+      pthread
 )
 
 target_link_libraries(tests
-  PRIVATE
-    GTest::gtest
-    GTest::gmock
-    GTest::gtest_main
-    GTest::gmock_main
+    PRIVATE
+      GTest::gtest
+      GTest::gmock
+      GTest::gtest_main
+      GTest::gmock_main
 )

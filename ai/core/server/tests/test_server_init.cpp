@@ -51,10 +51,8 @@ TEST_F(ServerTest, ServerInitialization) {
     std::thread server_thread([&]() {
         server.start_server(app);
     });
-
     EXPECT_EQ(server.get_name(), "TalkUp.AI Server");
     EXPECT_EQ(server.get_version(), "1.0.0");
     EXPECT_EQ(server.get_port(), 8088);
-
     server_thread.join();
 }
