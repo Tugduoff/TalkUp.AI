@@ -5,6 +5,7 @@ import { ConfigModule } from "@nestjs/config";
 import pgConfig from "@config/postgres.config";
 
 import { AuthModule } from "./auth/auth.module";
+import { OrganizationModule } from "./organization/organization.module";
 
 import { LoggerMiddleware } from "@common/middleware/logger";
 
@@ -16,6 +17,7 @@ import { LoggerMiddleware } from "@common/middleware/logger";
       load: [pgConfig],
     }),
     AuthModule,
+    OrganizationModule,
     TypeOrmModule.forRootAsync({
       useFactory: pgConfig,
     }),

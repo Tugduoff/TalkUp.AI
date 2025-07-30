@@ -4,9 +4,12 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
+  ManyToMany,
+  ManyToOne,
 } from "typeorm";
 
 import { AuthProvider } from "@common/enums/AuthProvider";
+import { organization } from "./organization.entity";
 
 @Entity()
 export class user {
@@ -45,6 +48,9 @@ export class user {
     comment: "Authentication provider (e.g., manual, linkedin)",
   })
   provider: string;
+
+  @ManyToMany(() => organization, (organization) => organization.users)
+  organizations: organization[];
 }
 
 @Entity()
@@ -97,9 +103,12 @@ export class user_email {
   @Column({ nullable: false, unique: true })
   email: string;
 
-  @OneToOne(() => user)
-  @JoinColumn({ name: "user_id" })
+  @Column({ nullable: false })
   user_id: string;
+
+  @ManyToOne(() => user, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "user_id" })
+  user: user;
 
   @Column({
     default: false,

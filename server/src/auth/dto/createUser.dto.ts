@@ -8,10 +8,10 @@ import { Length, IsPhoneNumber, IsStrongPassword } from "class-validator";
 export class CreateUserDto {
   @Length(1, 50)
   @ApiProperty({
-    description: "The user's name",
+    description: "The user's display name",
     maxLength: 50,
     minLength: 1,
-    example: "AdminSys819",
+    example: "John Doe",
   })
   username: string;
 
@@ -19,8 +19,8 @@ export class CreateUserDto {
   @IsPhoneNumber("FR") // temporary, to be removed when internationalization is implemented
   @ApiProperty({
     description:
-      "The user's phone number. It will be used later for verification.",
-    example: "+33123456789",
+      "The user's phone number in international format (currently French numbers only)",
+    example: "+33769293743",
   })
   phoneNumber: string;
 
@@ -34,9 +34,10 @@ export class CreateUserDto {
   @Length(8, 50)
   @ApiProperty({
     description:
-      "The user's password. It will be hashed before added to the database.",
+      "Strong password: minimum 8 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character",
     minLength: 8,
-    example: "Abcdefg1*",
+    maxLength: 50,
+    example: "SecurePass123@",
   })
   password: string;
 }

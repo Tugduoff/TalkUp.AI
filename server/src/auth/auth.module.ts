@@ -20,6 +20,11 @@ import {
   user_password,
   user_phone_number,
 } from "src/entities/user.entity";
+import { organization } from "src/entities/organization.entity";
+import { UserOrganization } from "src/entities/userOrganization.entity";
+import { AzureAdStrategy } from "./strategies/azure-ad.strategy";
+import { GoogleWorkspaceStrategy } from "./strategies/google-workspace.strategy";
+import { SamlStrategy } from "./strategies/saml.strategy";
 
 @Module({
   imports: [
@@ -30,6 +35,8 @@ import {
       user_password,
       user_phone_number,
       user_oauth,
+      organization,
+      UserOrganization,
     ]),
     JwtModule.register({
       global: true,
@@ -44,7 +51,13 @@ import {
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, PostValidationPipe],
+  providers: [
+    AuthService,
+    PostValidationPipe,
+    AzureAdStrategy,
+    GoogleWorkspaceStrategy,
+    SamlStrategy,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}
