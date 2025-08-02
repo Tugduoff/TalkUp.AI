@@ -280,7 +280,6 @@ export class AuthService {
     const newUser = this.userRepository.create({
       username: linkedInProfile.name,
       profile_picture: linkedInProfile.picture,
-      is_verified: linkedInProfile.email_verified,
       provider: AuthProvider.LINKEDIN,
     });
 
@@ -298,6 +297,7 @@ export class AuthService {
     // Create user_email entity
     const newUserEmail = this.userEmailRepository.create({
       email: linkedInProfile.email,
+      is_verified: linkedInProfile.email_verified,
       user_id: newUser.user_id,
     });
 
