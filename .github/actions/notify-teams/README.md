@@ -5,10 +5,12 @@ This custom GitHub Action is designed to send notifications to a Microsoft Teams
 ## Features
 
 This action performs the following:
+
 - **Teams Notifications**: Sends messages to a specified Microsoft Teams channel using a webhook URL.
 - **Customizable Messages**: Allows customization of the message content, including title, description, and color.
 
 ## Usage
+
 To use this action, you can include it as follows:
 
 ```yaml

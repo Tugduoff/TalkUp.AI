@@ -1,27 +1,27 @@
-name: 'Notify discord'
-description: 'Send discord embed message'
+name: "Notify discord"
+description: "Send discord embed message"
 
 inputs:
   title:
-    description: 'Embed title'
+    description: "Embed title"
     required: true
   description:
-    description: 'Embed description (can be multiline)'
+    description: "Embed description (can be multiline)"
     required: true
   color:
-    description: 'Embed color in decimal (ex: 3066993 for green)'
+    description: "Embed color in decimal (ex: 3066993 for green)"
     required: false
-    default: '3447003'
+    default: "3447003"
   webhook:
-    description: 'Discord webhook URL'
+    description: "Discord webhook URL"
     required: true
   usernames:
-    description: 'list (separated by space) of GitHub usernames to mention'
+    description: "list (separated by space) of GitHub usernames to mention"
     required: false
-    default: ''
+    default: ""
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Send Discord Embed
       shell: bash

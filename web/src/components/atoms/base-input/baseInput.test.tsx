@@ -1,6 +1,9 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/vitest'; // ✅ compatibilité matchers avec Vitest
-import { vi, describe, it, expect } from 'vitest'; // ✅ importer depuis vitest
+import '@testing-library/jest-dom/vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+// ✅ compatibilité matchers avec Vitest
+import { describe, expect, it, vi } from 'vitest';
+
+// ✅ importer depuis vitest
 import { BaseInput } from './index';
 
 describe('BaseInput', () => {
