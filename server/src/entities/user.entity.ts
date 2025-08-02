@@ -23,16 +23,10 @@ export class user {
   profile_picture: string;
 
   @Column({
-    default: false,
-    comment: "to check if the used verified his phone number",
-  })
-  is_verified: boolean;
-
-  @Column({
     nullable: true,
     comment: "used for password reset/verification code",
   })
-  verfication_code: string;
+  verification_code: string;
 
   @Column({ default: new Date() })
   created_at: Date;
@@ -106,6 +100,12 @@ export class user_email {
   @OneToOne(() => user)
   @JoinColumn({ name: "user_id" })
   user_id: string;
+
+  @Column({
+    default: false,
+    comment: "to check if the user has verified their email",
+  })
+  is_verified: boolean;
 }
 
 /**
@@ -142,4 +142,10 @@ export class user_phone_number {
 
   @Column({ unique: true, nullable: false })
   phone_number: string;
+
+  @Column({
+    default: false,
+    comment: "to check if the user has verified their phone number",
+  })
+  is_verified: boolean;
 }
