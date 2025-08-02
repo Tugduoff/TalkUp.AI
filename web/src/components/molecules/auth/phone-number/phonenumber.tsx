@@ -26,7 +26,7 @@ const countries: Country[] = [
   { name: 'Switzerland', code: 'CH', flag: '🇨🇭', dialCode: '+41' },
   { name: 'Argentina', code: 'AR', flag: '🇦🇷', dialCode: '+54' },
 ];
-
+// TODO: Replace the native <select> with the new custom selector component from create-input-molecule-component
 /**
  * A reusable input component for phone numbers with country code selection.
  *
