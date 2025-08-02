@@ -5,4 +5,5 @@ This custom GitHub Action is designed to run units tests for each part of the pr
 ## Features
 
 This action performs the following checks:
+
 - **Test**: Ensures the code's tests are working and succeeding. It first setup node because it is needed to run the tests.

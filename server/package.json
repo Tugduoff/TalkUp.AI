@@ -86,7 +86,8 @@
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": [
-        "ts-jest", {
+        "ts-jest",
+        {
           "tsconfig": "tsconfig.json",
           "useESM": true,
           "isolatedModules": false

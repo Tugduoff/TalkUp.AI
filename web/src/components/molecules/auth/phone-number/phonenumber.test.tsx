@@ -4,6 +4,12 @@ import { vi } from 'vitest';
 
 import PhoneNumber from './phonenumber';
 
+/**
+ * Test suite for the PhoneNumber component.
+ *
+ * Validates rendering, interactivity (onChange callbacks), handling of props
+ * like `value`, `disabled`, `readOnly`, `className`, and custom placeholders.
+ */
 describe('PhoneNumber', () => {
   const mockOnChange = vi.fn();
 

@@ -1,17 +1,17 @@
-name: 'Code Quality Check'
-description: 'Run code quality checks'
+name: "Code Quality Check"
+description: "Run code quality checks"
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - name: 'Run linter'
+    - name: "Run linter"
       run: npm run lint:check
       shell: bash
 
-    - name: 'run prettier'
+    - name: "run prettier"
       run: npm run format:check
       shell: bash
 
-    - name: 'Run tsc check'
+    - name: "Run tsc check"
       run: npm run tsc:check
       shell: bash

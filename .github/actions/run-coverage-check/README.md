@@ -5,5 +5,6 @@ This custom GitHub Action is designed to run unit tests and generate coverage re
 ## Features
 
 This action performs the following steps:
+
 - **Run Unit Tests for Web**: Executes the unit tests for the `web` application and generates a coverage report.
 - **Run Unit Tests for Server**: Executes the unit tests for the `server` application and generates a coverage report.

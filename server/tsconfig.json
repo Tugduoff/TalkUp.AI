@@ -22,7 +22,7 @@
       "@entities/*": ["src/entities/*"],
       "@common/*": ["src/common/*"],
       "@config/*": ["src/config/*"],
-      "@src/*": ["src/*"],
+      "@src/*": ["src/*"]
     }
   }
 }

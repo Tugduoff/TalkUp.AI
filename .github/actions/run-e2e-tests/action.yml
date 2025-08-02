@@ -1,7 +1,7 @@
-name: 'Playwright Tests'
-description: 'Run Playwright e2e tests'
+name: "Playwright Tests"
+description: "Run Playwright e2e tests"
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Run Playwright e2e tests web
       shell: bash

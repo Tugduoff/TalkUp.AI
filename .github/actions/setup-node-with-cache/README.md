@@ -11,13 +11,14 @@ This custom GitHub Action sets up Node.js (v23.x) and caches or installs npm dep
 
 ## Inputs
 
-| Name                | Description                                           | Required | Default |
-|---------------------|-------------------------------------------------------|----------|---------|
+| Name                | Description                                                                | Required | Default    |
+| ------------------- | -------------------------------------------------------------------------- | -------- | ---------- |
 | `working-directory` | The directory containing the `package.json` file (optional for workspace). | `false`  | `.` (root) |
 
 ## Usage
 
 ### For npm workspace (root directory)
+
 ```yaml
 steps:
   - name: Setup Node.js and Install Dependencies
@@ -25,6 +26,7 @@ steps:
 ```
 
 ### For subdirectory project
+
 ```yaml
 steps:
   - name: Setup Node.js and Install Dependencies
