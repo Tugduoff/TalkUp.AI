@@ -5,7 +5,6 @@
 #include <crow.h>
 #include "Server.hpp"
 
-
 // Mock class for Server
 class MockServer : public talkup_network::Server {
 public:
