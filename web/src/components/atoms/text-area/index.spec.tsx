@@ -10,7 +10,7 @@ import { TextArea } from './index';
  */
 describe('TextArea', () => {
   it('renders with default props', () => {
-    render(<TextArea />);
+    render(<TextArea id="textarea" />);
     const textarea = screen.getByRole('textbox', { name: 'textarea' });
 
     expect(textarea).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('TextArea', () => {
     render(<TextArea disabled resize />);
     const textarea = screen.getByRole('textbox', { name: 'textarea' });
     expect(textarea).toBeDisabled();
-    expect(textarea).toHaveClass('resize-none'); // disabled should force resize-none
+    expect(textarea).toHaveClass('resize-none');
     expect(textarea).not.toHaveClass('resize');
   });
 

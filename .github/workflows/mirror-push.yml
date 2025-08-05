@@ -14,14 +14,13 @@ env:
 jobs:
   push_mirror:
     runs-on: ubuntu-latest
-    
     # Only push to mirror if all workflows succeeded and this is on main branch
     if: github.repository == 'Tugduoff/TalkUp.AI' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # fetch full history to copy everything to mirror
+          fetch-depth: 0 # fetch full history to copy everything to mirror
 
       - name: Push to mirror repo action
         uses: ./.github/actions/push-to-mirror

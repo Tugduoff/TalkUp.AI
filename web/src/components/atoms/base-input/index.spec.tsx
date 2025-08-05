@@ -10,7 +10,7 @@ import { BaseInput } from './index';
  */
 describe('BaseInput', () => {
   it('renders with default props (type="text", placeholder="Enter text", name="input", empty value)', () => {
-    render(<BaseInput />);
+    render(<BaseInput id="input" />);
 
     const inputElement = screen.getByRole('textbox', { name: 'input' });
 
@@ -41,8 +41,9 @@ describe('BaseInput', () => {
 
   it('renders with a custom name, and applies it to id and aria-label', () => {
     const customName = 'username';
-    render(<BaseInput name={customName} />);
+    render(<BaseInput name={customName} id={customName} />);
     const inputElement = screen.getByRole('textbox', { name: customName });
+    expect(inputElement).toBeInTheDocument();
     expect(inputElement).toHaveAttribute('name', customName);
     expect(inputElement).toHaveAttribute('id', customName);
     expect(inputElement).toHaveAttribute('aria-label', customName);

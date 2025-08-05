@@ -1,49 +1,46 @@
-import React from 'react';
-
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-  type?: string;
-  placeholder?: string;
-  name?: string;
-  value?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  disabled?: boolean;
-  readOnly?: boolean;
-  required?: boolean;
-}
+import { cn } from '@/utils/cn';
+import React, { useId } from 'react';
 
 /**
  * A base input component for form elements.
  *
  * @component
- * @param {Object} props - The component props
- * @param {string} [props.type='text'] - The type of the input
- * @param {string} [props.placeholder='Enter text'] - The placeholder text
- * @param {string} [props.name='input'] - The name of the input field
- * @param {string} [props.value=''] - The value of the input
- * @param {function} [props.onChange=() => {}] - Function called when input value changes
- * @param {boolean} [props.disabled=false] - Whether the input is disabled
- * @param {boolean} [props.readOnly=false] - Whether the input is read-only
- * @param {boolean} [props.required=false] - Whether the input is required
- * @param {Object} props.props - Additional HTML input attributes to be spread to the input element
- *
- * @returns {JSX.Element} The rendered input component
+ * @param {React.InputHTMLAttributes<HTMLInputElement>} props - The component props.
+ * This component directly extends and accepts all standard HTML input attributes.
+ * @param {string} [props.id] - The unique ID for the input element.
+ * @param {string} [props.type='text'] - The type of the input (e.g., 'text', 'password').
+ * @param {string} [props.placeholder='Enter text'] - The placeholder text.
+ * @param {string} [props.name='input'] - The name of the input field. This also defaults the accessible name if no other label is provided.
+ * @param {string} [props.value=''] - The value of the input.
+ * @param {function} [props.onChange] - Function called when input value changes.
+ * @param {boolean} [props.disabled=false] - Whether the input is disabled.
+ * @param {boolean} [props.readOnly=false] - Whether the input is read-only.
+ * @param {boolean} [props.required=false] - Whether the input is required.
+ * @param {string} [props.className] - Additional CSS classes to apply.
+ * @returns {JSX.Element} The rendered input component.
  */
-export const BaseInput: React.FC<Props> = ({
+export const BaseInput: React.FC<
+  React.InputHTMLAttributes<HTMLInputElement>
+> = ({
+  id,
+  name = 'input',
   value = '',
   type = 'text',
-  name = 'input',
   placeholder = 'Enter text',
   disabled = false,
   readOnly = false,
   required = false,
   onChange = () => {},
-  ...props
-}: Props) => {
+  className,
+  ...rest
+}) => {
+  const generatedId = useId();
+  const inputId = id || generatedId;
+
   return (
     <input
-      {...props}
-      aria-label={name}
-      id={name}
+      {...rest}
+      id={inputId}
       name={name}
       type={type}
       role="textbox"
@@ -55,8 +52,12 @@ export const BaseInput: React.FC<Props> = ({
       readOnly={readOnly}
       aria-readonly={readOnly}
       required={required}
+      aria-label={name}
       aria-required={required}
-      className={`px-4 py-2 text-sm font-normal transition-colors duration-200 ease-in-out border rounded-sm border-border-strong placeholder:text font-display focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50 ${props.className || ''}`}
+      className={cn(
+        'px-4 py-2 text-sm font-normal transition-colors duration-200 ease-in-out border rounded-sm border-border-strong placeholder:text font-display focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50 ',
+        className,
+      )}
     />
   );
 };
