@@ -15,12 +15,12 @@ export class PostValidationPipe extends ValidationPipe {
       whitelist: true,
       forbidNonWhitelisted: true,
       exceptionFactory: (errors: ValidationError[]) => {
-        // les paramètres manquants dans le tableau errors sont identifiable via une value undefined.
+        // Missing parameters in the errors array are identifiable by an undefined value
         const missingParams = errors.filter(
           (error) => error.constraints && error.value === undefined,
         );
 
-        // si ya des missing params, on renvoie 422 au lieu de 400
+        // If there are missing parameters, return 422 instead of 400
         if (missingParams.length > 0) {
           return new UnprocessableEntityException({
             statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -31,7 +31,7 @@ export class PostValidationPipe extends ValidationPipe {
           });
         }
 
-        // si badly formatted, renvoie 400
+        // If badly formatted, return 400
         return new BadRequestException({
           statusCode: HttpStatus.BAD_REQUEST,
           message: "Badly formatted parameters",
