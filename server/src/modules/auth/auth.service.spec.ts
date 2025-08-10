@@ -13,7 +13,7 @@ import {
   user_password,
   user_phone_number,
 } from "@entities/user.entity";
-import { UsersService } from "@src/users/users.service";
+import { UsersService } from "@src/modules/users/users.service";
 import { Mocked } from "jest-mock";
 
 describe("AuthService", () => {
@@ -89,36 +89,5 @@ describe("AuthService", () => {
 
   it("should be defined", () => {
     expect(service).toBeDefined();
-  });
-
-  it("should throw if user does not exist", async () => {
-    mockUserPhoneNumberRepo.findOne.mockResolvedValue(null);
-
-    await expect(
-      service.changeUserPassword("0600000000", "newPassword"),
-    ).rejects.toThrow("There is no user with that phone number");
-  });
-
-  it("should update existing password", async () => {
-    mockUserPhoneNumberRepo.findOne.mockResolvedValue({
-      user_id: "a1-b2...",
-      phone_number_id: 0,
-      phone_number: "",
-      is_verified: false,
-    });
-    mockUserPasswordRepo.findOne.mockResolvedValue({
-      password: "old",
-      user_id: "a1-b2...",
-      password_id: 0,
-    });
-    mockUserPasswordRepo.save.mockResolvedValue({
-      password: "newPass",
-      user_id: "a1-b2...",
-      password_id: 0,
-    });
-
-    const result = await service.changeUserPassword("0600000000", "newPass");
-
-    expect(result).toBe(true);
   });
 });

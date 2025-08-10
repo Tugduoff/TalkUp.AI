@@ -4,9 +4,12 @@ import { ConfigModule } from "@nestjs/config";
 
 import pgConfig from "@config/postgres.config";
 
-import { AuthModule } from "./auth/auth.module";
+import { AuthModule } from "./modules/auth/auth.module";
+import { UsersModule } from "./modules/users/users.module";
+import { LinkedInModule } from "./modules/linkedin/linkedin.module";
 
 import { LoggerMiddleware } from "@common/middleware/logger";
+import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
 @Module({
   imports: [
@@ -16,12 +19,14 @@ import { LoggerMiddleware } from "@common/middleware/logger";
       load: [pgConfig],
     }),
     AuthModule,
+    UsersModule,
+    LinkedInModule,
     TypeOrmModule.forRootAsync({
       useFactory: pgConfig,
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [PostValidationPipe],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

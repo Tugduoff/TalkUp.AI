@@ -15,7 +15,7 @@ import {
   user_phone_number,
 } from "@entities/user.entity";
 
-import { UsersService } from "@src/users/users.service";
+import { UsersService } from "@src/modules/users/users.service";
 
 describe("AuthController", () => {
   let controller: AuthController;
