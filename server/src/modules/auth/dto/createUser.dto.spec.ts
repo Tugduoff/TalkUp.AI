@@ -126,7 +126,7 @@ describe("CreateUserDto", () => {
     });
 
     it("should fail validation for non-string username", async () => {
-      (dto as any).username = 12345;
+      Object.assign(dto, { username: 12345 });
 
       const errors = await validate(dto);
 
@@ -138,11 +138,11 @@ describe("CreateUserDto", () => {
     });
 
     it("should fail validation for null/undefined username", async () => {
-      (dto as any).username = null;
+      Object.assign(dto, { username: null });
       let errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);
 
-      (dto as any).username = undefined;
+      Object.assign(dto, { username: undefined });
       errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);
     });
@@ -326,9 +326,7 @@ describe("CreateUserDto", () => {
     });
 
     it("should handle non-string values for all fields", async () => {
-      (dto as any).username = 123;
-      (dto as any).phoneNumber = 456;
-      (dto as any).password = 789;
+      Object.assign(dto, { username: 123, phoneNumber: 456, password: 789 });
 
       const errors = await validate(dto);
 

@@ -51,7 +51,7 @@ describe("LinkedInProfileDto", () => {
     });
 
     it("should fail validation when name is not a string", async () => {
-      (dto as any).name = 12345;
+      Object.assign(dto, { name: 12345 });
       dto.email = "john.doe@example.com";
       dto.email_verified = true;
 
@@ -95,7 +95,7 @@ describe("LinkedInProfileDto", () => {
 
     it("should fail validation when email is not a string", async () => {
       dto.name = "John Doe";
-      (dto as any).email = 12345;
+      Object.assign(dto, { email: 12345 });
       dto.email_verified = true;
 
       const errors = await validate(dto);
@@ -140,7 +140,7 @@ describe("LinkedInProfileDto", () => {
     it("should fail validation when email_verified is not a boolean", async () => {
       dto.name = "John Doe";
       dto.email = "john.doe@example.com";
-      (dto as any).email_verified = "true";
+      Object.assign(dto, { email_verified: "true" });
 
       const errors = await validate(dto);
       expect(errors).toHaveLength(1);
@@ -151,7 +151,7 @@ describe("LinkedInProfileDto", () => {
     it("should fail validation when email_verified is a number", async () => {
       dto.name = "John Doe";
       dto.email = "john.doe@example.com";
-      (dto as any).email_verified = 1;
+      Object.assign(dto, { email_verified: 1 });
 
       const errors = await validate(dto);
       expect(errors).toHaveLength(1);
@@ -165,7 +165,7 @@ describe("LinkedInProfileDto", () => {
       dto.name = "John Doe";
       dto.email = "john.doe@example.com";
       dto.email_verified = true;
-      (dto as any).picture = 12345;
+      Object.assign(dto, { picture: 12345 });
 
       const errors = await validate(dto);
       expect(errors).toHaveLength(1);
@@ -177,7 +177,7 @@ describe("LinkedInProfileDto", () => {
       dto.name = "John Doe";
       dto.email = "john.doe@example.com";
       dto.email_verified = true;
-      (dto as any).sub = 12345;
+      Object.assign(dto, { sub: 12345 });
 
       const errors = await validate(dto);
       expect(errors).toHaveLength(1);
@@ -210,10 +210,12 @@ describe("LinkedInProfileDto", () => {
 
   describe("Multiple validation errors", () => {
     it("should return multiple errors when multiple fields are invalid", async () => {
-      (dto as any).name = 123;
-      dto.email = "invalid-email";
-      (dto as any).email_verified = "not-boolean";
-      (dto as any).picture = 456;
+      Object.assign(dto, {
+        name: 123,
+        email: "invalid-email",
+        email_verified: "not-boolean",
+        picture: 456,
+      });
 
       const errors = await validate(dto);
       expect(errors).toHaveLength(4);

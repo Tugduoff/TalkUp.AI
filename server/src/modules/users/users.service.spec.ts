@@ -47,7 +47,7 @@ describe("UsersService", () => {
       findOne: jest.fn(),
       create: jest.fn(),
       save: jest.fn(),
-    };
+    } as Partial<Repository<user_password>>;
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -156,7 +156,7 @@ describe("UsersService", () => {
     });
 
     it("should create new password entry when user has no password", async () => {
-      const newPasswordEntity = {
+      const newPasswordEntity: user_password = {
         ...mockPassword,
         password: "newHashedPassword",
       };
@@ -166,7 +166,9 @@ describe("UsersService", () => {
         .mockResolvedValue(mockPhoneNumber);
       mockPasswordRepo.findOne = jest.fn().mockResolvedValue(null);
       mockPasswordRepo.create = jest.fn().mockReturnValue(newPasswordEntity);
-      mockPasswordRepo.save = jest.fn().mockResolvedValue(newPasswordEntity);
+      mockPasswordRepo.save = jest.fn((_entity: user_password) =>
+        Promise.resolve(newPasswordEntity),
+      ) as unknown as typeof mockPasswordRepo.save;
 
       jest.doMock("@common/utils/passwordHasher", () => ({
         hashPassword: jest.fn().mockResolvedValue("newHashedPassword"),
@@ -179,7 +181,7 @@ describe("UsersService", () => {
 
       expect(result).toBe(true);
       expect(mockPasswordRepo.create).toHaveBeenCalledWith({
-        password: expect.any(String),
+        password: expect.stringContaining("") as unknown,
         user_id: "test-user-id",
       });
       expect(mockPasswordRepo.save).toHaveBeenCalledWith(newPasswordEntity);
@@ -191,10 +193,13 @@ describe("UsersService", () => {
         .fn()
         .mockResolvedValue(mockPhoneNumber);
       mockPasswordRepo.findOne = jest.fn().mockResolvedValue(existingPassword);
-      mockPasswordRepo.save = jest.fn().mockResolvedValue({
+      const updatedPassword: user_password = {
         ...existingPassword,
         password: "newHashedPassword",
-      });
+      };
+      mockPasswordRepo.save = jest.fn((_entity: Partial<user_password>) =>
+        Promise.resolve(updatedPassword),
+      ) as unknown as typeof mockPasswordRepo.save;
 
       const result = await service.changeUserPassword(
         "+33640404040",
@@ -204,7 +209,7 @@ describe("UsersService", () => {
       expect(result).toBe(true);
       expect(mockPasswordRepo.save).toHaveBeenCalledWith({
         ...existingPassword,
-        password: expect.any(String),
+        password: expect.stringContaining("") as unknown,
       });
     });
   });

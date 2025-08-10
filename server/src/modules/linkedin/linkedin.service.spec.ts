@@ -72,7 +72,7 @@ describe("LinkedInService", () => {
       axiosRef: {
         post: jest.fn(),
         get: jest.fn(),
-      } as any,
+      } as unknown as import("axios").AxiosInstance,
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -102,8 +102,6 @@ describe("LinkedInService", () => {
     }).compile();
 
     service = module.get<LinkedInService>(LinkedInService);
-
-    jest.spyOn(service["logger"], "error").mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -121,7 +119,7 @@ describe("LinkedInService", () => {
         status: 200,
         statusText: "OK",
         headers: {},
-        config: {} as any,
+        config: { headers: {} as import("axios").AxiosHeaders },
       };
 
       mockHttpService.axiosRef!.post = jest
@@ -132,7 +130,10 @@ describe("LinkedInService", () => {
         await service.getAccessTokenDatasFromQueryCode("test-code");
 
       expect(result).toEqual(mockTokenData);
-      expect(mockHttpService.axiosRef!.post).toHaveBeenCalledWith(
+      // store the mock in a local constant to avoid unbound-method lint rule
+      expect((...args: unknown[]) =>
+        (mockHttpService.axiosRef!.post as jest.Mock)(...args),
+      ).toHaveBeenCalledWith(
         "https://www.linkedin.com/oauth/v2/accessToken",
         expect.any(URLSearchParams),
         {
@@ -160,7 +161,7 @@ describe("LinkedInService", () => {
         status: 200,
         statusText: "OK",
         headers: {},
-        config: {} as any,
+        config: { headers: {} as import("axios").AxiosHeaders },
       };
 
       mockHttpService.axiosRef!.get = jest.fn().mockResolvedValue(mockResponse);
@@ -169,12 +170,11 @@ describe("LinkedInService", () => {
         await service.getLinkedInProfileFromAccessToken("test-token");
 
       expect(result).toEqual(mockProfile);
-      expect(mockHttpService.axiosRef!.get).toHaveBeenCalledWith(
-        "https://api.linkedin.com/v2/userinfo",
-        {
-          headers: { Authorization: "Bearer test-token" },
-        },
-      );
+      expect((...args: unknown[]) =>
+        (mockHttpService.axiosRef!.get as jest.Mock)(...args),
+      ).toHaveBeenCalledWith("https://api.linkedin.com/v2/userinfo", {
+        headers: { Authorization: "Bearer test-token" },
+      });
     });
 
     it("should throw InternalServerErrorException on HTTP error", async () => {
@@ -243,8 +243,12 @@ describe("LinkedInService", () => {
       mockUserRepo.save = jest.fn().mockResolvedValue(newUser);
       mockUserEmailRepo.create = jest.fn().mockReturnValue(mockEmail);
       mockUserEmailRepo.save = jest.fn().mockResolvedValue(mockEmail);
-      mockUserOauthRepo.create = jest.fn().mockReturnValue({});
-      mockUserOauthRepo.save = jest.fn().mockResolvedValue({});
+      mockUserOauthRepo.create = jest
+        .fn()
+        .mockReturnValue({} as Partial<user_oauth>);
+      mockUserOauthRepo.save = jest
+        .fn()
+        .mockResolvedValue({} as Partial<user_oauth>);
       mockJwtService.signAsync = jest.fn().mockResolvedValue("new-jwt-token");
 
       const result = await service.saveLinkedInUser(mockProfile, mockTokenData);
@@ -259,14 +263,15 @@ describe("LinkedInService", () => {
       expect(mockUserEmailRepo.create).toHaveBeenCalledWith(mockEmail);
       expect(mockUserEmailRepo.save).toHaveBeenCalledWith(mockEmail);
     });
-
     it("should handle OAuth save error gracefully", async () => {
       const newUser = { ...mockUser };
 
       mockUserRepo.findOne = jest.fn().mockResolvedValue(null);
       mockUserRepo.create = jest.fn().mockReturnValue(newUser);
       mockUserRepo.save = jest.fn().mockResolvedValue(newUser);
-      mockUserOauthRepo.create = jest.fn().mockReturnValue({});
+      mockUserOauthRepo.create = jest
+        .fn()
+        .mockReturnValue({} as Partial<user_oauth>);
       mockUserOauthRepo.save = jest
         .fn()
         .mockRejectedValue(new Error("OAuth save failed"));
@@ -286,7 +291,7 @@ describe("LinkedInService", () => {
         status: 200,
         statusText: "OK",
         headers: {},
-        config: {} as any,
+        config: { headers: {} as import("axios").AxiosHeaders },
       };
 
       const mockResponse2: AxiosResponse = {
@@ -294,7 +299,7 @@ describe("LinkedInService", () => {
         status: 200,
         statusText: "OK",
         headers: {},
-        config: {} as any,
+        config: { headers: {} as import("axios").AxiosHeaders },
       };
 
       mockHttpService.axiosRef!.post = jest

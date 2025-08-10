@@ -5,7 +5,6 @@ import {
   UnprocessableEntityException,
   HttpStatus,
 } from "@nestjs/common";
-import { ArgumentMetadata } from "@nestjs/common";
 
 describe("PostValidationPipe", () => {
   let pipe: PostValidationPipe;
@@ -24,30 +23,24 @@ describe("PostValidationPipe", () => {
 
   describe("Configuration", () => {
     it("should be configured with correct options", () => {
-      // The pipe should have whitelist and forbidNonWhitelisted enabled
-      // These are internal ValidationPipe configurations that we can't directly test
-      // but we can verify the behavior in transform tests
       expect(pipe).toBeDefined();
     });
   });
 
   describe("Exception Factory", () => {
-    let exceptionFactory: (errors: ValidationError[]) => any;
+    let _exceptionFactory: (
+      errors: ValidationError[],
+    ) => BadRequestException | UnprocessableEntityException;
 
     beforeEach(() => {
-      // Access the exception factory from the ValidationPipe configuration
-      // Since it's internal, we'll test through the pipe's behavior
       pipe = new PostValidationPipe();
 
-      // Extract the exception factory by creating a test scenario
-      const mockValidationError: ValidationError = {
+      const _mockValidationError: ValidationError = {
         property: "test",
         value: undefined,
         constraints: { isString: "test must be a string" },
         children: [],
       };
-
-      // We'll create the scenarios that trigger different exception types
     });
 
     describe("Missing Parameters (422 UnprocessableEntityException)", () => {
@@ -67,8 +60,15 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        // Get the exception factory from the pipe
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(UnprocessableEntityException);
@@ -89,7 +89,15 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(UnprocessableEntityException);
@@ -112,7 +120,15 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(UnprocessableEntityException);
@@ -137,7 +153,15 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(BadRequestException);
@@ -167,7 +191,15 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(BadRequestException);
@@ -195,7 +227,15 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(BadRequestException);
@@ -212,7 +252,15 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(BadRequestException);
@@ -237,10 +285,17 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
-        // Should return 422 because there's at least one missing parameter
         expect(exception).toBeInstanceOf(UnprocessableEntityException);
         expect(exception.getStatus()).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
         expect(exception.getResponse()).toEqual({
@@ -272,11 +327,21 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(UnprocessableEntityException);
-        const response = exception.getResponse();
+        const response = exception.getResponse() as {
+          errors: { field: string }[];
+        };
         expect(response.errors).toHaveLength(2);
         expect(response.errors).toContainEqual({ field: "field1" });
         expect(response.errors).toContainEqual({ field: "field2" });
@@ -294,7 +359,15 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(BadRequestException);
@@ -310,7 +383,15 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(UnprocessableEntityException);
@@ -319,12 +400,19 @@ describe("PostValidationPipe", () => {
       it("should handle empty errors array", () => {
         const errors: ValidationError[] = [];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
-        // Should return BadRequestException as no missing params detected
         expect(exception).toBeInstanceOf(BadRequestException);
-        expect(exception.getResponse()).toEqual({
+        expect((exception as BadRequestException).getResponse()).toEqual({
           statusCode: HttpStatus.BAD_REQUEST,
           message: "Badly formatted parameters",
           errors: [],
@@ -341,11 +429,21 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(BadRequestException);
-        expect(exception.getStatus()).toBe(HttpStatus.BAD_REQUEST);
+        expect((exception as BadRequestException).getStatus()).toBe(
+          HttpStatus.BAD_REQUEST,
+        );
       });
 
       it("should handle ValidationError with false as value (not undefined)", () => {
@@ -358,11 +456,21 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(BadRequestException);
-        expect(exception.getStatus()).toBe(HttpStatus.BAD_REQUEST);
+        expect((exception as BadRequestException).getStatus()).toBe(
+          HttpStatus.BAD_REQUEST,
+        );
       });
     });
 
@@ -384,7 +492,15 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(BadRequestException);
@@ -403,11 +519,24 @@ describe("PostValidationPipe", () => {
           },
         ];
 
-        const pipeOptions = (pipe as any).validatorOptions;
+        const pipeOptions = (
+          pipe as PostValidationPipe & {
+            validatorOptions: {
+              exceptionFactory: (
+                errors: ValidationError[],
+              ) => BadRequestException | UnprocessableEntityException;
+            };
+          }
+        ).validatorOptions;
         const exception = pipeOptions.exceptionFactory(errors);
 
         expect(exception).toBeInstanceOf(BadRequestException);
-        const response = exception.getResponse();
+        interface ValidationErrorResponse {
+          errors: { constraints: Record<string, string> }[];
+        }
+        const response = (
+          exception as BadRequestException
+        ).getResponse() as ValidationErrorResponse;
         expect(response.errors[0].constraints).toEqual({
           minLength: "password must be at least 8 characters",
           matches: "password must contain at least one number",
@@ -418,17 +547,33 @@ describe("PostValidationPipe", () => {
 
   describe("Integration Behavior", () => {
     it("should configure ValidationPipe with whitelist enabled", () => {
-      // Test that the pipe inherits ValidationPipe behavior
       expect(pipe).toBeInstanceOf(PostValidationPipe);
 
-      // Verify it has the ValidationPipe properties
-      const options = (pipe as any).validatorOptions;
+      const options = (
+        pipe as PostValidationPipe & {
+          validatorOptions: {
+            whitelist: boolean;
+            forbidNonWhitelisted: boolean;
+            exceptionFactory: (
+              errors: ValidationError[],
+            ) => BadRequestException | UnprocessableEntityException;
+          };
+        }
+      ).validatorOptions;
       expect(options.whitelist).toBe(true);
       expect(options.forbidNonWhitelisted).toBe(true);
     });
 
     it("should have custom exception factory", () => {
-      const options = (pipe as any).validatorOptions;
+      const options = (
+        pipe as PostValidationPipe & {
+          validatorOptions: {
+            exceptionFactory: (
+              errors: ValidationError[],
+            ) => BadRequestException | UnprocessableEntityException;
+          };
+        }
+      ).validatorOptions;
       expect(options.exceptionFactory).toBeDefined();
       expect(typeof options.exceptionFactory).toBe("function");
     });

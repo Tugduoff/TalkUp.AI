@@ -105,27 +105,27 @@ describe("intervalChecker", () => {
     describe("Error Handling", () => {
       it("should throw error when dateToCheck is null", () => {
         expect(() => {
-          isDateExpired(null as any, "3600");
+          isDateExpired(null as unknown as Date, "3600");
         }).toThrow("Both dateToCheck and expiresIn are required");
       });
 
       it("should throw error when dateToCheck is undefined", () => {
         expect(() => {
-          isDateExpired(undefined as any, "3600");
+          isDateExpired(undefined as unknown as Date, "3600");
         }).toThrow("Both dateToCheck and expiresIn are required");
       });
 
       it("should throw error when expiresIn is null", () => {
         const testDate = new Date();
         expect(() => {
-          isDateExpired(testDate, null as any);
+          isDateExpired(testDate, null as unknown as string);
         }).toThrow("Both dateToCheck and expiresIn are required");
       });
 
       it("should throw error when expiresIn is undefined", () => {
         const testDate = new Date();
         expect(() => {
-          isDateExpired(testDate, undefined as any);
+          isDateExpired(testDate, undefined as unknown as string);
         }).toThrow("Both dateToCheck and expiresIn are required");
       });
 
@@ -138,7 +138,7 @@ describe("intervalChecker", () => {
 
       it("should throw error when both parameters are null", () => {
         expect(() => {
-          isDateExpired(null as any, null as any);
+          isDateExpired(null as unknown as Date, null as unknown as string);
         }).toThrow("Both dateToCheck and expiresIn are required");
       });
     });

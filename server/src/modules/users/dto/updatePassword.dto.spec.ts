@@ -66,9 +66,10 @@ describe("UpdatePasswordDto", () => {
     });
 
     it("should fail validation for non-string phone number", async () => {
-      (dto as any).phoneNumber = 33640404040;
+      const testDto = new UpdatePasswordDto();
+      testDto.phoneNumber = 33640404040 as unknown as string;
 
-      const errors = await validate(dto);
+      const errors = await validate(testDto);
 
       expect(errors.length).toBeGreaterThan(0);
       const phoneError = errors.find(
@@ -78,12 +79,13 @@ describe("UpdatePasswordDto", () => {
     });
 
     it("should fail validation for null/undefined phone number", async () => {
-      (dto as any).phoneNumber = null;
-      let errors = await validate(dto);
+      const testDto = new UpdatePasswordDto();
+      testDto.phoneNumber = null as unknown as string;
+      let errors = await validate(testDto);
       expect(errors.length).toBeGreaterThan(0);
 
-      (dto as any).phoneNumber = undefined;
-      errors = await validate(dto);
+      testDto.phoneNumber = undefined as unknown as string;
+      errors = await validate(testDto);
       expect(errors.length).toBeGreaterThan(0);
     });
   });
@@ -115,9 +117,11 @@ describe("UpdatePasswordDto", () => {
     });
 
     it("should fail validation for non-string password", async () => {
-      (dto as any).newPassword = 12345678;
+      const testDto = new UpdatePasswordDto();
+      testDto.phoneNumber = "+33640404040";
+      testDto.newPassword = 12345678 as unknown as string;
 
-      const errors = await validate(dto);
+      const errors = await validate(testDto);
 
       expect(errors.length).toBeGreaterThan(0);
       const passwordError = errors.find(
@@ -128,12 +132,14 @@ describe("UpdatePasswordDto", () => {
     });
 
     it("should fail validation for null/undefined password", async () => {
-      (dto as any).newPassword = null;
-      let errors = await validate(dto);
+      const testDto = new UpdatePasswordDto();
+      testDto.phoneNumber = "+33640404040";
+      testDto.newPassword = null as unknown as string;
+      let errors = await validate(testDto);
       expect(errors.length).toBeGreaterThan(0);
 
-      (dto as any).newPassword = undefined;
-      errors = await validate(dto);
+      testDto.newPassword = undefined as unknown as string;
+      errors = await validate(testDto);
       expect(errors.length).toBeGreaterThan(0);
     });
 
@@ -150,7 +156,7 @@ describe("UpdatePasswordDto", () => {
       for (const password of invalidPasswords) {
         const testDto = new UpdatePasswordDto();
         testDto.phoneNumber = "+33640404040";
-        (testDto as any).newPassword = password;
+        testDto.newPassword = password as unknown as string;
 
         const errors = await validate(testDto);
         expect(errors.length).toBeGreaterThan(0);
@@ -165,10 +171,11 @@ describe("UpdatePasswordDto", () => {
 
   describe("Multiple validation errors", () => {
     it("should return multiple errors when both fields are invalid", async () => {
-      dto.phoneNumber = "invalid-phone";
-      (dto as any).newPassword = 12345;
+      const testDto = new UpdatePasswordDto();
+      testDto.phoneNumber = "invalid-phone";
+      testDto.newPassword = 12345 as unknown as string;
 
-      const errors = await validate(dto);
+      const errors = await validate(testDto);
 
       expect(errors).toHaveLength(2);
 
@@ -184,10 +191,11 @@ describe("UpdatePasswordDto", () => {
     });
 
     it("should handle all fields being null", async () => {
-      (dto as any).phoneNumber = null;
-      (dto as any).newPassword = null;
+      const testDto = new UpdatePasswordDto();
+      testDto.phoneNumber = null as unknown as string;
+      testDto.newPassword = null as unknown as string;
 
-      const errors = await validate(dto);
+      const errors = await validate(testDto);
 
       expect(errors).toHaveLength(2);
       expect(errors.map((e) => e.property).sort()).toEqual([

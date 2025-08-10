@@ -65,14 +65,14 @@ describe("passwordHasher", () => {
       });
 
       it("should throw error when password is undefined", async () => {
-        await expect(hashPassword(undefined as any)).rejects.toThrow(
-          "Password is required",
-        );
+        await expect(
+          hashPassword(undefined as unknown as string),
+        ).rejects.toThrow("Password is required");
         expect(mockedBcrypt.hash).not.toHaveBeenCalled();
       });
 
       it("should throw error when password is null", async () => {
-        await expect(hashPassword(null as any)).rejects.toThrow(
+        await expect(hashPassword(null as unknown as string)).rejects.toThrow(
           "Password is required",
         );
         expect(mockedBcrypt.hash).not.toHaveBeenCalled();

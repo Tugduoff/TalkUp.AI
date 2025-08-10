@@ -35,7 +35,13 @@ describe("LoggerMiddleware", () => {
     };
 
     mockResponse = {
-      on: jest.fn(),
+      on: jest
+        .fn()
+        .mockImplementation(
+          (_event: string, _listener: (...args: unknown[]) => void) => {
+            return mockResponse as Response;
+          },
+        ),
       get: jest.fn(),
     };
 
@@ -72,10 +78,7 @@ describe("LoggerMiddleware", () => {
         mockNext,
       );
 
-      expect(mockResponse.on).toHaveBeenCalledWith(
-        "finish",
-        expect.any(Function),
-      );
+      expect(mockResponse.on).toHaveBeenCalledWith("finish", expect.anything());
     });
 
     it("should get user-agent from request headers", () => {
@@ -105,11 +108,13 @@ describe("LoggerMiddleware", () => {
     it("should log request details when response finishes", () => {
       const mockFinishCallback = jest.fn();
       mockRequest.get = jest.fn().mockReturnValue("Mozilla/5.0 Chrome");
-      mockResponse.on = jest.fn().mockImplementation((event, callback) => {
-        if (event === "finish") {
-          mockFinishCallback.mockImplementation(callback);
-        }
-      });
+      mockResponse.on = jest
+        .fn()
+        .mockImplementation(
+          (_event: string, _listener: (...args: unknown[]) => void) => {
+            return mockResponse as Response;
+          },
+        );
       mockResponse.get = jest.fn().mockReturnValue("1024");
 
       loggerMiddleware.use(
@@ -133,11 +138,13 @@ describe("LoggerMiddleware", () => {
         const mockFinishCallback = jest.fn();
         mockRequest.method = method;
         mockRequest.get = jest.fn().mockReturnValue("TestAgent");
-        mockResponse.on = jest.fn().mockImplementation((event, callback) => {
-          if (event === "finish") {
-            mockFinishCallback.mockImplementation(callback);
-          }
-        });
+        mockResponse.on = jest
+          .fn()
+          .mockImplementation(
+            (_event: string, _listener: (...args: unknown[]) => void) => {
+              return mockResponse as Response;
+            },
+          );
         mockResponse.get = jest.fn().mockReturnValue("500");
 
         loggerMiddleware.use(
@@ -163,11 +170,13 @@ describe("LoggerMiddleware", () => {
       testCases.forEach((statusCode) => {
         const mockFinishCallback = jest.fn();
         mockRequest.get = jest.fn().mockReturnValue("TestAgent");
-        mockResponse.on = jest.fn().mockImplementation((event, callback) => {
-          if (event === "finish") {
-            mockFinishCallback.mockImplementation(callback);
-          }
-        });
+        mockResponse.on = jest
+          .fn()
+          .mockImplementation(
+            (_event: string, _listener: (...args: unknown[]) => void) => {
+              return mockResponse as Response;
+            },
+          );
         mockResponse.get = jest.fn().mockReturnValue("200");
 
         loggerMiddleware.use(
@@ -200,11 +209,13 @@ describe("LoggerMiddleware", () => {
         const mockFinishCallback = jest.fn();
         mockRequest.originalUrl = url;
         mockRequest.get = jest.fn().mockReturnValue("TestAgent");
-        mockResponse.on = jest.fn().mockImplementation((event, callback) => {
-          if (event === "finish") {
-            mockFinishCallback.mockImplementation(callback);
-          }
-        });
+        mockResponse.on = jest
+          .fn()
+          .mockImplementation(
+            (_event: string, _listener: (...args: unknown[]) => void) => {
+              return mockResponse as Response;
+            },
+          );
         mockResponse.get = jest.fn().mockReturnValue("100");
 
         loggerMiddleware.use(
@@ -227,11 +238,13 @@ describe("LoggerMiddleware", () => {
     it("should handle missing content-length header", () => {
       const mockFinishCallback = jest.fn();
       mockRequest.get = jest.fn().mockReturnValue("TestAgent");
-      mockResponse.on = jest.fn().mockImplementation((event, callback) => {
-        if (event === "finish") {
-          mockFinishCallback.mockImplementation(callback);
-        }
-      });
+      mockResponse.on = jest
+        .fn()
+        .mockImplementation(
+          (_event: string, _listener: (...args: unknown[]) => void) => {
+            return mockResponse as Response;
+          },
+        );
       mockResponse.get = jest.fn().mockReturnValue(undefined);
 
       loggerMiddleware.use(
@@ -251,11 +264,13 @@ describe("LoggerMiddleware", () => {
     it("should handle empty user-agent", () => {
       const mockFinishCallback = jest.fn();
       mockRequest.get = jest.fn().mockReturnValue(null);
-      mockResponse.on = jest.fn().mockImplementation((event, callback) => {
-        if (event === "finish") {
-          mockFinishCallback.mockImplementation(callback);
-        }
-      });
+      mockResponse.on = jest
+        .fn()
+        .mockImplementation(
+          (_event: string, _listener: (...args: unknown[]) => void) => {
+            return mockResponse as Response;
+          },
+        );
       mockResponse.get = jest.fn().mockReturnValue("1000");
 
       loggerMiddleware.use(
@@ -283,20 +298,21 @@ describe("LoggerMiddleware", () => {
 
       testIPs.forEach((ip) => {
         const mockFinishCallback = jest.fn();
-        (mockRequest as any).ip = ip;
-        mockRequest.get = jest.fn().mockReturnValue("TestAgent");
-        mockResponse.on = jest.fn().mockImplementation((event, callback) => {
-          if (event === "finish") {
-            mockFinishCallback.mockImplementation(callback);
-          }
-        });
+        const requestMock: Request = {
+          ...mockRequest,
+          ip,
+        } as Request;
+        requestMock.get = jest.fn().mockReturnValue("TestAgent");
+        mockResponse.on = jest
+          .fn()
+          .mockImplementation(
+            (_event: string, _listener: (...args: unknown[]) => void) => {
+              return mockResponse as Response;
+            },
+          );
         mockResponse.get = jest.fn().mockReturnValue("500");
 
-        loggerMiddleware.use(
-          mockRequest as Request,
-          mockResponse as Response,
-          mockNext,
-        );
+        loggerMiddleware.use(requestMock, mockResponse as Response, mockNext);
 
         mockResponse.statusCode = 200;
         mockFinishCallback();
@@ -321,11 +337,13 @@ describe("LoggerMiddleware", () => {
       complexUserAgents.forEach((userAgent) => {
         const mockFinishCallback = jest.fn();
         mockRequest.get = jest.fn().mockReturnValue(userAgent);
-        mockResponse.on = jest.fn().mockImplementation((event, callback) => {
-          if (event === "finish") {
-            mockFinishCallback.mockImplementation(callback);
-          }
-        });
+        mockResponse.on = jest
+          .fn()
+          .mockImplementation(
+            (_event: string, _listener: (...args: unknown[]) => void) => {
+              return mockResponse as Response;
+            },
+          );
         mockResponse.get = jest.fn().mockReturnValue("250");
 
         loggerMiddleware.use(
@@ -350,7 +368,7 @@ describe("LoggerMiddleware", () => {
       mockRequest.get = jest.fn().mockReturnValue("TestAgent");
 
       const originalRequest = { ...mockRequest };
-      const originalResponse = { ...mockResponse };
+      const _originalResponse = { ...mockResponse };
 
       loggerMiddleware.use(
         mockRequest as Request,
@@ -383,27 +401,25 @@ describe("LoggerMiddleware", () => {
     it("should handle edge case with undefined request properties", () => {
       const mockFinishCallback = jest.fn();
 
-      const minimalRequest = {
+      const minimalRequest: Request = {
         method: undefined,
         originalUrl: undefined,
         ip: undefined,
         get: jest.fn().mockReturnValue(undefined),
-      };
+      } as unknown as Request;
 
-      mockResponse.on = jest.fn().mockImplementation((event, callback) => {
-        if (event === "finish") {
-          mockFinishCallback.mockImplementation(callback);
-        }
-      });
+      mockResponse.on = jest
+        .fn()
+        .mockImplementation(
+          (_event: string, _listener: (...args: unknown[]) => void) => {
+            return mockResponse as Response;
+          },
+        );
       mockResponse.get = jest.fn().mockReturnValue(undefined);
 
-      loggerMiddleware.use(
-        minimalRequest as any,
-        mockResponse as Response,
-        mockNext,
-      );
+      loggerMiddleware.use(minimalRequest, mockResponse as Response, mockNext);
 
-      mockResponse.statusCode = undefined as any;
+      mockResponse.statusCode = undefined;
       mockFinishCallback();
 
       expect(mockLoggerInstance.log).toHaveBeenCalledWith(

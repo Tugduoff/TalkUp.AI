@@ -51,7 +51,7 @@ describe("LinkedInTokenDto", () => {
     });
 
     it("should fail validation when access_token is not a string", async () => {
-      (dto as any).access_token = 12345;
+      Object.assign(dto, { access_token: 12345 });
       dto.expires_in = "5184000";
       dto.scope = "r_liteprofile";
 
@@ -84,7 +84,7 @@ describe("LinkedInTokenDto", () => {
 
     it("should fail validation when expires_in is not a string", async () => {
       dto.access_token = "AQXdF1234567890abcdef";
-      (dto as any).expires_in = 5184000;
+      Object.assign(dto, { expires_in: 5184000 });
       dto.scope = "r_liteprofile";
 
       const errors = await validate(dto);
@@ -117,7 +117,7 @@ describe("LinkedInTokenDto", () => {
     it("should fail validation when scope is not a string", async () => {
       dto.access_token = "AQXdF1234567890abcdef";
       dto.expires_in = "5184000";
-      (dto as any).scope = ["r_liteprofile", "r_emailaddress"];
+      Object.assign(dto, { scope: ["r_liteprofile", "r_emailaddress"] });
 
       const errors = await validate(dto);
       expect(errors).toHaveLength(1);
@@ -140,7 +140,7 @@ describe("LinkedInTokenDto", () => {
       dto.access_token = "AQXdF1234567890abcdef";
       dto.expires_in = "5184000";
       dto.scope = "r_liteprofile";
-      (dto as any).refresh_token = 12345;
+      Object.assign(dto, { refresh_token: 12345 });
 
       const errors = await validate(dto);
       expect(errors).toHaveLength(1);
@@ -152,7 +152,7 @@ describe("LinkedInTokenDto", () => {
       dto.access_token = "AQXdF1234567890abcdef";
       dto.expires_in = "5184000";
       dto.scope = "r_liteprofile";
-      (dto as any).refresh_token_expires_in = 31536000;
+      Object.assign(dto, { refresh_token_expires_in: 31536000 });
 
       const errors = await validate(dto);
       expect(errors).toHaveLength(1);
@@ -185,9 +185,11 @@ describe("LinkedInTokenDto", () => {
 
   describe("Multiple validation errors", () => {
     it("should return multiple errors when multiple required fields are invalid", async () => {
-      (dto as any).access_token = 123;
-      (dto as any).expires_in = 5184000;
-      (dto as any).scope = ["scope1", "scope2"];
+      Object.assign(dto, {
+        access_token: 123,
+        expires_in: 5184000,
+        scope: ["scope1", "scope2"],
+      });
 
       const errors = await validate(dto);
       expect(errors).toHaveLength(3);
@@ -199,11 +201,13 @@ describe("LinkedInTokenDto", () => {
     });
 
     it("should return errors for both required and optional fields when invalid", async () => {
-      (dto as any).access_token = 123;
-      dto.expires_in = "5184000";
-      dto.scope = "r_liteprofile";
-      (dto as any).refresh_token = 456;
-      (dto as any).refresh_token_expires_in = 789;
+      Object.assign(dto, {
+        access_token: 123,
+        expires_in: "5184000",
+        scope: "r_liteprofile",
+        refresh_token: 456,
+        refresh_token_expires_in: 789,
+      });
 
       const errors = await validate(dto);
       expect(errors).toHaveLength(3);

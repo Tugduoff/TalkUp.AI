@@ -231,8 +231,7 @@ describe("LoginDto", () => {
     });
 
     it("should handle non-string values", async () => {
-      (dto as any).phoneNumber = 123456789;
-      (dto as any).password = 12345678;
+      Object.assign(dto, { phoneNumber: 123456789, password: 12345678 });
 
       const errors = await validate(dto);
 
