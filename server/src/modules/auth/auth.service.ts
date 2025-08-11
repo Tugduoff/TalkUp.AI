@@ -28,15 +28,23 @@ export class AuthService {
   ) {}
 
   /**
-   * Registers a new user and returns a JWT token.
-   * @param createUserDto - The DTO containing user registration data.
-   * @returns An object containing the access token.
-   * @throws ConflictException if an account with the same phone number already exists.
+   * Registers a new user with the provided credentials.
+   *
+   * This method performs the following steps:
+   * 1. Checks if the phone number already exists in the system.
+   * 2. Throws a `ConflictException` if the phone number is already registered.
+   * 3. Creates a new user with the given username.
+   * 4. Hashes and stores the user's password.
+   * 5. Stores the user's phone number.
+   * 6. Generates and returns a JWT access token for the newly registered user.
+   *
+   * @param createUserDto - Data transfer object containing the user's registration details (username, password, phone number).
+   * @returns An object containing the generated JWT access token.
+   * @throws {ConflictException} If an account with the provided phone number already exists.
    */
   async register(
     createUserDto: CreateUserDto,
   ): Promise<{ accessToken: string }> {
-    // Check if the user already exists
     const phoneNumberExists = await this.userPhoneNumberRepository.findOne({
       where: { phone_number: createUserDto.phoneNumber },
     });
@@ -47,27 +55,22 @@ export class AuthService {
       );
     }
 
-    // Create a new user, contains only the username
     const newUser = this.userRepository.create({
       username: createUserDto.username,
     });
 
-    // Save the user to the database, contains every user information
     const savedUser = await this.userRepository.save(newUser);
 
-    // create user_password
     const newUserPassword = this.userPasswordRepository.create({
       password: await hashPassword(createUserDto.password),
       user_id: savedUser.user_id,
     });
 
-    // create user_phonenumber
     const newUserPhoneNumber = this.userPhoneNumberRepository.create({
       phone_number: createUserDto.phoneNumber,
       user_id: savedUser.user_id,
     });
 
-    // Save the password, and phone number to the database
     await this.userPasswordRepository.save(newUserPassword);
     await this.userPhoneNumberRepository.save(newUserPhoneNumber);
 
@@ -81,6 +84,21 @@ export class AuthService {
     };
   }
 
+  /**
+   * Validates a user's credentials using their phone number and password.
+   *
+   * This method performs the following steps:
+   * 1. Finds the user entity associated with the provided phone number.
+   * 2. Retrieves the password entity for the found user.
+   * 3. Retrieves the user entity details.
+   * 4. Throws an `UnauthorizedException` if the phone number or password is not found, or if the password does not match.
+   * 5. Returns the user entity if validation is successful.
+   *
+   * @param phoneNumber - The user's phone number to identify the account.
+   * @param password - The user's plaintext password to validate.
+   * @returns A promise that resolves to the user entity if validation succeeds.
+   * @throws {UnauthorizedException} If the phone number is not found or the password is invalid.
+   */
   async validateUser(phoneNumber: string, password: string): Promise<user> {
     const phoneNumberEntity = await this.userPhoneNumberRepository.findOne({
       where: { phone_number: phoneNumber },
@@ -110,6 +128,12 @@ export class AuthService {
     return userEntity;
   }
 
+  /**
+   * Authenticates a user and generates a JWT access token.
+   *
+   * @param user - The user object containing authentication details.
+   * @returns An object containing the generated access token.
+   */
   login(user: user) {
     const payload = { sub: user.user_id };
     return {
