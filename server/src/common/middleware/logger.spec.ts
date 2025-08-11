@@ -106,12 +106,15 @@ describe("LoggerMiddleware", () => {
     });
 
     it("should log request details when response finishes", () => {
-      const mockFinishCallback = jest.fn();
+      let finishCallback: () => void;
       mockRequest.get = jest.fn().mockReturnValue("Mozilla/5.0 Chrome");
       mockResponse.on = jest
         .fn()
         .mockImplementation(
-          (_event: string, _listener: (...args: unknown[]) => void) => {
+          (event: string, listener: (...args: unknown[]) => void) => {
+            if (event === "finish") {
+              finishCallback = listener as () => void;
+            }
             return mockResponse as Response;
           },
         );
@@ -124,7 +127,7 @@ describe("LoggerMiddleware", () => {
       );
 
       mockResponse.statusCode = 200;
-      mockFinishCallback();
+      finishCallback!();
 
       expect(mockLoggerInstance.log).toHaveBeenCalledWith(
         "GET /api/test 200 1024 - Mozilla/5.0 Chrome 192.168.1.1",
@@ -135,13 +138,16 @@ describe("LoggerMiddleware", () => {
       const testCases = ["GET", "POST", "PUT", "DELETE", "PATCH"];
 
       testCases.forEach((method) => {
-        const mockFinishCallback = jest.fn();
+        let finishCallback: () => void;
         mockRequest.method = method;
         mockRequest.get = jest.fn().mockReturnValue("TestAgent");
         mockResponse.on = jest
           .fn()
           .mockImplementation(
-            (_event: string, _listener: (...args: unknown[]) => void) => {
+            (event: string, listener: (...args: unknown[]) => void) => {
+              if (event === "finish") {
+                finishCallback = listener as () => void;
+              }
               return mockResponse as Response;
             },
           );
@@ -154,7 +160,7 @@ describe("LoggerMiddleware", () => {
         );
 
         mockResponse.statusCode = 201;
-        mockFinishCallback();
+        finishCallback!();
 
         expect(mockLoggerInstance.log).toHaveBeenCalledWith(
           `${method} /api/test 201 500 - TestAgent 192.168.1.1`,
@@ -168,12 +174,15 @@ describe("LoggerMiddleware", () => {
       const testCases = [200, 201, 400, 401, 404, 500];
 
       testCases.forEach((statusCode) => {
-        const mockFinishCallback = jest.fn();
+        let finishCallback: () => void;
         mockRequest.get = jest.fn().mockReturnValue("TestAgent");
         mockResponse.on = jest
           .fn()
           .mockImplementation(
-            (_event: string, _listener: (...args: unknown[]) => void) => {
+            (event: string, listener: (...args: unknown[]) => void) => {
+              if (event === "finish") {
+                finishCallback = listener as () => void;
+              }
               return mockResponse as Response;
             },
           );
@@ -186,7 +195,7 @@ describe("LoggerMiddleware", () => {
         );
 
         mockResponse.statusCode = statusCode;
-        mockFinishCallback();
+        finishCallback!();
 
         expect(mockLoggerInstance.log).toHaveBeenCalledWith(
           `GET /api/test ${statusCode} 200 - TestAgent 192.168.1.1`,
@@ -206,13 +215,16 @@ describe("LoggerMiddleware", () => {
       ];
 
       testUrls.forEach((url) => {
-        const mockFinishCallback = jest.fn();
+        let finishCallback: () => void;
         mockRequest.originalUrl = url;
         mockRequest.get = jest.fn().mockReturnValue("TestAgent");
         mockResponse.on = jest
           .fn()
           .mockImplementation(
-            (_event: string, _listener: (...args: unknown[]) => void) => {
+            (event: string, listener: (...args: unknown[]) => void) => {
+              if (event === "finish") {
+                finishCallback = listener as () => void;
+              }
               return mockResponse as Response;
             },
           );
@@ -225,7 +237,7 @@ describe("LoggerMiddleware", () => {
         );
 
         mockResponse.statusCode = 200;
-        mockFinishCallback();
+        finishCallback!();
 
         expect(mockLoggerInstance.log).toHaveBeenCalledWith(
           `GET ${url} 200 100 - TestAgent 192.168.1.1`,
@@ -236,12 +248,15 @@ describe("LoggerMiddleware", () => {
     });
 
     it("should handle missing content-length header", () => {
-      const mockFinishCallback = jest.fn();
+      let finishCallback: () => void;
       mockRequest.get = jest.fn().mockReturnValue("TestAgent");
       mockResponse.on = jest
         .fn()
         .mockImplementation(
-          (_event: string, _listener: (...args: unknown[]) => void) => {
+          (event: string, listener: (...args: unknown[]) => void) => {
+            if (event === "finish") {
+              finishCallback = listener as () => void;
+            }
             return mockResponse as Response;
           },
         );
@@ -254,7 +269,7 @@ describe("LoggerMiddleware", () => {
       );
 
       mockResponse.statusCode = 204;
-      mockFinishCallback();
+      finishCallback!();
 
       expect(mockLoggerInstance.log).toHaveBeenCalledWith(
         "GET /api/test 204 undefined - TestAgent 192.168.1.1",
@@ -262,12 +277,15 @@ describe("LoggerMiddleware", () => {
     });
 
     it("should handle empty user-agent", () => {
-      const mockFinishCallback = jest.fn();
+      let finishCallback: () => void;
       mockRequest.get = jest.fn().mockReturnValue(null);
       mockResponse.on = jest
         .fn()
         .mockImplementation(
-          (_event: string, _listener: (...args: unknown[]) => void) => {
+          (event: string, listener: (...args: unknown[]) => void) => {
+            if (event === "finish") {
+              finishCallback = listener as () => void;
+            }
             return mockResponse as Response;
           },
         );
@@ -280,7 +298,7 @@ describe("LoggerMiddleware", () => {
       );
 
       mockResponse.statusCode = 200;
-      mockFinishCallback();
+      finishCallback!();
 
       expect(mockLoggerInstance.log).toHaveBeenCalledWith(
         "GET /api/test 200 1000 -  192.168.1.1",
@@ -297,7 +315,7 @@ describe("LoggerMiddleware", () => {
       ];
 
       testIPs.forEach((ip) => {
-        const mockFinishCallback = jest.fn();
+        let finishCallback: () => void;
         const requestMock: Request = {
           ...mockRequest,
           ip,
@@ -306,7 +324,10 @@ describe("LoggerMiddleware", () => {
         mockResponse.on = jest
           .fn()
           .mockImplementation(
-            (_event: string, _listener: (...args: unknown[]) => void) => {
+            (event: string, listener: (...args: unknown[]) => void) => {
+              if (event === "finish") {
+                finishCallback = listener as () => void;
+              }
               return mockResponse as Response;
             },
           );
@@ -315,7 +336,7 @@ describe("LoggerMiddleware", () => {
         loggerMiddleware.use(requestMock, mockResponse as Response, mockNext);
 
         mockResponse.statusCode = 200;
-        mockFinishCallback();
+        finishCallback!();
 
         expect(mockLoggerInstance.log).toHaveBeenCalledWith(
           `GET /api/test 200 500 - TestAgent ${ip}`,
@@ -335,12 +356,15 @@ describe("LoggerMiddleware", () => {
       ];
 
       complexUserAgents.forEach((userAgent) => {
-        const mockFinishCallback = jest.fn();
+        let finishCallback: () => void;
         mockRequest.get = jest.fn().mockReturnValue(userAgent);
         mockResponse.on = jest
           .fn()
           .mockImplementation(
-            (_event: string, _listener: (...args: unknown[]) => void) => {
+            (event: string, listener: (...args: unknown[]) => void) => {
+              if (event === "finish") {
+                finishCallback = listener as () => void;
+              }
               return mockResponse as Response;
             },
           );
@@ -353,7 +377,7 @@ describe("LoggerMiddleware", () => {
         );
 
         mockResponse.statusCode = 200;
-        mockFinishCallback();
+        finishCallback!();
 
         const expectedUserAgent = userAgent || "";
         expect(mockLoggerInstance.log).toHaveBeenCalledWith(
@@ -399,7 +423,7 @@ describe("LoggerMiddleware", () => {
     });
 
     it("should handle edge case with undefined request properties", () => {
-      const mockFinishCallback = jest.fn();
+      let finishCallback: () => void;
 
       const minimalRequest: Request = {
         method: undefined,
@@ -411,7 +435,10 @@ describe("LoggerMiddleware", () => {
       mockResponse.on = jest
         .fn()
         .mockImplementation(
-          (_event: string, _listener: (...args: unknown[]) => void) => {
+          (event: string, listener: (...args: unknown[]) => void) => {
+            if (event === "finish") {
+              finishCallback = listener as () => void;
+            }
             return mockResponse as Response;
           },
         );
@@ -420,7 +447,7 @@ describe("LoggerMiddleware", () => {
       loggerMiddleware.use(minimalRequest, mockResponse as Response, mockNext);
 
       mockResponse.statusCode = undefined;
-      mockFinishCallback();
+      finishCallback!();
 
       expect(mockLoggerInstance.log).toHaveBeenCalledWith(
         "undefined undefined undefined undefined -  undefined",
