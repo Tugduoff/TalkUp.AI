@@ -108,9 +108,7 @@ export const LoginForm = () => {
           )}
         </form.Field>
         <form.Subscribe selector={(state) => state.errors}>
-          {(errors) => (
-            <span className="text-sm text-red-500">{errors}</span>
-          )}
+          {(errors) => <span className="text-sm text-red-500">{errors}</span>}
         </form.Subscribe>
       </form>
       <button
