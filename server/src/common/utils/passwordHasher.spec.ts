@@ -259,13 +259,12 @@ describe("passwordHasher", () => {
         expect(results[1].status).toBe("rejected");
         expect(results[2].status).toBe("fulfilled");
 
-        if (results[0].status === "fulfilled") {
-          expect(results[0].value).toBe("$2b$10$hash1");
-        }
-
-        if (results[2].status === "fulfilled") {
-          expect(results[2].value).toBe("$2b$10$hash3");
-        }
+        expect((results[0] as PromiseFulfilledResult<string>).value).toBe(
+          "$2b$10$hash1",
+        );
+        expect((results[2] as PromiseFulfilledResult<string>).value).toBe(
+          "$2b$10$hash3",
+        );
       });
     });
   });

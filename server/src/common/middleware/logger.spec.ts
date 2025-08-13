@@ -134,10 +134,9 @@ describe("LoggerMiddleware", () => {
       );
     });
 
-    it("should handle different HTTP methods", () => {
-      const testCases = ["GET", "POST", "PUT", "DELETE", "PATCH"];
-
-      testCases.forEach((method) => {
+    it.each(["GET", "POST", "PUT", "DELETE", "PATCH"])(
+      "should handle HTTP method %s",
+      (method) => {
         let finishCallback: () => void;
         mockRequest.method = method;
         mockRequest.get = jest.fn().mockReturnValue("TestAgent");
@@ -165,15 +164,12 @@ describe("LoggerMiddleware", () => {
         expect(mockLoggerInstance.log).toHaveBeenCalledWith(
           `${method} /api/test 201 500 - TestAgent 192.168.1.1`,
         );
+      },
+    );
 
-        jest.clearAllMocks();
-      });
-    });
-
-    it("should handle different status codes", () => {
-      const testCases = [200, 201, 400, 401, 404, 500];
-
-      testCases.forEach((statusCode) => {
+    it.each([200, 201, 400, 401, 404, 500])(
+      "should handle status code %i",
+      (statusCode) => {
         let finishCallback: () => void;
         mockRequest.get = jest.fn().mockReturnValue("TestAgent");
         mockResponse.on = jest
@@ -200,51 +196,43 @@ describe("LoggerMiddleware", () => {
         expect(mockLoggerInstance.log).toHaveBeenCalledWith(
           `GET /api/test ${statusCode} 200 - TestAgent 192.168.1.1`,
         );
+      },
+    );
 
-        jest.clearAllMocks();
-      });
-    });
-
-    it("should handle different URLs", () => {
-      const testUrls = [
-        "/api/users",
-        "/auth/login",
-        "/linkedin/callback",
-        "/health",
-        "/api/v1/complex/nested/route?param=value",
-      ];
-
-      testUrls.forEach((url) => {
-        let finishCallback: () => void;
-        mockRequest.originalUrl = url;
-        mockRequest.get = jest.fn().mockReturnValue("TestAgent");
-        mockResponse.on = jest
-          .fn()
-          .mockImplementation(
-            (event: string, listener: (...args: unknown[]) => void) => {
-              if (event === "finish") {
-                finishCallback = listener as () => void;
-              }
-              return mockResponse as Response;
-            },
-          );
-        mockResponse.get = jest.fn().mockReturnValue("100");
-
-        loggerMiddleware.use(
-          mockRequest as Request,
-          mockResponse as Response,
-          mockNext,
+    it.each([
+      "/api/users",
+      "/auth/login",
+      "/linkedin/callback",
+      "/health",
+      "/api/v1/complex/nested/route?param=value",
+    ])("should handle URL %s", (url) => {
+      let finishCallback: () => void;
+      mockRequest.originalUrl = url;
+      mockRequest.get = jest.fn().mockReturnValue("TestAgent");
+      mockResponse.on = jest
+        .fn()
+        .mockImplementation(
+          (event: string, listener: (...args: unknown[]) => void) => {
+            if (event === "finish") {
+              finishCallback = listener as () => void;
+            }
+            return mockResponse as Response;
+          },
         );
+      mockResponse.get = jest.fn().mockReturnValue("100");
 
-        mockResponse.statusCode = 200;
-        finishCallback!();
+      loggerMiddleware.use(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext,
+      );
 
-        expect(mockLoggerInstance.log).toHaveBeenCalledWith(
-          `GET ${url} 200 100 - TestAgent 192.168.1.1`,
-        );
+      mockResponse.statusCode = 200;
+      finishCallback!();
 
-        jest.clearAllMocks();
-      });
+      expect(mockLoggerInstance.log).toHaveBeenCalledWith(
+        `GET ${url} 200 100 - TestAgent 192.168.1.1`,
+      );
     });
 
     it("should handle missing content-length header", () => {
@@ -305,87 +293,75 @@ describe("LoggerMiddleware", () => {
       );
     });
 
-    it("should handle different IP addresses", () => {
-      const testIPs = [
-        "127.0.0.1",
-        "192.168.1.100",
-        "10.0.0.1",
-        "172.16.0.1",
-        "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
-      ];
-
-      testIPs.forEach((ip) => {
-        let finishCallback: () => void;
-        const requestMock: Request = {
-          ...mockRequest,
-          ip,
-        } as Request;
-        requestMock.get = jest.fn().mockReturnValue("TestAgent");
-        mockResponse.on = jest
-          .fn()
-          .mockImplementation(
-            (event: string, listener: (...args: unknown[]) => void) => {
-              if (event === "finish") {
-                finishCallback = listener as () => void;
-              }
-              return mockResponse as Response;
-            },
-          );
-        mockResponse.get = jest.fn().mockReturnValue("500");
-
-        loggerMiddleware.use(requestMock, mockResponse as Response, mockNext);
-
-        mockResponse.statusCode = 200;
-        finishCallback!();
-
-        expect(mockLoggerInstance.log).toHaveBeenCalledWith(
-          `GET /api/test 200 500 - TestAgent ${ip}`,
+    it.each([
+      "127.0.0.1",
+      "192.168.1.100",
+      "10.0.0.1",
+      "172.16.0.1",
+      "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+    ])("should handle IP address %s", (ip) => {
+      let finishCallback: () => void;
+      const requestMock: Request = {
+        ...mockRequest,
+        ip,
+      } as Request;
+      requestMock.get = jest.fn().mockReturnValue("TestAgent");
+      mockResponse.on = jest
+        .fn()
+        .mockImplementation(
+          (event: string, listener: (...args: unknown[]) => void) => {
+            if (event === "finish") {
+              finishCallback = listener as () => void;
+            }
+            return mockResponse as Response;
+          },
         );
+      mockResponse.get = jest.fn().mockReturnValue("500");
 
-        jest.clearAllMocks();
-      });
+      loggerMiddleware.use(requestMock, mockResponse as Response, mockNext);
+
+      mockResponse.statusCode = 200;
+      finishCallback!();
+
+      expect(mockLoggerInstance.log).toHaveBeenCalledWith(
+        `GET /api/test 200 500 - TestAgent ${ip}`,
+      );
     });
 
-    it("should handle complex user-agent strings", () => {
-      const complexUserAgents = [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-        "PostmanRuntime/7.28.4",
-        "curl/7.68.0",
-        "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
-        "",
-      ];
-
-      complexUserAgents.forEach((userAgent) => {
-        let finishCallback: () => void;
-        mockRequest.get = jest.fn().mockReturnValue(userAgent);
-        mockResponse.on = jest
-          .fn()
-          .mockImplementation(
-            (event: string, listener: (...args: unknown[]) => void) => {
-              if (event === "finish") {
-                finishCallback = listener as () => void;
-              }
-              return mockResponse as Response;
-            },
-          );
-        mockResponse.get = jest.fn().mockReturnValue("250");
-
-        loggerMiddleware.use(
-          mockRequest as Request,
-          mockResponse as Response,
-          mockNext,
+    it.each([
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "PostmanRuntime/7.28.4",
+      "curl/7.68.0",
+      "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+      "",
+    ])("should handle user-agent string '%s'", (userAgent) => {
+      let finishCallback: () => void;
+      mockRequest.get = jest.fn().mockReturnValue(userAgent);
+      mockResponse.on = jest
+        .fn()
+        .mockImplementation(
+          (event: string, listener: (...args: unknown[]) => void) => {
+            if (event === "finish") {
+              finishCallback = listener as () => void;
+            }
+            return mockResponse as Response;
+          },
         );
+      mockResponse.get = jest.fn().mockReturnValue("250");
 
-        mockResponse.statusCode = 200;
-        finishCallback!();
+      loggerMiddleware.use(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext,
+      );
 
-        const expectedUserAgent = userAgent || "";
-        expect(mockLoggerInstance.log).toHaveBeenCalledWith(
-          `GET /api/test 200 250 - ${expectedUserAgent} 192.168.1.1`,
-        );
+      mockResponse.statusCode = 200;
+      finishCallback!();
 
-        jest.clearAllMocks();
-      });
+      const expectedUserAgent = userAgent || "";
+      expect(mockLoggerInstance.log).toHaveBeenCalledWith(
+        `GET /api/test 200 250 - ${expectedUserAgent} 192.168.1.1`,
+      );
     });
 
     it("should not affect the request/response flow", () => {
