@@ -64,7 +64,8 @@ export const SignUpForm = () => {
               }
             },
           }}
-          children={(field) => (
+        >
+          {(field) => (
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="username"
@@ -95,7 +96,7 @@ export const SignUpForm = () => {
               )}
             </div>
           )}
-        />
+        </form.Field>
         <form.Field
           name="phoneNumber"
           validators={{
@@ -105,7 +106,8 @@ export const SignUpForm = () => {
               }
             },
           }}
-          children={(field) => (
+        >
+          {(field) => (
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="phoneNumber"
@@ -130,7 +132,7 @@ export const SignUpForm = () => {
               )}
             </div>
           )}
-        />
+        </form.Field>
         <form.Field
           name="password"
           validators={{
@@ -152,7 +154,8 @@ export const SignUpForm = () => {
               }
             },
           }}
-          children={(field) => (
+        >
+          {(field) => (
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="password"
@@ -177,7 +180,7 @@ export const SignUpForm = () => {
               )}
             </div>
           )}
-        />
+        </form.Field>
         <form.Field
           name="confirmPassword"
           validators={{
@@ -188,7 +191,8 @@ export const SignUpForm = () => {
               }
             },
           }}
-          children={(field) => (
+        >
+          {(field) => (
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="confirmPassword"
@@ -213,7 +217,7 @@ export const SignUpForm = () => {
               )}
             </div>
           )}
-        />
+        </form.Field>
       </form>
       <button
         className="p-2 text-white rounded-md cursor-pointer bg-primary"

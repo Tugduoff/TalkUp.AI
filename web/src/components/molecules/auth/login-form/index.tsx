@@ -53,9 +53,8 @@ export const LoginForm = () => {
         </p>
       </header>
       <form className="flex flex-col gap-4">
-        <form.Field
-          name="username"
-          children={(field) => (
+        <form.Field name="username">
+          {(field) => (
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="username"
@@ -80,10 +79,9 @@ export const LoginForm = () => {
               )}
             </div>
           )}
-        />
-        <form.Field
-          name="password"
-          children={(field) => (
+        </form.Field>
+        <form.Field name="password">
+          {(field) => (
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="password"
@@ -108,13 +106,10 @@ export const LoginForm = () => {
               )}
             </div>
           )}
-        />
-        <form.Subscribe
-          selector={(state) => state.errors}
-          children={(errors) => (
-            <span className="text-sm text-red-500">{errors}</span>
-          )}
-        />
+        </form.Field>
+        <form.Subscribe selector={(state) => state.errors}>
+          {(errors) => <span className="text-sm text-red-500">{errors}</span>}
+        </form.Subscribe>
       </form>
       <button
         className="p-2 text-white rounded-md cursor-pointer bg-primary"
