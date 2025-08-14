@@ -3,31 +3,19 @@ import '@/styles/loader.css';
 import '@/styles/tailwind.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import {
-  NotFoundRoute,
-  RouterProvider,
-  createRouter,
-} from '@tanstack/react-router';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
 import { routeTree } from './routeTree.gen';
-import { Route } from './routes/__root';
+import notFoundRoute from './routes/-not-found';
 
 const queryClient = new QueryClient();
 
-const notFoundRoute = new NotFoundRoute({
-  getParentRoute: () => Route,
-  component: () => '404 Not Found',
+const router = createRouter({
+  routeTree,
+  defaultNotFoundComponent: notFoundRoute,
 });
-
-const router = createRouter({ routeTree, notFoundRoute });
-
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router;
-  }
-}
 
 const rootElement = document.getElementById('root')!;
 if (!rootElement.innerHTML) {
