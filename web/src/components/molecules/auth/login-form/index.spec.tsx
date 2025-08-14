@@ -46,8 +46,8 @@ describe('LoginForm', () => {
         screen.getByRole('heading', { name: /Login/i }),
       ).toBeInTheDocument();
       expect(screen.getByText(/Login to your account/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
-      expect(screen.getByPlaceholderText(/Your username/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/Your email address/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
       expect(screen.getByPlaceholderText(/Your password/i)).toBeInTheDocument();
       expect(
@@ -62,7 +62,7 @@ describe('LoginForm', () => {
    * applied to the form fields on submission.
    */
   describe('Client-Side Validation (Sync Validators)', () => {
-    it('displays "Username and password are required" error when both fields are empty on submit', async () => {
+    it('displays "Email and password are required" error when both fields are empty on submit', async () => {
       render(<LoginForm />);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
@@ -72,18 +72,18 @@ describe('LoginForm', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(/Username and password are required/i),
+          screen.getByText(/Email and password are required/i),
         ).toBeInTheDocument();
       });
       expect(
-        screen.queryByText(/Username is required/i),
+        screen.queryByText(/Email is required/i),
       ).not.toBeInTheDocument();
       expect(
         screen.queryByText(/Password is required/i),
       ).not.toBeInTheDocument();
     });
 
-    it('displays "Username is required" error when only username is empty on submit', async () => {
+    it('displays "Email is required" error when only email is empty on submit', async () => {
       render(<LoginForm />);
       const passwordInput = screen.getByLabelText(/Password/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
@@ -94,10 +94,10 @@ describe('LoginForm', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByText(/^Username is required$/i)).toBeInTheDocument();
+        expect(screen.getByText(/^Email is required$/i)).toBeInTheDocument();
       });
       expect(
-        screen.queryByText(/Username and password are required/i),
+        screen.queryByText(/Email and password are required/i),
       ).not.toBeInTheDocument();
       expect(
         screen.queryByText(/^Password is required$/i),
@@ -106,11 +106,11 @@ describe('LoginForm', () => {
 
     it('displays "Password is required" error when only password is empty on submit', async () => {
       render(<LoginForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
+      const emailInput = screen.getByLabelText(/Email/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+        fireEvent.change(emailInput, { target: { value: 'testuser@example.com' } });
         fireEvent.click(loginButton);
       });
 
@@ -118,10 +118,10 @@ describe('LoginForm', () => {
         expect(screen.getByText(/^Password is required$/i)).toBeInTheDocument();
       });
       expect(
-        screen.queryByText(/Username and password are required/i),
+        screen.queryByText(/Email and password are required/i),
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByText(/^Username is required$/i),
+        screen.queryByText(/^Email is required$/i),
       ).not.toBeInTheDocument();
     });
   });
@@ -142,12 +142,12 @@ describe('LoginForm', () => {
       );
 
       render(<LoginForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
+      const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getByLabelText(/Password/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'wronguser' } });
+        fireEvent.change(emailInput, { target: { value: 'wronguser@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
         fireEvent.click(loginButton);
       });
@@ -164,12 +164,12 @@ describe('LoginForm', () => {
       mockedValidateLogin.mockResolvedValueOnce(undefined);
 
       render(<LoginForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
+      const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getByLabelText(/Password/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+        fireEvent.change(emailInput, { target: { value: 'admin.admin@admin.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
         fireEvent.click(loginButton);
       });
@@ -179,7 +179,7 @@ describe('LoginForm', () => {
           screen.queryByText(/Invalid credentials provided/i),
         ).not.toBeInTheDocument();
         expect(
-          screen.queryByText(/Username is required/i),
+          screen.queryByText(/Email is required/i),
         ).not.toBeInTheDocument();
         expect(
           screen.queryByText(/Password is required/i),
@@ -188,7 +188,7 @@ describe('LoginForm', () => {
 
       await waitFor(() => {
         expect(consoleSpy).toHaveBeenCalledWith('Login:', {
-          username: 'testuser',
+          email: 'admin.admin@admin.com',
           password: 'password123',
         });
       });
@@ -201,15 +201,15 @@ describe('LoginForm', () => {
    * user input actions such as typing into fields and submitting the form.
    */
   describe('User Interactions', () => {
-    it('allows typing into username and password fields', async () => {
+    it('allows typing into email and password fields', async () => {
       render(<LoginForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
+      const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getByLabelText(/Password/i);
 
       await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'myusername' } });
+        fireEvent.change(emailInput, { target: { value: 'myemail@example.com' } });
       });
-      expect(usernameInput).toHaveValue('myusername');
+      expect(emailInput).toHaveValue('myemail@example.com');
 
       await act(async () => {
         fireEvent.change(passwordInput, { target: { value: 'mypassword' } });
@@ -219,26 +219,26 @@ describe('LoginForm', () => {
 
     it('submits the form with valid credentials', async () => {
       render(<LoginForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
+      const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getByLabelText(/Password/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'admin' } });
+        fireEvent.change(emailInput, { target: { value: 'admin.admin@admin.com' } });
         fireEvent.change(passwordInput, { target: { value: 'admin' } });
         fireEvent.click(loginButton);
       });
 
       await waitFor(() => {
         expect(validateLogin).toHaveBeenCalledWith({
-          username: 'admin',
+          email: 'admin.admin@admin.com',
           password: 'admin',
         });
       });
 
       await waitFor(() => {
         expect(consoleSpy).toHaveBeenCalledWith('Login:', {
-          username: 'admin',
+          email: 'admin.admin@admin.com',
           password: 'admin',
         });
       });
@@ -254,10 +254,10 @@ describe('LoginForm', () => {
     it('ensures correct htmlFor attributes on labels and id on inputs', () => {
       render(<LoginForm />);
 
-      const usernameLabel = screen.getByText('Username');
-      const usernameInput = screen.getByPlaceholderText(/Your username/i);
-      expect(usernameLabel).toHaveAttribute('for', 'username');
-      expect(usernameInput).toHaveAttribute('id', 'username');
+      const emailLabel = screen.getByText('Email');
+      const emailInput = screen.getByPlaceholderText(/Your email address/i);
+      expect(emailLabel).toHaveAttribute('for', 'email');
+      expect(emailInput).toHaveAttribute('id', 'email');
 
       const passwordLabel = screen.getByText('Password');
       const passwordInput = screen.getByPlaceholderText(/Your password/i);
