@@ -7,7 +7,7 @@ import { useForm } from '@tanstack/react-form';
  *
  * The SignUpForm component provides a user interface for new account registration with the following features:
  * - Username input with validation (minimum 3 characters, maximum 20 characters, alphanumeric only)
- * - Phone number input with international format validation
+ * - Email input with email format validation
  * - Password input with complex validation rules (length, case, numbers)
  * - Password confirmation input that ensures it matches the password
  * - Asynchronous validation for username
@@ -25,14 +25,14 @@ export const SignUpForm = () => {
   const form = useForm({
     defaultValues: {
       username: '',
-      phoneNumber: '',
+      email: '',
       password: '',
       confirmPassword: '',
     },
     onSubmit: ({ value }) => {
       postRegister({
         username: value.username,
-        phoneNumber: value.phoneNumber,
+        email: value.email,
         password: value.password,
       });
     },
@@ -98,11 +98,11 @@ export const SignUpForm = () => {
           )}
         </form.Field>
         <form.Field
-          name="phoneNumber"
+          name="email"
           validators={{
             onChange: ({ value }) => {
-              if (!/^(\+\d{1,3})?\d{9,15}$/.test(value)) {
-                return 'Phone number must be in international format (e.g., +1234567890)';
+              if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                return 'Please enter a valid email address';
               }
             },
           }}
@@ -110,19 +110,19 @@ export const SignUpForm = () => {
           {(field) => (
             <div className="flex flex-col gap-2">
               <label
-                htmlFor="phoneNumber"
+                htmlFor="email"
                 className="text-sm font-semibold text-gray-500"
               >
-                Phone Number
+                Email
               </label>
               <div className="relative">
                 <input
-                  id="phoneNumber"
-                  type="tel"
+                  id="email"
+                  type="email"
                   value={field.state.value}
                   className="w-full p-2 border border-gray-300 rounded-md"
                   onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="Your phone number"
+                  placeholder="Your email address"
                 />
               </div>
               {field.state.meta.errors && (
