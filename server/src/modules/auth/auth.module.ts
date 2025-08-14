@@ -8,11 +8,11 @@ import { AuthService } from "./auth.service";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import { user, user_password, user_phone_number } from "@entities/user.entity";
+import { user, user_password, user_email } from "@entities/user.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([user, user_password, user_phone_number]),
+    TypeOrmModule.forFeature([user, user_password, user_email]),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
