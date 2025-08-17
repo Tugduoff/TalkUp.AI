@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import React from 'react';
+import React, { JSX } from 'react';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -21,7 +21,7 @@ export const CheckboxInput: React.FC<Props> = ({
   name,
   className,
   ...rest
-}) => {
+}: Props): JSX.Element => {
   return (
     <input
       {...rest}
