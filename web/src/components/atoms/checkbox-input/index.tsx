@@ -1,8 +1,14 @@
 import { cn } from '@/utils/cn';
 import React, { JSX } from 'react';
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface CheckboxInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value'> {
   name?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 /**
@@ -16,12 +22,12 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
  * @param {string} [props.className] - Additional CSS classes to apply to the checkbox.
  * @returns {JSX.Element} The rendered <input type="checkbox"> element with the provided props and styles.
  */
-export const CheckboxInput: React.FC<Props> = ({
+export const CheckboxInput: React.FC<CheckboxInputProps> = ({
   id,
   name = 'checkbox',
   className,
   ...rest
-}: Props): JSX.Element => {
+}: CheckboxInputProps): JSX.Element => {
   return (
     <input
       {...rest}

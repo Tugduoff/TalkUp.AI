@@ -1,11 +1,8 @@
 import { cn } from '@/utils/cn';
 import React from 'react';
 
-interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  /**
-   * Whether the textarea is resizable vertically. Defaults to `true`.
-   * If `false`, resizing is disabled.
-   */
+export interface TextAreaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   resize?: boolean;
 }
 
@@ -41,7 +38,7 @@ interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
  *
  * @returns {JSX.Element} A styled textarea component.
  */
-export const TextArea: React.FC<Props> = ({
+export const TextArea: React.FC<TextAreaProps> = ({
   id,
   value = '',
   name = 'textarea',

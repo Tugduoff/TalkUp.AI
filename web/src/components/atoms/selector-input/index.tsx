@@ -1,10 +1,18 @@
-import { SelectorOption } from '@/components/molecules/input-molecule/type';
 import { cn } from '@/utils/cn';
 import React, { JSX } from 'react';
 
-interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
+import { SelectorOption } from './types';
+
+export type { SelectorOption } from './types';
+
+export interface SelectorInputProps
+  extends React.SelectHTMLAttributes<HTMLSelectElement> {
   name?: string;
+  value?: string;
   options?: SelectorOption[];
+  disabled?: boolean;
+  required?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 /**
@@ -23,7 +31,7 @@ interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
  * @param {(event: React.ChangeEvent<HTMLSelectElement>) => void} [props.onChange] - Callback function called when the value changes.
  * @returns {JSX.Element} The rendered HTML <select> element with provided props and styling.
  */
-export const SelectorInput: React.FC<Props> = ({
+export const SelectorInput: React.FC<SelectorInputProps> = ({
   id,
   name = 'select',
   value = '',
@@ -33,7 +41,7 @@ export const SelectorInput: React.FC<Props> = ({
   className,
   onChange = () => {},
   ...rest
-}: Props): JSX.Element => {
+}: SelectorInputProps): JSX.Element => {
   return (
     <select
       {...rest}

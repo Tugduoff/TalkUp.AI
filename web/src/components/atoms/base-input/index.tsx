@@ -1,6 +1,19 @@
 import { cn } from '@/utils/cn';
 import React, { useId } from 'react';
 
+export interface BaseInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  id?: string;
+  name?: string;
+  value?: string;
+  type?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
 /**
  * A base input component for form elements.
  *
@@ -19,9 +32,7 @@ import React, { useId } from 'react';
  * @param {string} [props.className] - Additional CSS classes to apply.
  * @returns {JSX.Element} The rendered input component.
  */
-export const BaseInput: React.FC<
-  React.InputHTMLAttributes<HTMLInputElement>
-> = ({
+export const BaseInput: React.FC<BaseInputProps> = ({
   id,
   name = 'input',
   value = '',
