@@ -217,9 +217,7 @@ describe('SignUpForm', () => {
 
         await waitFor(() => {
           expect(
-            screen.getByText(
-              'Please enter a valid email address',
-            ),
+            screen.getByText('Please enter a valid email address'),
           ).toBeInTheDocument();
         });
       });
@@ -458,8 +456,7 @@ describe('SignUpForm', () => {
       expect(usernameInput).toHaveAttribute('id', 'username');
 
       const emailLabel = screen.getByText('Email');
-      const emailInput =
-        screen.getByPlaceholderText(/Your email address/i);
+      const emailInput = screen.getByPlaceholderText(/Your email address/i);
       expect(emailLabel).toHaveAttribute('for', 'email');
       expect(emailInput).toHaveAttribute('id', 'email');
 

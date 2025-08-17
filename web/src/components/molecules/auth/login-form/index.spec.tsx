@@ -47,7 +47,9 @@ describe('LoginForm', () => {
       ).toBeInTheDocument();
       expect(screen.getByText(/Login to your account/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-      expect(screen.getByPlaceholderText(/Your email address/i)).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText(/Your email address/i),
+      ).toBeInTheDocument();
       expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
       expect(screen.getByPlaceholderText(/Your password/i)).toBeInTheDocument();
       expect(
@@ -75,9 +77,7 @@ describe('LoginForm', () => {
           screen.getByText(/Email and password are required/i),
         ).toBeInTheDocument();
       });
-      expect(
-        screen.queryByText(/Email is required/i),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(/Email is required/i)).not.toBeInTheDocument();
       expect(
         screen.queryByText(/Password is required/i),
       ).not.toBeInTheDocument();
@@ -110,7 +110,9 @@ describe('LoginForm', () => {
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
-        fireEvent.change(emailInput, { target: { value: 'testuser@example.com' } });
+        fireEvent.change(emailInput, {
+          target: { value: 'testuser@example.com' },
+        });
         fireEvent.click(loginButton);
       });
 
@@ -147,7 +149,9 @@ describe('LoginForm', () => {
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
-        fireEvent.change(emailInput, { target: { value: 'wronguser@example.com' } });
+        fireEvent.change(emailInput, {
+          target: { value: 'wronguser@example.com' },
+        });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
         fireEvent.click(loginButton);
       });
@@ -169,7 +173,9 @@ describe('LoginForm', () => {
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
-        fireEvent.change(emailInput, { target: { value: 'admin.admin@admin.com' } });
+        fireEvent.change(emailInput, {
+          target: { value: 'admin.admin@admin.com' },
+        });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
         fireEvent.click(loginButton);
       });
@@ -207,7 +213,9 @@ describe('LoginForm', () => {
       const passwordInput = screen.getByLabelText(/Password/i);
 
       await act(async () => {
-        fireEvent.change(emailInput, { target: { value: 'myemail@example.com' } });
+        fireEvent.change(emailInput, {
+          target: { value: 'myemail@example.com' },
+        });
       });
       expect(emailInput).toHaveValue('myemail@example.com');
 
@@ -224,7 +232,9 @@ describe('LoginForm', () => {
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
-        fireEvent.change(emailInput, { target: { value: 'admin.admin@admin.com' } });
+        fireEvent.change(emailInput, {
+          target: { value: 'admin.admin@admin.com' },
+        });
         fireEvent.change(passwordInput, { target: { value: 'admin' } });
         fireEvent.click(loginButton);
       });

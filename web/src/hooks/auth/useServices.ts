@@ -37,11 +37,7 @@ export const usePostRegister = () => {
       email: string;
       password: string;
     }) => {
-      const result = await authService.postRegister(
-        username,
-        email,
-        password,
-      );
+      const result = await authService.postRegister(username, email, password);
       const accessToken = result.accessToken;
       localStorage.setItem('idToken', accessToken);
     },

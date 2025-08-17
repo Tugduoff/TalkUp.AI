@@ -30,7 +30,10 @@ export const validateLogin = async (login: {
 }) => {
   return new Promise<string | undefined>((resolve) => {
     setTimeout(() => {
-      if (login.email === 'admin.admin@admin.com' && login.password === 'admin') {
+      if (
+        login.email === 'admin.admin@admin.com' &&
+        login.password === 'admin'
+      ) {
         resolve(undefined);
       } else {
         resolve('Invalid email or password');
