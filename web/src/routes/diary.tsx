@@ -88,7 +88,7 @@ function Diary() {
         helperText="Your phone number, including country code (e.g., +1234567890)."
         placeholder="+1234567890"
         value={phoneValue}
-        onChange={e => setPhoneValue((e.target as HTMLInputElement).value)}
+        onChange={(e) => setPhoneValue((e.target as HTMLInputElement).value)}
       />
 
       <InputMolecule
@@ -98,7 +98,9 @@ function Diary() {
         label="Your Feedback"
         placeholder="Share your thoughts..."
         value={feedbackValue}
-        onChange={e => setFeedbackValue((e.target as HTMLTextAreaElement).value)}
+        onChange={(e) =>
+          setFeedbackValue((e.target as HTMLTextAreaElement).value)
+        }
       />
 
       <InputMolecule

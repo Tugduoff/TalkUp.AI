@@ -22,10 +22,10 @@ describe('TextArea', () => {
     expect(textarea).not.toBeDisabled();
     expect(textarea).not.toHaveAttribute('readonly');
     expect(textarea).not.toHaveAttribute('required');
-    expect(textarea).toHaveAttribute('rows', '4');
+    expect(textarea).toHaveAttribute('rows', '3');
     expect(textarea).toHaveAttribute('cols', '50');
-    expect(textarea).toHaveClass('resize-none');
-    expect(textarea).not.toHaveClass('resize');
+    expect(textarea).toHaveClass('resize-y');
+    expect(textarea).not.toHaveClass('resize-none');
   });
 
   it('renders with custom placeholder', () => {
@@ -35,7 +35,7 @@ describe('TextArea', () => {
   });
 
   it('renders with custom name, id, and aria-label', () => {
-    render(<TextArea name="custom-input" />);
+    render(<TextArea name="custom-input" id="custom-input" />);
     const textarea = screen.getByRole('textbox', { name: 'custom-input' });
     expect(textarea).toBeInTheDocument();
     expect(textarea).toHaveAttribute('name', 'custom-input');
@@ -62,7 +62,7 @@ describe('TextArea', () => {
     expect(textarea).toHaveClass('disabled:cursor-not-allowed');
     expect(textarea).toHaveClass('disabled:bg-disabled');
     expect(textarea).toHaveClass('disabled:opacity-50');
-    expect(textarea).toHaveClass('disabled:resize-none');
+    expect(textarea).toHaveClass('resize-none');
   });
 
   it('renders as read-only when readOnly prop is true', () => {
@@ -80,7 +80,7 @@ describe('TextArea', () => {
   it('allows resizing when resize prop is true', () => {
     render(<TextArea resize />);
     const textarea = screen.getByRole('textbox', { name: 'textarea' });
-    expect(textarea).toHaveClass('resize');
+    expect(textarea).toHaveClass('resize-y');
     expect(textarea).not.toHaveClass('resize-none');
   });
 
