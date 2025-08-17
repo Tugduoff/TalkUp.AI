@@ -3,8 +3,8 @@ import { cn } from '@/utils/cn';
 import React, { JSX } from 'react';
 
 interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  name: string;
-  options: SelectorOption[];
+  name?: string;
+  options?: SelectorOption[];
 }
 
 /**
@@ -25,9 +25,9 @@ interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
  */
 export const SelectorInput: React.FC<Props> = ({
   id,
-  name,
+  name = 'select',
   value = '',
-  options,
+  options = [],
   disabled = false,
   required = false,
   className,
