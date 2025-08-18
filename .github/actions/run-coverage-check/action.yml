@@ -1,13 +1,13 @@
-name: 'Units Tests Coverage'
-description: 'Run units Tests coverage report'
+name: "Units Tests Coverage"
+description: "Run units Tests coverage report"
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - name: 'Run unit tests coverage report in web'
+    - name: "Run unit tests coverage report in web"
       run: npm run test:coverage:web
       shell: bash
 
-    - name: 'Run unit tests coverage report in server'
+    - name: "Run unit tests coverage report in server"
       run: npm run test:coverage:server
       shell: bash

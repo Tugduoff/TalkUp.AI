@@ -13,6 +13,7 @@ We use **Trunk-Based Development** with Git and GitHub. All development work is 
 ### Naming Convention
 
 Branch names should follow the format:
+
 ```
 <trello-id>-<nature>-<description>
 ```
@@ -126,13 +127,13 @@ Each ticket should include:
 - A short description
 - Any relevant subtasks or information
 - Appropriate labels:
-    - build
-    - feature
-    - anomaly
-    - bug
-    - architecture
-    - refactor
-    - tests
+  - build
+  - feature
+  - anomaly
+  - bug
+  - architecture
+  - refactor
+  - tests
 
 📌 Assign yourself when taking a ticket.
 
@@ -155,5 +156,5 @@ MAJOR.MINOR.PATCH release-name
 1. Create a branch from the oldest commit before the latest release on main.
 
 2. Cherry-pick the relevant commits one by one.
-    - Exclude broken/incomplete features.
-    - Ensures clean, safe releases.
+   - Exclude broken/incomplete features.
+   - Ensures clean, safe releases.
