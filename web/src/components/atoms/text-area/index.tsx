@@ -1,55 +1,68 @@
+import { cn } from '@/utils/cn';
 import React from 'react';
 
-interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  placeholder?: string;
-  name?: string;
-  value?: string;
-  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  disabled?: boolean;
-  readOnly?: boolean;
-  required?: boolean;
+export interface TextAreaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   resize?: boolean;
-  rows?: number;
-  cols?: number;
 }
 
 /**
- * A customizable textarea component with various configuration options.
+ * A customizable textarea component with optional resize control.
  *
  * @component
- * @param {Object} props - The component props
- * @param {string} [props.placeholder='Enter text'] - Placeholder text for the textarea
- * @param {string} [props.name='textarea'] - Name attribute for the textarea, also used for id and aria-label
- * @param {string} [props.value=''] - Current value of the textarea
- * @param {function} [props.onChange=() => {}] - Callback function triggered on change events
- * @param {boolean} [props.disabled=false] - Whether the textarea is disabled
- * @param {boolean} [props.readOnly=false] - Whether the textarea is read-only
- * @param {boolean} [props.required=false] - Whether the textarea is required
- * @param {boolean} [props.resize=false] - Whether the textarea can be resized
- * @param {number} [props.rows=4] - Number of visible text lines
- * @param {number} [props.cols=50] - Visible width of the textarea
- * @param {Object} props.props - Additional HTML textarea attributes to be spread to the textarea Element
+ * @example
+ * ```tsx
+ * <TextArea
+ *   name="description"
+ *   placeholder="Write your message..."
+ *   rows={5}
+ *   resize={false}
+ *   onChange={(e) => console.log(e.target.value)}
+ * />
+ * ```
  *
- * @returns {JSX.Element} A styled textarea element
+ * @param {Props} props - The props for the TextArea component.
+ * @param {string} [props.id] - The id of the textarea element.
+ * @param {string} [props.value=''] - The current value of the textarea.
+ * @param {string} [props.name='textarea'] - The name attribute of the textarea.
+ * @param {string} [props.placeholder='Enter text'] - Placeholder text for the textarea.
+ * @param {number} [props.rows=3] - Number of visible text lines.
+ * @param {number} [props.cols] - Number of visible columns.
+ * @param {boolean} [props.resize=true] - Whether the textarea can be resized vertically.
+ * @param {boolean} [props.disabled=false] - Whether the textarea is disabled.
+ * @param {boolean} [props.readOnly=false] - Whether the textarea is read-only.
+ * @param {boolean} [props.required=false] - Whether the textarea is required for form submission.
+ * @param {(e: React.ChangeEvent<HTMLTextAreaElement>) => void} [props.onChange] - Handler for value change.
+ * @param {string} [props.className] - Additional CSS classes to apply.
+ * @param {any} [props.rest] - Additional props passed to the textarea element.
+ *
+ * @returns {JSX.Element} A styled textarea component.
  */
-export const TextArea: React.FC<Props> = ({
-  placeholder = 'Enter text',
-  name = 'textarea',
+export const TextArea: React.FC<TextAreaProps> = ({
+  id,
   value = '',
-  onChange = () => {},
+  name = 'textarea',
+  placeholder = 'Enter text',
+  rows = 3,
+  cols = 50,
+  resize = true,
   disabled = false,
   readOnly = false,
   required = false,
-  resize = false,
-  rows = 4,
-  cols = 50,
-  ...props
-}: Props) => {
+  onChange = () => {},
+  className,
+  ...rest
+}) => {
+  const resizeClass = disabled
+    ? 'resize-none'
+    : resize
+      ? 'resize-y'
+      : 'resize-none';
+
   return (
     <textarea
-      {...props}
-      aria-label={name}
-      id={name}
+      {...rest}
+      id={id}
       name={name}
       placeholder={placeholder}
       value={value}
@@ -59,7 +72,17 @@ export const TextArea: React.FC<Props> = ({
       required={required}
       rows={rows}
       cols={cols}
-      className={`${!resize || disabled ? 'resize-none' : 'resize'} disabled:resize-none px-4 py-2 border border-border-strong placeholder:text rounded-sm font-display font-normal text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-colors duration-200 ease-in-out disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50 ${props.className || ''}`}
+      aria-label={name}
+      role="textbox"
+      aria-multiline="true"
+      aria-disabled={disabled}
+      aria-readonly={readOnly}
+      aria-required={required}
+      className={cn(
+        'px-4 py-2 text-sm font-normal transition-colors duration-200 ease-in-out border rounded-sm font-display focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50 border-border-strong',
+        resizeClass,
+        className,
+      )}
     />
   );
 };
