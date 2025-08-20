@@ -1,0 +1,41 @@
+{
+  "plugins": ["typescript", "unicorn", "promise", "jest", "node"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "pedantic": "warn", 
+    "style": "warn"
+  },
+  "rules": {
+    "no-unused-vars": "error",
+    "no-console": "error",
+    "no-debugger": "error",
+    "no-empty": "error",
+    "no-extra-boolean-cast": "error",
+    "no-irregular-whitespace": "error",
+    "no-unsafe-finally": "error",
+    "no-unsafe-negation": "error",
+    "prefer-const": "error",
+    "no-var": "error",
+    "eqeqeq": "error",
+    "no-implicit-coercion": "warn",
+    "curly": "error",
+    "no-throw-literal": "error",
+    "no-unneeded-ternary": "warn",
+    "prefer-template": "warn",
+    "no-useless-concat": "error",
+    "no-duplicate-imports": "error"
+  },
+  "env": {
+    "node": true,
+    "jest": true,
+    "es6": true
+  },
+  "ignore": [
+    "dist/**",
+    "coverage/**", 
+    "node_modules/**",
+    "*.config.js",
+    "*.config.mjs"
+  ]
+}

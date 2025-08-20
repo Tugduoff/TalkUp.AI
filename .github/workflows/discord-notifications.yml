@@ -67,4 +67,3 @@ jobs:
             **Title:** `${{ github.event.pull_request.title }}`\n
             **Merged By:** `${{ github.event.pull_request.merged_by.login }}`
           usernames: "${{ github.actor }}"
-

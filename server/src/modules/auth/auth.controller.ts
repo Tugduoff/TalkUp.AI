@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query, Res } from "@nestjs/common";
-import { Response } from "express";
+import { Body, Controller, Post } from "@nestjs/common";
 import { UsePipes } from "@nestjs/common/decorators/core/use-pipes.decorator";
 
 import {
@@ -9,12 +8,10 @@ import {
   ApiUnprocessableEntityResponse,
   ApiTags,
   ApiOkResponse,
-  ApiInternalServerErrorResponse,
 } from "@nestjs/swagger";
 
 import { CreateUserDto } from "./dto/createUser.dto";
 import { LoginDto } from "./dto/login.dto";
-import { UpdatePasswordDto } from "./dto/updatePassword.dto";
 
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
@@ -41,7 +38,6 @@ export class AuthController {
   @UsePipes(new PostValidationPipe())
   @Post("register")
   async register(@Body() createUserDto: CreateUserDto) {
-    // Call the authService to handle the registration logic
     return await this.authService.register(createUserDto);
   }
 
@@ -49,6 +45,7 @@ export class AuthController {
     description: "User successfully logged in.",
     type: String,
   })
+  @UsePipes(new PostValidationPipe())
   @Post("login")
   async login(@Body() loginDto: LoginDto) {
     const user = await this.authService.validateUser(
@@ -56,44 +53,5 @@ export class AuthController {
       loginDto.password,
     );
     return this.authService.login(user);
-  }
-
-  @ApiOkResponse({
-    description: "The password has successfully changed",
-    type: String,
-  })
-  @Put("updatePassword")
-  async updatePassword(@Body() body: UpdatePasswordDto) {
-    return this.authService.changeUserPassword(
-      body.phoneNumber,
-      body.newPassword,
-    );
-  }
-
-  @ApiOkResponse({
-    description: "Redirects to LinkedIn for OAuth authentication.",
-    type: String,
-  })
-  @ApiInternalServerErrorResponse({
-    description: "Internal server error (problem fetching code).",
-  })
-  @Get("linkedin/callback")
-  async linkedInCallback(@Query("code") code: string, @Res() res: Response) {
-    const tokenData: {
-      access_token: string;
-      expires_in: string;
-      scope: string;
-    } = await this.authService.getAccessTokenDatasFromQueryCode(code);
-
-    const profile = await this.authService.getLinkedInProfileFromAccessToken(
-      tokenData.access_token,
-    );
-
-    const data: { accessToken: string } =
-      await this.authService.saveLinkedInUser(profile, tokenData);
-
-    res.redirect(
-      `${process.env.FRONTEND_URL}/linkedin-oauth-test.html?token=${data.accessToken}`,
-    );
   }
 }

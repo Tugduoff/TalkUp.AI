@@ -1,5 +1,5 @@
-name: 'Notify Teams'
-description: 'Send a Teams adaptive message'
+name: "Notify Teams"
+description: "Send a Teams adaptive message"
 
 inputs:
   webhook:
@@ -31,7 +31,7 @@ inputs:
     required: true
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Send message to Teams using script
       shell: bash

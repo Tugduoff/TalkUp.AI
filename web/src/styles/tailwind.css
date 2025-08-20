@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Saira:wght@400;700;800;900&display=swap");
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Saira:wght@400;700;800;900&display=swap');
+@import 'tailwindcss';
 
 @source inline('{text,fill}-{primary,accent}');
 @source inline('{,hover:,active:}{bg,border,text}-{primary,accent,black,white,error,warning,success,neutral}{,-hover,-active,-weak,-weaker}');

@@ -5,10 +5,12 @@ This custom GitHub Action is designed to send notifications to a Discord channel
 ## Features
 
 This action performs the following:
+
 - **Discord Notifications**: Sends messages to a specified Discord channel using a webhook URL.
 - **Customizable Messages**: Allows customization of the message content, including title, description, and color.
 
 ## Usage
+
 To use this action, you can include it as follows:
 
 ```yaml

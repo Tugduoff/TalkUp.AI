@@ -1,167 +1,39 @@
 import { Repository } from "typeorm";
 
 import {
-  ConflictException,
   Injectable,
-  UnauthorizedException,
   Logger,
   InternalServerErrorException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
-import * as bcrypt from "bcrypt";
 
 import { HttpService } from "@nestjs/axios";
 import { AxiosResponse } from "axios";
 
-import { CreateUserDto } from "./dto/createUser.dto";
-import { UsersService } from "@src/users/users.service";
+import { user, user_email, user_oauth } from "@entities/user.entity";
 
-import {
-  user,
-  user_email,
-  user_oauth,
-  user_password,
-  user_phone_number,
-} from "@entities/user.entity";
-
-import { hashPassword } from "@common/utils/passwordHasher";
 import { LinkedInProfile, LinkedInTokenDatas } from "@common/utils/types";
 import { AuthProvider } from "@common/enums/AuthProvider";
 
 @Injectable()
-export class AuthService {
+export class LinkedInService {
   private clientId = process.env.LINKEDIN_CLIENT_ID ?? "";
   private clientSecret = process.env.LINKEDIN_CLIENT_SECRET ?? "";
   private redirectUri = process.env.LINKEDIN_OAUTH_CALLBACK ?? "";
 
-  private readonly logger = new Logger(AuthService.name);
+  private readonly logger = new Logger(LinkedInService.name);
 
   constructor(
     @InjectRepository(user) private userRepository: Repository<user>,
-    @InjectRepository(user_password)
-    private userPasswordRepository: Repository<user_password>,
-    @InjectRepository(user_phone_number)
-    private userPhoneNumberRepository: Repository<user_phone_number>,
     @InjectRepository(user_email)
     private userEmailRepository: Repository<user_email>,
     @InjectRepository(user_oauth)
     private userOauthRepository: Repository<user_oauth>,
 
-    private usersService: UsersService,
     private jwtService: JwtService,
     private readonly httpService: HttpService,
   ) {}
-
-  /**
-   * Registers a new user and returns a JWT token.
-   * @param createUserDto - The DTO containing user registration data.
-   * @returns An object containing the access token.
-   * @throws ConflictException if an account with the same phone number already exists.
-   */
-  async register(
-    createUserDto: CreateUserDto,
-  ): Promise<{ accessToken: string }> {
-    // Check if the user already exists
-    const phoneNumberExists = await this.userPhoneNumberRepository.findOne({
-      where: { phone_number: createUserDto.phoneNumber },
-    });
-
-    if (phoneNumberExists) {
-      throw new ConflictException(
-        "An account with this phone number already exists",
-      );
-    }
-
-    // Create a new user, contains only the username
-    const newUser = this.userRepository.create({
-      username: createUserDto.username,
-    });
-
-    // Save the user to the database, contains every user information
-    const savedUser = await this.userRepository.save(newUser);
-
-    // create user_password
-    const newUserPassword = this.userPasswordRepository.create({
-      password: await hashPassword(createUserDto.password),
-      user_id: savedUser.user_id,
-    });
-
-    // create user_phonenumber
-    const newUserPhoneNumber = this.userPhoneNumberRepository.create({
-      phone_number: createUserDto.phoneNumber,
-      user_id: savedUser.user_id,
-    });
-
-    // Save the password, and phone number to the database
-    await this.userPasswordRepository.save(newUserPassword);
-    await this.userPhoneNumberRepository.save(newUserPhoneNumber);
-
-    const payload = {
-      userId: savedUser.user_id,
-      username: savedUser.username,
-    };
-
-    return {
-      accessToken: await this.jwtService.signAsync(payload),
-    };
-  }
-
-  async validateUser(phoneNumber: string, password: string): Promise<user> {
-    const result =
-      await this.usersService.findUserWithPasswordByPhoneNumber(phoneNumber);
-    if (!result) {
-      throw new UnauthorizedException("Phone number not found");
-    }
-
-    const match = await bcrypt.compare(password, result.passwordHash);
-    if (!match) {
-      throw new UnauthorizedException("Invalid password");
-    }
-
-    return result.user;
-  }
-
-  async changeUserPassword(
-    phone_number: string,
-    newUserPassword: string,
-  ): Promise<boolean> {
-    const phoneNumberEntity = await this.userPhoneNumberRepository.findOne({
-      where: { phone_number },
-    });
-
-    if (!phoneNumberEntity) {
-      throw new UnauthorizedException(
-        "There is no user with that phone number",
-      );
-    }
-
-    const hashedPassword = await hashPassword(newUserPassword);
-
-    const passwordEntity = await this.userPasswordRepository.findOne({
-      where: { user_id: phoneNumberEntity.user_id },
-    });
-
-    if (!passwordEntity) {
-      const newUserPassword = this.userPasswordRepository.create({
-        password: hashedPassword,
-        user_id: phoneNumberEntity.user_id,
-      });
-      await this.userPasswordRepository.save(newUserPassword);
-    } else {
-      passwordEntity.password = hashedPassword;
-      await this.userPasswordRepository.save(passwordEntity);
-    }
-
-    return true;
-  }
-
-  login(user: user) {
-    const payload = { sub: user.user_id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
-  }
 
   /**
    * Fetches the access token data from LinkedIn using the authorization code.
@@ -298,7 +170,7 @@ export class AuthService {
     const newUserEmail = this.userEmailRepository.create({
       email: linkedInProfile.email,
       is_verified: linkedInProfile.email_verified,
-      user_id: newUser.user_id,
+      user_id: savedUser.user_id,
     });
 
     // Save the email to the database
@@ -312,5 +184,23 @@ export class AuthService {
     return {
       accessToken: await this.jwtService.signAsync(payload),
     };
+  }
+
+  /**
+   * Handles the complete LinkedIn OAuth flow from authorization code to user creation.
+   * @param {string} code - The authorization code from LinkedIn OAuth callback.
+   * @returns {Promise<{ accessToken: string }>} JWT token for the authenticated user.
+   */
+  async handleLinkedInCallback(code: string): Promise<{ accessToken: string }> {
+    // Get access token from LinkedIn
+    const tokenData = await this.getAccessTokenDatasFromQueryCode(code);
+
+    // Get user profile from LinkedIn
+    const linkedInProfile = await this.getLinkedInProfileFromAccessToken(
+      tokenData.access_token,
+    );
+
+    // Save user and return JWT
+    return await this.saveLinkedInUser(linkedInProfile, tokenData);
   }
 }

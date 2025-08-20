@@ -8,11 +8,6 @@
     "isolatedModules": false,
     "noEmit": true
   },
-  "include": [
-    "playwright.config.ts",
-    "tests/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["playwright.config.ts", "tests/**/*.ts"],
+  "exclude": ["node_modules"]
 }
