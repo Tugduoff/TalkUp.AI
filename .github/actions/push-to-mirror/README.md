@@ -5,4 +5,5 @@ This custom GitHub Action is designed to push changes to a mirror repository whe
 ## Features
 
 This action performs the following checks:
+
 - **Push changes**: If there are changes and the mirror repository is configured, it pushes the changes to the mirror repository.

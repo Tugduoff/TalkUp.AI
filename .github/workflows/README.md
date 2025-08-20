@@ -38,6 +38,7 @@ Runs end-to-end tests using **Playwright Docker image**:
 ### 4. Mirror Push (`mirror-push.yml`)
 
 Syncs repository to mirror after **all workflows succeed**:
+
 - **Trigger**: `workflow_run` event when all 3 workflows complete successfully
 - **Condition**: Only pushes to mirror on main branch
 - **Target**: Epitech mirror repository
@@ -67,9 +68,11 @@ This custom action is defined in `.github/actions/run-quality-check/action.yml`.
 ### 3. `run-coverage-check`
 
 This custom action is defined in `.github/actions/run-coverage-check/action.yml`. It performs the following tasks:
+
 - Runs unit tests and generates a code coverage report.
 
 ### 4. `run-e2e-tests`
 
 This custom action is defined in `.github/actions/run-e2e-tests/action.yml`. It performs the following tasks:
+
 - Runs end-to-end tests to validate the application's functionality.

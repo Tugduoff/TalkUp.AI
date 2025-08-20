@@ -5,6 +5,7 @@ This custom GitHub Action is designed to run end-to-end (e2e) tests using Playwr
 ## Features
 
 This action performs the following steps:
+
 - **Cache Playwright Browsers**: Caches the Playwright browser binaries to speed up subsequent runs.
 - **Install System Dependencies**: Installs the required system dependencies for Playwright.
 - **Install Playwright Browsers**: Installs the necessary Playwright browser binaries if not already cached.
