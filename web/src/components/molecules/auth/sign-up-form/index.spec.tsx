@@ -65,9 +65,9 @@ describe('SignUpForm', () => {
       expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
       expect(screen.getByPlaceholderText(/Your username/i)).toBeInTheDocument();
 
-      expect(screen.getByLabelText(/Phone Number/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
       expect(
-        screen.getByPlaceholderText(/Your phone number/i),
+        screen.getByPlaceholderText(/Your email address/i),
       ).toBeInTheDocument();
 
       expect(screen.getByLabelText('Password')).toBeInTheDocument();
@@ -101,16 +101,16 @@ describe('SignUpForm', () => {
       expect(usernameInput).toHaveValue('newuser');
     });
 
-    it('allows typing into phone number field', async () => {
+    it('allows typing into email field', async () => {
       render(<SignUpForm />);
-      const phoneNumberInput = screen.getByLabelText(/Phone Number/i);
+      const emailInput = screen.getByLabelText(/Email/i);
 
       await act(async () => {
-        fireEvent.change(phoneNumberInput, {
-          target: { value: '+1234567890' },
+        fireEvent.change(emailInput, {
+          target: { value: 'admin.admin@admin.com' },
         });
       });
-      expect(phoneNumberInput).toHaveValue('+1234567890');
+      expect(emailInput).toHaveValue('admin.admin@admin.com');
     });
 
     it('allows typing into password field', async () => {
@@ -202,24 +202,22 @@ describe('SignUpForm', () => {
 
     /**
      * Test Sub-Group: Phone Number Validation
-     * Tests the synchronous validation rules specific to the phone number field.
+     * Tests the synchronous validation rules specific to the email field.
      */
-    describe('Phone Number Validation', () => {
-      it('displays error for invalid phone number format', async () => {
+    describe('Email Validation', () => {
+      it('displays error for invalid email format', async () => {
         render(<SignUpForm />);
-        const phoneNumberInput = screen.getByLabelText(/Phone Number/i);
+        const emailInput = screen.getByLabelText(/Email/i);
         const signUpButton = screen.getByRole('button', { name: /Sign Up/i });
 
         await act(async () => {
-          fireEvent.change(phoneNumberInput, { target: { value: '12345' } });
+          fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
           fireEvent.click(signUpButton);
         });
 
         await waitFor(() => {
           expect(
-            screen.getByText(
-              'Phone number must be in international format (e.g., +1234567890)',
-            ),
+            screen.getByText('Please enter a valid email address'),
           ).toBeInTheDocument();
         });
       });
@@ -457,11 +455,10 @@ describe('SignUpForm', () => {
       expect(usernameLabel).toHaveAttribute('for', 'username');
       expect(usernameInput).toHaveAttribute('id', 'username');
 
-      const phoneNumberLabel = screen.getByText('Phone Number');
-      const phoneNumberInput =
-        screen.getByPlaceholderText(/Your phone number/i);
-      expect(phoneNumberLabel).toHaveAttribute('for', 'phoneNumber');
-      expect(phoneNumberInput).toHaveAttribute('id', 'phoneNumber');
+      const emailLabel = screen.getByText('Email');
+      const emailInput = screen.getByPlaceholderText(/Your email address/i);
+      expect(emailLabel).toHaveAttribute('for', 'email');
+      expect(emailInput).toHaveAttribute('id', 'email');
 
       const passwordLabel = screen.getByText('Password');
       const passwordInput = screen.getByLabelText('Password');

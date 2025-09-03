@@ -5,37 +5,37 @@ import { validateLogin } from './validateLogin';
 describe('Validate Login Implementation', () => {
   it('successfully validates the user', async () => {
     const login = {
-      username: 'admin',
+      email: 'admin.admin@admin.com',
       password: 'admin',
     };
     const result = await validateLogin(login);
     expect(result).toBeUndefined();
   });
 
-  it("doesn't validate the user with incorrect username", async () => {
+  it("doesn't validate the user with incorrect email", async () => {
     const login = {
-      username: 'Bhuvan',
+      email: 'Bhuvan',
       password: 'admin',
     };
     const result = await validateLogin(login);
-    expect(result).toBe('Invalid username or password');
+    expect(result).toBe('Invalid email or password');
   });
 
   it("doesn't validate the user with incorrect password", async () => {
     const login = {
-      username: 'admin',
+      email: 'admin',
       password: 'bhulhuitre',
     };
     const result = await validateLogin(login);
-    expect(result).toBe('Invalid username or password');
+    expect(result).toBe('Invalid email or password');
   });
 
-  it("doesn't validate the user with incorrect username and password", async () => {
+  it("doesn't validate the user with incorrect email and password", async () => {
     const login = {
-      username: 'Bhuvan',
+      email: 'Bhuvan',
       password: 'bhulhuitre',
     };
     const result = await validateLogin(login);
-    expect(result).toBe('Invalid username or password');
+    expect(result).toBe('Invalid email or password');
   });
 });

@@ -11,7 +11,7 @@ import * as bcrypt from "bcrypt";
 
 import { CreateUserDto } from "./dto/createUser.dto";
 
-import { user, user_password, user_phone_number } from "@entities/user.entity";
+import { user, user_password, user_email } from "@entities/user.entity";
 
 import { hashPassword } from "@common/utils/passwordHasher";
 
@@ -21,8 +21,8 @@ export class AuthService {
     @InjectRepository(user) private userRepository: Repository<user>,
     @InjectRepository(user_password)
     private userPasswordRepository: Repository<user_password>,
-    @InjectRepository(user_phone_number)
-    private userPhoneNumberRepository: Repository<user_phone_number>,
+    @InjectRepository(user_email)
+    private userEmailRepository: Repository<user_email>,
 
     private jwtService: JwtService,
   ) {}
@@ -31,28 +31,26 @@ export class AuthService {
    * Registers a new user with the provided credentials.
    *
    * This method performs the following steps:
-   * 1. Checks if the phone number already exists in the system.
-   * 2. Throws a `ConflictException` if the phone number is already registered.
+   * 1. Checks if the email already exists in the system.
+   * 2. Throws a `ConflictException` if the email is already registered.
    * 3. Creates a new user with the given username.
    * 4. Hashes and stores the user's password.
-   * 5. Stores the user's phone number.
+   * 5. Stores the user's email.
    * 6. Generates and returns a JWT access token for the newly registered user.
    *
-   * @param createUserDto - Data transfer object containing the user's registration details (username, password, phone number).
+   * @param createUserDto - Data transfer object containing the user's registration details (username, password, email).
    * @returns An object containing the generated JWT access token.
-   * @throws {ConflictException} If an account with the provided phone number already exists.
+   * @throws {ConflictException} If an account with the provided email already exists.
    */
   async register(
     createUserDto: CreateUserDto,
   ): Promise<{ accessToken: string }> {
-    const phoneNumberExists = await this.userPhoneNumberRepository.findOne({
-      where: { phone_number: createUserDto.phoneNumber },
+    const emailExists = await this.userEmailRepository.findOne({
+      where: { email: createUserDto.email },
     });
 
-    if (phoneNumberExists) {
-      throw new ConflictException(
-        "An account with this phone number already exists",
-      );
+    if (emailExists) {
+      throw new ConflictException("An account with this email already exists");
     }
 
     const newUser = this.userRepository.create({
@@ -66,13 +64,13 @@ export class AuthService {
       user_id: savedUser.user_id,
     });
 
-    const newUserPhoneNumber = this.userPhoneNumberRepository.create({
-      phone_number: createUserDto.phoneNumber,
+    const newUserEmail = this.userEmailRepository.create({
+      email: createUserDto.email,
       user_id: savedUser.user_id,
     });
 
     await this.userPasswordRepository.save(newUserPassword);
-    await this.userPhoneNumberRepository.save(newUserPhoneNumber);
+    await this.userEmailRepository.save(newUserEmail);
 
     const payload = {
       userId: savedUser.user_id,
@@ -85,39 +83,39 @@ export class AuthService {
   }
 
   /**
-   * Validates a user's credentials using their phone number and password.
+   * Validates a user's credentials using their email and password.
    *
    * This method performs the following steps:
-   * 1. Finds the user entity associated with the provided phone number.
+   * 1. Finds the user entity associated with the provided email.
    * 2. Retrieves the password entity for the found user.
    * 3. Retrieves the user entity details.
-   * 4. Throws an `UnauthorizedException` if the phone number or password is not found, or if the password does not match.
+   * 4. Throws an `UnauthorizedException` if the email or password is not found, or if the password does not match.
    * 5. Returns the user entity if validation is successful.
    *
-   * @param phoneNumber - The user's phone number to identify the account.
+   * @param email - The user's email to identify the account.
    * @param password - The user's plaintext password to validate.
    * @returns A promise that resolves to the user entity if validation succeeds.
-   * @throws {UnauthorizedException} If the phone number is not found or the password is invalid.
+   * @throws {UnauthorizedException} If the email is not found or the password is invalid.
    */
-  async validateUser(phoneNumber: string, password: string): Promise<user> {
-    const phoneNumberEntity = await this.userPhoneNumberRepository.findOne({
-      where: { phone_number: phoneNumber },
+  async validateUser(email: string, password: string): Promise<user> {
+    const emailEntity = await this.userEmailRepository.findOne({
+      where: { email: email },
     });
 
-    if (!phoneNumberEntity) {
-      throw new UnauthorizedException("Phone number not found");
+    if (!emailEntity) {
+      throw new UnauthorizedException("Email not found");
     }
 
     const passwordEntity = await this.userPasswordRepository.findOne({
-      where: { user_id: phoneNumberEntity.user_id },
+      where: { user_id: emailEntity.user_id },
     });
 
     const userEntity = await this.userRepository.findOne({
-      where: { user_id: phoneNumberEntity.user_id },
+      where: { user_id: emailEntity.user_id },
     });
 
     if (!passwordEntity || !userEntity) {
-      throw new UnauthorizedException("Phone number not found");
+      throw new UnauthorizedException("Email not found");
     }
 
     const match = await bcrypt.compare(password, passwordEntity.password);

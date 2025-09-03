@@ -25,15 +25,18 @@
  *   });
  */
 export const validateLogin = async (login: {
-  username: string;
+  email: string;
   password: string;
 }) => {
   return new Promise<string | undefined>((resolve) => {
     setTimeout(() => {
-      if (login.username === 'admin' && login.password === 'admin') {
+      if (
+        login.email === 'admin.admin@admin.com' &&
+        login.password === 'admin'
+      ) {
         resolve(undefined);
       } else {
-        resolve('Invalid username or password');
+        resolve('Invalid email or password');
       }
     }, 100);
   });

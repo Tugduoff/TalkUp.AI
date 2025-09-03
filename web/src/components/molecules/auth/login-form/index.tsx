@@ -9,7 +9,7 @@ import { useForm } from '@tanstack/react-form';
  * potentially asynchronous validation through the validateLogin function.
  *
  * The form includes:
- * - Username input field with validation
+ * - Email input field with validation
  * - Password input field with validation
  * - Form-level error messages
  * - Loading indicators during validation
@@ -23,7 +23,7 @@ import { useForm } from '@tanstack/react-form';
 export const LoginForm = () => {
   const form = useForm({
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
     onSubmit: ({ value }) => {
@@ -31,11 +31,11 @@ export const LoginForm = () => {
     },
     validators: {
       onSubmit: ({ value }) => {
-        if (!value.username && !value.password) {
-          return 'Username and password are required';
+        if (!value.email && !value.password) {
+          return 'Email and password are required';
         }
-        if (!value.username) {
-          return 'Username is required';
+        if (!value.email) {
+          return 'Email is required';
         }
         if (!value.password) {
           return 'Password is required';
@@ -53,23 +53,23 @@ export const LoginForm = () => {
         </p>
       </header>
       <form className="flex flex-col gap-4">
-        <form.Field name="username">
+        <form.Field name="email">
           {(field) => (
             <div className="flex flex-col gap-2">
               <label
-                htmlFor="username"
+                htmlFor="email"
                 className="text-sm font-semibold text-gray-500"
               >
-                Username
+                Email
               </label>
               <div className="relative">
                 <input
-                  id="username"
-                  type="text"
+                  id="email"
+                  type="email"
                   value={field.state.value}
                   className="w-full p-2 border border-gray-300 rounded-md"
                   onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="Your username"
+                  placeholder="Your email address"
                 />
               </div>
               {field.state.meta.errors && (
