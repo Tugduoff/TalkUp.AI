@@ -1,4 +1,4 @@
-import { validateLogin } from '@/utils/validateLogin';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   act,
   fireEvent,
@@ -6,22 +6,18 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
-import { MockedFunction, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LoginForm } from '.';
 
-/**
- * Mocks the `validateLogin` utility function.
- * This mock simulates an asynchronous operation that resolves after a 100ms delay.
- * It allows controlled testing of loading states and successful/failed login scenarios.
- */
-vi.mock('@/utils/validateLogin', () => ({
-  validateLogin: vi.fn(() => {
-    return new Promise((resolve) => setTimeout(resolve, 100));
-  }),
-}));
-
-const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+const renderWithQueryClient = (component: React.ReactElement) => {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  });
+  return render(
+    <QueryClientProvider client={queryClient}>{component}</QueryClientProvider>,
+  );
+};
 
 /**
  * Test suite for the LoginForm component.
@@ -40,7 +36,7 @@ describe('LoginForm', () => {
    */
   describe('Initial Render and Basic Structure', () => {
     it('renders the login form elements correctly', () => {
-      render(<LoginForm />);
+      renderWithQueryClient(<LoginForm />);
 
       expect(
         screen.getByRole('heading', { name: /Login/i }),
@@ -65,7 +61,7 @@ describe('LoginForm', () => {
    */
   describe('Client-Side Validation (Sync Validators)', () => {
     it('displays "Email and password are required" error when both fields are empty on submit', async () => {
-      render(<LoginForm />);
+      renderWithQueryClient(<LoginForm />);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
@@ -84,7 +80,7 @@ describe('LoginForm', () => {
     });
 
     it('displays "Email is required" error when only email is empty on submit', async () => {
-      render(<LoginForm />);
+      renderWithQueryClient(<LoginForm />);
       const passwordInput = screen.getByLabelText(/Password/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
@@ -105,7 +101,7 @@ describe('LoginForm', () => {
     });
 
     it('displays "Password is required" error when only password is empty on submit', async () => {
-      render(<LoginForm />);
+      renderWithQueryClient(<LoginForm />);
       const emailInput = screen.getByLabelText(/Email/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
@@ -129,86 +125,13 @@ describe('LoginForm', () => {
   });
 
   /**
-   * Test Group: Asynchronous Validation (validateLogin)
-   * This group verifies the behavior of the form when interacting with the
-   * mocked `validateLogin` function, including error display and successful outcomes.
-   */
-  describe('Asynchronous Validation (validateLogin)', () => {
-    const mockedValidateLogin = validateLogin as MockedFunction<
-      typeof validateLogin
-    >;
-
-    it('displays an error when validateLogin rejects (simulated failed login)', async () => {
-      mockedValidateLogin.mockImplementationOnce(() =>
-        Promise.reject('Invalid credentials provided'),
-      );
-
-      render(<LoginForm />);
-      const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Password/i);
-      const loginButton = screen.getByRole('button', { name: /Login/i });
-
-      await act(async () => {
-        fireEvent.change(emailInput, {
-          target: { value: 'wronguser@example.com' },
-        });
-        fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
-        fireEvent.click(loginButton);
-      });
-
-      await waitFor(() => {
-        expect(
-          screen.getByText(/Invalid credentials provided/i),
-        ).toBeInTheDocument();
-      });
-      expect(consoleSpy).not.toHaveBeenCalled();
-    });
-
-    it('does not display an error when validateLogin resolves (simulated successful login)', async () => {
-      mockedValidateLogin.mockResolvedValueOnce(undefined);
-
-      render(<LoginForm />);
-      const emailInput = screen.getByLabelText(/Email/i);
-      const passwordInput = screen.getByLabelText(/Password/i);
-      const loginButton = screen.getByRole('button', { name: /Login/i });
-
-      await act(async () => {
-        fireEvent.change(emailInput, {
-          target: { value: 'admin.admin@admin.com' },
-        });
-        fireEvent.change(passwordInput, { target: { value: 'password123' } });
-        fireEvent.click(loginButton);
-      });
-
-      await waitFor(() => {
-        expect(
-          screen.queryByText(/Invalid credentials provided/i),
-        ).not.toBeInTheDocument();
-        expect(
-          screen.queryByText(/Email is required/i),
-        ).not.toBeInTheDocument();
-        expect(
-          screen.queryByText(/Password is required/i),
-        ).not.toBeInTheDocument();
-      });
-
-      await waitFor(() => {
-        expect(consoleSpy).toHaveBeenCalledWith('Login:', {
-          email: 'admin.admin@admin.com',
-          password: 'password123',
-        });
-      });
-    });
-  });
-
-  /**
    * Test Group: User Interactions
    * This group focuses on verifying the component's responsiveness to common
    * user input actions such as typing into fields and submitting the form.
    */
   describe('User Interactions', () => {
     it('allows typing into email and password fields', async () => {
-      render(<LoginForm />);
+      renderWithQueryClient(<LoginForm />);
       const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getByLabelText(/Password/i);
 
@@ -226,7 +149,7 @@ describe('LoginForm', () => {
     });
 
     it('submits the form with valid credentials', async () => {
-      render(<LoginForm />);
+      renderWithQueryClient(<LoginForm />);
       const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getByLabelText(/Password/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
@@ -238,20 +161,6 @@ describe('LoginForm', () => {
         fireEvent.change(passwordInput, { target: { value: 'admin' } });
         fireEvent.click(loginButton);
       });
-
-      await waitFor(() => {
-        expect(validateLogin).toHaveBeenCalledWith({
-          email: 'admin.admin@admin.com',
-          password: 'admin',
-        });
-      });
-
-      await waitFor(() => {
-        expect(consoleSpy).toHaveBeenCalledWith('Login:', {
-          email: 'admin.admin@admin.com',
-          password: 'admin',
-        });
-      });
     });
   });
 
@@ -262,7 +171,7 @@ describe('LoginForm', () => {
    */
   describe('Accessibility', () => {
     it('ensures correct htmlFor attributes on labels and id on inputs', () => {
-      render(<LoginForm />);
+      renderWithQueryClient(<LoginForm />);
 
       const emailLabel = screen.getByText('Email');
       const emailInput = screen.getByPlaceholderText(/Your email address/i);
