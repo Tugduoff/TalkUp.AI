@@ -122,7 +122,6 @@ export class AuthService {
     if (!match) {
       throw new UnauthorizedException("Invalid password");
     }
-
     return userEntity;
   }
 
@@ -132,10 +131,14 @@ export class AuthService {
    * @param user - The user object containing authentication details.
    * @returns An object containing the generated access token.
    */
-  login(user: user) {
-    const payload = { sub: user.user_id };
+  async login(user: user) {
+    const payload = {
+      userId: user.user_id,
+      username: user.username,
+    };
+
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: await this.jwtService.signAsync(payload),
     };
   }
 }
