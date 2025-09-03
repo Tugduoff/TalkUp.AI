@@ -1,5 +1,4 @@
 import { usePostRegister } from '@/hooks/auth/useServices';
-import { validateUsername } from '@/utils/validateUsername';
 import { useForm } from '@tanstack/react-form';
 
 /**
@@ -50,8 +49,6 @@ export const SignUpForm = () => {
         <form.Field
           name="username"
           validators={{
-            onChangeAsyncDebounceMs: 500,
-            onChangeAsync: ({ value }) => validateUsername(value),
             onChange: ({ value }) => {
               if (value.length < 3) {
                 return 'Username must be at least 3 characters long';
