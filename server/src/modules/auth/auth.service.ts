@@ -122,6 +122,7 @@ export class AuthService {
     if (!match) {
       throw new UnauthorizedException("Invalid password");
     }
+
     return userEntity;
   }
 
