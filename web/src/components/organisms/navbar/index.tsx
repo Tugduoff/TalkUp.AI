@@ -30,10 +30,10 @@ const NavBar = () => {
 
           <hr className="border-border" />
 
-          <div className="flex flex-col space-y-2">
-            <NavLink to="/chat" label="Chat" icon="chat" />
-            <NavLink to="/notifications" label="Notifications" icon="bell" />
-            <NavLink to="/help" label="Help Center" icon="help" />
+          <div className="flex flex-col space-y-2"> { /* The links dont correspond ! To change */ }
+            <NavLink to="/ai-chat" label="Chat" icon="chat" />
+            <NavLink to="/diary" label="Notifications" icon="bell" />
+            <NavLink to="/about" label="Help Center" icon="help" />
           </div>
         </div>
       </div>
