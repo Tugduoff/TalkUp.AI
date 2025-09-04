@@ -38,7 +38,6 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Bottom section: User profile */}
       <div className="mt-auto pt-4 border-t border-border">
         <Profile
           name="John Doe"
