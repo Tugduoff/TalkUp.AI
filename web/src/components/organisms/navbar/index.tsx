@@ -30,7 +30,8 @@ const NavBar = () => {
 
           <hr className="border-border" />
 
-          <div className="flex flex-col space-y-2"> { /* The links dont correspond ! To change */ }
+          <div className="flex flex-col space-y-2">
+            {/* The links dont correspond ! To change */}
             <NavLink to="/ai-chat" label="Chat" icon="chat" />
             <NavLink to="/diary" label="Notifications" icon="bell" />
             <NavLink to="/about" label="Help Center" icon="help" />
