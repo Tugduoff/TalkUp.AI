@@ -28,4 +28,23 @@ export default class AuthService {
     });
     return response.data;
   };
+
+  /**
+   * Logs in a user with the provided email and password.
+   *
+   * @param email - The email address of the user
+   * @param password - The password of the user
+   * @returns A promise that resolves to an object containing the access token for the logged-in user
+   * @throws Will throw an error if the login fails (e.g., if the email or password is incorrect)
+   */
+  postLogin = async (
+    email: string,
+    password: string,
+  ): Promise<{ accessToken: string }> => {
+    const response = await axiosInstance.post(`${API_ROUTES.auth}/login`, {
+      email,
+      password,
+    });
+    return response.data;
+  };
 }

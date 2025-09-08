@@ -1,4 +1,4 @@
-import { validateLogin } from '@/utils/validateLogin';
+import { usePostLogin } from '@/hooks/auth/useServices';
 import { useForm } from '@tanstack/react-form';
 
 /**
@@ -21,13 +21,18 @@ import { useForm } from '@tanstack/react-form';
  * @returns A login form component with validation and styling
  */
 export const LoginForm = () => {
+  const { mutate: postLogin } = usePostLogin();
+
   const form = useForm({
     defaultValues: {
       email: '',
       password: '',
     },
     onSubmit: ({ value }) => {
-      console.log('Login:', value);
+      postLogin({
+        email: value.email,
+        password: value.password,
+      });
     },
     validators: {
       onSubmit: ({ value }) => {
@@ -41,7 +46,6 @@ export const LoginForm = () => {
           return 'Password is required';
         }
       },
-      onSubmitAsync: ({ value }) => validateLogin(value),
     },
   });
   return (

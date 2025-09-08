@@ -52,6 +52,6 @@ export class AuthController {
       loginDto.email,
       loginDto.password,
     );
-    return this.authService.login(user);
+    return await this.authService.login(user);
   }
 }

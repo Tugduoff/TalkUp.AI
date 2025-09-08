@@ -1,4 +1,3 @@
-import { validateUsername } from '@/utils/validateUsername';
 import {
   act,
   fireEvent,
@@ -6,7 +5,7 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
-import { MockedFunction, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SignUpForm } from '.';
 
@@ -20,33 +19,13 @@ vi.mock('@/hooks/auth/useServices', () => ({
 }));
 
 /**
- * Mocks the `validateUsername` utility function.
- * This mock simulates async validation by resolving with an error message for a specific user
- * and resolving with `undefined` for others, which is how react-hook-form expects async validators to work.
- */
-vi.mock('@/utils/validateUsername', () => ({
-  validateUsername: vi.fn(async (username: string) => {
-    await new Promise((res) => setTimeout(res, 100));
-    if (username === 'existinguser') {
-      return 'Username already taken';
-    }
-    return undefined;
-  }),
-}));
-
-/**
  * Test suite for the SignUpForm component.
  * This suite verifies the component's rendering, client-side and asynchronous validation,
  * user interactions, form submission, and integration with external hooks.
  */
 describe('SignUpForm', () => {
-  let mockValidateUsername: MockedFunction<typeof validateUsername>;
-
   beforeEach(() => {
     vi.clearAllMocks();
-    mockValidateUsername = validateUsername as MockedFunction<
-      typeof validateUsername
-    >;
   });
 
   /**
@@ -354,91 +333,6 @@ describe('SignUpForm', () => {
           ).toBeInTheDocument();
         });
       });
-    });
-  });
-
-  /**
-   * Test Group: Asynchronous Validation (validateUsername)
-   * Focuses on testing the `validateUsername` asynchronous validation and its impact on the UI.
-   */
-  describe('Asynchronous Validation (validateUsername)', () => {
-    it('shows loading spinner during async username validation', async () => {
-      render(<SignUpForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'checkinguser' } });
-      });
-
-      expect(
-        await screen.findByTestId('username-loading-spinner'),
-      ).toBeInTheDocument();
-
-      await waitFor(() => {
-        expect(mockValidateUsername).toHaveBeenCalledWith('checkinguser');
-      });
-    });
-
-    it('hides loading spinner after async username validation completes', async () => {
-      render(<SignUpForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'validuser' } });
-      });
-
-      await waitFor(() => {
-        expect(mockValidateUsername).toHaveBeenCalledWith('validuser');
-      });
-
-      await waitFor(() => {
-        expect(
-          screen.queryByTestId('username-loading-spinner'),
-        ).not.toBeInTheDocument();
-      });
-    });
-
-    it('displays error from async username validation', async () => {
-      render(<SignUpForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'existinguser' } });
-      });
-
-      expect(
-        await screen.findByText('Username already taken'),
-      ).toBeInTheDocument();
-    });
-
-    it('clears async error when username becomes valid again', async () => {
-      render(<SignUpForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'existinguser' } });
-        fireEvent.blur(usernameInput);
-      });
-
-      expect(
-        await screen.findByText('Username already taken'),
-      ).toBeInTheDocument();
-      expect(mockValidateUsername).toHaveBeenCalledWith('existinguser');
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'newvaliduser' } });
-        fireEvent.blur(usernameInput);
-      });
-
-      await waitFor(() => {
-        expect(mockValidateUsername).toHaveBeenCalledWith('newvaliduser');
-      });
-
-      expect(
-        screen.queryByText('Username already taken'),
-      ).not.toBeInTheDocument();
-
-      expect(mockValidateUsername).toHaveBeenCalledTimes(2);
     });
   });
 

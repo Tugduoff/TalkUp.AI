@@ -223,24 +223,30 @@ describe("AuthService", () => {
   });
 
   describe("login", () => {
-    it("should return access token for valid user", () => {
-      mockJwtService.sign = jest.fn().mockReturnValue("signed-jwt-token");
+    it("should return access token for valid user", async () => {
+      mockJwtService.signAsync = jest
+        .fn()
+        .mockResolvedValue("signed-jwt-token");
 
-      const result = service.login(mockUser);
+      const result = await service.login(mockUser);
 
-      expect(result).toEqual({ access_token: "signed-jwt-token" });
-      expect(mockJwtService.sign).toHaveBeenCalledWith({ sub: "test-user-id" });
+      expect(result).toEqual({ accessToken: "signed-jwt-token" });
+      expect(mockJwtService.signAsync).toHaveBeenCalledWith({
+        userId: "test-user-id",
+        username: "testuser",
+      });
     });
 
-    it("should handle different user IDs correctly", () => {
+    it("should handle different user IDs correctly", async () => {
       const differentUser = { ...mockUser, user_id: "different-user-id" };
-      mockJwtService.sign = jest.fn().mockReturnValue("different-token");
+      mockJwtService.signAsync = jest.fn().mockResolvedValue("different-token");
 
-      const result = service.login(differentUser);
+      const result = await service.login(differentUser);
 
-      expect(result).toEqual({ access_token: "different-token" });
-      expect(mockJwtService.sign).toHaveBeenCalledWith({
-        sub: "different-user-id",
+      expect(result).toEqual({ accessToken: "different-token" });
+      expect(mockJwtService.signAsync).toHaveBeenCalledWith({
+        userId: "different-user-id",
+        username: "testuser",
       });
     });
   });

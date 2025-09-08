@@ -51,3 +51,48 @@ export const usePostRegister = () => {
     },
   });
 };
+
+/**
+ * Custom hook for user login functionality.
+ *
+ * This hook uses the React Query's useMutation to handle the login process.
+ * It takes email and password as inputs, sends them to the authentication service,
+ * and stores the returned access token in localStorage.
+ *
+ * @returns A mutation object that can be used to trigger the login process
+ * and monitor its state.
+ *
+ * @example
+ * const loginMutation = usePostLogin();
+ *
+ * // Later in a component:
+ * const handleLogin = () => {
+ *   loginMutation.mutate({
+ *     email: "admin.admin@admin.com",
+ *     password: "securePassword"
+ *   });
+ * };
+ */
+export const usePostLogin = () => {
+  return useMutation({
+    mutationFn: async ({
+      email,
+      password,
+    }: {
+      email: string;
+      password: string;
+    }) => {
+      const result = await authService.postLogin(email, password);
+      const accessToken = result.accessToken;
+      localStorage.setItem('idToken', accessToken);
+    },
+    onSuccess: () => {
+      toast.success('Login successful');
+      console.log('Login successful');
+    },
+    onError: (error) => {
+      toast.error('Login failed');
+      console.error('Error during login:', error);
+    },
+  });
+};
