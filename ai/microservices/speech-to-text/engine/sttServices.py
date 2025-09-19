@@ -69,5 +69,4 @@ class STT():
                             print(token['text'])
 
         except Exception as e:
-            self.n.send_notification(enumMcs.MicroservicesNames.STT, 2,
-                {e})
+            self.n.send_notification(enumMcs.MicroservicesNames.STT, 2, {e})
