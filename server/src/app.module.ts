@@ -11,6 +11,9 @@ import { LinkedInModule } from "./modules/linkedin/linkedin.module";
 import { LoggerMiddleware } from "@common/middleware/logger";
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 
+// sockets
+import { TestWebSocketGateway } from "./sockets/testSockets.gateway";
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -26,7 +29,7 @@ import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
     }),
   ],
   controllers: [],
-  providers: [PostValidationPipe],
+  providers: [PostValidationPipe, TestWebSocketGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
