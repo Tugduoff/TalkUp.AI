@@ -1,5 +1,10 @@
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from '@tanstack/react-router';
 import { renderHook } from '@testing-library/react';
+import toast from 'react-hot-toast';
 import { describe, expect, it, vi } from 'vitest';
+
+import { useLogout } from './useLogout';
 
 // Mock the auth context
 vi.mock('@/contexts/AuthContext', () => ({
@@ -21,11 +26,6 @@ vi.mock('react-hot-toast', () => ({
     success: vi.fn(),
   },
 }));
-
-import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from '@tanstack/react-router';
-import toast from 'react-hot-toast';
-import { useLogout } from './useLogout';
 
 /**
  * Test suite for the useLogout hook.
