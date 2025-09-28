@@ -41,9 +41,7 @@ const renderWithProviders = (component: React.ReactElement) => {
 
   return render(
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        {component}
-      </AuthProvider>
+      <AuthProvider>{component}</AuthProvider>
     </QueryClientProvider>,
   );
 };
@@ -77,7 +75,9 @@ describe('Progression', () => {
   });
 
   it('renders both heading and paragraph in the document', async () => {
-    const { container } = renderWithProviders(<RouterProvider router={router} />);
+    const { container } = renderWithProviders(
+      <RouterProvider router={router} />,
+    );
 
     const progressionTexts = await screen.findAllByText(/Progression/i);
 
