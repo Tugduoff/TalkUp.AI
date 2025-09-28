@@ -38,4 +38,17 @@ axiosInstance.interceptors.request.use(
   },
 );
 
+// Add a response interceptor for handling 401 errors
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('idToken');
+      console.warn('Token expired or invalid. Redirecting to login...');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  },
+);
+
 export default axiosInstance;
