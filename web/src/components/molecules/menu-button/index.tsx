@@ -83,13 +83,23 @@ export const MenuButton = React.forwardRef<HTMLDivElement, MenuButtonProps>(
       </Button>
     );
 
+    const triggerElement = trigger ? (
+      <Button
+        variant="text"
+        size="sm"
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={isMenuOpen}
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="inline-flex p-0"
+      >
+        {trigger}
+      </Button>
+    ) : null;
+
     return (
       <div className={cn('relative', className)} ref={menuRef} {...props}>
-        {trigger ? (
-          <div onClick={() => setIsMenuOpen(!isMenuOpen)}>{trigger}</div>
-        ) : (
-          defaultTrigger
-        )}
+        {triggerElement ?? defaultTrigger}
 
         {isMenuOpen && items.length > 0 && (
           <Menu
