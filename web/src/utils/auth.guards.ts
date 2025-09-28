@@ -1,5 +1,5 @@
-import { redirect } from '@tanstack/react-router';
 import { getRouteConfig } from '@/config/routes.config';
+import { redirect } from '@tanstack/react-router';
 
 export interface AuthGuardContext {
   isAuthenticated: boolean;
@@ -33,12 +33,12 @@ const validateToken = (token: string): boolean => {
 
 /**
  * Creates an authentication guard function for a given route path.
- * 
+ *
  * The returned async function checks if the route requires authentication.
  * If authentication is required, it verifies the presence and validity of an `idToken` in localStorage.
  * If the token is missing or invalid, it removes the token and throws a redirect to the login page,
  * including the original route path in the redirect query parameters.
- * 
+ *
  * @param routePath - The path of the route to guard.
  * @returns An async function that enforces authentication for the specified route.
  * @throws Redirects to the login page if authentication fails.
