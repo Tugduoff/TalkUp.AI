@@ -6,7 +6,6 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { MenuButtonProps } from './types';
 
-
 /**
  * `MenuButton` is a React component that renders a customizable menu button with a dropdown menu.
  * It supports different menu positions (`top`, `bottom`, `left`, `right`) and allows for a custom trigger element.

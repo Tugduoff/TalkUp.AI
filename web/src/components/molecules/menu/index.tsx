@@ -42,16 +42,15 @@ const getIconColor = (variant?: 'default' | 'danger') => {
   return variant === 'danger' ? ('error' as const) : ('neutral' as const);
 };
 
-
 /**
  * `Menu` is a React forwardRef component that renders a customizable menu with various item types.
- * 
+ *
  * @param items - An array of menu items to display. Each item can be of type 'button', 'text', 'spacer', or 'divider'.
  * @param className - Optional additional CSS classes to apply to the menu container.
  * @param onItemClick - Optional callback invoked when any menu item of type 'button' is clicked.
  * @param props - Additional props passed to the root div element.
  * @param ref - Ref forwarded to the root div element.
- * 
+ *
  * @returns A styled menu component with support for buttons (with icons), text, spacers, and dividers.
  */
 export const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
