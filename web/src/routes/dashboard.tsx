@@ -1,6 +1,8 @@
+import { createAuthGuard } from '@/utils/auth.guards';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/dashboard')({
+  beforeLoad: createAuthGuard('/dashboard'),
   component: Dashboard,
 });
 
