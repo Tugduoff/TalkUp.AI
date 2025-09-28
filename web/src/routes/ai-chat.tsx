@@ -1,8 +1,10 @@
 import { Button } from '@/components/atoms/button';
+import { createAuthGuard } from '@/utils/auth.guards';
 import { createFileRoute } from '@tanstack/react-router';
 import toast from 'react-hot-toast';
 
 export const Route = createFileRoute('/ai-chat')({
+  beforeLoad: createAuthGuard('/ai-chat'),
   component: AIChat,
 });
 
