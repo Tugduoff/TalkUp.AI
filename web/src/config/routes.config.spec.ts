@@ -28,12 +28,16 @@ describe('routes.config', () => {
     });
 
     it('contains protected routes', () => {
-      const protectedRoutes = routeConfigs.filter((config) => config.requiresAuth);
+      const protectedRoutes = routeConfigs.filter(
+        (config) => config.requiresAuth,
+      );
       expect(protectedRoutes.length).toBeGreaterThan(0);
     });
 
     it('contains public routes', () => {
-      const publicRoutes = routeConfigs.filter((config) => !config.requiresAuth);
+      const publicRoutes = routeConfigs.filter(
+        (config) => !config.requiresAuth,
+      );
       expect(publicRoutes.length).toBeGreaterThan(0);
     });
   });
