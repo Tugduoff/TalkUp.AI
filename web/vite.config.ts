@@ -15,6 +15,8 @@ const aliases = {
   '@/types': path.resolve(__dirname, 'src/types'),
   '@/api': path.resolve(__dirname, 'src/api'),
   '@/services': path.resolve(__dirname, 'src/services'),
+  '@/config': path.resolve(__dirname, 'src/config'),
+  '@/contexts': path.resolve(__dirname, 'src/contexts'),
 };
 
 export default defineConfig({
