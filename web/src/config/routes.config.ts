@@ -27,7 +27,7 @@ export const routeConfigs: RouteConfig[] = [
  * @returns The corresponding `RouteConfig` object if found; otherwise, `undefined`.
  */
 export const getRouteConfig = (path: string): RouteConfig | undefined => {
-  return routeConfigs.find(config => config.path === path);
+  return routeConfigs.find((config) => config.path === path);
 };
 
 /**

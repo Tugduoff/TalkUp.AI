@@ -1,5 +1,11 @@
 import { User } from '@/types/user';
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 /**
  * Authentication context interface defining the shape of authentication state and methods.
