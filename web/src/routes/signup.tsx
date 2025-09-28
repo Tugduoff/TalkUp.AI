@@ -1,7 +1,9 @@
 import SignUpForm from '@/components/molecules/auth/sign-up-form';
+import { createPublicRouteGuard } from '@/utils/auth.guards';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/signup')({
+  beforeLoad: createPublicRouteGuard('/signup'),
   component: SignUp,
 });
 
