@@ -6,21 +6,23 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { useLogout } from './useLogout';
 
-// Mock the auth context
 vi.mock('@/contexts/AuthContext', () => ({
   useAuth: vi.fn(() => ({
+    isAuthenticated: false,
+    user: null,
+    token: null,
+    login: vi.fn(),
     logout: vi.fn(),
+    isLoading: false,
   })),
 }));
 
-// Mock the router
 vi.mock('@tanstack/react-router', () => ({
   useRouter: vi.fn(() => ({
     navigate: vi.fn(),
   })),
 }));
 
-// Mock react-hot-toast
 vi.mock('react-hot-toast', () => ({
   default: {
     success: vi.fn(),
@@ -45,7 +47,12 @@ describe('useLogout', () => {
 
   it('calls logout from auth context when logout function is invoked', () => {
     const mockAuthLogout = vi.mocked(useAuth).mockReturnValue({
+      isAuthenticated: false,
+      user: null,
+      token: null,
+      login: vi.fn(),
       logout: vi.fn(),
+      isLoading: false,
     });
     const { result } = renderHook(() => useLogout());
 
@@ -67,7 +74,7 @@ describe('useLogout', () => {
     const mockNavigate = vi.fn();
     vi.mocked(useRouter).mockReturnValue({
       navigate: mockNavigate,
-    });
+    } as unknown as ReturnType<typeof useRouter>);
     const { result } = renderHook(() => useLogout());
 
     result.current.logout();
@@ -81,11 +88,17 @@ describe('useLogout', () => {
     const mockToastSuccess = vi.mocked(toast.success);
 
     vi.mocked(useAuth).mockReturnValue({
+      isAuthenticated: false,
+      user: null,
+      token: null,
+      login: vi.fn(),
       logout: mockAuthLogout,
+      isLoading: false,
     });
+
     vi.mocked(useRouter).mockReturnValue({
       navigate: mockNavigate,
-    });
+    } as unknown as ReturnType<typeof useRouter>);
 
     const { result } = renderHook(() => useLogout());
 
