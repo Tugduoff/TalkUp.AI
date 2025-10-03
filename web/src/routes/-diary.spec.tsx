@@ -8,7 +8,7 @@ import {
 import { act, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Route as SimulationsRoute } from './simulations';
+import { Route as DiaryRoute } from './diary';
 
 const localStorageMock = {
   getItem: vi.fn(() => null),
@@ -26,7 +26,7 @@ vi.mock('@/utils/auth.guards', () => ({
 }));
 
 const rootRoute = createRouter({
-  routeTree: SimulationsRoute,
+  routeTree: DiaryRoute,
 }).routeTree;
 
 const router = createRouter({
@@ -47,12 +47,12 @@ const renderWithProviders = (component: React.ReactElement) => {
 };
 
 /**
- * Test suite for the Simulations component.
+ * Test suite for the Diary component.
  * Verifies that the component renders its content correctly within a TanStack Router context.
  */
-describe('Simulations', () => {
+describe('Diary', () => {
   beforeEach(async () => {
-    router.history.push('/simulations');
+    router.history.push('/diary');
 
     await act(async () => {
       await router.load();
@@ -62,16 +62,15 @@ describe('Simulations', () => {
   it('renders the main heading correctly', async () => {
     renderWithProviders(<RouterProvider router={router} />);
     expect(
-      await screen.findByRole('heading', { name: /Simulations/i }),
+      await screen.findByRole('heading', { name: /Input Molecule Showcase/i }),
     ).toBeInTheDocument();
   });
 
   it('renders the descriptive paragraph correctly', async () => {
     renderWithProviders(<RouterProvider router={router} />);
-    const simulationsParagraph = (
-      await screen.findAllByText(/Simulations/i)
-    ).find((el) => el.tagName === 'P');
-    expect(simulationsParagraph).toBeInTheDocument();
+    expect(
+      await screen.findByText(/This page demonstrates the versatile/i),
+    ).toBeInTheDocument();
   });
 
   it('renders both heading and paragraph in the document', async () => {
@@ -79,13 +78,13 @@ describe('Simulations', () => {
       <RouterProvider router={router} />,
     );
 
-    const simulationsTexts = await screen.findAllByText(/Simulations/i);
+    expect(
+      await screen.findByRole('heading', { name: /Input Molecule Showcase/i }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByText(/This page demonstrates the versatile/i),
+    ).toBeInTheDocument();
 
-    expect(simulationsTexts).toHaveLength(2);
-
-    expect(simulationsTexts[0].tagName).toBe('H3');
-    expect(simulationsTexts[1].tagName).toBe('P');
-
-    expect(container.firstChild).toHaveClass('p-2');
+    expect(container.firstChild).toHaveClass('p-4');
   });
 });

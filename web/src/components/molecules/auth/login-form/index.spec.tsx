@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/contexts/AuthContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   act,
@@ -10,12 +11,48 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LoginForm } from '.';
 
-const renderWithQueryClient = (component: React.ReactElement) => {
+// Mock localStorage to prevent token validation errors
+const localStorageMock = {
+  getItem: vi.fn(() => null),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
+};
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
+// Mock the auth service to prevent real API calls
+vi.mock('@/services/auth/http', () => {
+  return {
+    default: class MockAuthService {
+      postLogin = vi.fn().mockResolvedValue({ accessToken: 'mock-token' });
+      postRegister = vi.fn().mockResolvedValue({ accessToken: 'mock-token' });
+    },
+  };
+});
+
+// Mock the router hooks to prevent router context errors
+vi.mock('@tanstack/react-router', () => ({
+  useRouter: vi.fn(() => ({
+    navigate: vi.fn(),
+    history: { push: vi.fn() },
+  })),
+  useNavigate: vi.fn(() => vi.fn()),
+  createRouter: vi.fn(),
+  RouterProvider: ({ children }: { children: React.ReactNode }) => children,
+  createMemoryHistory: vi.fn(),
+}));
+
+const renderWithProviders = (component: React.ReactElement) => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   });
+
   return render(
-    <QueryClientProvider client={queryClient}>{component}</QueryClientProvider>,
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>{component}</AuthProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -36,7 +73,7 @@ describe('LoginForm', () => {
    */
   describe('Initial Render and Basic Structure', () => {
     it('renders the login form elements correctly', () => {
-      renderWithQueryClient(<LoginForm />);
+      renderWithProviders(<LoginForm />);
 
       expect(
         screen.getByRole('heading', { name: /Login/i }),
@@ -61,7 +98,7 @@ describe('LoginForm', () => {
    */
   describe('Client-Side Validation (Sync Validators)', () => {
     it('displays "Email and password are required" error when both fields are empty on submit', async () => {
-      renderWithQueryClient(<LoginForm />);
+      renderWithProviders(<LoginForm />);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
@@ -80,7 +117,7 @@ describe('LoginForm', () => {
     });
 
     it('displays "Email is required" error when only email is empty on submit', async () => {
-      renderWithQueryClient(<LoginForm />);
+      renderWithProviders(<LoginForm />);
       const passwordInput = screen.getByLabelText(/Password/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
@@ -101,7 +138,7 @@ describe('LoginForm', () => {
     });
 
     it('displays "Password is required" error when only password is empty on submit', async () => {
-      renderWithQueryClient(<LoginForm />);
+      renderWithProviders(<LoginForm />);
       const emailInput = screen.getByLabelText(/Email/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
@@ -131,7 +168,7 @@ describe('LoginForm', () => {
    */
   describe('User Interactions', () => {
     it('allows typing into email and password fields', async () => {
-      renderWithQueryClient(<LoginForm />);
+      renderWithProviders(<LoginForm />);
       const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getByLabelText(/Password/i);
 
@@ -149,7 +186,7 @@ describe('LoginForm', () => {
     });
 
     it('submits the form with valid credentials', async () => {
-      renderWithQueryClient(<LoginForm />);
+      renderWithProviders(<LoginForm />);
       const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getByLabelText(/Password/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
@@ -171,7 +208,7 @@ describe('LoginForm', () => {
    */
   describe('Accessibility', () => {
     it('ensures correct htmlFor attributes on labels and id on inputs', () => {
-      renderWithQueryClient(<LoginForm />);
+      renderWithProviders(<LoginForm />);
 
       const emailLabel = screen.getByText('Email');
       const emailInput = screen.getByPlaceholderText(/Your email address/i);

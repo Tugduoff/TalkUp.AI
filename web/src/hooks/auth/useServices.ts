@@ -1,5 +1,7 @@
+import { useAuth } from '@/contexts/AuthContext';
 import AuthService from '@/services/auth/http';
 import { useMutation } from '@tanstack/react-query';
+import { useRouter } from '@tanstack/react-router';
 import toast from 'react-hot-toast';
 
 const authService = new AuthService();
@@ -27,6 +29,9 @@ const authService = new AuthService();
  * };
  */
 export const usePostRegister = () => {
+  const { login } = useAuth();
+  const router = useRouter();
+
   return useMutation({
     mutationFn: async ({
       username,
@@ -38,12 +43,12 @@ export const usePostRegister = () => {
       password: string;
     }) => {
       const result = await authService.postRegister(username, email, password);
-      const accessToken = result.accessToken;
-      localStorage.setItem('idToken', accessToken);
+      return result.accessToken;
     },
-    onSuccess: () => {
+    onSuccess: (accessToken) => {
+      login(accessToken);
       toast.success('Registration successful');
-      console.log('Registration successful');
+      router.navigate({ to: '/dashboard' });
     },
     onError: (error) => {
       toast.error('Registration failed');
@@ -74,6 +79,9 @@ export const usePostRegister = () => {
  * };
  */
 export const usePostLogin = () => {
+  const { login } = useAuth();
+  const router = useRouter();
+
   return useMutation({
     mutationFn: async ({
       email,
@@ -83,12 +91,15 @@ export const usePostLogin = () => {
       password: string;
     }) => {
       const result = await authService.postLogin(email, password);
-      const accessToken = result.accessToken;
-      localStorage.setItem('idToken', accessToken);
+      return result.accessToken;
     },
-    onSuccess: () => {
+    onSuccess: (accessToken) => {
+      login(accessToken);
       toast.success('Login successful');
-      console.log('Login successful');
+
+      const search = new URLSearchParams(window.location.search);
+      const redirectTo = search.get('redirect') || '/dashboard';
+      router.navigate({ to: redirectTo });
     },
     onError: (error) => {
       toast.error('Login failed');
