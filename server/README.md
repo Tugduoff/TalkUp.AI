@@ -22,6 +22,21 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+## Railway deployment
+
+The backend part of our project (including our database) is deployed on Railway.
+
+This way, we have access to automatic deployments that are fast and that we can monitor easily.
+
+The main branch for example will be deployed to : https://talk-up-server-production.up.railway.app everytime there is a new commit pushed on it.
+Preview deployements will also be made whenever a Pull Request is created. For now it wont be linked with the frontend automatically but you will still be able to test your backend changes from the Pull Request.
+
+To deploy a new environment for testing purposes you can use `railway environment create` with a name for your new environment and then use the command `railway up` to deploy your current changes to this new environment. Honestly its way easier to do all this on the dashboard online (`railway open` to access it)
+
+First time users will have to login to their own railway account. For that, you can use the command `railway login`. If not already part of the talkup project, please ask @Tugduoff for access.
+
+Later on we might adjust the deployements based on needs so keep in touch ^^
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
