@@ -33,7 +33,8 @@ const getBackendUrl = (): string => {
   }
 
   // Preview/PR environment
-  if (VERCEL_ENV === 'preview') {
+  if (VERCEL_ENV == 'preview') {
+    console.log('In preview environment, attempting to extract PR number...');
     const prNumber = getPRNumber();
 
     // If we can extract PR number from branch, use Railway PR environment
