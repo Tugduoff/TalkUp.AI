@@ -50,8 +50,9 @@ async function bootstrap() {
 
   initSwagger(app);
 
-  await app.listen(port);
-  process.stdout.write(`Server is running on ${await app.getUrl()}\n`); // if '::1', it means localhost (IPv6 equivalent of 127.0.0.1)
+  // Listen on 0.0.0.0 to accept external connections (Railway requirement)
+  await app.listen(port, '0.0.0.0');
+  process.stdout.write(`Server is running on http://0.0.0.0:${port}\n`);
 
   process.on("SIGINT", () => {
     process.stdout.write("\b\bServer is shutting down...\n"); // '\b\b' is used to remove the last two characters from the line (the Ctrl+C characters)
