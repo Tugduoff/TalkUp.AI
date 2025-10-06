@@ -8,6 +8,7 @@ const VERCEL_GIT_COMMIT_REF = import.meta.env.VITE_VERCEL_GIT_COMMIT_REF; // bra
 
 // Extract PR number from branch name (e.g., "85-feature-name" -> "85")
 const getPRNumber = (): string | null => {
+  console.log('Extracting PR number from branch:', VERCEL_GIT_COMMIT_REF);
   if (!VERCEL_GIT_COMMIT_REF) return null;
   const match = VERCEL_GIT_COMMIT_REF.match(/^(\d+)-/);
   return match ? match[1] : null;
@@ -15,6 +16,12 @@ const getPRNumber = (): string | null => {
 
 // Determine backend URL
 const getBackendUrl = (): string => {
+  console.log('Determining backend URL with:', {
+    VERCEL_ENV,
+    VERCEL_GIT_COMMIT_REF,
+    isDev,
+    isProd,
+  });
   // Local development
   if (isDev) {
     return import.meta.env.VITE_BASE_URL || 'http://localhost:3000';
