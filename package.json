@@ -8,6 +8,8 @@
     "server"
   ],
   "scripts": {
+    "start": "cd server && npm run start",
+  
     "dev:web": "npm run dev --workspace=web",
     "dev:server": "npm run start:dev --workspace=server",
 
