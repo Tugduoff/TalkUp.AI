@@ -25,6 +25,11 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  define: {
+    // Expose Vercel system environment variables to Vite
+    'import.meta.env.VITE_VERCEL_ENV': JSON.stringify(process.env.VERCEL_ENV),
+    'import.meta.env.VITE_VERCEL_GIT_COMMIT_REF': JSON.stringify(process.env.VERCEL_GIT_COMMIT_REF),
+  },
   resolve: {
     alias: {
       ...aliases,

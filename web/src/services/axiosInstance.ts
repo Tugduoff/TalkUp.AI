@@ -1,12 +1,11 @@
 import axios from 'axios';
 
+import { API_BASE_URL } from '../config/env';
 import { API_ROUTES } from './api';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
-
-// Set axios instance base URL
+// Set axios instance base URL (dynamically determined based on environment)
 const axiosInstance = axios.create({
-  baseURL: BASE_URL || 'http://localhost:3000',
+  baseURL: API_BASE_URL,
 });
 
 // Set default headers
