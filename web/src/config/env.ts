@@ -28,7 +28,7 @@ const getBackendUrl = (): string => {
   }
 
   // Production
-  if (VERCEL_ENV === 'production' || isProd) {
+  if (VERCEL_ENV === 'production' && isProd) {
     return import.meta.env.VITE_BASE_URL_PRODUCTION || 'https://talk-up-server-production.up.railway.app';
   }
 
