@@ -14,7 +14,7 @@ export const getBackendUrl = (env: Record<string, any>): string => {
     return env.VITE_BASE_URL || 'http://localhost:3000';
   }
 
-  if (VERCEL_ENV === 'production' || isProd) {
+  if (VERCEL_ENV === 'production' || (isProd && VERCEL_ENV)) {
     return (
       env.VITE_BASE_URL_PRODUCTION ||
       'https://talk-up-server-production.up.railway.app'
