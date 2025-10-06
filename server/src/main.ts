@@ -15,11 +15,30 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix("v1/api");
+
+  const corsOrigin = process.env.CORS_ORIGIN;
+  const allowedOrigins = corsOrigin === "*" ? null : corsOrigin?.split(',') ?? [];
+
   app.enableCors({
-    origin: process.env.CORS_ORIGIN ?? "*",
+    origin: (origin: string, callback: (arg0: Error | null, arg1: boolean | undefined) => void) => {
+      if (!origin) return callback(null, true);
+
+      if (corsOrigin === "*") return callback(null, true);
+
+      if (allowedOrigins?.includes(origin)) return callback(null, true);
+
+      if (origin.includes('talk-up-ai') && origin.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+
+      if (origin.includes('localhost')) return callback(null, true);
+
+      callback(new Error('Not allowed by CORS'), false);
+    },
     methods: process.env.CORS_METHODS ?? "GET,PUT,PATCH,POST,DELETE",
-    allowedHeaders: process.env.CORS_ALLOWED_HEADERS ?? "Content-Type, Accept",
-    exposedHeaders: process.env.CORS_EXPOSED_HEADERS ?? "Content-Type, Accept",
+    allowedHeaders: process.env.CORS_ALLOWED_HEADERS ?? "Content-Type,Accept,Authorization",
+    exposedHeaders: process.env.CORS_EXPOSED_HEADERS ?? "Content-Type,Accept,Authorization",
+    credentials: true,
   });
 
   initSwagger(app);
