@@ -52,9 +52,7 @@ describe('getBackendUrl', () => {
 
     it('should fallback to default production URL when not set', () => {
       const env = { VITE_VERCEL_ENV: 'production' };
-      expect(getBackendUrl(env)).toBe(
-        'https://talk-up-server-production.up.railway.app',
-      );
+      expect(getBackendUrl(env)).toBe('https://talk-up-ai.up.railway.app');
     });
   });
 

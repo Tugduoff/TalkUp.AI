@@ -15,21 +15,15 @@ export const getBackendUrl = (env: Record<string, any>): string => {
   }
 
   if (VERCEL_ENV === 'production' || (isProd && VERCEL_ENV !== 'preview')) {
-    return (
-      env.VITE_BASE_URL_PRODUCTION ||
-      'https://talk-up-server-production.up.railway.app'
-    );
+    return env.VITE_BASE_URL_PRODUCTION || 'https://talk-up-ai.up.railway.app';
   }
 
   if (VERCEL_ENV === 'preview') {
     const prNumber = getPRNumber(VERCEL_GIT_COMMIT_REF);
     if (prNumber) {
-      return `https://talk-up-server-talkupai-pr-${prNumber}.up.railway.app`;
+      return `https://backend-talkupai-pr-${prNumber}.up.railway.app`;
     }
-    return (
-      env.VITE_BASE_URL_PRODUCTION ||
-      'https://talk-up-server-production.up.railway.app'
-    );
+    return env.VITE_BASE_URL_PRODUCTION || 'https://talk-up-ai.up.railway.app';
   }
 
   return env.VITE_BASE_URL || 'http://localhost:3000';
