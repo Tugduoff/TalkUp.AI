@@ -11,7 +11,7 @@ dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
-  const port = process.env.SERVER_PORT ?? 3000;
+  const port = process.env.PORT ?? process.env.SERVER_PORT ?? 3000;
 
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix("v1/api");
