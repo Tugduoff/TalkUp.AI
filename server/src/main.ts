@@ -17,10 +17,14 @@ async function bootstrap() {
   app.setGlobalPrefix("v1/api");
 
   const corsOrigin = process.env.CORS_ORIGIN;
-  const allowedOrigins = corsOrigin === "*" ? null : corsOrigin?.split(',') ?? [];
+  const allowedOrigins =
+    corsOrigin === "*" ? null : (corsOrigin?.split(",") ?? []);
 
   app.enableCors({
-    origin: (origin: string, callback: (arg0: Error | null, arg1: boolean | undefined) => void) => {
+    origin: (
+      origin: string,
+      callback: (arg0: Error | null, arg1: boolean | undefined) => void,
+    ) => {
       console.log("Request origin:", origin);
       if (!origin) return callback(null, true);
 
@@ -28,17 +32,19 @@ async function bootstrap() {
 
       if (allowedOrigins?.includes(origin)) return callback(null, true);
 
-      if (origin.includes('talk-up-ai') && origin.endsWith('.vercel.app')) {
+      if (origin.includes("talk-up-ai") && origin.endsWith(".vercel.app")) {
         return callback(null, true);
       }
 
-      if (origin.includes('localhost')) return callback(null, true);
+      if (origin.includes("localhost")) return callback(null, true);
 
-      callback(new Error('Not allowed by CORS'), false);
+      callback(new Error("Not allowed by CORS"), false);
     },
     methods: process.env.CORS_METHODS ?? "GET,PUT,PATCH,POST,DELETE",
-    allowedHeaders: process.env.CORS_ALLOWED_HEADERS ?? "Content-Type,Accept,Authorization",
-    exposedHeaders: process.env.CORS_EXPOSED_HEADERS ?? "Content-Type,Accept,Authorization",
+    allowedHeaders:
+      process.env.CORS_ALLOWED_HEADERS ?? "Content-Type,Accept,Authorization",
+    exposedHeaders:
+      process.env.CORS_EXPOSED_HEADERS ?? "Content-Type,Accept,Authorization",
     credentials: true,
   });
 
