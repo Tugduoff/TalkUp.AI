@@ -3,14 +3,15 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.11.0",
+    "npm": ">=10.0.0"
+  },
   "workspaces": [
     "web",
     "server"
   ],
   "scripts": {
-    "build": "npm run build --workspace=server",
-    "start": "npm run start:prod --workspace=server",
-
     "dev:web": "npm run dev --workspace=web",
     "dev:server": "npm run start:dev --workspace=server",
 

@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ["nodejs_22"]
+
+[phases.install]
+cmds = ["npm ci --legacy-peer-deps"]
+
+[phases.build]
+cmds = ["npm run build:server"]
+
+[start]
+cmd = "node server/dist/src/main"
+
+[variables]
+NODE_ENV = "production"

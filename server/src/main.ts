@@ -10,8 +10,14 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { abortOnError: false });
-  const port = process.env.PORT ?? process.env.SERVER_PORT ?? 3000;
+  try {
+    process.stdout.write(`Starting application bootstrap...\n`);
+    process.stdout.write(`Node version: ${process.version}\n`);
+    process.stdout.write(`Platform: ${process.platform}\n`);
+
+    const app = await NestFactory.create(AppModule, { abortOnError: false });
+    const port = process.env.PORT ?? process.env.SERVER_PORT ?? 3000;
+    process.stdout.write(`Using port: ${port}\n`);
 
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix("v1/api");
@@ -53,35 +59,66 @@ async function bootstrap() {
   // Listen on 0.0.0.0 to accept external connections (Railway requirement)
   await app.listen(port, '0.0.0.0');
   process.stdout.write(`Server is running on http://0.0.0.0:${port}\n`);
+  process.stdout.write(`Environment: ${process.env.NODE_ENV ?? 'development'}\n`);
+  process.stdout.write(`Process PID: ${process.pid}\n`);
+  process.stdout.write(`Server started successfully at ${new Date().toISOString()}\n`);
 
-  process.on("SIGINT", () => {
-    process.stdout.write("\b\bServer is shutting down...\n"); // '\b\b' is used to remove the last two characters from the line (the Ctrl+C characters)
+  // Keep the process alive
+  process.stdout.write(`Keeping process alive...\n`);
 
-    (async () => {
-      try {
-        await app.close();
-      } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        process.stdout.write(`Error shutting down server: ${error.message}\n`);
-      } finally {
-        process.exit(0);
-      }
-    })();
+  // Graceful shutdown handler
+  const shutdown = async (signal: string) => {
+    process.stdout.write(`\nReceived ${signal} signal. Starting graceful shutdown...\n`);
+    process.stdout.write(`Timestamp: ${new Date().toISOString()}\n`);
+
+    try {
+      await app.close();
+      process.stdout.write(`Server closed successfully.\n`);
+      process.exit(0);
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      process.stdout.write(`Error during shutdown: ${error.message}\n`);
+      process.exit(1);
+    }
+  };
+
+  process.on("SIGINT", () => shutdown("SIGINT"));
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
+  process.on("SIGUSR2", () => shutdown("SIGUSR2"));
+
+  // Log unhandled errors
+  process.on("uncaughtException", (error) => {
+    process.stdout.write(`Uncaught Exception: ${error.message}\n`);
+    process.stdout.write(`Stack: ${error.stack}\n`);
   });
 
-  process.on("SIGUSR2", () => {
-    process.stdout.write("\b\bServer is restarting...\n");
-
-    (async () => {
-      try {
-        await app.close();
-      } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        process.stdout.write(`Error restarting server: ${error.message}\n`);
-      } finally {
-        process.exit(0);
-      }
-    })();
+  process.on("unhandledRejection", (reason) => {
+    process.stdout.write(`Unhandled Rejection: ${reason}\n`);
   });
+
+  // Ensure the process stays alive
+  process.on("exit", (code) => {
+    process.stdout.write(`Process exiting with code: ${code}\n`);
+  });
+
+  process.on("beforeExit", (code) => {
+    process.stdout.write(`Before exit event with code: ${code}\n`);
+  });
+
+  // Log that we're waiting for connections
+  process.stdout.write(`Bootstrap complete. Waiting for requests...\n`);
+
+  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    process.stdout.write(`Fatal error during bootstrap: ${error.message}\n`);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    process.stdout.write(`Stack: ${error.stack}\n`);
+    process.exit(1);
+  }
 }
-bootstrap();
+
+bootstrap().catch((error) => {
+  process.stdout.write(`Unhandled bootstrap error: ${error.message}\n`);
+  process.stdout.write(`Stack: ${error.stack}\n`);
+  process.exit(1);
+});
