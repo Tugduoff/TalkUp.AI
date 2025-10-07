@@ -97,9 +97,12 @@ export class user_email {
   @Column({ nullable: false, unique: true })
   email: string;
 
+  @Column({ nullable: false })
+  user_id: string;
+
   @OneToOne(() => user)
   @JoinColumn({ name: "user_id" })
-  user_id: string;
+  user: user;
 
   @Column({
     default: false,
@@ -118,9 +121,12 @@ export class user_password {
   @PrimaryGeneratedColumn()
   password_id: number;
 
+  @Column({ nullable: false })
+  user_id: string;
+
   @OneToOne(() => user)
   @JoinColumn({ name: "user_id" })
-  user_id: string;
+  user: user;
 
   @Column({ nullable: false })
   password: string;
@@ -136,9 +142,12 @@ export class user_phone_number {
   @PrimaryGeneratedColumn()
   phone_number_id: number;
 
+  @Column({ nullable: false })
+  user_id: string;
+
   @OneToOne(() => user)
   @JoinColumn({ name: "user_id" })
-  user_id: string;
+  user: user;
 
   @Column({ unique: true, nullable: false })
   phone_number: string;

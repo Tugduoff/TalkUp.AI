@@ -27,7 +27,7 @@ describe('Logo Component', () => {
       expect(lineLogo).toHaveClass(
         'flex',
         'items-center',
-        'justify-center',
+        'justify-start',
         'gap-3',
         'h-10',
         'flex-row',
@@ -41,7 +41,7 @@ describe('Logo Component', () => {
       expect(lineLogo).toHaveClass(
         'flex',
         'items-center',
-        'justify-center',
+        'justify-start',
         'gap-3',
         'h-10',
         'flex-row',
@@ -59,7 +59,7 @@ describe('Logo Component', () => {
       expect(columnLogo).toHaveClass(
         'flex',
         'items-center',
-        'justify-center',
+        'justify-start',
         'gap-2',
         'h-20',
         'flex-col',
@@ -77,7 +77,7 @@ describe('Logo Component', () => {
       expect(noTextLogo).toHaveClass(
         'flex',
         'items-center',
-        'justify-center',
+        'justify-start',
         'h-10',
       );
 
@@ -94,7 +94,7 @@ describe('Logo Component', () => {
         'custom-class',
         'flex',
         'items-center',
-        'justify-center',
+        'justify-start',
       );
     });
   });

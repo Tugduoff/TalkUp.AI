@@ -1,8 +1,10 @@
 import { InputMolecule } from '@/components/molecules/input-molecule';
+import { createAuthGuard } from '@/utils/auth.guards';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/diary')({
+  beforeLoad: createAuthGuard('/diary'),
   component: Diary,
 });
 

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiSchema } from "@nestjs/swagger";
-import { Length, IsPhoneNumber, IsStrongPassword } from "class-validator";
+import { Length, IsEmail, IsStrongPassword } from "class-validator";
 
 @ApiSchema({
   name: "CreateUserRequest",
@@ -15,14 +15,13 @@ export class CreateUserDto {
   })
   username: string;
 
-  @Length(1, 50)
-  @IsPhoneNumber("FR") // temporary, to be removed when internationalization is implemented
+  @IsEmail()
   @ApiProperty({
     description:
-      "The user's phone number. It will be used later for verification.",
-    example: "+33123456789",
+      "The user's email address. It will be used for login and verification.",
+    example: "john.doe@example.com",
   })
-  phoneNumber: string;
+  email: string;
 
   @IsStrongPassword({
     minLength: 8,

@@ -11,7 +11,7 @@ describe("CreateUserDto", () => {
   describe("Valid DTOs", () => {
     it("should pass validation with all valid fields", async () => {
       dto.username = "AdminSys819";
-      dto.phoneNumber = "+33123456789";
+      dto.email = "admin@example.com";
       dto.password = "Abcdefg1*";
 
       const errors = await validate(dto);
@@ -39,7 +39,7 @@ describe("CreateUserDto", () => {
       for (const username of validUsernames) {
         const testDto = new CreateUserDto();
         testDto.username = username;
-        testDto.phoneNumber = "+33123456789";
+        testDto.email = "test@example.com";
         testDto.password = "ValidPass123!";
 
         const errors = await validate(testDto);
@@ -47,20 +47,20 @@ describe("CreateUserDto", () => {
       }
     });
 
-    it("should pass validation with various valid French phone numbers", async () => {
-      const validPhones = [
-        "+33123456789",
-        "+33612345678",
-        "+33987654321",
-        "+33612349876",
-        "+33145678901",
-        "+33298765432",
+    it("should pass validation with various valid email addresses", async () => {
+      const validEmails = [
+        "test@example.com",
+        "user@domain.org",
+        "admin@company.co.uk",
+        "john.doe@test.com",
+        "user123@example.net",
+        "contact@website.fr",
       ];
 
-      for (const phone of validPhones) {
+      for (const email of validEmails) {
         const testDto = new CreateUserDto();
         testDto.username = "TestUser";
-        testDto.phoneNumber = phone;
+        testDto.email = email;
         testDto.password = "ValidPass123!";
 
         const errors = await validate(testDto);
@@ -82,7 +82,7 @@ describe("CreateUserDto", () => {
       for (const password of strongPasswords) {
         const testDto = new CreateUserDto();
         testDto.username = "TestUser";
-        testDto.phoneNumber = "+33123456789";
+        testDto.email = "test@example.com";
         testDto.password = password;
 
         const errors = await validate(testDto);
@@ -93,7 +93,7 @@ describe("CreateUserDto", () => {
 
   describe("Invalid username", () => {
     beforeEach(() => {
-      dto.phoneNumber = "+33123456789";
+      dto.email = "test@example.com";
       dto.password = "ValidPass123!";
     });
 
@@ -148,71 +148,69 @@ describe("CreateUserDto", () => {
     });
   });
 
-  describe("Invalid phone number", () => {
+  describe("Invalid email", () => {
     beforeEach(() => {
       dto.username = "TestUser";
       dto.password = "ValidPass123!";
     });
 
-    it("should fail validation for missing phone number", async () => {
+    it("should fail validation for missing email", async () => {
       const errors = await validate(dto);
 
       expect(errors).toHaveLength(1);
-      expect(errors[0].property).toBe("phoneNumber");
-      expect(errors[0].constraints).toHaveProperty("isLength");
+      expect(errors[0].property).toBe("email");
+      expect(errors[0].constraints).toHaveProperty("isEmail");
     });
 
-    it("should fail validation for empty phone number", async () => {
-      dto.phoneNumber = "";
+    it("should fail validation for empty email", async () => {
+      dto.email = "";
 
       const errors = await validate(dto);
 
       expect(errors).toHaveLength(1);
-      expect(errors[0].property).toBe("phoneNumber");
-      expect(errors[0].constraints).toHaveProperty("isLength");
+      expect(errors[0].property).toBe("email");
+      expect(errors[0].constraints).toHaveProperty("isEmail");
     });
 
-    it("should fail validation for non-French phone numbers", async () => {
-      const invalidPhones = [
-        "+1234567890",
-        "+44123456789",
-        "+49123456789",
-        "+8612345678",
-        "+39123456789",
+    it("should fail validation for invalid email formats", async () => {
+      const invalidEmails = [
+        "invalid-email",
+        "@domain.com",
+        "user@",
+        "user.domain.com",
+        "user @domain.com",
+        "user@domain",
+        "user@@domain.com",
       ];
 
-      for (const phone of invalidPhones) {
+      for (const email of invalidEmails) {
         const testDto = new CreateUserDto();
         testDto.username = "TestUser";
-        testDto.phoneNumber = phone;
+        testDto.email = email;
         testDto.password = "ValidPass123!";
 
         const errors = await validate(testDto);
         expect(errors.length).toBeGreaterThan(0);
-        const phoneError = errors.find(
-          (error) => error.property === "phoneNumber",
-        );
-        expect(phoneError).toBeDefined();
+        const emailError = errors.find((error) => error.property === "email");
+        expect(emailError).toBeDefined();
       }
     });
 
-    it("should fail validation for phone number too long", async () => {
-      dto.phoneNumber = "+33" + "1".repeat(50);
+    it("should fail validation for non-string email", async () => {
+      Object.assign(dto, { email: 12345 });
 
       const errors = await validate(dto);
 
       expect(errors.length).toBeGreaterThan(0);
-      const phoneError = errors.find(
-        (error) => error.property === "phoneNumber",
-      );
-      expect(phoneError).toBeDefined();
+      const emailError = errors.find((error) => error.property === "email");
+      expect(emailError).toBeDefined();
     });
   });
 
   describe("Invalid password", () => {
     beforeEach(() => {
       dto.username = "TestUser";
-      dto.phoneNumber = "+33123456789";
+      dto.email = "test@example.com";
     });
 
     it("should fail validation for missing password", async () => {
@@ -240,7 +238,7 @@ describe("CreateUserDto", () => {
       for (const password of weakPasswords) {
         const testDto = new CreateUserDto();
         testDto.username = "TestUser";
-        testDto.phoneNumber = "+33123456789";
+        testDto.email = "test@example.com";
         testDto.password = password;
 
         const errors = await validate(testDto);
@@ -286,7 +284,7 @@ describe("CreateUserDto", () => {
       for (const password of invalidPasswords) {
         const testDto = new CreateUserDto();
         testDto.username = "TestUser";
-        testDto.phoneNumber = "+33123456789";
+        testDto.email = "test@example.com";
         testDto.password = password;
 
         const errors = await validate(testDto);
@@ -303,7 +301,7 @@ describe("CreateUserDto", () => {
   describe("Multiple validation errors", () => {
     it("should return multiple errors when all fields are invalid", async () => {
       dto.username = "";
-      dto.phoneNumber = "invalid";
+      dto.email = "invalid";
       dto.password = "weak";
 
       const errors = await validate(dto);
@@ -313,27 +311,25 @@ describe("CreateUserDto", () => {
       const usernameError = errors.find(
         (error) => error.property === "username",
       );
-      const phoneError = errors.find(
-        (error) => error.property === "phoneNumber",
-      );
+      const emailError = errors.find((error) => error.property === "email");
       const passwordError = errors.find(
         (error) => error.property === "password",
       );
 
       expect(usernameError).toBeDefined();
-      expect(phoneError).toBeDefined();
+      expect(emailError).toBeDefined();
       expect(passwordError).toBeDefined();
     });
 
     it("should handle non-string values for all fields", async () => {
-      Object.assign(dto, { username: 123, phoneNumber: 456, password: 789 });
+      Object.assign(dto, { username: 123, email: 456, password: 789 });
 
       const errors = await validate(dto);
 
       expect(errors).toHaveLength(3);
       expect(errors.map((e) => e.property).sort()).toEqual([
+        "email",
         "password",
-        "phoneNumber",
         "username",
       ]);
     });
@@ -342,7 +338,7 @@ describe("CreateUserDto", () => {
   describe("Edge cases", () => {
     it("should handle minimum valid lengths", async () => {
       dto.username = "A";
-      dto.phoneNumber = "+33123456789";
+      dto.email = "a@b.co";
       dto.password = "A1@bcdef";
 
       const errors = await validate(dto);
@@ -351,7 +347,7 @@ describe("CreateUserDto", () => {
 
     it("should handle maximum valid lengths", async () => {
       dto.username = "a".repeat(50);
-      dto.phoneNumber = "+33123456789";
+      dto.email = "user@example.com";
       dto.password = "A1@" + "b".repeat(46);
 
       const errors = await validate(dto);
@@ -373,7 +369,7 @@ describe("CreateUserDto", () => {
       for (const username of specialUsernames) {
         const testDto = new CreateUserDto();
         testDto.username = username;
-        testDto.phoneNumber = "+33123456789";
+        testDto.email = "test@example.com";
         testDto.password = "ValidPass123!";
 
         const errors = await validate(testDto);
@@ -383,7 +379,7 @@ describe("CreateUserDto", () => {
 
     it("should validate passwords with all required character types", async () => {
       dto.username = "TestUser";
-      dto.phoneNumber = "+33123456789";
+      dto.email = "test@example.com";
       dto.password = "Aa1!bcdefg";
 
       const errors = await validate(dto);
@@ -396,7 +392,7 @@ describe("CreateUserDto", () => {
       for (const symbol of symbols) {
         const testDto = new CreateUserDto();
         testDto.username = "TestUser";
-        testDto.phoneNumber = "+33123456789";
+        testDto.email = "test@example.com";
         testDto.password = `Password1${symbol}`;
 
         const errors = await validate(testDto);

@@ -32,7 +32,9 @@
       "@/assets/*": ["src/assets/*"],
       "@/types/*": ["src/types/*"],
       "@/api/*": ["src/api/*"],
-      "@/services/*": ["src/services/*"]
+      "@/services/*": ["src/services/*"],
+      "@/contexts/*": ["src/contexts/*"],
+      "@/config/*": ["src/config/*"]
     }
   },
   "include": ["src"]

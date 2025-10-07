@@ -1,4 +1,5 @@
-import { validateLogin } from '@/utils/validateLogin';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   act,
   fireEvent,
@@ -6,22 +7,54 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
-import { MockedFunction, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LoginForm } from '.';
 
-/**
- * Mocks the `validateLogin` utility function.
- * This mock simulates an asynchronous operation that resolves after a 100ms delay.
- * It allows controlled testing of loading states and successful/failed login scenarios.
- */
-vi.mock('@/utils/validateLogin', () => ({
-  validateLogin: vi.fn(() => {
-    return new Promise((resolve) => setTimeout(resolve, 100));
-  }),
+// Mock localStorage to prevent token validation errors
+const localStorageMock = {
+  getItem: vi.fn(() => null),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
+};
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
+// Mock the auth service to prevent real API calls
+vi.mock('@/services/auth/http', () => {
+  return {
+    default: class MockAuthService {
+      postLogin = vi.fn().mockResolvedValue({ accessToken: 'mock-token' });
+      postRegister = vi.fn().mockResolvedValue({ accessToken: 'mock-token' });
+    },
+  };
+});
+
+// Mock the router hooks to prevent router context errors
+vi.mock('@tanstack/react-router', () => ({
+  useRouter: vi.fn(() => ({
+    navigate: vi.fn(),
+    history: { push: vi.fn() },
+  })),
+  useNavigate: vi.fn(() => vi.fn()),
+  createRouter: vi.fn(),
+  RouterProvider: ({ children }: { children: React.ReactNode }) => children,
+  createMemoryHistory: vi.fn(),
 }));
 
-const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+const renderWithProviders = (component: React.ReactElement) => {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  });
+
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>{component}</AuthProvider>
+    </QueryClientProvider>,
+  );
+};
 
 /**
  * Test suite for the LoginForm component.
@@ -40,14 +73,16 @@ describe('LoginForm', () => {
    */
   describe('Initial Render and Basic Structure', () => {
     it('renders the login form elements correctly', () => {
-      render(<LoginForm />);
+      renderWithProviders(<LoginForm />);
 
       expect(
         screen.getByRole('heading', { name: /Login/i }),
       ).toBeInTheDocument();
       expect(screen.getByText(/Login to your account/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
-      expect(screen.getByPlaceholderText(/Your username/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText(/Your email address/i),
+      ).toBeInTheDocument();
       expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
       expect(screen.getByPlaceholderText(/Your password/i)).toBeInTheDocument();
       expect(
@@ -62,8 +97,8 @@ describe('LoginForm', () => {
    * applied to the form fields on submission.
    */
   describe('Client-Side Validation (Sync Validators)', () => {
-    it('displays "Username and password are required" error when both fields are empty on submit', async () => {
-      render(<LoginForm />);
+    it('displays "Email and password are required" error when both fields are empty on submit', async () => {
+      renderWithProviders(<LoginForm />);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
@@ -72,19 +107,17 @@ describe('LoginForm', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(/Username and password are required/i),
+          screen.getByText(/Email and password are required/i),
         ).toBeInTheDocument();
       });
-      expect(
-        screen.queryByText(/Username is required/i),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(/Email is required/i)).not.toBeInTheDocument();
       expect(
         screen.queryByText(/Password is required/i),
       ).not.toBeInTheDocument();
     });
 
-    it('displays "Username is required" error when only username is empty on submit', async () => {
-      render(<LoginForm />);
+    it('displays "Email is required" error when only email is empty on submit', async () => {
+      renderWithProviders(<LoginForm />);
       const passwordInput = screen.getByLabelText(/Password/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
@@ -94,10 +127,10 @@ describe('LoginForm', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByText(/^Username is required$/i)).toBeInTheDocument();
+        expect(screen.getByText(/^Email is required$/i)).toBeInTheDocument();
       });
       expect(
-        screen.queryByText(/Username and password are required/i),
+        screen.queryByText(/Email and password are required/i),
       ).not.toBeInTheDocument();
       expect(
         screen.queryByText(/^Password is required$/i),
@@ -105,12 +138,14 @@ describe('LoginForm', () => {
     });
 
     it('displays "Password is required" error when only password is empty on submit', async () => {
-      render(<LoginForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
+      renderWithProviders(<LoginForm />);
+      const emailInput = screen.getByLabelText(/Email/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+        fireEvent.change(emailInput, {
+          target: { value: 'testuser@example.com' },
+        });
         fireEvent.click(loginButton);
       });
 
@@ -118,80 +153,11 @@ describe('LoginForm', () => {
         expect(screen.getByText(/^Password is required$/i)).toBeInTheDocument();
       });
       expect(
-        screen.queryByText(/Username and password are required/i),
+        screen.queryByText(/Email and password are required/i),
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByText(/^Username is required$/i),
+        screen.queryByText(/^Email is required$/i),
       ).not.toBeInTheDocument();
-    });
-  });
-
-  /**
-   * Test Group: Asynchronous Validation (validateLogin)
-   * This group verifies the behavior of the form when interacting with the
-   * mocked `validateLogin` function, including error display and successful outcomes.
-   */
-  describe('Asynchronous Validation (validateLogin)', () => {
-    const mockedValidateLogin = validateLogin as MockedFunction<
-      typeof validateLogin
-    >;
-
-    it('displays an error when validateLogin rejects (simulated failed login)', async () => {
-      mockedValidateLogin.mockImplementationOnce(() =>
-        Promise.reject('Invalid credentials provided'),
-      );
-
-      render(<LoginForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
-      const passwordInput = screen.getByLabelText(/Password/i);
-      const loginButton = screen.getByRole('button', { name: /Login/i });
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'wronguser' } });
-        fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
-        fireEvent.click(loginButton);
-      });
-
-      await waitFor(() => {
-        expect(
-          screen.getByText(/Invalid credentials provided/i),
-        ).toBeInTheDocument();
-      });
-      expect(consoleSpy).not.toHaveBeenCalled();
-    });
-
-    it('does not display an error when validateLogin resolves (simulated successful login)', async () => {
-      mockedValidateLogin.mockResolvedValueOnce(undefined);
-
-      render(<LoginForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
-      const passwordInput = screen.getByLabelText(/Password/i);
-      const loginButton = screen.getByRole('button', { name: /Login/i });
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-        fireEvent.change(passwordInput, { target: { value: 'password123' } });
-        fireEvent.click(loginButton);
-      });
-
-      await waitFor(() => {
-        expect(
-          screen.queryByText(/Invalid credentials provided/i),
-        ).not.toBeInTheDocument();
-        expect(
-          screen.queryByText(/Username is required/i),
-        ).not.toBeInTheDocument();
-        expect(
-          screen.queryByText(/Password is required/i),
-        ).not.toBeInTheDocument();
-      });
-
-      await waitFor(() => {
-        expect(consoleSpy).toHaveBeenCalledWith('Login:', {
-          username: 'testuser',
-          password: 'password123',
-        });
-      });
     });
   });
 
@@ -201,15 +167,17 @@ describe('LoginForm', () => {
    * user input actions such as typing into fields and submitting the form.
    */
   describe('User Interactions', () => {
-    it('allows typing into username and password fields', async () => {
-      render(<LoginForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
+    it('allows typing into email and password fields', async () => {
+      renderWithProviders(<LoginForm />);
+      const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getByLabelText(/Password/i);
 
       await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'myusername' } });
+        fireEvent.change(emailInput, {
+          target: { value: 'myemail@example.com' },
+        });
       });
-      expect(usernameInput).toHaveValue('myusername');
+      expect(emailInput).toHaveValue('myemail@example.com');
 
       await act(async () => {
         fireEvent.change(passwordInput, { target: { value: 'mypassword' } });
@@ -218,29 +186,17 @@ describe('LoginForm', () => {
     });
 
     it('submits the form with valid credentials', async () => {
-      render(<LoginForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
+      renderWithProviders(<LoginForm />);
+      const emailInput = screen.getByLabelText(/Email/i);
       const passwordInput = screen.getByLabelText(/Password/i);
       const loginButton = screen.getByRole('button', { name: /Login/i });
 
       await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'admin' } });
+        fireEvent.change(emailInput, {
+          target: { value: 'admin.admin@admin.com' },
+        });
         fireEvent.change(passwordInput, { target: { value: 'admin' } });
         fireEvent.click(loginButton);
-      });
-
-      await waitFor(() => {
-        expect(validateLogin).toHaveBeenCalledWith({
-          username: 'admin',
-          password: 'admin',
-        });
-      });
-
-      await waitFor(() => {
-        expect(consoleSpy).toHaveBeenCalledWith('Login:', {
-          username: 'admin',
-          password: 'admin',
-        });
       });
     });
   });
@@ -252,12 +208,12 @@ describe('LoginForm', () => {
    */
   describe('Accessibility', () => {
     it('ensures correct htmlFor attributes on labels and id on inputs', () => {
-      render(<LoginForm />);
+      renderWithProviders(<LoginForm />);
 
-      const usernameLabel = screen.getByText('Username');
-      const usernameInput = screen.getByPlaceholderText(/Your username/i);
-      expect(usernameLabel).toHaveAttribute('for', 'username');
-      expect(usernameInput).toHaveAttribute('id', 'username');
+      const emailLabel = screen.getByText('Email');
+      const emailInput = screen.getByPlaceholderText(/Your email address/i);
+      expect(emailLabel).toHaveAttribute('for', 'email');
+      expect(emailInput).toHaveAttribute('id', 'email');
 
       const passwordLabel = screen.getByText('Password');
       const passwordInput = screen.getByPlaceholderText(/Your password/i);

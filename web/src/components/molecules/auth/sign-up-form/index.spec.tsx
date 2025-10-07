@@ -1,4 +1,3 @@
-import { validateUsername } from '@/utils/validateUsername';
 import {
   act,
   fireEvent,
@@ -6,7 +5,7 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
-import { MockedFunction, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SignUpForm } from '.';
 
@@ -20,33 +19,13 @@ vi.mock('@/hooks/auth/useServices', () => ({
 }));
 
 /**
- * Mocks the `validateUsername` utility function.
- * This mock simulates async validation by resolving with an error message for a specific user
- * and resolving with `undefined` for others, which is how react-hook-form expects async validators to work.
- */
-vi.mock('@/utils/validateUsername', () => ({
-  validateUsername: vi.fn(async (username: string) => {
-    await new Promise((res) => setTimeout(res, 100));
-    if (username === 'existinguser') {
-      return 'Username already taken';
-    }
-    return undefined;
-  }),
-}));
-
-/**
  * Test suite for the SignUpForm component.
  * This suite verifies the component's rendering, client-side and asynchronous validation,
  * user interactions, form submission, and integration with external hooks.
  */
 describe('SignUpForm', () => {
-  let mockValidateUsername: MockedFunction<typeof validateUsername>;
-
   beforeEach(() => {
     vi.clearAllMocks();
-    mockValidateUsername = validateUsername as MockedFunction<
-      typeof validateUsername
-    >;
   });
 
   /**
@@ -65,9 +44,9 @@ describe('SignUpForm', () => {
       expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
       expect(screen.getByPlaceholderText(/Your username/i)).toBeInTheDocument();
 
-      expect(screen.getByLabelText(/Phone Number/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
       expect(
-        screen.getByPlaceholderText(/Your phone number/i),
+        screen.getByPlaceholderText(/Your email address/i),
       ).toBeInTheDocument();
 
       expect(screen.getByLabelText('Password')).toBeInTheDocument();
@@ -101,16 +80,16 @@ describe('SignUpForm', () => {
       expect(usernameInput).toHaveValue('newuser');
     });
 
-    it('allows typing into phone number field', async () => {
+    it('allows typing into email field', async () => {
       render(<SignUpForm />);
-      const phoneNumberInput = screen.getByLabelText(/Phone Number/i);
+      const emailInput = screen.getByLabelText(/Email/i);
 
       await act(async () => {
-        fireEvent.change(phoneNumberInput, {
-          target: { value: '+1234567890' },
+        fireEvent.change(emailInput, {
+          target: { value: 'admin.admin@admin.com' },
         });
       });
-      expect(phoneNumberInput).toHaveValue('+1234567890');
+      expect(emailInput).toHaveValue('admin.admin@admin.com');
     });
 
     it('allows typing into password field', async () => {
@@ -202,24 +181,22 @@ describe('SignUpForm', () => {
 
     /**
      * Test Sub-Group: Phone Number Validation
-     * Tests the synchronous validation rules specific to the phone number field.
+     * Tests the synchronous validation rules specific to the email field.
      */
-    describe('Phone Number Validation', () => {
-      it('displays error for invalid phone number format', async () => {
+    describe('Email Validation', () => {
+      it('displays error for invalid email format', async () => {
         render(<SignUpForm />);
-        const phoneNumberInput = screen.getByLabelText(/Phone Number/i);
+        const emailInput = screen.getByLabelText(/Email/i);
         const signUpButton = screen.getByRole('button', { name: /Sign Up/i });
 
         await act(async () => {
-          fireEvent.change(phoneNumberInput, { target: { value: '12345' } });
+          fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
           fireEvent.click(signUpButton);
         });
 
         await waitFor(() => {
           expect(
-            screen.getByText(
-              'Phone number must be in international format (e.g., +1234567890)',
-            ),
+            screen.getByText('Please enter a valid email address'),
           ).toBeInTheDocument();
         });
       });
@@ -360,91 +337,6 @@ describe('SignUpForm', () => {
   });
 
   /**
-   * Test Group: Asynchronous Validation (validateUsername)
-   * Focuses on testing the `validateUsername` asynchronous validation and its impact on the UI.
-   */
-  describe('Asynchronous Validation (validateUsername)', () => {
-    it('shows loading spinner during async username validation', async () => {
-      render(<SignUpForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'checkinguser' } });
-      });
-
-      expect(
-        await screen.findByTestId('username-loading-spinner'),
-      ).toBeInTheDocument();
-
-      await waitFor(() => {
-        expect(mockValidateUsername).toHaveBeenCalledWith('checkinguser');
-      });
-    });
-
-    it('hides loading spinner after async username validation completes', async () => {
-      render(<SignUpForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'validuser' } });
-      });
-
-      await waitFor(() => {
-        expect(mockValidateUsername).toHaveBeenCalledWith('validuser');
-      });
-
-      await waitFor(() => {
-        expect(
-          screen.queryByTestId('username-loading-spinner'),
-        ).not.toBeInTheDocument();
-      });
-    });
-
-    it('displays error from async username validation', async () => {
-      render(<SignUpForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'existinguser' } });
-      });
-
-      expect(
-        await screen.findByText('Username already taken'),
-      ).toBeInTheDocument();
-    });
-
-    it('clears async error when username becomes valid again', async () => {
-      render(<SignUpForm />);
-      const usernameInput = screen.getByLabelText(/Username/i);
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'existinguser' } });
-        fireEvent.blur(usernameInput);
-      });
-
-      expect(
-        await screen.findByText('Username already taken'),
-      ).toBeInTheDocument();
-      expect(mockValidateUsername).toHaveBeenCalledWith('existinguser');
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'newvaliduser' } });
-        fireEvent.blur(usernameInput);
-      });
-
-      await waitFor(() => {
-        expect(mockValidateUsername).toHaveBeenCalledWith('newvaliduser');
-      });
-
-      expect(
-        screen.queryByText('Username already taken'),
-      ).not.toBeInTheDocument();
-
-      expect(mockValidateUsername).toHaveBeenCalledTimes(2);
-    });
-  });
-
-  /**
    * Test Group: Accessibility
    * Ensures that the form's elements have correct accessibility attributes.
    */
@@ -457,11 +349,10 @@ describe('SignUpForm', () => {
       expect(usernameLabel).toHaveAttribute('for', 'username');
       expect(usernameInput).toHaveAttribute('id', 'username');
 
-      const phoneNumberLabel = screen.getByText('Phone Number');
-      const phoneNumberInput =
-        screen.getByPlaceholderText(/Your phone number/i);
-      expect(phoneNumberLabel).toHaveAttribute('for', 'phoneNumber');
-      expect(phoneNumberInput).toHaveAttribute('id', 'phoneNumber');
+      const emailLabel = screen.getByText('Email');
+      const emailInput = screen.getByPlaceholderText(/Your email address/i);
+      expect(emailLabel).toHaveAttribute('for', 'email');
+      expect(emailInput).toHaveAttribute('id', 'email');
 
       const passwordLabel = screen.getByText('Password');
       const passwordInput = screen.getByLabelText('Password');

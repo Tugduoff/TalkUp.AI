@@ -32,6 +32,7 @@ describe("UsersService", () => {
     password_id: 1,
     user_id: "test-user-id",
     password: "hashedpassword123",
+    user: null as any,
   };
 
   beforeEach(async () => {

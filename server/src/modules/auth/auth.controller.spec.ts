@@ -48,7 +48,7 @@ describe("AuthController", () => {
   describe("register", () => {
     const createUserDto: CreateUserDto = {
       username: "testuser",
-      phoneNumber: "+33640404040",
+      email: "testuser@example.com",
       password: "password123",
     };
 
@@ -63,9 +63,9 @@ describe("AuthController", () => {
       expect(mockAuthService.register).toHaveBeenCalledTimes(1);
     });
 
-    it("should throw ConflictException when phone number already exists", async () => {
+    it("should throw ConflictException when email already exists", async () => {
       const conflictError = new ConflictException(
-        "An account with this phone number already exists",
+        "An account with this email already exists",
       );
       mockAuthService.register = jest.fn().mockRejectedValue(conflictError);
 
@@ -91,7 +91,7 @@ describe("AuthController", () => {
 
   describe("login", () => {
     const loginDto: LoginDto = {
-      phoneNumber: "+33640404040",
+      email: "testuser@example.com",
       password: "password123",
     };
 
@@ -104,7 +104,7 @@ describe("AuthController", () => {
 
       expect(result).toEqual(expectedLoginResponse);
       expect(mockAuthService.validateUser).toHaveBeenCalledWith(
-        "+33640404040",
+        "testuser@example.com",
         "password123",
       );
       expect(mockAuthService.login).toHaveBeenCalledWith(mockUser);
@@ -112,10 +112,8 @@ describe("AuthController", () => {
       expect(mockAuthService.login).toHaveBeenCalledTimes(1);
     });
 
-    it("should throw UnauthorizedException when phone number not found", async () => {
-      const unauthorizedError = new UnauthorizedException(
-        "Phone number not found",
-      );
+    it("should throw UnauthorizedException when email not found", async () => {
+      const unauthorizedError = new UnauthorizedException("Email not found");
       mockAuthService.validateUser = jest
         .fn()
         .mockRejectedValue(unauthorizedError);
@@ -125,7 +123,7 @@ describe("AuthController", () => {
       );
 
       expect(mockAuthService.validateUser).toHaveBeenCalledWith(
-        "+33640404040",
+        "testuser@example.com",
         "password123",
       );
       expect(mockAuthService.login).not.toHaveBeenCalled();
@@ -144,7 +142,7 @@ describe("AuthController", () => {
       );
 
       expect(mockAuthService.validateUser).toHaveBeenCalledWith(
-        "+33640404040",
+        "testuser@example.com",
         "password123",
       );
       expect(mockAuthService.login).not.toHaveBeenCalled();
@@ -152,7 +150,7 @@ describe("AuthController", () => {
 
     it("should handle different login credentials", async () => {
       const customLoginDto: LoginDto = {
-        phoneNumber: "+1234567890",
+        email: "different@example.com",
         password: "differentPassword",
       };
       const expectedResponse = { access_token: "custom-token" };
@@ -164,7 +162,7 @@ describe("AuthController", () => {
 
       expect(result).toEqual(expectedResponse);
       expect(mockAuthService.validateUser).toHaveBeenCalledWith(
-        "+1234567890",
+        "different@example.com",
         "differentPassword",
       );
     });
@@ -176,7 +174,7 @@ describe("AuthController", () => {
       await expect(controller.login(loginDto)).rejects.toThrow(serviceError);
 
       expect(mockAuthService.validateUser).toHaveBeenCalledWith(
-        "+33640404040",
+        "testuser@example.com",
         "password123",
       );
     });
