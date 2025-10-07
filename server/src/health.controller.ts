@@ -6,13 +6,7 @@ export class HealthController {
 
   @Get()
   getHealth() {
-    this.logger.log("Health check called on root endpoint");
-    return { status: "ok", timestamp: new Date().toISOString() };
-  }
-
-  @Get("health")
-  checkHealth() {
-    this.logger.log("Health check called on /health endpoint");
+    this.logger.log("Health check called");
     return { status: "ok", timestamp: new Date().toISOString() };
   }
 }
