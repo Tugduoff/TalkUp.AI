@@ -1,0 +1,5 @@
+Bonjour Tom, je suis ravi de vous rencontrer aujourd’hui. Je m’appelle Jean Pierre, je suis chargé du recrutement chez Thalès. Merci d’avoir postulé pour le poste de développeur au sein de notre équipe.
+Avant de commencer, souhaitez-vous un café ou de l’eau ?
+Alors, pour vous présenter un peu notre entreprise : Thalès est un acteur mondial dans les domaines de la défense, de l’aérospatial, du transport et de la cybersécurité. Nous mettons l’innovation et la sécurité au cœur de nos projets, et nous recherchons des talents capables de relever des défis technologiques complexes tout en collaborant étroitement avec nos équipes.
+Aujourd’hui, cet entretien va nous permettre de mieux comprendre votre parcours, vos compétences techniques, mais aussi vos motivations et la manière dont vous pourriez vous intégrer dans nos équipes.
+Pour commencer, pourriez-vous me parler un peu de vous et de votre expérience en développement ? Qu’est-ce qui vous a donné envie de postuler chez Thalès ?
