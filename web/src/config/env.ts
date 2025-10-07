@@ -1,7 +1,33 @@
 export const getPRNumber = (branchName: string | undefined): string | null => {
   if (!branchName) return null;
+  // branch names like `82-railway-integration` -> 82
   const match = branchName.match(/^(\d+)-/);
   return match ? match[1] : null;
+};
+
+export const getPRNumberFromEnv = (env: Record<string, any>): string | null => {
+  // Vercel and GitHub set different env vars depending on the integration.
+  // Check several common ones (prefixed with VITE_ in Vite builds):
+  const candidates = [
+    'VITE_VERCEL_GIT_PULL_REQUEST',
+    'VITE_VERCEL_GIT_PULL_REQUEST_NUMBER',
+    'VITE_GITHUB_PR_NUMBER',
+    'VITE_PR_NUMBER',
+    'VITE_VERCEL_PULL_REQUEST',
+    // non-VITE names (in case you expose them to client builds differently)
+    'VERCEL_GIT_PULL_REQUEST',
+    'VERCEL_PULL_REQUEST',
+    'GITHUB_PR_NUMBER',
+  ];
+
+  for (const name of candidates) {
+    const v = env[name];
+    if (!v) continue;
+    const s = String(v).trim().replace(/^#/, '');
+    if (s && /^\d+$/.test(s)) return s;
+  }
+
+  return null;
 };
 
 export const getBackendUrl = (env: Record<string, any>): string => {
@@ -19,10 +45,16 @@ export const getBackendUrl = (env: Record<string, any>): string => {
   }
 
   if (VERCEL_ENV === 'preview') {
-    const prNumber = getPRNumber(VERCEL_GIT_COMMIT_REF);
+    // Prefer PR number passed through environment vars (Vercel/GitHub),
+    // fall back to parsing the branch name (legacy behavior).
+    const prFromEnv = getPRNumberFromEnv(env);
+    const prFromBranch = getPRNumber(VERCEL_GIT_COMMIT_REF);
+    const prNumber = prFromEnv || prFromBranch;
+
     if (prNumber) {
       return `https://backend-talkupai-pr-${prNumber}.up.railway.app`;
     }
+
     return env.VITE_BASE_URL_PRODUCTION || 'https://talk-up-ai.up.railway.app';
   }
 
