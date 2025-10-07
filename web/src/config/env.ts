@@ -36,6 +36,8 @@ export const getBackendUrl = (env: Record<string, any>): string => {
   const VERCEL_ENV = env.VITE_VERCEL_ENV;
   const VERCEL_GIT_COMMIT_REF = env.VITE_VERCEL_GIT_COMMIT_REF;
 
+  console.log('getBackendUrl called with:', { isDev, isProd, VERCEL_ENV, VERCEL_GIT_COMMIT_REF });
+
   if (isDev) {
     return env.VITE_BASE_URL || 'http://localhost:3000';
   }
