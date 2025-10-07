@@ -80,7 +80,6 @@ export const getBackendUrl = (env: Record<string, any>): string => {
   }
 
   if (env.VITE_VERCEL_ENV === 'preview') {
-
     const prNumber = getPRNumber(env);
 
     if (prNumber) {
