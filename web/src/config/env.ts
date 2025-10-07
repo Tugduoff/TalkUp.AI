@@ -51,6 +51,8 @@ export const getBackendUrl = (env: Record<string, any>): string => {
     const prFromBranch = getPRNumber(VERCEL_GIT_COMMIT_REF);
     const prNumber = prFromEnv || prFromBranch;
 
+    console.log('Detected PR number:', { prFromEnv, prFromBranch, prNumber });
+
     if (prNumber) {
       return `https://backend-talkupai-pr-${prNumber}.up.railway.app`;
     }
@@ -60,5 +62,17 @@ export const getBackendUrl = (env: Record<string, any>): string => {
 
   return env.VITE_BASE_URL || 'http://localhost:3000';
 };
+
+console.log('Environment variables:', {
+  DEV: import.meta.env.DEV,
+  PROD: import.meta.env.PROD,
+  VITE_VERCEL_ENV: import.meta.env.VITE_VERCEL_ENV,
+  VITE_VERCEL_GIT_COMMIT_REF: import.meta.env.VITE_VERCEL_GIT_COMMIT_REF,
+  VITE_GITHUB_PR_NUMBER: import.meta.env.VITE_GITHUB_PR_NUMBER,
+  VITE_PR_NUMBER: import.meta.env.VITE_PR_NUMBER,
+  VITE_VERCEL_GIT_PULL_REQUEST: import.meta.env.VITE_VERCEL_GIT_PULL_REQUEST,
+  VITE_VERCEL_GIT_PULL_REQUEST_NUMBER:
+    import.meta.env.VITE_VERCEL_GIT_PULL_REQUEST_NUMBER,
+});
 
 export const API_BASE_URL = getBackendUrl(import.meta.env);
