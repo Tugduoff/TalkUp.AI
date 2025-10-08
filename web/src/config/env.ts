@@ -18,6 +18,8 @@
 const getPRNumber = (env: Record<string, any>): string | null => {
   const prId = env.VITE_VERCEL_GIT_PULL_REQUEST_ID;
 
+  console.log('[env.ts] PR ID:', prId);
+
   if (prId && /^\d+$/.test(String(prId))) {
     return String(prId);
   }
