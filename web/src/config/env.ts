@@ -97,4 +97,3 @@ export const getBackendUrl = (env: Record<string, any>): string => {
 };
 
 export const API_BASE_URL = getBackendUrl(import.meta.env);
-console.log('[env.ts] Final API_BASE_URL:', API_BASE_URL);
