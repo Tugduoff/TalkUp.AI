@@ -70,7 +70,6 @@ export const getBackendUrl = (env: Record<string, any>): string => {
     const url = env.VITE_BASE_URL || 'http://localhost:3000';
     return url;
   }
-  console.log('[env.ts] Environment variables:', env);
 
   const isProduction =
     env.VITE_VERCEL_ENV === 'production' ||
