@@ -10,51 +10,120 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { abortOnError: false });
-  const port = process.env.SERVER_PORT ?? 3000;
+  try {
+    process.stdout.write(`Starting application bootstrap...\n`);
+    process.stdout.write(`Node version: ${process.version}\n`);
+    process.stdout.write(`Platform: ${process.platform}\n`);
 
-  app.useGlobalPipes(new ValidationPipe());
-  app.setGlobalPrefix("v1/api");
-  app.enableCors({
-    origin: process.env.CORS_ORIGIN ?? "*",
-    methods: process.env.CORS_METHODS ?? "GET,PUT,PATCH,POST,DELETE",
-    allowedHeaders: process.env.CORS_ALLOWED_HEADERS ?? "Content-Type, Accept",
-    exposedHeaders: process.env.CORS_EXPOSED_HEADERS ?? "Content-Type, Accept",
-  });
+    const app = await NestFactory.create(AppModule, { abortOnError: false });
+    const port = process.env.PORT ?? process.env.SERVER_PORT ?? 3000;
+    process.stdout.write(`Using port: ${port}\n`);
 
-  initSwagger(app);
+    app.useGlobalPipes(new ValidationPipe());
+    app.setGlobalPrefix("v1/api");
 
-  await app.listen(port);
-  process.stdout.write(`Server is running on ${await app.getUrl()}\n`); // if '::1', it means localhost (IPv6 equivalent of 127.0.0.1)
+    const corsOrigin = process.env.CORS_ORIGIN;
+    const allowedOrigins =
+      corsOrigin === "*" ? null : (corsOrigin?.split(",") ?? []);
 
-  process.on("SIGINT", () => {
-    process.stdout.write("\b\bServer is shutting down...\n"); // '\b\b' is used to remove the last two characters from the line (the Ctrl+C characters)
+    app.enableCors({
+      origin: (
+        origin: string,
+        callback: (arg0: Error | null, arg1: boolean | undefined) => void,
+      ) => {
+        console.log("Request origin:", origin);
+        if (!origin) return callback(null, true);
 
-    (async () => {
+        if (corsOrigin === "*") return callback(null, true);
+
+        if (allowedOrigins?.includes(origin)) return callback(null, true);
+
+        if (origin.includes("talk-up-ai") && origin.endsWith(".vercel.app")) {
+          return callback(null, true);
+        }
+
+        if (origin.includes("localhost")) return callback(null, true);
+
+        callback(new Error("Not allowed by CORS"), false);
+      },
+      methods: process.env.CORS_METHODS ?? "GET,PUT,PATCH,POST,DELETE",
+      allowedHeaders:
+        process.env.CORS_ALLOWED_HEADERS ?? "Content-Type,Accept,Authorization",
+      exposedHeaders:
+        process.env.CORS_EXPOSED_HEADERS ?? "Content-Type,Accept,Authorization",
+      credentials: true,
+    });
+
+    initSwagger(app);
+
+    // Listen on 0.0.0.0 to accept external connections (Railway requirement)
+    await app.listen(port, "0.0.0.0");
+    process.stdout.write(`Server is running on http://0.0.0.0:${port}\n`);
+    process.stdout.write(
+      `Environment: ${process.env.NODE_ENV ?? "development"}\n`,
+    );
+    process.stdout.write(`Process PID: ${process.pid}\n`);
+    process.stdout.write(
+      `Server started successfully at ${new Date().toISOString()}\n`,
+    );
+
+    // Keep the process alive
+    process.stdout.write(`Keeping process alive...\n`);
+
+    // Graceful shutdown handler
+    const shutdown = async (signal: string) => {
+      process.stdout.write(
+        `\nReceived ${signal} signal. Starting graceful shutdown...\n`,
+      );
+      process.stdout.write(`Timestamp: ${new Date().toISOString()}\n`);
+
       try {
         await app.close();
+        process.stdout.write(`Server closed successfully.\n`);
+        process.exit(0);
       } catch (error) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        process.stdout.write(`Error shutting down server: ${error.message}\n`);
-      } finally {
-        process.exit(0);
+        process.stdout.write(`Error during shutdown: ${error.message}\n`);
+        process.exit(1);
       }
-    })();
-  });
+    };
 
-  process.on("SIGUSR2", () => {
-    process.stdout.write("\b\bServer is restarting...\n");
+    process.on("SIGINT", () => shutdown("SIGINT"));
+    process.on("SIGTERM", () => shutdown("SIGTERM"));
+    process.on("SIGUSR2", () => shutdown("SIGUSR2"));
 
-    (async () => {
-      try {
-        await app.close();
-      } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        process.stdout.write(`Error restarting server: ${error.message}\n`);
-      } finally {
-        process.exit(0);
-      }
-    })();
-  });
+    // Log unhandled errors
+    process.on("uncaughtException", (error) => {
+      process.stdout.write(`Uncaught Exception: ${error.message}\n`);
+      process.stdout.write(`Stack: ${error.stack}\n`);
+    });
+
+    process.on("unhandledRejection", (reason) => {
+      process.stdout.write(`Unhandled Rejection: ${reason}\n`);
+    });
+
+    // Ensure the process stays alive
+    process.on("exit", (code) => {
+      process.stdout.write(`Process exiting with code: ${code}\n`);
+    });
+
+    process.on("beforeExit", (code) => {
+      process.stdout.write(`Before exit event with code: ${code}\n`);
+    });
+
+    // Log that we're waiting for connections
+    process.stdout.write(`Bootstrap complete. Waiting for requests...\n`);
+  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    process.stdout.write(`Fatal error during bootstrap: ${error.message}\n`);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    process.stdout.write(`Stack: ${error.stack}\n`);
+    process.exit(1);
+  }
 }
-bootstrap();
+
+bootstrap().catch((error) => {
+  process.stdout.write(`Unhandled bootstrap error: ${error.message}\n`);
+  process.stdout.write(`Stack: ${error.stack}\n`);
+  process.exit(1);
+});

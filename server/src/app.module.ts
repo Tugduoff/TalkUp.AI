@@ -10,6 +10,7 @@ import { LinkedInModule } from "./modules/linkedin/linkedin.module";
 
 import { LoggerMiddleware } from "@common/middleware/logger";
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
+import { HealthController } from "./health.controller";
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
       useFactory: pgConfig,
     }),
   ],
-  controllers: [],
+  controllers: [HealthController],
   providers: [PostValidationPipe],
 })
 export class AppModule implements NestModule {

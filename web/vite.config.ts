@@ -25,6 +25,15 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  define: {
+    'import.meta.env.VITE_VERCEL_ENV': JSON.stringify(process.env.VERCEL_ENV),
+    'import.meta.env.VITE_VERCEL_GIT_COMMIT_REF': JSON.stringify(
+      process.env.VERCEL_GIT_COMMIT_REF,
+    ),
+    'import.meta.env.VITE_VERCEL_GIT_PULL_REQUEST_ID': JSON.stringify(
+      process.env.VERCEL_GIT_PULL_REQUEST_ID,
+    ),
+  },
   resolve: {
     alias: {
       ...aliases,

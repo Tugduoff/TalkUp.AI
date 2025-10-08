@@ -28,7 +28,7 @@ The backend part of our project (including our database) is deployed on Railway.
 
 This way, we have access to automatic deployments that are fast and that we can monitor easily.
 
-The main branch for example will be deployed to : https://talk-up-server-production.up.railway.app everytime there is a new commit pushed on it.
+The main branch for example will be deployed to : https://talk-up-ai.up.railway.app everytime there is a new commit pushed on it.
 Preview deployements will also be made whenever a Pull Request is created. For now it wont be linked with the frontend automatically but you will still be able to test your backend changes from the Pull Request.
 
 To deploy a new environment for testing purposes you can use `railway environment create` with a name for your new environment and then use the command `railway up` to deploy your current changes to this new environment. Honestly its way easier to do all this on the dashboard online (`railway open` to access it)
