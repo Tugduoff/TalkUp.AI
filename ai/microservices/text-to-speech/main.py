@@ -5,10 +5,15 @@
 ## This is the main.py of the text-to-speech microservice.
 ##
 
-import time
+import engine.ttsServices
 
 def main() -> bool:
-    print("Text to speech check", end="\n")
+    tts = engine.ttsServices.TTS()
+
+    tts.start_tts_process()
+    with open("text-sample/sample-start-interview.txt", "r", encoding="utf-8") as f:
+        text = f.read()
+    tts.synthesize_input(text)
     return True
 
 if __name__ == "__main__":
