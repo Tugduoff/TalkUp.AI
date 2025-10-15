@@ -32,20 +32,24 @@ Le serveur doit gérer des commandes simples pour tester la disponibilité et l�
 ---
 
 ## 4. Niveau applicatif — Transmission audio/vidéo
-Le Frontend peut envoyer des flux audio et vidéo pour traitement.
+Le Frontend peut envoyer des flux audio et vidéo pour traitement. **Important :** le Serveur IA **ne se contente pas** d’envoyer uniquement une transcription textuelle. Selon le traitement demandé, il peut renvoyer :
+- un flux média (audio ou vidéo) traité/annoté (`stream_output`), et/ou
+- une référence/id de texte (nom de fichier ou identifiant de transcription) (`transcript_name` ou `text_id`), plutôt que le texte brut lui‑même.
 
 **Types de messages :**
-- `stream_start` : début de flux (type : audio, vidéo, etc.)
-- `stream_chunk` : envoi d’un fragment (binaire encodé en Base64 ou frame WebSocket binaire)
-- `stream_end` : fin du flux.
+- `stream_start` : début de flux (type : `audio`, `video`, etc.)  
+- `stream_chunk` : envoi d’un fragment (binaire encodé en Base64 ou frame WebSocket binaire)  
+- `stream_end` : fin du flux.  
 
-Le serveur peut répondre avec :
-- `transcript_update`
-- `analysis_result`
+**Réponses possibles du Serveur IA :**
+- `stream_output` : renvoie un flux média traité (champ `data` contenant le binaire encodé en Base64 ou un identifiant de ressource)  
+- `transcript_name` / `text_id` : nom ou identifiant de la transcription produite (ex: `"transcript_20251015_001.txt"`)  
+- `analysis_result` : résultats analytiques (métadonnées, labels, timecodes, etc.)
 
 ### Exemple : Frontend → Serveur IA
 ```json
 {
+  "key": "exemple_key"
   "type": "stream_chunk",
   "stream_id": "abc123",
   "format": "audio/opus",
@@ -55,13 +59,26 @@ Le serveur peut répondre avec :
 }
 ```
 
-### Exemple : Serveur IA → Frontend
+### Exemple : Serveur IA → Frontend (flux média traité)
 ```json
 {
-  "type": "transcript_update",
+  "key": "exemple_key"
+  "type": "stream_output",
   "stream_id": "abc123",
-  "text": "Bonjour, comment puis-je t’aider ?",
-  "confidence": 0.94
+  "format": "audio/opus",
+  "timestamp": 1739592350,
+  "data": "<base64 encoded processed chunk or resource id>"
+}
+```
+
+### Exemple : Serveur IA → Frontend (nom du texte / identifiant)
+```json
+{
+  "key": "exemple_key"
+  "type": "transcript_name",
+  "stream_id": "abc123",
+  "text_id": "transcript_20251015_001.txt",
+  "timestamp": 1739592360
 }
 ```
 
