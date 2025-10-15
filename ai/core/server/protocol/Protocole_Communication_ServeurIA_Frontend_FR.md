@@ -37,13 +37,13 @@ Le Frontend peut envoyer des flux audio et vidéo pour traitement. **Important :
 - une référence/id de texte (nom de fichier ou identifiant de transcription) (`transcript_name` ou `text_id`), plutôt que le texte brut lui‑même.
 
 **Types de messages :**
-- `stream_start` : début de flux (type : `audio`, `video`, etc.)  
-- `stream_chunk` : envoi d’un fragment (binaire encodé en Base64 ou frame WebSocket binaire)  
-- `stream_end` : fin du flux.  
+- `stream_start` : début de flux (type : `audio`, `video`, etc.)
+- `stream_chunk` : envoi d’un fragment (binaire encodé en Base64 ou frame WebSocket binaire)
+- `stream_end` : fin du flux.
 
 **Réponses possibles du Serveur IA :**
-- `stream_output` : renvoie un flux média traité (champ `data` contenant le binaire encodé en Base64 ou un identifiant de ressource)  
-- `transcript_name` / `text_id` : nom ou identifiant de la transcription produite (ex: `"transcript_20251015_001.txt"`)  
+- `stream_output` : renvoie un flux média traité (champ `data` contenant le binaire encodé en Base64 ou un identifiant de ressource)
+- `transcript_name` / `text_id` : nom ou identifiant de la transcription produite (ex: `"transcript_20251015_001.txt"`)
 - `analysis_result` : résultats analytiques (métadonnées, labels, timecodes, etc.)
 
 ### Exemple : Frontend → Serveur IA

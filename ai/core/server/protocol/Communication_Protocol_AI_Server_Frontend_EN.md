@@ -37,13 +37,13 @@ The Frontend can send audio and video streams for processing. **Important:** the
 - a reference/name of the text transcript (`transcript_name` or `text_id`) instead of the raw text itself.
 
 **Message types:**
-- `stream_start`: indicates the start of a stream (type: `audio`, `video`, etc.)  
-- `stream_chunk`: sends a fragment (binary encoded as Base64 or WebSocket binary frame)  
-- `stream_end`: indicates the end of the stream.  
+- `stream_start`: indicates the start of a stream (type: `audio`, `video`, etc.)
+- `stream_chunk`: sends a fragment (binary encoded as Base64 or WebSocket binary frame)
+- `stream_end`: indicates the end of the stream.
 
 **Possible AI Server responses:**
-- `stream_output`: returns a processed media stream (the `data` field contains Base64-encoded binary or a resource id)  
-- `transcript_name` / `text_id`: the name or identifier of the produced transcript (e.g. `"transcript_20251015_001.txt"`)  
+- `stream_output`: returns a processed media stream (the `data` field contains Base64-encoded binary or a resource id)
+- `transcript_name` / `text_id`: the name or identifier of the produced transcript (e.g. `"transcript_20251015_001.txt"`)
 - `analysis_result`: analytical outputs (metadata, labels, timecodes, etc.)
 
 ### Example: Frontend → AI Server
