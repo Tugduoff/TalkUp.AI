@@ -4,7 +4,9 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
+  BeforeInsert,
 } from "typeorm";
+import { uuidv7 } from "uuidv7";
 
 import { AuthProvider } from "@common/enums/AuthProvider";
 
@@ -45,6 +47,14 @@ export class user {
     comment: "Authentication provider (e.g., manual, linkedin)",
   })
   provider: string;
+
+  // ------ UUID manual generation to ensure V7 format ------ //
+
+  @BeforeInsert()
+  generateUUIDv7() {
+    if (!this.user_id)
+      this.user_id = uuidv7();
+  }
 }
 
 @Entity()
