@@ -46,7 +46,6 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
                 err["data"] = { {"message", "missing type field"} };
                 conn.send_text(err.dump());
                 throw ExceptionManager::NetworkMissingTypeField();
-                return;
             }
             wsManager.connection_type_manager(j, conn);
         } catch (const std::exception &e) {
