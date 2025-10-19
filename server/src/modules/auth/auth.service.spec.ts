@@ -242,7 +242,7 @@ describe("AuthService", () => {
       const differentUser = {
         ...mockUser,
         user_id: "different-user-id",
-        generateUUIDv7: (): string => "test-uuid"
+        generateUUIDv7: (): string => "test-uuid",
       };
       mockJwtService.signAsync = jest.fn().mockResolvedValue("different-token");
 
