@@ -21,3 +21,23 @@ const char *ExceptionManager::ServerAlreadyRunningException::what() const noexce
 {
     return "The server is already running.";
 }
+
+const char *ExceptionManager::NetworkBindException::what() const noexcept
+{
+    return "Failed to bind to the specified port.";
+}
+
+const char *ExceptionManager::NetworkMissingTypeField::what() const noexcept
+{
+    return "Missing type field in network message.";
+}
+
+const char *ExceptionManager::NetworkInvalidJsonException::what() const noexcept
+{
+    return "Invalid JSON received in network message.";
+}
+
+const char *ExceptionManager::NetworkUnknownTypeException::what() const noexcept
+{
+    return "Unknown type received in network message.";
+}

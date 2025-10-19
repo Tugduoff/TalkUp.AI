@@ -50,6 +50,7 @@ set(SOURCES
     src/Notifications.cpp
     src/ExceptionManager.cpp
     src/network/Router.cpp
+    src/network/WebsocketManager.cpp
     src/network/MicroservicesManager.cpp
     main.cpp
 )
@@ -59,6 +60,7 @@ set(SOURCES_TESTS
     src/Notifications.cpp
     src/ExceptionManager.cpp
     src/network/Router.cpp
+    src/network/WebsocketManager.cpp
     src/network/MicroservicesManager.cpp
 )
 
