@@ -24,9 +24,9 @@ class ExceptionManager {
          */
         ~ExceptionManager() = default;
 
-        // Notifications Categories
+        // Notification Category
 
-        // Server Categories
+        // Server Category
 
         /**
          * @brief Throws an exception if the server does not start correctly
@@ -51,6 +51,44 @@ class ExceptionManager {
          *
          */
         class ServerAlreadyRunningException : public std::exception {
+            public:
+                const char *what() const noexcept override;
+        };
+
+        // Network category
+
+        /**
+         * @brief Exception thrown when the network fails to bind to the specified port.
+         *
+         */
+        class NetworkBindException : public std::exception {
+            public:
+                const char *what() const noexcept override;
+        };
+
+        /**
+         * @brief Exception thrown when the network receives a message without a type field.
+         *
+         */
+        class NetworkMissingTypeField : public std::exception {
+            public:
+                const char *what() const noexcept override;
+        };
+
+        /**
+         * @brief Exception thrown when the network receives invalid JSON.
+         *
+         */
+        class NetworkInvalidJsonException : public std::exception {
+            public:
+                const char *what() const noexcept override;
+        };
+
+        /**
+         * @brief Exception thrown when the network receives an unknown type.
+         *
+         */
+        class NetworkUnknownTypeException : public std::exception {
             public:
                 const char *what() const noexcept override;
         };
