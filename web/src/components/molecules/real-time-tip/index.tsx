@@ -1,4 +1,3 @@
-import AvatarWorkingImage from '@/assets/avatarworking.png';
 import { Icon } from '@/components/atoms/icon';
 
 import { RealTimeTipProps } from './types';
