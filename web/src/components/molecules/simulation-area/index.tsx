@@ -55,7 +55,6 @@ const SimulationArea = ({ status, timer }: SimulationAreaProps) => {
         {/* Hang-up Button (uses incall.png) */}
         <Button
           size="md"
-          color="red"
           className="rounded-full h-14 w-14 bg-red-600 hover:bg-red-700"
         >
           <img

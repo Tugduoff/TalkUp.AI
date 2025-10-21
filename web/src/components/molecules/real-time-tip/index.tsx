@@ -17,8 +17,8 @@ const RealTimeTip = ({ title, tipText }: RealTimeTipProps) => {
   return (
     <div className="p-6 bg-white rounded-lg shadow-md border border-gray-100 flex flex-col h-full">
       <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
-        {/* Icon (thumbUp) to visually indicate a tip/advice */}
-        <Icon icon="thumbUp" size="lg" color="accent" className="mr-2" />
+        {/* Icon (check) to visually indicate a tip/advice */}
+        <Icon icon="check" size="md" color="primary" className="mr-2" />
         {title}
       </h3>
       <p className="text-sm text-gray-600 mb-4">{tipText}</p>
