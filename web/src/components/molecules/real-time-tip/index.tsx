@@ -1,3 +1,4 @@
+import AvatarWorking from '@/assets/avatarworking.png';
 import { Icon } from '@/components/atoms/icon';
 
 import { RealTimeTipProps } from './types';
@@ -23,12 +24,14 @@ const RealTimeTip = ({ title, tipText }: RealTimeTipProps) => {
       </h3>
       <p className="text-sm text-gray-600 mb-4">{tipText}</p>
 
-      {/* Placeholder for the AI Illustration (avatarworking.png) */}
-      <div className="mt-auto w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-500">
-        [Image IA Illustration]
+      <div className="mt-auto w-full h-32 rounded-lg flex items-center justify-center">
+        <img
+          src={AvatarWorking}
+          alt="AI illustration of an avatar working"
+          className="object-contain max-h-full"
+        />
       </div>
     </div>
   );
 };
-
 export default RealTimeTip;

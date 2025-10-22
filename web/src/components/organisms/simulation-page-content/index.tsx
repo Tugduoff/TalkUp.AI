@@ -105,4 +105,5 @@ const SimulationPageContent = ({
   );
 };
 
+console.log('SimulationPageContent:', SimulationPageContent);
 export default SimulationPageContent;

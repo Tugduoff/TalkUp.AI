@@ -1,38 +1,55 @@
-import SimulationArea from '@/components/molecules/simulation-area';
+import { TranscriptionBubbleProps } from '@/components/molecules/transcription-area/types';
+import SimulationPageContent from '@/components/organisms/simulation-page-content';
 import { createAuthGuard } from '@/utils/auth.guards';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/simulations')({
-  beforeLoad: createAuthGuard('/simulations'),
+  //beforeLoad: createAuthGuard('/simulations'),
   component: Simulations,
 });
 
 /**
- * Simulations component.
+ * Simulations component (Page Route component).
  *
- * Renders the main simulation page, including the headers and the core
- * SimulationArea molecule, initialized in the 'pending' state.
- * * Note: This component serves as a container/page and is integrated
- * with TanStack Router.
- * * @returns {JSX.Element} The rendered Simulations page.
+ * This component acts as a data provider and container for the SimulationPageContent organism.
+ * It is responsible for fetching (or providing static) data related to the interview
+ * and passing it down to the main page layout component.
+ *
+ * @returns {JSX.Element} The rendered Simulation page with the complete layout.
  */
+
 function Simulations() {
-  // Static props for initial display of the SimulationArea component
-  const simulationProps = {
-    status: 'pending' as const, // Sets the state to 'En attente'
-    timer: '00:00',
+  const staticTranscriptions: TranscriptionBubbleProps[] = [
+    {
+      speaker: 'IA',
+      text: "Hello, thank you for joining me. Let's start the interview i.",
+    },
+    {
+      speaker: 'User',
+      text: "Hello, I'm delighted to be here. I look forward to discussing how my experience can benefit your team.",
+    },
+    {
+      speaker: 'IA',
+      text: 'Excellent. Can you tell me about a recent project where you faced a particularly difficult technical challenge, and how you overcame it?',
+    },
+  ];
+
+  const simulationData = {
+    pageTitle: 'Simulation',
+    pageSubtitle: 'Practice interviews and improve your skills.',
+
+    simulationTimer: '03:45',
+    simulationStatus: 'active' as const,
+
+    tipTitle: 'Real-time Advice',
+    tipText:
+      'Your response is solid, but remember to integrate concrete metrics (KPIs) to quantify the impact of your technical solutions. Think STAR format.',
+
+    transcriptions: staticTranscriptions,
+
+    onStartSimulation: () =>
+      console.log('Simulation started! (Function to be implemented)'),
   };
 
-  return (
-    <div className="p-2">
-      {/* Existing Headers */}
-      <h3 className="text-primary">Simulations</h3>
-      <p>Simulations</p>
-
-      {/* Integration of the SimulationArea component */}
-      <div className="mt-6 p-4 border rounded-lg bg-gray-50">
-        <SimulationArea {...simulationProps} />
-      </div>
-    </div>
-  );
+  return <SimulationPageContent {...simulationData} />;
 }
