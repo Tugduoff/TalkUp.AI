@@ -24,11 +24,11 @@ const RealTimeTip = ({ title, tipText }: RealTimeTipProps) => {
       </h3>
       <p className="text-sm text-gray-600 mb-4">{tipText}</p>
 
-      <div className="mt-auto w-full h-32 rounded-lg flex items-center justify-center">
+      <div className="mt-auto w-full h-42 rounded-lg flex items-center justify-center">
         <img
           src={AvatarWorking}
           alt="AI illustration of an avatar working"
-          className="object-contain max-h-full"
+          className="object-cover w-full h-full"
         />
       </div>
     </div>

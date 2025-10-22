@@ -32,6 +32,7 @@ const NavBar = () => {
           <NavLink to="/about" label="About" icon="help" />
           <NavLink to="/login" label="Login" icon="lock" />
           <NavLink to="/signup" label="Sign Up" icon="user" />
+          <NavLink to="/simulations" label="Simulations" icon="video" />
         </div>
       </nav>
     );
@@ -58,7 +59,7 @@ const NavBar = () => {
           <hr className="border-border" />
 
           <div className="flex flex-col space-y-2">
-            <NavLink to="/simulations" label="Simulations" icon="cog" />
+            <NavLink to="/simulations" label="Simulations" icon="video" />
             <NavLink to="/notes" label="Notes" icon="notes" />
           </div>
 

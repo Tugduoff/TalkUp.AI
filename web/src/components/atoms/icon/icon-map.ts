@@ -27,7 +27,9 @@ import {
   FaUnlock,
   FaUpload,
   FaUser,
+  FaVideo,
 } from 'react-icons/fa';
+// Removed FaPhone import
 import {
   MdCheckCircle,
   MdClose,
@@ -72,6 +74,7 @@ export const iconMap = {
   help: FaQuestionCircle,
   progression: FaChartLine,
   schedule: FaCalendarAlt,
+  video: FaVideo,
 
   // Material Design icons
   dashboard: MdDashboard,
