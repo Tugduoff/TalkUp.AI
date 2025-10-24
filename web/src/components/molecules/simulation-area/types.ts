@@ -11,4 +11,9 @@ export interface SimulationAreaProps {
    * Controls the conditional activation of the camera and timer.
    */
   isStarted: boolean;
+  /**
+   * The current time displayed on the simulation timer (e.g., "01:30").
+   * This property must be added to resolve TS2322.
+   */
+  timer: string;
 }
