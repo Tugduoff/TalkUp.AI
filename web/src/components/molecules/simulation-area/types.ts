@@ -1,6 +1,3 @@
-/**
- * Defines the props for the SimulationArea component.
- */
 export interface SimulationAreaProps {
   /**
    * The current status of the simulation.
@@ -10,7 +7,8 @@ export interface SimulationAreaProps {
    */
   status: 'active' | 'pending' | 'finished';
   /**
-   * The time elapsed in the simulation, formatted as a string (e.g., "00:00").
+   * Flag indicating whether the user has clicked "Start" to begin the simulation.
+   * Controls the conditional activation of the camera and timer.
    */
-  timer: string;
+  isStarted: boolean;
 }

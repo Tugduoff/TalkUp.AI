@@ -1,9 +1,11 @@
+// Importation de useState pour gérer l'état
 import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import RealTimeTip from '@/components/molecules/real-time-tip';
 import SimulationArea from '@/components/molecules/simulation-area';
 import TranscriptionArea from '@/components/molecules/transcription-area';
 import { TranscriptionBubbleProps } from '@/components/molecules/transcription-area/types';
+import { useState } from 'react';
 
 /**
  * Defines the props for the SimulationPageContent component.
@@ -39,6 +41,7 @@ interface SimulationPageContentProps {
   tipText: string;
   /**
    * Callback function executed when the "Start Simulation" button is clicked.
+   * NOTE: We now control the state internally, but keep the prop for external logic.
    */
   onStartSimulation: () => void;
 }
@@ -62,6 +65,22 @@ const SimulationPageContent = ({
   tipText,
   onStartSimulation,
 }: SimulationPageContentProps) => {
+  // 1. Nouvel état pour contrôler l'activation de la caméra/simulation
+  const [isSimulationStarted, setIsSimulationStarted] = useState(false);
+
+  // Gestionnaire pour le bouton
+  const handleStartSimulation = () => {
+    setIsSimulationStarted(true);
+    // Exécute la callback fournie par le parent pour toute autre logique métier nécessaire
+    onStartSimulation();
+  };
+
+  // Détermine le statut réel de la simulation passé à SimulationArea
+  // Si la simulation n'a jamais démarré, le statut est 'pending' indépendamment de la prop
+  const currentSimulationStatus = isSimulationStarted
+    ? simulationStatus
+    : 'pending';
+
   return (
     <div className="p-6">
       {/* Page Header */}
@@ -70,8 +89,12 @@ const SimulationPageContent = ({
           <h1 className="text-2xl font-bold text-gray-900">{pageTitle}</h1>
           <p className="text-gray-600">{pageSubtitle}</p>
         </div>
-        <Button color="success" onClick={onStartSimulation}>
-          Démarrer l'entretien
+        <Button
+          color="success"
+          onClick={handleStartSimulation} // Utilisation du nouveau gestionnaire
+          disabled={isSimulationStarted} // Désactive le bouton une fois la simulation lancée
+        >
+          {isSimulationStarted ? 'En cours...' : "Démarrer l'entretien"}
         </Button>
       </div>
 
@@ -79,7 +102,12 @@ const SimulationPageContent = ({
       <div className="flex space-x-6">
         {/* Left Column: Video and Transcriptions */}
         <div className="flex-1 min-w-0">
-          <SimulationArea status={simulationStatus} timer={simulationTimer} />
+          {/* 2. Passage de l'état isSimulationStarted au composant SimulationArea */}
+          <SimulationArea
+            status={currentSimulationStatus}
+            timer={simulationTimer}
+            isStarted={isSimulationStarted} // Nouvelle prop
+          />
           {/* Note: TranscriptionBubble expects a list of transcriptions */}
           <TranscriptionArea transcriptions={transcriptions} />
         </div>
