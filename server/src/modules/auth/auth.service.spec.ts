@@ -33,6 +33,7 @@ describe("AuthService", () => {
     last_accessed_at: new Date(),
     created_at: new Date(),
     updated_at: new Date(),
+    generateUUIDv7: (): string => "test-uuid",
   };
 
   const mockEmail = {
@@ -238,7 +239,11 @@ describe("AuthService", () => {
     });
 
     it("should handle different user IDs correctly", async () => {
-      const differentUser = { ...mockUser, user_id: "different-user-id" };
+      const differentUser = {
+        ...mockUser,
+        user_id: "different-user-id",
+        generateUUIDv7: (): string => "test-uuid",
+      };
       mockJwtService.signAsync = jest.fn().mockResolvedValue("different-token");
 
       const result = await service.login(differentUser);

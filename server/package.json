@@ -45,7 +45,8 @@
     "pg": "^8.15.6",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.22"
+    "typeorm": "^0.3.22",
+    "uuidv7": "^1.0.2"
   },
   "devDependencies": {
     "@nestjs/schematics": "^11.0.5",
