@@ -34,6 +34,12 @@ namespace talkup_network {
              */
             void set_routes_definitions(crow::SimpleApp& app);
 
+            /**
+             * @brief Get the environment key used by the server.
+             *
+             */
+            std::string get_env_key(void);
+
         protected:
         private:
     };
