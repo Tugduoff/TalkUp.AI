@@ -28,8 +28,19 @@ function Simulations() {
     readyState,
     getWebSocket,
   } = useWebSocket(getSocketUrl, {
-    onOpen: () => console.log('opened'),
-    shouldReconnect: (_closeEvent) => true,
+    onOpen: () => console.log('WebSocket opened'),
+    onClose: (closeEvent) => {
+      console.log('WebSocket closed with code:', closeEvent.code, 'reason:', closeEvent.reason);
+    },
+    shouldReconnect: (closeEvent) => {
+      // Don't reconnect if it was a normal closure (code 1000 or 1001)
+      // 1000 = Normal Closure (manual close)
+      // 1001 = Going Away (page navigation)
+      // Any other code indicates an abnormal closure (network error, server crash, etc.)
+      const shouldReconnect = closeEvent.code !== 1000 && closeEvent.code !== 1001;
+      console.log('shouldReconnect:', shouldReconnect, 'code:', closeEvent.code);
+      return shouldReconnect;
+    },
   });
 
   const handleConfirmUrl = () => {
@@ -94,7 +105,7 @@ function Simulations() {
             Send JSON Message
           </Button>
           <Button
-            onClick={() => getWebSocket()?.close()}
+            onClick={() => getWebSocket()?.close(1000, 'Manual close')}
             disabled={readyState !== ReadyState.OPEN}
           >
             Close WebSocket
