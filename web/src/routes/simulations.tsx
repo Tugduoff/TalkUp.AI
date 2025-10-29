@@ -17,7 +17,6 @@ export const Route = createFileRoute('/simulations')({
  *
  * @returns {JSX.Element} The rendered Simulation page with the complete layout.
  */
-
 function Simulations() {
   const staticTranscriptions: TranscriptionBubbleProps[] = [
     {
@@ -35,8 +34,10 @@ function Simulations() {
   ];
 
   const simulationData = {
-    pageTitle: 'Simulation',
-    pageSubtitle: 'Practice interviews and improve your skills.',
+    pageTitle: 'Simulations',
+
+    pageSubtitle:
+      'Simulations let you practice interview scenarios in a safe environment.',
 
     simulationTimer: '03:45',
     simulationStatus: 'active' as const,
