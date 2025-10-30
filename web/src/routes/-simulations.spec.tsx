@@ -92,6 +92,6 @@ describe('Simulations', () => {
     const paragraph = simulationsTexts.find((el) => el.tagName === 'P');
     expect(paragraph).toBeInTheDocument();
 
-    expect(container.firstChild).toHaveClass('p-2');
+    expect(container.firstChild).toHaveClass('p-6');
   });
 });
