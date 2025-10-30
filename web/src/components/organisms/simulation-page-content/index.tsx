@@ -100,7 +100,7 @@ const SimulationPageContent = ({
           <SimulationArea
             status={currentSimulationStatus}
             timer={simulationTimer}
-            isStarted={isSimulationStarted} 
+            isStarted={isSimulationStarted}
           />
           {/* Note: TranscriptionBubble expects a list of transcriptions */}
           <TranscriptionArea transcriptions={transcriptions} />
