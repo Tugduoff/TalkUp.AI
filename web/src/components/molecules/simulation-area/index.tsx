@@ -20,7 +20,6 @@ import { SimulationAreaProps } from './types';
  */
 const SimulationArea = ({ status, isStarted }: SimulationAreaProps) => {
   const isPending = status === 'pending';
-  // Explicitly set the ref type to HTMLVideoElement for better type safety
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCallEnded, setIsCallEnded] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0); // Time in seconds

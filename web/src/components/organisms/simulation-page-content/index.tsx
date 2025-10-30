@@ -64,18 +64,13 @@ const SimulationPageContent = ({
   tipText,
   onStartSimulation,
 }: SimulationPageContentProps) => {
-  // 1. Nouvel état pour contrôler l'activation de la caméra/simulation
   const [isSimulationStarted, setIsSimulationStarted] = useState(false);
 
-  // Gestionnaire pour le bouton
   const handleStartSimulation = () => {
     setIsSimulationStarted(true);
-    // Exécute la callback fournie par le parent pour toute autre logique métier nécessaire
     onStartSimulation();
   };
 
-  // Détermine le statut réel de la simulation passé à SimulationArea
-  // Si la simulation n'a jamais démarré, le statut est 'pending' indépendamment de la prop
   const currentSimulationStatus = isSimulationStarted
     ? simulationStatus
     : 'pending';
@@ -90,8 +85,8 @@ const SimulationPageContent = ({
         </div>
         <Button
           color="success"
-          onClick={handleStartSimulation} // Utilisation du nouveau gestionnaire
-          disabled={isSimulationStarted} // Désactive le bouton une fois la simulation lancée
+          onClick={handleStartSimulation}
+          disabled={isSimulationStarted}
         >
           {isSimulationStarted ? 'En cours...' : "Démarrer l'entretien"}
         </Button>
@@ -105,7 +100,7 @@ const SimulationPageContent = ({
           <SimulationArea
             status={currentSimulationStatus}
             timer={simulationTimer}
-            isStarted={isSimulationStarted} // Nouvelle prop
+            isStarted={isSimulationStarted} 
           />
           {/* Note: TranscriptionBubble expects a list of transcriptions */}
           <TranscriptionArea transcriptions={transcriptions} />
