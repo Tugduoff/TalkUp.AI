@@ -1,4 +1,3 @@
-// Importation de useState pour gérer l'état
 import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import RealTimeTip from '@/components/molecules/real-time-tip';

@@ -83,8 +83,14 @@ describe('Simulations', () => {
 
     expect(simulationsTexts).toHaveLength(2);
 
-    expect(simulationsTexts[0].tagName).toBe('H3');
-    expect(simulationsTexts[1].tagName).toBe('P');
+    const heading = await screen.findByRole('heading', {
+      name: /Simulations/i,
+      level: 1,
+    });
+    expect(heading).toBeInTheDocument();
+
+    const paragraph = simulationsTexts.find((el) => el.tagName === 'P');
+    expect(paragraph).toBeInTheDocument();
 
     expect(container.firstChild).toHaveClass('p-2');
   });
