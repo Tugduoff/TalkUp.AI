@@ -12,17 +12,19 @@ import { useEffect, useRef, useState } from 'react';
  * @param {boolean} isStarted - Indicates whether the call simulation has started.
  * @param {string} status - The current call status ("pending", "active", etc.).
  * @returns {{
- *  videoRef: React.RefObject<HTMLVideoElement>,
- *  isPending: boolean,
- *  isCallEnded: boolean,
- *  elapsedTime: number,
- *  handleEndCall: () => void
+ * videoRef: React.RefObject<HTMLVideoElement>,
+ * isPending: boolean,
+ * isCallEnded: boolean,
+ * elapsedTime: number,
+ * handleEndCall: () => void
  * }} The video stream utilities and state.
  */
 export const useVideoStream = (isStarted: boolean, status: string) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCallEnded, setIsCallEnded] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
+
+  const [isRestarting, setIsRestarting] = useState(false);
 
   const isPending = status === 'pending';
 
@@ -39,47 +41,54 @@ export const useVideoStream = (isStarted: boolean, status: string) => {
   };
 
   /**
-   * Ends the call and resets relevant state values.
+   * Ends the call (if active) OR restarts the call (if ended).
    */
   const handleEndCall = () => {
-    stopVideoStream();
-    setIsCallEnded(true);
-    setElapsedTime(0);
+    if (isCallEnded) {
+      setIsCallEnded(false);
+      setIsRestarting((prev) => !prev);
+    } else {
+      stopVideoStream();
+      setIsCallEnded(true);
+      setElapsedTime(0);
+    }
   };
 
   /**
-   * Effect: Starts or stops the camera stream based on `isStarted`.
+   * Effect: Starts or stops the camera stream based on `isStarted` OU `isRestarting`.
+   * J'ajoute `isRestarting` aux dépendances pour forcer le redémarrage.
    */
   useEffect(() => {
-    if (!isStarted) {
+    if (!isStarted && !isRestarting) {
       stopVideoStream();
       return;
     }
 
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
+    if (isStarted || isRestarting) {
+      const startCamera = async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            videoRef.current.play();
+          }
+        } catch (error) {
+          console.error('Error accessing the camera:', error);
         }
-      } catch (error) {
-        console.error('Error accessing the camera:', error);
-      }
-    };
+      };
 
-    startCamera();
+      startCamera();
+    }
 
     return () => {
       stopVideoStream();
     };
-  }, [isStarted]);
+  }, [isStarted, isRestarting]);
 
   /**
    * Effect: Manages the elapsed time counter.
-   * Runs every second while the call is active and not ended.
    */
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;

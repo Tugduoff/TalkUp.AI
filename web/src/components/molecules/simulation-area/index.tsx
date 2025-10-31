@@ -89,7 +89,7 @@ const SimulationArea = ({
             />
           </Button>
 
-          {/* Hang-up Button */}
+          {/* Hang-up/Start Call Button (CORRIGÉ : Icône) */}
           <Button
             size="md"
             onClick={handleEndCall}
@@ -99,7 +99,11 @@ const SimulationArea = ({
                 : 'bg-red-600 hover:bg-red-700'
             }`}
           >
-            <Icon icon="hang-up" size="xl" color="neutral" />
+            <Icon
+              icon={isCallEnded ? 'video' : 'hang-up'}
+              size="xl"
+              color="neutral"
+            />
           </Button>
 
           {/* Microphone Button */}
