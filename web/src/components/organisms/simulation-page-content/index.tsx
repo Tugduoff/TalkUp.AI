@@ -126,5 +126,4 @@ const SimulationPageContent = ({
     </div>
   );
 };
-console.log('SimulationPageContent:', SimulationPageContent);
 export default SimulationPageContent;
