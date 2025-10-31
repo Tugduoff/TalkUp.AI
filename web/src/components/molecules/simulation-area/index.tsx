@@ -89,7 +89,7 @@ const SimulationArea = ({
             />
           </Button>
 
-          {/* Hang-up/Start Call Button (CORRIGÉ : Icône) */}
+          {/* Hang-up/Start Call Button*/}
           <Button
             size="md"
             onClick={handleEndCall}
