@@ -42,6 +42,14 @@ import {
   MdSettings,
   MdWarning,
 } from 'react-icons/md';
+import {
+  PiMicrophoneFill,
+  PiPhoneSlashFill,
+  PiSpeakerSimpleHighFill,
+  PiSpeakerSlashFill,
+} from 'react-icons/pi';
+
+// NEW IMPORT
 
 export const iconMap = {
   // FontAwesome icons
@@ -74,6 +82,12 @@ export const iconMap = {
   progression: FaChartLine,
   schedule: FaCalendarAlt,
   video: FaVideo,
+
+  // NEW ICONS for SimulationArea
+  PiSpeakerSimpleHighFill: PiSpeakerSimpleHighFill,
+  PiSpeakerSlashFill: PiSpeakerSlashFill,
+  PiPhoneSlashFill: PiPhoneSlashFill,
+  PiMicrophoneFill: PiMicrophoneFill,
 
   // Material Design icons
   dashboard: MdDashboard,

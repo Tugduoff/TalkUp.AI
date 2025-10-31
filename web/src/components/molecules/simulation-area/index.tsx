@@ -1,101 +1,35 @@
-import InCallIcon from '@/assets/incall.png';
-import SpeakerIcon from '@/assets/speaker.png';
 import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import { formatTime } from '@/utils/time';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { SimulationAreaProps } from './types';
+import { useVideoStream } from './useVideoStream';
 
 /**
  * Renders the video call simulation area.
  *
- * It manages:
- * - Conditional access to the user's camera stream (only when `isStarted` is true).
- * - Tracking elapsed time with a timer (only when started and active).
- * - Displaying status overlays (Waiting/Pending).
- * - Call controls and the end call functionality.
+ * This component displays:
+ * - The user's camera stream when active.
+ * - A timer showing the call duration.
+ * - Control buttons (speaker, hang-up, microphone).
+ * - Overlays for waiting or pending states.
  *
- * @param {SimulationAreaProps} props - The component properties, including status and start flag.
- * @returns {JSX.Element} The Simulation Area component.
+ * All video stream logic is handled by the `useVideoStream` hook.
+ *
+ * @param {SimulationAreaProps} props - The component properties, including call status and start flag.
+ * @returns {JSX.Element} The rendered Simulation Area.
  */
 const SimulationArea = ({ status, isStarted }: SimulationAreaProps) => {
-  const isPending = status === 'pending';
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isCallEnded, setIsCallEnded] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const { videoRef, isPending, isCallEnded, elapsedTime, handleEndCall } =
+    useVideoStream(isStarted, status);
 
-  /**
-   * Helper function to safely stop the video stream.
-   * Uses TypeScript type guards to ensure the ref and srcObject exist.
-   */
-  const stopVideoStream = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
-    }
+  const [isSpeakerActive, setIsSpeakerActive] = useState(true);
+
+  /** Toggles the speaker state between active and muted. */
+  const toggleSpeaker = () => {
+    setIsSpeakerActive((prev) => !prev);
   };
-
-  /**
-   * Effect conditionnel: Starts the camera stream only when `isStarted` is true.
-   * Cleans up the stream on unmount or when the simulation ends.
-   */
-  useEffect(() => {
-    if (!isStarted) {
-      stopVideoStream();
-      return;
-    }
-
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
-        }
-      } catch (error) {
-        console.error('Error accessing the camera:', error);
-      }
-    };
-
-    startCamera();
-
-    return () => {
-      stopVideoStream();
-    };
-  }, [isStarted]);
-
-  /**
-   * Effect to manage the call timer. The interval runs only if the simulation is started and active.
-   */
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-
-    if (isStarted && !isCallEnded) {
-      interval = setInterval(() => {
-        setElapsedTime((prevTime) => prevTime + 1);
-      }, 1000);
-    }
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isCallEnded, isStarted]);
-
-  /**
-   * Handles the action of ending the call. Stops the video stream and updates the state.
-   * Also resets the elapsed time, as per the review comment.
-   */
-  const handleEndCall = () => {
-    stopVideoStream();
-    setIsCallEnded(true);
-    setElapsedTime(0);
-  }; // <-- MISSING BRACE ADDED HERE TO CLOSE handleEndCall
-
-  /* The original formatTime function has been removed from here. */
 
   const showWaitingOverlay = !isStarted || isPending;
 
@@ -115,25 +49,34 @@ const SimulationArea = ({ status, isStarted }: SimulationAreaProps) => {
         </div>
       )}
 
-      {/* Pending status overlay / Initial waiting screen */}
+      {/* Waiting or Pending overlay */}
       {showWaitingOverlay && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/50">
           <span className="text-white text-lg font-medium border border-white/50 px-4 py-2 rounded-full">
-            {isStarted ? 'En attente' : "Cliquez sur 'Démarrer l'entretien'"}
+            {isStarted ? 'Waiting...' : "Click 'Start Interview' to begin"}
           </span>
         </div>
       )}
 
-      {/* Control buttons - Only show controls when the simulation has started */}
+      {/* Control buttons */}
       {isStarted && (
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-6">
           {/* Speaker Button */}
           <Button
             size="md"
+            onClick={toggleSpeaker}
             variant="text"
-            className="rounded-full h-12 w-12 bg-gray-700 hover:bg-gray-600"
+            className={`rounded-full h-12 w-12 ${
+              isSpeakerActive
+                ? 'bg-gray-700 hover:bg-gray-600'
+                : 'bg-red-600 hover:bg-red-700'
+            }`}
           >
-            <img src={SpeakerIcon} alt="Speaker" className="w-6 h-6 invert" />
+            <Icon
+              icon={isSpeakerActive ? 'speaker-on' : 'speaker-off'}
+              size="lg"
+              color="neutral"
+            />
           </Button>
 
           {/* Hang-up Button */}
@@ -146,11 +89,7 @@ const SimulationArea = ({ status, isStarted }: SimulationAreaProps) => {
                 : 'bg-red-600 hover:bg-red-700'
             }`}
           >
-            <img
-              src={InCallIcon}
-              alt="End Call"
-              className="w-7 h-7 invert rotate-135"
-            />
+            <Icon icon="PiPhoneSlashFill" size="xl" color="neutral" />
           </Button>
 
           {/* Microphone Button */}
@@ -159,7 +98,7 @@ const SimulationArea = ({ status, isStarted }: SimulationAreaProps) => {
             variant="text"
             className="rounded-full h-12 w-12 bg-gray-700 hover:bg-gray-600"
           >
-            <Icon icon="user" size="lg" color="neutral" />
+            <Icon icon="PiMicrophoneFill" size="lg" color="neutral" />
           </Button>
         </div>
       )}
