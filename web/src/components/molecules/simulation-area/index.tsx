@@ -71,7 +71,7 @@ const SimulationArea = ({
       {/* Control buttons */}
       {isStarted && (
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-6">
-          {/* Speaker Button (CORRIGÉ : ARIA + Couleurs Sémantiques) */}
+          {/* Speaker Button*/}
           <Button
             size="md"
             onClick={toggleSpeaker}
@@ -90,7 +90,7 @@ const SimulationArea = ({
             />
           </Button>
 
-          {/* Hang-up/Start Call Button (CORRIGÉ : ARIA + Logique + Couleurs Sémantiques) */}
+          {/* Hang-up/Start Call Button*/}
           <Button
             size="md"
             onClick={handleEndCall}
