@@ -71,16 +71,17 @@ const SimulationArea = ({
       {/* Control buttons */}
       {isStarted && (
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-6">
-          {/* Speaker Button */}
+          {/* Speaker Button (CORRIGÉ : ARIA + Couleurs Sémantiques) */}
           <Button
             size="md"
             onClick={toggleSpeaker}
             variant="text"
             className={`rounded-full h-12 w-12 ${
               isSpeakerActive
-                ? 'bg-gray-700 hover:bg-gray-600'
-                : 'bg-red-600 hover:bg-red-700'
+                ? 'bg-neutral hover:bg-neutral-hover'
+                : 'bg-error hover:bg-error-hover'
             }`}
+            aria-label={isSpeakerActive ? 'Mute speaker' : 'Unmute speaker'}
           >
             <Icon
               icon={isSpeakerActive ? 'speaker' : 'speaker-off'}
@@ -89,33 +90,35 @@ const SimulationArea = ({
             />
           </Button>
 
-          {/* Hang-up/Start Call Button*/}
+          {/* Hang-up/Start Call Button (CORRIGÉ : ARIA + Logique + Couleurs Sémantiques) */}
           <Button
             size="md"
             onClick={handleEndCall}
             className={`rounded-full h-14 w-14 ${
-              isCallEnded
-                ? 'bg-green-600 hover:bg-green-700'
-                : 'bg-red-600 hover:bg-red-700'
+              isCallEnded 
+                ? 'bg-success hover:bg-success-hover'
+                : 'bg-error hover:bg-error-hover'
             }`}
+            aria-label={isCallEnded ? 'Start new call' : 'End call'}
           >
             <Icon
               icon={isCallEnded ? 'video' : 'hang-up'}
               size="xl"
-              color="neutral"
+              color="white"
             />
           </Button>
 
-          {/* Microphone Button */}
+          {/* Microphone Button (CORRIGÉ : ARIA + Couleurs Sémantiques) */}
           <Button
             size="md"
             onClick={toggleMic}
             variant="text"
             className={`rounded-full h-12 w-12 ${
               isMicActive
-                ? 'bg-gray-700 hover:bg-gray-600'
-                : 'bg-red-600 hover:bg-red-700'
+                ? 'bg-neutral hover:bg-neutral-hover'
+                : 'bg-error hover:bg-error-hover'
             }`}
+            aria-label={isMicActive ? 'Mute microphone' : 'Unmute microphone'}
           >
             <Icon
               icon={isMicActive ? 'mic-on' : 'mic-off'}
