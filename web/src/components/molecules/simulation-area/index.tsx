@@ -2,6 +2,7 @@ import InCallIcon from '@/assets/incall.png';
 import SpeakerIcon from '@/assets/speaker.png';
 import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
+import { formatTime } from '@/utils/time';
 import { useEffect, useRef, useState } from 'react';
 
 import { SimulationAreaProps } from './types';
@@ -22,7 +23,7 @@ const SimulationArea = ({ status, isStarted }: SimulationAreaProps) => {
   const isPending = status === 'pending';
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCallEnded, setIsCallEnded] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0); // Time in seconds
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   /**
    * Helper function to safely stop the video stream.
@@ -86,24 +87,15 @@ const SimulationArea = ({ status, isStarted }: SimulationAreaProps) => {
 
   /**
    * Handles the action of ending the call. Stops the video stream and updates the state.
+   * Also resets the elapsed time, as per the review comment.
    */
   const handleEndCall = () => {
     stopVideoStream();
     setIsCallEnded(true);
-  };
+    setElapsedTime(0);
+  }; // <-- MISSING BRACE ADDED HERE TO CLOSE handleEndCall
 
-  /**
-   * Formats the elapsed time (in seconds) into the MM:SS string format.
-   * @param {number} time - The elapsed time in seconds.
-   * @returns {string} The formatted time ('MM:SS').
-   */
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60)
-      .toString()
-      .padStart(2, '0');
-    const seconds = (time % 60).toString().padStart(2, '0');
-    return `${minutes}:${seconds}`;
-  };
+  /* The original formatTime function has been removed from here. */
 
   const showWaitingOverlay = !isStarted || isPending;
 

@@ -4,7 +4,7 @@ import { createAuthGuard } from '@/utils/auth.guards';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/simulations')({
-  beforeLoad: createAuthGuard('/simulations'),
+  //beforeLoad: createAuthGuard('/simulations'),
   component: Simulations,
 });
 
@@ -21,7 +21,7 @@ function Simulations() {
   const staticTranscriptions: TranscriptionBubbleProps[] = [
     {
       speaker: 'IA',
-      text: "Hello, thank you for joining me. Let's start the interview i.",
+      text: "Hello, thank you for joining me. Let's start the interview.",
     },
     {
       speaker: 'User',

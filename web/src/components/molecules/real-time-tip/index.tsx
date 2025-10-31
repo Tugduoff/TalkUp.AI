@@ -9,7 +9,7 @@ import { RealTimeTipProps } from './types';
  * Displays a panel containing real-time feedback or tips from the AI,
  * typically used as a sidebar during the simulation. It includes a title,
  * text content, and a stylized illustration/placeholder.
- * * @param {RealTimeTipProps} props The properties object.
+ * @param {RealTimeTipProps} props The properties object.
  * @param {string} props.title The title of the tips section.
  * @param {string} props.tipText The content of the current tip.
  * @returns {JSX.Element} The rendered real-time tip panel.

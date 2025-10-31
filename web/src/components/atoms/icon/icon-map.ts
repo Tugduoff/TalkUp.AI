@@ -29,7 +29,6 @@ import {
   FaUser,
   FaVideo,
 } from 'react-icons/fa';
-// Removed FaPhone import
 import {
   MdCheckCircle,
   MdClose,
