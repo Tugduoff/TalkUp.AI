@@ -95,7 +95,7 @@ const SimulationArea = ({
             size="md"
             onClick={handleEndCall}
             className={`rounded-full h-14 w-14 ${
-              isCallEnded 
+              isCallEnded
                 ? 'bg-success hover:bg-success-hover'
                 : 'bg-error hover:bg-error-hover'
             }`}
