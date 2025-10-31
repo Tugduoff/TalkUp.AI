@@ -17,18 +17,28 @@ import { useVideoStream } from './useVideoStream';
  *
  * All video stream logic is handled by the `useVideoStream` hook.
  *
+ * @component
  * @param {SimulationAreaProps} props - The component properties, including call status and start flag.
  * @returns {JSX.Element} The rendered Simulation Area.
  */
-const SimulationArea = ({ status, isStarted }: SimulationAreaProps) => {
+const SimulationArea = ({
+  status,
+  isStarted,
+}: SimulationAreaProps): React.ReactElement => {
   const { videoRef, isPending, isCallEnded, elapsedTime, handleEndCall } =
     useVideoStream(isStarted, status);
 
   const [isSpeakerActive, setIsSpeakerActive] = useState(true);
+  const [isMicActive, setIsMicActive] = useState(true);
 
   /** Toggles the speaker state between active and muted. */
-  const toggleSpeaker = () => {
+  const toggleSpeaker = (): void => {
     setIsSpeakerActive((prev) => !prev);
+  };
+
+  /** Toggles the microphone state between active and muted. */
+  const toggleMic = (): void => {
+    setIsMicActive((prev) => !prev);
   };
 
   const showWaitingOverlay = !isStarted || isPending;
@@ -73,7 +83,7 @@ const SimulationArea = ({ status, isStarted }: SimulationAreaProps) => {
             }`}
           >
             <Icon
-              icon={isSpeakerActive ? 'speaker-on' : 'speaker-off'}
+              icon={isSpeakerActive ? 'speaker' : 'speaker-off'}
               size="lg"
               color="neutral"
             />
@@ -89,16 +99,25 @@ const SimulationArea = ({ status, isStarted }: SimulationAreaProps) => {
                 : 'bg-red-600 hover:bg-red-700'
             }`}
           >
-            <Icon icon="PiPhoneSlashFill" size="xl" color="neutral" />
+            <Icon icon="hang-up" size="xl" color="neutral" />
           </Button>
 
           {/* Microphone Button */}
           <Button
             size="md"
+            onClick={toggleMic}
             variant="text"
-            className="rounded-full h-12 w-12 bg-gray-700 hover:bg-gray-600"
+            className={`rounded-full h-12 w-12 ${
+              isMicActive
+                ? 'bg-gray-700 hover:bg-gray-600'
+                : 'bg-red-600 hover:bg-red-700'
+            }`}
           >
-            <Icon icon="PiMicrophoneFill" size="lg" color="neutral" />
+            <Icon
+              icon={isMicActive ? 'mic-on' : 'mic-off'}
+              size="lg"
+              color="neutral"
+            />
           </Button>
         </div>
       )}

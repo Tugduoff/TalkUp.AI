@@ -116,7 +116,7 @@ const SimulationPageContent = ({
               Statistiques
             </h3>
             <p className="text-sm text-gray-500">
-              Les statistiques en temps réel apparaîtront ici.
+              Real-time statistics will appear here.
             </p>
           </div>
 

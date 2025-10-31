@@ -44,6 +44,7 @@ import {
 } from 'react-icons/md';
 import {
   PiMicrophoneFill,
+  PiMicrophoneSlashFill,
   PiPhoneSlashFill,
   PiSpeakerSimpleHighFill,
   PiSpeakerSlashFill,
@@ -83,11 +84,12 @@ export const iconMap = {
   schedule: FaCalendarAlt,
   video: FaVideo,
 
-  // NEW ICONS for SimulationArea
-  PiSpeakerSimpleHighFill: PiSpeakerSimpleHighFill,
-  PiSpeakerSlashFill: PiSpeakerSlashFill,
-  PiPhoneSlashFill: PiPhoneSlashFill,
-  PiMicrophoneFill: PiMicrophoneFill,
+  // SimulationArea icons
+  speaker: PiSpeakerSimpleHighFill,
+  'speaker-off': PiSpeakerSlashFill,
+  'hang-up': PiPhoneSlashFill,
+  'mic-on': PiMicrophoneFill,
+  'mic-off': PiMicrophoneSlashFill,
 
   // Material Design icons
   dashboard: MdDashboard,
