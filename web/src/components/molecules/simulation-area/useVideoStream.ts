@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from 'react';
  *
  * @param {boolean} isStarted - Indicates whether the call simulation has started.
  * @param {string} status - The current call status ("pending", "active", etc.).
+ * @param {function(string): void} setStatus - Function to update the overall call status (ADDED for review comment).
  * @returns {{
  * videoRef: React.RefObject<HTMLVideoElement>,
  * isPending: boolean,
@@ -19,7 +20,11 @@ import { useEffect, useRef, useState } from 'react';
  * handleEndCall: () => void
  * }} The video stream utilities and state.
  */
-export const useVideoStream = (isStarted: boolean, status: string) => {
+export const useVideoStream = (
+  isStarted: boolean,
+  status: string,
+  setStatus: (s: string) => void, // NOUVEAU PARAMÈTRE
+) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCallEnded, setIsCallEnded] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -51,6 +56,7 @@ export const useVideoStream = (isStarted: boolean, status: string) => {
       stopVideoStream();
       setIsCallEnded(true);
       setElapsedTime(0);
+      setStatus('finished');
     }
   };
 

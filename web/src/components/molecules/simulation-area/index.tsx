@@ -6,6 +6,10 @@ import { useState } from 'react';
 import { SimulationAreaProps } from './types';
 import { useVideoStream } from './useVideoStream';
 
+interface UpdatedSimulationAreaProps extends SimulationAreaProps {
+  setStatus: (s: string) => void;
+}
+
 /**
  * Renders the video call simulation area.
  *
@@ -24,9 +28,10 @@ import { useVideoStream } from './useVideoStream';
 const SimulationArea = ({
   status,
   isStarted,
-}: SimulationAreaProps): React.ReactElement => {
+  setStatus,
+}: UpdatedSimulationAreaProps): React.ReactElement => {
   const { videoRef, isPending, isCallEnded, elapsedTime, handleEndCall } =
-    useVideoStream(isStarted, status);
+    useVideoStream(isStarted, status, setStatus);
 
   const [isSpeakerActive, setIsSpeakerActive] = useState(true);
   const [isMicActive, setIsMicActive] = useState(true);
@@ -52,7 +57,7 @@ const SimulationArea = ({
         muted
       />
 
-      {/* Timer - FIX APPLIED: Using <time> for semantic duration */}
+      {/* Timer - Using <time> for semantic duration */}
       {isStarted && !isCallEnded && (
         <time
           className="absolute top-4 left-4 text-white text-sm font-semibold bg-gray-800/50 px-3 py-1 rounded"
