@@ -1,6 +1,6 @@
 import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
-import { formatTime } from '@/utils/time';
+import { formatDurationISO, formatTime } from '@/utils/time';
 import { useState } from 'react';
 
 import { SimulationAreaProps } from './types';
@@ -52,11 +52,14 @@ const SimulationArea = ({
         muted
       />
 
-      {/* Timer */}
+      {/* Timer - FIX APPLIED: Using <time> for semantic duration */}
       {isStarted && !isCallEnded && (
-        <div className="absolute top-4 left-4 text-white text-sm font-semibold bg-gray-800/50 px-3 py-1 rounded">
-          {formatTime(elapsedTime)}
-        </div>
+        <time
+          className="absolute top-4 left-4 text-white text-sm font-semibold bg-gray-800/50 px-3 py-1 rounded"
+          dateTime={formatDurationISO(elapsedTime)}
+        >
+          {formatTime(elapsedTime)} {/* Displays human-readable time */}
+        </time>
       )}
 
       {/* Waiting or Pending overlay */}
@@ -108,7 +111,7 @@ const SimulationArea = ({
             />
           </Button>
 
-          {/* Microphone Button (CORRIGÉ : ARIA + Couleurs Sémantiques) */}
+          {/* Microphone Button*/}
           <Button
             size="md"
             onClick={toggleMic}

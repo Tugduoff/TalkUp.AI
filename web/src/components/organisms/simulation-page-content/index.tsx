@@ -88,7 +88,7 @@ const SimulationPageContent = ({
           onClick={handleStartSimulation}
           disabled={isSimulationStarted}
         >
-          {isSimulationStarted ? 'En cours...' : "Démarrer l'entretien"}
+          {isSimulationStarted ? 'In progress...' : 'Start the interview'}
         </Button>
       </div>
 
@@ -96,7 +96,6 @@ const SimulationPageContent = ({
       <div className="flex space-x-6">
         {/* Left Column: Video and Transcriptions */}
         <div className="flex-1 min-w-0">
-          {/* 2. Passage de l'état isSimulationStarted au composant SimulationArea */}
           <SimulationArea
             status={currentSimulationStatus}
             timer={simulationTimer}
