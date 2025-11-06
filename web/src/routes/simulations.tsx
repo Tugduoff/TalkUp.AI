@@ -1,7 +1,10 @@
-import { TranscriptionBubbleProps } from '@/components/molecules/transcription-area/types';
-import SimulationPageContent from '@/components/organisms/simulation-page-content';
+import TranscriptionArea from '@/components/organisms/simulation-transcription-area';
+import { TranscriptionBubbleProps } from '@/components/organisms/simulation-transcription-area/types';
+import SimulationArea from '@/components/organisms/simulation-video-area';
 import { createAuthGuard } from '@/utils/auth.guards';
 import { createFileRoute } from '@tanstack/react-router';
+
+import InfoBox from '../components/molecules/info-div';
 
 export const Route = createFileRoute('/simulations')({
   beforeLoad: createAuthGuard('/simulations'),
@@ -9,48 +12,62 @@ export const Route = createFileRoute('/simulations')({
 });
 
 /**
- * Simulations component (Page Route component).
- *
- * This component acts as a data provider and container for the SimulationPageContent organism.
- * It is responsible for fetching (or providing static) data related to the interview
- * and passing it down to the main page layout component.
- *
- * @returns {JSX.Element} The rendered Simulation page with the complete layout.
+ * Simulations Page Component
+ * @returns The Simulations page component.
  */
 function Simulations() {
   const staticTranscriptions: TranscriptionBubbleProps[] = [
     {
-      speaker: 'IA',
+      isIA: true,
+      speaker: 'AI',
       text: "Hello, thank you for joining me. Let's start the interview.",
     },
     {
-      speaker: 'User',
+      isIA: false,
+      speaker: 'You',
       text: "Hello, I'm delighted to be here. I look forward to discussing how my experience can benefit your team.",
     },
     {
-      speaker: 'IA',
+      isIA: true,
+      speaker: 'AI',
       text: 'Excellent. Can you tell me about a recent project where you faced a particularly difficult technical challenge, and how you overcame it?',
     },
   ];
 
-  const simulationData = {
-    pageTitle: 'Simulations',
+  return (
+    <div className="p-6 h-full">
+      <div className="flex justify-between items-start mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Simulations</h1>
+          <p className="text-gray-600">
+            Simulations let you practice interview scenarios in a safe
+            environment.
+          </p>
+        </div>
+      </div>
 
-    pageSubtitle:
-      'Simulations let you practice interview scenarios in a safe environment.',
+      <div className="grid grid-cols-[1fr_20rem] gap-6">
+        <div>
+          <SimulationArea />
+          <TranscriptionArea transcriptions={staticTranscriptions} />
+        </div>
 
-    simulationTimer: '03:45',
-    simulationStatus: 'active' as const,
+        <div className="space-y-6">
+          <InfoBox
+            title="Statistics Overview"
+            text="Real-time statistics will appear here."
+            icon="notifications"
+          />
 
-    tipTitle: 'Real-time Advice',
-    tipText:
-      'Your response is solid, but remember to integrate concrete metrics (KPIs) to quantify the impact of your technical solutions. Think STAR format.',
+          <InfoBox
+            title="Real time advice"
+            text="Remember to keep your hands above the table"
+            icon="check"
+          />
 
-    transcriptions: staticTranscriptions,
-
-    onStartSimulation: () =>
-      console.log('Simulation started! (Function to be implemented)'),
-  };
-
-  return <SimulationPageContent {...simulationData} />;
+          <img src="/avatarworking.png" alt="Avatar Working" />
+        </div>
+      </div>
+    </div>
+  );
 }
