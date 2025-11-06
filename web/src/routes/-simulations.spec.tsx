@@ -6,8 +6,8 @@ import {
   createRouter,
 } from '@tanstack/react-router';
 import { act, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ReadyState } from 'react-use-websocket';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Route as SimulationsRoute } from './simulations';
 
@@ -91,7 +91,9 @@ describe('Simulations', () => {
       await screen.findByRole('heading', { name: /Connection Settings/i }),
     ).toBeInTheDocument();
     expect(screen.getByLabelText(/Socket URL/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Connect/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Connect/i }),
+    ).toBeInTheDocument();
   });
 
   it('renders the actions section with WebSocket controls', async () => {
@@ -99,9 +101,15 @@ describe('Simulations', () => {
     expect(
       await screen.findByRole('heading', { name: /Actions/i }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Send Message/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Send JSON Message/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Close WebSocket/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Send Message/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Send JSON Message/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Close WebSocket/i }),
+    ).toBeInTheDocument();
   });
 
   it('renders the messages section', async () => {
