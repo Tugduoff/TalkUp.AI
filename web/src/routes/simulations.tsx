@@ -123,7 +123,7 @@ function Simulations() {
         </div>
 
         <div className="space-y-6">
-          {/* WebSocket Configuration Panel (Temporary - Easy to Remove) */}
+          {/* WebSocket Configuration Panel (Temporary) */}
           {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
               <h2 className="text-sm font-semibold text-gray-800">
@@ -176,7 +176,7 @@ function Simulations() {
             </div>
           }
 
-          {/* WebSocket Messages Display (Temporary - Easy to Remove) */}
+          {/* WebSocket Messages Display (Temporary) */}
           {lastMessage || lastJsonMessage ? (
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
               <h2 className="text-sm font-semibold text-gray-800">
