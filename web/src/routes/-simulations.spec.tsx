@@ -81,48 +81,31 @@ describe('Simulations', () => {
   it('renders the main heading correctly', async () => {
     renderWithProviders(<RouterProvider router={router} />);
     expect(
-      await screen.findByRole('heading', { name: /WebSocket Simulations/i }),
+      await screen.findByRole('heading', { name: /^Simulations$/i }),
     ).toBeInTheDocument();
   });
 
-  it('renders the connection settings section', async () => {
+  it('renders the WebSocket connection panel', async () => {
     renderWithProviders(<RouterProvider router={router} />);
     expect(
-      await screen.findByRole('heading', { name: /Connection Settings/i }),
+      await screen.findByRole('heading', { name: /WebSocket Connection/i }),
     ).toBeInTheDocument();
     expect(screen.getByLabelText(/Socket URL/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /Connect/i }),
-    ).toBeInTheDocument();
   });
 
-  it('renders the actions section with WebSocket controls', async () => {
+  it('renders WebSocket control buttons', async () => {
     renderWithProviders(<RouterProvider router={router} />);
     expect(
-      await screen.findByRole('heading', { name: /Actions/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /Send Message/i }),
+      await screen.findByRole('button', { name: /Send Message/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: /Send JSON Message/i }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /Close WebSocket/i }),
-    ).toBeInTheDocument();
   });
 
-  it('renders the messages section', async () => {
+  it('renders info boxes in sidebar', async () => {
     renderWithProviders(<RouterProvider router={router} />);
-    expect(
-      await screen.findByRole('heading', { name: /Messages/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/No messages received yet/i)).toBeInTheDocument();
-  });
-
-  it('displays connection status as Closed by default', async () => {
-    renderWithProviders(<RouterProvider router={router} />);
-    expect(await screen.findByText(/Status:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Closed/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Statistics Overview/i)).toBeInTheDocument();
+    expect(screen.getByText(/Real time advice/i)).toBeInTheDocument();
   });
 });
