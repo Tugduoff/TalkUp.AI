@@ -18,7 +18,7 @@ let mockOnError: ((event: Event) => void) | undefined;
 let mockShouldReconnect: ((event: CloseEvent) => boolean) | undefined;
 
 vi.mock('react-use-websocket', () => ({
-  default: vi.fn((url: string | null, options?: any) => {
+  default: vi.fn((_url: string | null, options?: any) => {
     mockOnOpen = options?.onOpen;
     mockOnClose = options?.onClose;
     mockOnMessage = options?.onMessage;
