@@ -74,7 +74,7 @@ export interface UseAudioStreamingReturn {
  * - The startStreaming and stopStreaming functions are stable (wrapped in useCallback) and safe to call
  *   from components. The hook also automatically starts/stops recording when isActive or stream change,
  *   and performs cleanup on unmount.
- * 
+ *
  * @example
  * const {
  *   isRecording, startStreaming, stopStreaming, packetsSent, supportedMimeType, error
