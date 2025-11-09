@@ -96,7 +96,7 @@ describe('useAudioStreaming', () => {
       await waitFor(() => {
         // Either has an error or is still not recording
         expect(
-          result.current.error !== null || result.current.isRecording === false
+          result.current.error !== null || result.current.isRecording === false,
         ).toBe(true);
       });
     });
@@ -141,7 +141,7 @@ describe('useAudioStreaming', () => {
       const onAudioPacket = vi.fn();
 
       // Make MediaRecorder constructor set supportedMimeType
-      (global.MediaRecorder as any).mockImplementation(function(this: any) {
+      (global.MediaRecorder as any).mockImplementation(function (this: any) {
         this.start = vi.fn();
         this.stop = vi.fn();
         this.requestData = vi.fn();
@@ -165,11 +165,11 @@ describe('useAudioStreaming', () => {
     });
 
     it('should use custom MIME type when provided and supported', async () => {
-      (global.MediaRecorder as any).isTypeSupported = vi.fn((type: string) =>
-        type === 'audio/mp4',
+      (global.MediaRecorder as any).isTypeSupported = vi.fn(
+        (type: string) => type === 'audio/mp4',
       );
 
-      (global.MediaRecorder as any).mockImplementation(function(this: any) {
+      (global.MediaRecorder as any).mockImplementation(function (this: any) {
         this.start = vi.fn();
         this.stop = vi.fn();
         this.requestData = vi.fn();
@@ -296,9 +296,11 @@ describe('useAudioStreaming', () => {
       expect(typeof result.current.startStreaming).toBe('function');
 
       // Should not throw when called
-      expect(() => act(() => {
-        result.current.startStreaming();
-      })).not.toThrow();
+      expect(() =>
+        act(() => {
+          result.current.startStreaming();
+        }),
+      ).not.toThrow();
     });
 
     it('should expose stopStreaming method', () => {
@@ -314,9 +316,11 @@ describe('useAudioStreaming', () => {
       expect(typeof result.current.stopStreaming).toBe('function');
 
       // Should not throw when called even if not recording
-      expect(() => act(() => {
-        result.current.stopStreaming();
-      })).not.toThrow();
+      expect(() =>
+        act(() => {
+          result.current.stopStreaming();
+        }),
+      ).not.toThrow();
     });
 
     it('should set error when calling startStreaming with null stream', async () => {

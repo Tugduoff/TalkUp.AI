@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ReadyState } from 'react-use-websocket';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useSimulationWebSocket } from './useSimulationWebSocket';
 
