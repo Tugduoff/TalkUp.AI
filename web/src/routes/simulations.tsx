@@ -41,6 +41,7 @@ function Simulations() {
     onOpen: () => {
       setWsError(null);
       setConnectionAttempts(0);
+      sendPing({ message: 'Ping from client' });
     },
     onClose: (event) => {
       if (event.code !== 1000 && event.code !== 1001) {
