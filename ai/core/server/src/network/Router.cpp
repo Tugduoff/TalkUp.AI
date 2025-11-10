@@ -132,7 +132,7 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
             ok["key"] = SERVER_KEY;
             ok["type"] = "initialization_response";
             ok["format"] = "text";
-            ok["data"] = "51.75.255.115:8088/ws";
+            ok["data"] = "ws://51.75.255.115:8088/ws";
             crow::response res(ok.dump());
             res.set_header("Content-Type", "application/json");
             res.code = 200;
