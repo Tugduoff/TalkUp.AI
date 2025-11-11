@@ -130,19 +130,16 @@ export class AiService {
       throw new UnauthorizedException("AI interview not found.");
     }
 
-    let ended: boolean = false;
-
     // if interview is completed, set ended_at date
     if (
       dto.status &&
       alreadyExists.status !== AiInterviewStatus.COMPLETED &&
       dto.status === AiInterviewStatus.COMPLETED
     )
-      ended = true;
+      alreadyExists.ended_at = new Date();
 
     // Update the interview record with the new data
     Object.assign(alreadyExists, {
-      ended_at: ended ? new Date() : null,
       ...dto,
     });
 
