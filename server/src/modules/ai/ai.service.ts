@@ -1,0 +1,85 @@
+import { ConflictException, Injectable, InternalServerErrorException, Logger, UnauthorizedException } from '@nestjs/common';
+
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindOptionsOrder, Repository } from 'typeorm';
+
+import { HttpService } from "@nestjs/axios";
+import { AxiosResponse } from "axios";
+
+import { CreateAiInterviewDto } from './dto/createAiInterview.dto';
+import { PutAiInterviewDto } from './dto/putAiInterview.dto';
+import { ai_interview } from "@entities/aiInterview.entity";
+import { AiInterviewStatus } from '@common/enums/AiInterviewStatus';
+import { GetInterviewsQueryDto } from './dto/getInterviewsQuery.dto';
+import { CreateAiTranscriptsDto } from './dto/createAiTranscripts.dto';
+import { ai_transcript } from '@entities/aiTranscript.entity';
+
+
+
+@Injectable()
+export class AiService {
+    private AI_SERVER_URL = process.env.AI_SERVER_URL ?? "";
+    private readonly logger: Logger;
+
+    constructor(
+        @InjectRepository(ai_interview) private aiInterviewRepository: Repository<ai_interview>,
+        @InjectRepository(ai_transcript) private aiTranscriptRepository: Repository<ai_transcript>,
+        private readonly httpService: HttpService
+    ) {
+        this.logger = new Logger(AiService.name);
+    }
+
+  async createInterview(dto: CreateAiInterviewDto, userId: string) {
+    let AIresponse: AxiosResponse<{ key: string; type: string; format: string; data: string }>;
+    let alreadyExists;
+
+    // Check if an interview is already asked and not completed
+    try {
+      alreadyExists = await this.aiInterviewRepository.findOne({ where: { user_id: userId, status: AiInterviewStatus.ASKED } });
+    } catch (error) {
+      this.logger.error(`Failed to check existing interview for user ${userId}: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Internal server error while checking existing interview.');
+    }
+
+    if (alreadyExists) {
+      this.logger.warn(`AI interview already asked for user ${userId}, creating duplicate request blocked.`);
+      throw new ConflictException('AI interview already asked.');
+    }
+
+    // Call AI server to init interview
+    try {
+      AIresponse = await this.httpService.axiosRef.post(`${this.AI_SERVER_URL}/process/initialization`, {
+        key: 'c7yPY8u644OE',
+        type: 'initialization',
+        format: 'text',
+        data: ''
+      });
+    } catch (error) {
+      this.logger.error(`Failed to call AI server for user ${userId}: ${JSON.stringify(error)}`, error.stack);
+      throw new InternalServerErrorException('Internal server error while contacting AI server.');
+    }
+
+    if (AIresponse.status !== 200) {
+      this.logger.error(`AI server responded with status ${AIresponse.status} for user ${userId}: ${JSON.stringify(AIresponse.data)}`);
+      throw new InternalServerErrorException('AI server error.');
+    }
+
+    // Create and save new interview record
+    const newInterview = this.aiInterviewRepository.create({
+      user_id: userId,
+      ...dto
+    });
+
+    try {
+      await this.aiInterviewRepository.save(newInterview);
+    } catch (error) {
+      this.logger.error(`Failed to create AI interview for user ${userId}: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Internal server error while creating AI interview.');
+    }
+
+    return {
+      interviewID: newInterview.interview_id,
+      entrypoint: AIresponse.data.data
+    }
+  }
+}

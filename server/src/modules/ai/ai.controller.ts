@@ -1,0 +1,53 @@
+import { Controller, Body, Post, Put, UseGuards, Get, Param, Query, NotFoundException } from '@nestjs/common';
+
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiUnprocessableEntityResponse,
+  ApiTags,
+  ApiOkResponse,
+  ApiBearerAuth,
+  ApiExtraModels,
+} from "@nestjs/swagger";
+
+import { UsePipes } from "@nestjs/common/decorators/core/use-pipes.decorator";
+
+import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
+import { AccessTokenGuard } from '@common/guards/accessToken.guard';
+import { UserId } from '@common/decorators/userId.decorator';
+
+import { AiService } from './ai.service';
+
+import { CreateAiInterviewDto } from './dto/createAiInterview.dto';
+import { PutAiInterviewDto } from './dto/putAiInterview.dto';
+import { GetInterviewsQueryDto } from './dto/getInterviewsQuery.dto';
+import { CreateAiTranscriptsDto } from './dto/createAiTranscripts.dto';
+
+@ApiTags("AI")
+@Controller('ai')
+export class AiController {
+    constructor(private readonly aiService: AiService) {}
+
+
+    @ApiCreatedResponse({
+        description: "The AI interview has been successfully created.",
+        type: CreateAiInterviewDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Badly formatted parameter.",
+    })
+    @ApiConflictResponse({
+        description: "AI interview already asked.",
+    })
+    @ApiUnprocessableEntityResponse({
+        description: "Missing parameter in request.",
+    })
+    @ApiBearerAuth('access-token')
+    @UsePipes(new PostValidationPipe())
+    @UseGuards(AccessTokenGuard)
+    @Post('interviews')
+    async createAiInterview(@Body() createAiInterviewDto: CreateAiInterviewDto, @UserId() userId: string) {
+        return this.aiService.createInterview(createAiInterviewDto, userId);
+    }
+}
