@@ -49,11 +49,10 @@ Le Frontend peut envoyer des flux audio et vidéo pour traitement. **Important :
 ### Exemple : Frontend → Serveur IA
 ```json
 {
-  "key": "exemple_key"
+  "key": "exemple_key",
   "type": "stream_chunk",
   "stream_id": "abc123",
-  "format": "audio/opus",
-  "sequence": 12,
+  "format": "audio",
   "timestamp": 1739592334,
   "data": "<base64 encoded chunk>"
 }
@@ -62,19 +61,21 @@ Le Frontend peut envoyer des flux audio et vidéo pour traitement. **Important :
 ### Exemple : Serveur IA → Frontend (flux média traité)
 ```json
 {
-  "key": "exemple_key"
+  "key": "exemple_key",
   "type": "stream_output",
   "stream_id": "abc123",
-  "format": "audio/opus",
+  "format": "audio",
   "timestamp": 1739592350,
   "data": "<base64 encoded processed chunk or resource id>"
 }
 ```
 
+Le format de type peut être `audio`, `video`, `image` ou `text` selon le contenu du flux.
+
 ### Exemple : Serveur IA → Frontend (nom du texte / identifiant)
 ```json
 {
-  "key": "exemple_key"
+  "key": "exemple_key",
   "type": "transcript_name",
   "stream_id": "abc123",
   "text_id": "transcript_20251015_001.txt",
