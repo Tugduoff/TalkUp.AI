@@ -13,6 +13,16 @@ export default function initSwagger(app: INestApplication) {
   // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle("TalkUp API")
+    .addBearerAuth(
+      {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+        in: "header",
+        description: "Enter your JWT token",
+      },
+      'access-token', // This name here is important as it is used in @ApiBearerAuth() decorator
+    )
     .setDescription("This is the API documentation of Talkup's backend")
     .setVersion(version || "1.0.0")
     .addGlobalResponse({
@@ -34,5 +44,5 @@ export default function initSwagger(app: INestApplication) {
   };
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("docs", app, documentFactory, options); // the UI will be loacted in /v1/api/docs
+  SwaggerModule.setup("docs", app, documentFactory, options); // the UI will be located in /v1/api/docs
 }
