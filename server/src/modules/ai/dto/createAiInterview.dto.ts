@@ -41,4 +41,3 @@ export class CreateAiInterviewDto {
   status: AiInterviewStatus;
 }
 
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMTlhMjllZi1kNDIxLTdkOWUtYjIwZi04ZTQ4ZmNmNjg1ZDEiLCJ1c2VybmFtZSI6IkFkbWluU3lzODE5IiwiaWF0IjoxNzYxNjQwMTc0LCJleHAiOjE3NjIyNDQ5NzR9.TkxgfyLtY7GtfMDYybDLgIJNSPWSZ_-nVpfgdyYlXGM
