@@ -87,4 +87,39 @@ export class AiController {
     async getUserInterviews(@Query() query: GetInterviewsQueryDto, @UserId() userId: string) {
         return this.aiService.getUserInterviews(query, userId);
     }
+
+    @ApiCreatedResponse({
+        description: "Transcripts have been added to the interview.",
+    })
+    @ApiBadRequestResponse({
+        description: "Badly formatted parameter.",
+    })
+    @ApiBearerAuth('access-token')
+    @UsePipes(new PostValidationPipe())
+    @UseGuards(AccessTokenGuard)
+    @Post('interviews/:id/transcripts')
+    async addTranscripts(
+        @Param('id') interviewId: string,
+        @Body() createTranscriptsDto: CreateAiTranscriptsDto,
+        @UserId() userId: string,
+    ) {
+        return this.aiService.addTranscripts(interviewId, createTranscriptsDto, userId);
+    }
+
+    @ApiOkResponse({
+        description: "Retrieve a single AI interview by id.",
+    })
+    @ApiBadRequestResponse({
+        description: "Badly formatted parameter.",
+    })
+    @ApiBearerAuth('access-token')
+    @UseGuards(AccessTokenGuard)
+    @Get('interviews/:id')
+    async getOneInterview(@Param('id') id: string, @UserId() userId: string) {
+        const interview = await this.aiService.getInterviewById(id, userId, true);
+
+        if (!interview)
+            return {};
+        return interview;
+    }
 }

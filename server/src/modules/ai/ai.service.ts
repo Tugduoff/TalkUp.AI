@@ -157,6 +157,31 @@ export class AiService {
     }
   }
 
+  async addTranscripts(interviewId: string, dto: CreateAiTranscriptsDto, userId: string) {
+    const interview = await this.getInterviewById(interviewId, userId);
+
+    if (!interview) {
+      this.logger.warn(`AI interview with id ${interviewId} not found for user ${userId}.`);
+      throw new UnauthorizedException('AI interview not found.');
+    }
+
+    const records = dto.transcripts.map(t =>
+      this.aiTranscriptRepository.create({
+        interview_id: interviewId,
+        content: t.content,
+        who_stated: t.who_stated,
+      }),
+    );
+
+    try {
+      const saved = await this.aiTranscriptRepository.save(records);
+      return { inserted: saved.length, data: saved };
+    } catch (error) {
+      this.logger.error(`Failed to save transcripts for interview ${interviewId} (user ${userId}): ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Internal server error while saving transcripts.');
+    }
+  }
+
 
   /*----------- UTILITY FUNCTIONS -----------*/
 
