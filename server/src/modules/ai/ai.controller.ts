@@ -72,4 +72,19 @@ export class AiController {
     async editAiInterview(@Body() editAiInterviewDto: PutAiInterviewDto, @UserId() userId: string) {
         return this.aiService.editAiInterview(editAiInterviewDto, userId);
     }
+
+
+    @ApiExtraModels(GetInterviewsQueryDto)
+    @ApiOkResponse({
+        description: "List of AI interviews for the user.",
+    })
+    @ApiBadRequestResponse({
+        description: "Badly formatted parameter.",
+    })
+    @ApiBearerAuth('access-token')
+    @UseGuards(AccessTokenGuard)
+    @Get('interviews')
+    async getUserInterviews(@Query() query: GetInterviewsQueryDto, @UserId() userId: string) {
+        return this.aiService.getUserInterviews(query, userId);
+    }
 }

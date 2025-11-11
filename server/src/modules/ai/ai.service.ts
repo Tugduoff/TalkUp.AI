@@ -110,6 +110,53 @@ export class AiService {
     return true;
   }
 
+  async getUserInterviews(query: GetInterviewsQueryDto, userId : string) {
+    // build order object to sort depending on query
+    const order: FindOptionsOrder<any> = {};
+    order[query.sort ?? 'created_at'] = query.order ?? 'DESC';
+
+    // no pagination parameters provided, return all items
+    if (!query.page && !query.limit) {
+      try {
+        const items = await this.aiInterviewRepository.find({
+          where: { user_id: userId },
+          order,
+        });
+
+        return {
+          data: items,
+          meta: { total: items.length },
+        };
+      } catch (error) {
+        this.logger.error(`Failed to retrieve AI interviews for user ${userId}: ${error.message}`, error.stack);
+        throw new InternalServerErrorException('Internal server error while retrieving AI interviews.');
+      }
+    }
+
+    // Set default pagination values because otherwise typescript complains
+    const page = query.page || 1;
+    const limit = query.limit || 20;
+    const skip = (page - 1) * limit;
+
+
+    try {
+      const [items, total] = await this.aiInterviewRepository.findAndCount({
+        where: { user_id: userId },
+        order,
+        take: limit,
+        skip,
+      });
+
+      return {
+        data: items,
+        meta: { total, page, limit },
+      };
+    } catch (error) {
+      this.logger.error(`Failed to retrieve AI interviews for user ${userId}: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Internal server error while retrieving AI interviews.');
+    }
+  }
+
 
   /*----------- UTILITY FUNCTIONS -----------*/
 
