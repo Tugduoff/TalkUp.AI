@@ -8,9 +8,9 @@ This README is updated to reflect the current file placement and how to run the 
 
 ## Where files live
 
-- Server entry: `tools/test-ws-server/server.js`
-- Package manifest: `tools/test-ws-server/package.json`
-- Recordings output dir: `tools/test-ws-server/recordings/`
+- Server entry: [tools/test-ws-server/server.js](tools/test-ws-server/server.js)
+- Package manifest: [tools/test-ws-server/package.json](tools/test-ws-server/package.json)
+- Recordings output dir: [tools/test-ws-server/recordings/](tools/test-ws-server/recordings/)
 
 > Note: the package.json `start` script references `index.js` (legacy). Run the server directly with `node server.js` (instructions below) or update the package.json script if you prefer `npm start`.
 
