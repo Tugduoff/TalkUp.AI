@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   JoinColumn,
   BeforeInsert,
-  OneToOne,
+  ManyToOne,
 } from "typeorm";
 import { uuidv7 } from "uuidv7";
 
@@ -21,7 +21,7 @@ export class ai_interview {
   @Column({ type: "varchar", length: 50 })
   type: string;
 
-  @OneToOne(() => user)
+  @ManyToOne(() => user, (user) => user.user_id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "user_id" })
   user_id: string;
 
