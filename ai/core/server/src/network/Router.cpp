@@ -168,15 +168,27 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
             }
             talkup_network::WsManager wsManager;
             auto j = nlohmann::json::parse(data);
+            auto load_server_key = [&]() {
+                Router router;
+                return router.get_env_key();
+            };
 
-            if (!j.contains("type")) {
+            if (!j.contains("type") || !j.contains("stream_id") || !j.contains("format") ||
+                !j.contains("timestamp") || !j.contains("data") || !j.contains("key") ) {
+                nlohmann::json err;
+                    err["type"] = "error";
+                    err["timestamp"] = std::chrono::duration_cast<std::chrono::seconds>(
+                        std::chrono::system_clock::now().time_since_epoch()).count();
+                    err["data"] = { {"message", "missing required fields: type/stream_id/format/timestamp/data/key"} };
+                    throw ExceptionManager::NetworkMissingTypeField();
+            }
+            if (load_server_key() != j["key"].get<std::string>()) {
                 nlohmann::json err;
                 err["type"] = "error";
                 err["timestamp"] = std::chrono::duration_cast<std::chrono::seconds>(
                     std::chrono::system_clock::now().time_since_epoch()).count();
-                err["data"] = { {"message", "missing type field"} };
-                conn.send_text(err.dump());
-                throw ExceptionManager::NetworkMissingTypeField();
+                err["data"] = { {"message", "unauthorized: invalid key"} };
+                throw ExceptionManager::NetworkUnknownTypeException();
             }
             wsManager.connection_type_manager(j, conn);
         } catch (const std::exception &e) {
