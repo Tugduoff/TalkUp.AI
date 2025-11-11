@@ -2,6 +2,7 @@ import { Button } from '@/components/atoms/button';
 import { InputMolecule } from '@/components/molecules/input-molecule';
 import { cn } from '@/utils/cn';
 import { ReadyState } from 'react-use-websocket';
+
 import { WebSocketDebugPanelProps } from './types';
 
 /**
