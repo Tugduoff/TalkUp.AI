@@ -5,5 +5,5 @@
  */
 export enum AiTranscriptStated {
   AI = "ai",
-  User = "user"
+  User = "user",
 }

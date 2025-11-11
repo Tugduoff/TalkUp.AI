@@ -18,7 +18,9 @@ export class ai_transcript {
   @PrimaryGeneratedColumn("uuid")
   transcript_id: string;
 
-  @ManyToOne(() => ai_interview, (interview) => interview.interview_id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => ai_interview, (interview) => interview.interview_id, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "interview_id" })
   interview_id: string;
 
@@ -27,17 +29,20 @@ export class ai_transcript {
 
   @Column({
     type: "enum",
-    enum: AiTranscriptStated
+    enum: AiTranscriptStated,
   })
   who_stated: AiTranscriptStated;
 
-  @CreateDateColumn({ type: "timestamp with time zone", default: () => "CURRENT_TIMESTAMP" })
+  @CreateDateColumn({
+    type: "timestamp with time zone",
+    default: () => "CURRENT_TIMESTAMP",
+  })
   inserted_at: string;
 
   // ------ UUID manual generation to ensure V7 format ------ //
 
   @BeforeInsert()
   generateUUIDv7() {
-      if (!this.transcript_id) this.transcript_id = uuidv7();
+    if (!this.transcript_id) this.transcript_id = uuidv7();
   }
 }

@@ -21,7 +21,7 @@ export default function initSwagger(app: INestApplication) {
         in: "header",
         description: "Enter your JWT token",
       },
-      'access-token', // This name here is important as it is used in @ApiBearerAuth() decorator
+      "access-token", // This name here is important as it is used in @ApiBearerAuth() decorator
     )
     .setDescription("This is the API documentation of Talkup's backend")
     .setVersion(version || "1.0.0")

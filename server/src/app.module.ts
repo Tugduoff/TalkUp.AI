@@ -7,7 +7,7 @@ import pgConfig from "@config/postgres.config";
 import { AuthModule } from "./modules/auth/auth.module";
 import { UsersModule } from "./modules/users/users.module";
 import { LinkedInModule } from "./modules/linkedin/linkedin.module";
-import { AiModule } from './modules/ai/ai.module';
+import { AiModule } from "./modules/ai/ai.module";
 
 import { LoggerMiddleware } from "@common/middleware/logger";
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
@@ -31,7 +31,7 @@ import { HealthController } from "./health.controller";
           dateStrings: ["timestamp with time zone"],
           timezone: "UTC",
         };
-      }
+      },
     }),
     AiModule,
   ],

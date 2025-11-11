@@ -1,9 +1,17 @@
 import { ApiPropertyOptional, ApiSchema } from "@nestjs/swagger";
-import { IsInt, IsOptional, Min, Max, IsUUID, IsIn, IsNumber } from "class-validator";
+import {
+  IsInt,
+  IsOptional,
+  Min,
+  Max,
+  IsIn,
+  IsNumber,
+} from "class-validator";
 
 @ApiSchema({
-    name: "GetInterviewsQueryDto",
-    description: "Query parameters for fetching AI interviews with pagination and filtering options."
+  name: "GetInterviewsQueryDto",
+  description:
+    "Query parameters for fetching AI interviews with pagination and filtering options.",
 })
 export class GetInterviewsQueryDto {
   @ApiPropertyOptional({ description: "Page number, starts at 1" })
@@ -21,7 +29,10 @@ export class GetInterviewsQueryDto {
   @Max(100)
   limit?: number;
 
-  @ApiPropertyOptional({ description: "Field to sort by", example: "created_at" })
+  @ApiPropertyOptional({
+    description: "Field to sort by",
+    example: "created_at",
+  })
   @IsOptional()
   @IsIn(["created_at", "updated_at", "score"])
   sort?: string = "created_at";

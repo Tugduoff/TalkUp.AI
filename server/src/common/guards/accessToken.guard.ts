@@ -1,4 +1,11 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException, Logger, InternalServerErrorException } from "@nestjs/common";
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+  Logger,
+  InternalServerErrorException,
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 
 import { InjectRepository } from "@nestjs/typeorm";
@@ -32,7 +39,6 @@ import { user } from "@entities/user.entity";
 export class AccessTokenGuard implements CanActivate {
   private readonly logger: Logger = new Logger(AccessTokenGuard.name);
 
-
   constructor(
     private readonly jwtService: JwtService,
     @InjectRepository(user) private readonly userRepository: Repository<user>,
@@ -43,8 +49,14 @@ export class AccessTokenGuard implements CanActivate {
     const header = req.headers?.authorization as string | undefined;
 
     // Ensure header is found/wellformed
-    if (!header || typeof header !== "string" || !header.startsWith("Bearer ")) {
-      throw new UnauthorizedException("Authorization header missing or malformed");
+    if (
+      !header ||
+      typeof header !== "string" ||
+      !header.startsWith("Bearer ")
+    ) {
+      throw new UnauthorizedException(
+        "Authorization header missing or malformed",
+      );
     }
     const token = header.slice(7);
 
@@ -64,10 +76,14 @@ export class AccessTokenGuard implements CanActivate {
     // Verify user exists in DB
     let foundUser: any;
     try {
-      foundUser = await this.userRepository.findOne({ where: { user_id: String(userId) } });
+      foundUser = await this.userRepository.findOne({
+        where: { user_id: String(userId) },
+      });
     } catch (err) {
       this.logger.error(`Failed to find user in repository : ${err.message}`);
-      throw new InternalServerErrorException('Internal server error while checking existing user.');
+      throw new InternalServerErrorException(
+        "Internal server error while checking existing user.",
+      );
     }
 
     if (!foundUser) {

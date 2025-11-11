@@ -1,15 +1,16 @@
-import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module } from "@nestjs/common";
+import { JwtModule } from "@nestjs/jwt";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import { HttpModule } from "@nestjs/axios";
 
-import { AiService } from './ai.service';
-import { AiController } from './ai.controller';
-import { AccessTokenGuard } from '@common/guards/accessToken.guard';
+import { AccessTokenGuard } from "@common/guards/accessToken.guard";
 
-import { ai_interview } from '@entities/aiInterview.entity';
-import { user } from '@entities/user.entity';
-import { ai_transcript } from '@entities/aiTranscript.entity';
+import { ai_interview } from "@entities/aiInterview.entity";
+import { user } from "@entities/user.entity";
+import { ai_transcript } from "@entities/aiTranscript.entity";
+
+import { AiController } from "./ai.controller";
+import { AiService } from "./ai.service";
 
 @Module({
   imports: [
@@ -24,7 +25,6 @@ import { ai_transcript } from '@entities/aiTranscript.entity';
     }),
   ],
   providers: [AiService, AccessTokenGuard],
-  controllers: [AiController]
+  controllers: [AiController],
 })
-
 export class AiModule {}

@@ -44,10 +44,16 @@ export class ai_interview {
   @Column({ type: "varchar", length: 2048, nullable: true, name: "video_link" })
   video_link: string;
 
-  @CreateDateColumn({ type: "timestamp with time zone", default: () => "CURRENT_TIMESTAMP" })
+  @CreateDateColumn({
+    type: "timestamp with time zone",
+    default: () => "CURRENT_TIMESTAMP",
+  })
   created_at: string;
 
-  @UpdateDateColumn({ type: "timestamp with time zone", default: () => "CURRENT_TIMESTAMP" })
+  @UpdateDateColumn({
+    type: "timestamp with time zone",
+    default: () => "CURRENT_TIMESTAMP",
+  })
   updated_at: string;
 
   @Column({ type: "timestamp with time zone", nullable: true })
@@ -57,6 +63,6 @@ export class ai_interview {
 
   @BeforeInsert()
   generateUUIDv7() {
-      if (!this.interview_id) this.interview_id = uuidv7();
+    if (!this.interview_id) this.interview_id = uuidv7();
   }
 }
