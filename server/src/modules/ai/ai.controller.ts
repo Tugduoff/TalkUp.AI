@@ -50,4 +50,26 @@ export class AiController {
     async createAiInterview(@Body() createAiInterviewDto: CreateAiInterviewDto, @UserId() userId: string) {
         return this.aiService.createInterview(createAiInterviewDto, userId);
     }
+
+
+    @ApiOkResponse({
+        description: "The AI interview has been successfully edited.",
+        type: PutAiInterviewDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Badly formatted parameter.",
+    })
+    @ApiConflictResponse({
+        description: "AI interview cannot be edited.",
+    })
+    @ApiUnprocessableEntityResponse({
+        description: "Missing parameter in request.",
+    })
+    @ApiBearerAuth('access-token')
+    @UsePipes(new PostValidationPipe())
+    @UseGuards(AccessTokenGuard)
+    @Put('interviews')
+    async editAiInterview(@Body() editAiInterviewDto: PutAiInterviewDto, @UserId() userId: string) {
+        return this.aiService.editAiInterview(editAiInterviewDto, userId);
+    }
 }

@@ -82,4 +82,62 @@ export class AiService {
       entrypoint: AIresponse.data.data
     }
   }
+
+  async editAiInterview(dto: PutAiInterviewDto, userId: string) {
+    let alreadyExists = await this.getInterviewById(dto.interviewId, userId);
+
+    if (!alreadyExists) {
+      this.logger.warn(`AI interview with id ${dto.interviewId} not found for user ${userId}.`);
+      throw new UnauthorizedException('AI interview not found.');
+    }
+
+    let ended: boolean = false;
+
+    // if interview is completed, set ended_at date
+    if (dto.status && alreadyExists.status !== AiInterviewStatus.COMPLETED && dto.status === AiInterviewStatus.COMPLETED)
+      ended = true;
+
+    // Update the interview record with the new data
+    Object.assign(alreadyExists, { ended_at: (ended ? new Date() : null), ...dto });
+
+    try {
+      await this.aiInterviewRepository.save(alreadyExists);
+    } catch (error) {
+      this.logger.error(`Failed to edit AI interview for user ${userId} and id ${dto.interviewId}: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Internal server error while editing AI interview.');
+    }
+
+    return true;
+  }
+
+
+  /*----------- UTILITY FUNCTIONS -----------*/
+
+
+  /**
+   * UTILS function
+   * Check if an interview exists for a given user and interview ID (if no ID provided, returns null)
+   * @param interviewId id of the interview to check
+   * @param userId id of the user owning the interview
+   * @returns The interview entity if found, null otherwise
+   */
+  async getInterviewById(interviewId: string, userId : string, getTranscripts: boolean = false) {
+    // No interview to check
+    if (!interviewId)
+      return null;
+
+    try {
+      const interview = await this.aiInterviewRepository.findOne({ where: { user_id: userId, interview_id: interviewId } });
+
+      if (!interview)
+        return null;
+
+      const transcripts = (getTranscripts ? await this.aiTranscriptRepository.find({ where: { interview_id: interviewId }, order: { inserted_at: 'ASC' } }) : []);
+      return { ...interview, transcripts };
+    } catch (error) {
+      this.logger.error(`Failed to check existing interview for user ${userId} and id ${interviewId}: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Internal server error while getting the interview.');
+    }
+  }
+
 }
