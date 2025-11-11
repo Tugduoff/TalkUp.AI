@@ -31,7 +31,6 @@ async function bootstrap() {
         origin: string,
         callback: (arg0: Error | null, arg1: boolean | undefined) => void,
       ) => {
-        console.log("Request origin:", origin);
         if (!origin) return callback(null, true);
 
         if (corsOrigin === "*") return callback(null, true);
