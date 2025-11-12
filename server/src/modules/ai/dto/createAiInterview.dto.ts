@@ -41,4 +41,3 @@ export class CreateAiInterviewDto {
   })
   status: AiInterviewStatus;
 }
-

@@ -120,12 +120,16 @@ export class AiService {
     };
   }
 
-  async editAiInterview(dto: PutAiInterviewDto, userId: string) {
-    let alreadyExists = await this.getInterviewById(dto.interviewId, userId);
+  async editAiInterview(
+    interviewId: string,
+    dto: PutAiInterviewDto,
+    userId: string,
+  ) {
+    let alreadyExists = await this.getInterviewById(interviewId, userId);
 
     if (!alreadyExists) {
       this.logger.warn(
-        `AI interview with id ${dto.interviewId} not found for user ${userId}.`,
+        `AI interview with id ${interviewId} not found for user ${userId}.`,
       );
       throw new UnauthorizedException("AI interview not found.");
     }
@@ -147,7 +151,7 @@ export class AiService {
       await this.aiInterviewRepository.save(alreadyExists);
     } catch (error) {
       this.logger.error(
-        `Failed to edit AI interview for user ${userId} and id ${dto.interviewId}: ${error.message}`,
+        `Failed to edit AI interview for user ${userId} and id ${interviewId}: ${error.message}`,
         error.stack,
       );
       throw new InternalServerErrorException(

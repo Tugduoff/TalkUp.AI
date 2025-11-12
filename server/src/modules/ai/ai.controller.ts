@@ -62,6 +62,39 @@ export class AiController {
     return this.aiService.createInterview(createAiInterviewDto, userId);
   }
 
+  @ApiExtraModels(GetInterviewsQueryDto)
+  @ApiOkResponse({
+    description: "List of AI interviews for the user.",
+  })
+  @ApiBadRequestResponse({
+    description: "Badly formatted parameter.",
+  })
+  @ApiBearerAuth("access-token")
+  @UseGuards(AccessTokenGuard)
+  @Get("interviews")
+  async getUserInterviews(
+    @Query() query: GetInterviewsQueryDto,
+    @UserId() userId: string,
+  ) {
+    return this.aiService.getUserInterviews(query, userId);
+  }
+
+  @ApiOkResponse({
+    description: "Retrieve a single AI interview by id.",
+  })
+  @ApiBadRequestResponse({
+    description: "Badly formatted parameter.",
+  })
+  @ApiBearerAuth("access-token")
+  @UseGuards(AccessTokenGuard)
+  @Get("interviews/:id")
+  async getOneInterview(@Param("id") id: string, @UserId() userId: string) {
+    const interview = await this.aiService.getInterviewById(id, userId, true);
+
+    if (!interview) return {};
+    return interview;
+  }
+
   @ApiOkResponse({
     description: "The AI interview has been successfully edited.",
     type: PutAiInterviewDto,
@@ -78,29 +111,13 @@ export class AiController {
   @ApiBearerAuth("access-token")
   @UsePipes(new PostValidationPipe())
   @UseGuards(AccessTokenGuard)
-  @Put("interviews")
+  @Put("interviews/:id")
   async editAiInterview(
+    @Param("id") id: string,
     @Body() editAiInterviewDto: PutAiInterviewDto,
     @UserId() userId: string,
   ) {
-    return this.aiService.editAiInterview(editAiInterviewDto, userId);
-  }
-
-  @ApiExtraModels(GetInterviewsQueryDto)
-  @ApiOkResponse({
-    description: "List of AI interviews for the user.",
-  })
-  @ApiBadRequestResponse({
-    description: "Badly formatted parameter.",
-  })
-  @ApiBearerAuth("access-token")
-  @UseGuards(AccessTokenGuard)
-  @Get("interviews")
-  async getUserInterviews(
-    @Query() query: GetInterviewsQueryDto,
-    @UserId() userId: string,
-  ) {
-    return this.aiService.getUserInterviews(query, userId);
+    return this.aiService.editAiInterview(id, editAiInterviewDto, userId);
   }
 
   @ApiCreatedResponse({
@@ -123,21 +140,5 @@ export class AiController {
       createTranscriptsDto,
       userId,
     );
-  }
-
-  @ApiOkResponse({
-    description: "Retrieve a single AI interview by id.",
-  })
-  @ApiBadRequestResponse({
-    description: "Badly formatted parameter.",
-  })
-  @ApiBearerAuth("access-token")
-  @UseGuards(AccessTokenGuard)
-  @Get("interviews/:id")
-  async getOneInterview(@Param("id") id: string, @UserId() userId: string) {
-    const interview = await this.aiService.getInterviewById(id, userId, true);
-
-    if (!interview) return {};
-    return interview;
   }
 }

@@ -15,15 +15,6 @@ import { AiInterviewStatus } from "@common/enums/AiInterviewStatus";
     "Data transfer object for editing an existing AI interview request.",
 })
 export class PutAiInterviewDto extends PartialType(CreateAiInterviewDto) {
-  @ApiProperty({
-    description: "The unique identifier of the AI interview to be edited.",
-    example: "678e4567-e89b-12d3-a456-426614174999",
-  })
-  @Length(36, 36, {
-    message: "Interview ID must be a valid UUID.",
-  })
-  interviewId: string;
-
   @ApiPropertyOptional({
     description: "The current status of the AI interview request.",
     example: AiInterviewStatus.ASKED,

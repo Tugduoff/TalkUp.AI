@@ -1,12 +1,6 @@
 import { ApiPropertyOptional, ApiSchema } from "@nestjs/swagger";
-import {
-  IsInt,
-  IsOptional,
-  Min,
-  Max,
-  IsIn,
-  IsNumber,
-} from "class-validator";
+import { Type } from "class-transformer";
+import { IsInt, IsOptional, Min, Max, IsIn } from "class-validator";
 
 @ApiSchema({
   name: "GetInterviewsQueryDto",
@@ -16,14 +10,14 @@ import {
 export class GetInterviewsQueryDto {
   @ApiPropertyOptional({ description: "Page number, starts at 1" })
   @IsOptional()
-  @IsNumber()
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   page?: number;
 
   @ApiPropertyOptional({ description: "Items per page" })
   @IsOptional()
-  @IsNumber()
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   @Max(100)
@@ -32,12 +26,17 @@ export class GetInterviewsQueryDto {
   @ApiPropertyOptional({
     description: "Field to sort by",
     example: "created_at",
+    enum: ["created_at", "updated_at", "score"],
   })
   @IsOptional()
   @IsIn(["created_at", "updated_at", "score"])
   sort?: string = "created_at";
 
-  @ApiPropertyOptional({ description: "Sort order", example: "DESC" })
+  @ApiPropertyOptional({
+    description: "Sort order",
+    example: "DESC",
+    enum: ["ASC", "DESC"],
+  })
   @IsOptional()
   @IsIn(["ASC", "DESC"])
   order?: "ASC" | "DESC" = "DESC";
