@@ -37,7 +37,7 @@ export class ai_transcript {
     type: "timestamp with time zone",
     default: () => "CURRENT_TIMESTAMP",
   })
-  inserted_at: string;
+  inserted_at: Date;
 
   // ------ UUID manual generation to ensure V7 format ------ //
 

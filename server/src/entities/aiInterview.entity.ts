@@ -48,13 +48,13 @@ export class ai_interview {
     type: "timestamp with time zone",
     default: () => "CURRENT_TIMESTAMP",
   })
-  created_at: string;
+  created_at: Date;
 
   @UpdateDateColumn({
     type: "timestamp with time zone",
     default: () => "CURRENT_TIMESTAMP",
   })
-  updated_at: string;
+  updated_at: Date;
 
   @Column({ type: "timestamp with time zone", nullable: true })
   ended_at?: Date;
