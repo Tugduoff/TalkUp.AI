@@ -58,7 +58,7 @@ const NavBar = () => {
           <hr className="border-border" />
 
           <div className="flex flex-col space-y-2">
-            <NavLink to="/simulations" label="Simulations" icon="cog" />
+            <NavLink to="/simulations" label="Simulations" icon="video" />
             <NavLink to="/notes" label="Notes" icon="notes" />
           </div>
 

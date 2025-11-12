@@ -6,6 +6,7 @@ import {
   createRouter,
 } from '@tanstack/react-router';
 import { act, render, screen } from '@testing-library/react';
+import { ReadyState } from 'react-use-websocket';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Route as SimulationsRoute } from './simulations';
@@ -23,6 +24,24 @@ Object.defineProperty(window, 'localStorage', {
 
 vi.mock('@/utils/auth.guards', () => ({
   createAuthGuard: vi.fn(() => () => Promise.resolve()),
+}));
+
+vi.mock('react-use-websocket', () => ({
+  default: vi.fn(() => ({
+    sendMessage: vi.fn(),
+    sendJsonMessage: vi.fn(),
+    lastMessage: null,
+    lastJsonMessage: null,
+    readyState: ReadyState.CLOSED,
+    getWebSocket: vi.fn(() => ({ close: vi.fn() })),
+  })),
+  ReadyState: {
+    CONNECTING: 0,
+    OPEN: 1,
+    CLOSING: 2,
+    CLOSED: 3,
+    UNINSTANTIATED: -1,
+  },
 }));
 
 const rootRoute = createRouter({
@@ -48,7 +67,7 @@ const renderWithProviders = (component: React.ReactElement) => {
 
 /**
  * Test suite for the Simulations component.
- * Verifies that the component renders its content correctly within a TanStack Router context.
+ * Verifies that the WebSocket simulations interface renders correctly.
  */
 describe('Simulations', () => {
   beforeEach(async () => {
@@ -62,30 +81,31 @@ describe('Simulations', () => {
   it('renders the main heading correctly', async () => {
     renderWithProviders(<RouterProvider router={router} />);
     expect(
-      await screen.findByRole('heading', { name: /Simulations/i }),
+      await screen.findByRole('heading', { name: /^Simulations$/i }),
     ).toBeInTheDocument();
   });
 
-  it('renders the descriptive paragraph correctly', async () => {
+  it('renders the WebSocket connection panel', async () => {
     renderWithProviders(<RouterProvider router={router} />);
-    const simulationsParagraph = (
-      await screen.findAllByText(/Simulations/i)
-    ).find((el) => el.tagName === 'P');
-    expect(simulationsParagraph).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: /WebSocket Connection/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/Socket URL/i)).toBeInTheDocument();
   });
 
-  it('renders both heading and paragraph in the document', async () => {
-    const { container } = renderWithProviders(
-      <RouterProvider router={router} />,
-    );
+  it('renders WebSocket control buttons', async () => {
+    renderWithProviders(<RouterProvider router={router} />);
+    expect(
+      await screen.findByRole('button', { name: /Send Message/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Send JSON Message/i }),
+    ).toBeInTheDocument();
+  });
 
-    const simulationsTexts = await screen.findAllByText(/Simulations/i);
-
-    expect(simulationsTexts).toHaveLength(2);
-
-    expect(simulationsTexts[0].tagName).toBe('H3');
-    expect(simulationsTexts[1].tagName).toBe('P');
-
-    expect(container.firstChild).toHaveClass('p-2');
+  it('renders info boxes in sidebar', async () => {
+    renderWithProviders(<RouterProvider router={router} />);
+    expect(await screen.findByText(/Statistics Overview/i)).toBeInTheDocument();
+    expect(screen.getByText(/Real time advice/i)).toBeInTheDocument();
   });
 });

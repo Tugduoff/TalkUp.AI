@@ -1,5 +1,17 @@
+import InfoBox from '@/components/molecules/info-box';
+import SimulationTranscriptionArea from '@/components/organisms/simulation-transcription-area';
+import { TranscriptionProps } from '@/components/organisms/simulation-transcription-area/types';
+import SimulationVideoArea from '@/components/organisms/simulation-video-area';
+import { WebSocketDebugPanel } from '@/components/organisms/websocket-debug-panel';
+import {
+  AudioPacket,
+  useAudioStreaming,
+  useSimulationWebSocket,
+} from '@/hooks/simulation';
 import { createAuthGuard } from '@/utils/auth.guards';
 import { createFileRoute } from '@tanstack/react-router';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ReadyState } from 'react-use-websocket';
 
 export const Route = createFileRoute('/simulations')({
   beforeLoad: createAuthGuard('/simulations'),
@@ -7,10 +19,154 @@ export const Route = createFileRoute('/simulations')({
 });
 
 function Simulations() {
+  const [inputUrl, setInputUrl] = useState('ws://localhost:8080');
+  const [isCallActive, setIsCallActive] = useState(false);
+  const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
+  const [wsError, setWsError] = useState<string | null>(null);
+  const [connectionAttempts, setConnectionAttempts] = useState(0);
+
+  const {
+    sendMessage,
+    sendJsonMessage,
+    sendPing,
+    lastMessage,
+    lastJsonMessage,
+    readyState,
+    connect,
+    disconnect,
+  } = useSimulationWebSocket({
+    defaultUrl: inputUrl,
+    onOpen: () => {
+      setWsError(null);
+      setConnectionAttempts(0);
+      sendPing({ message: 'Ping from client' });
+    },
+    onClose: (event) => {
+      if (event.code !== 1000 && event.code !== 1001) {
+        setWsError(
+          `Connection closed: ${event.code} - ${event.reason || 'Unknown reason'}`,
+        );
+      }
+    },
+    onError: () => {
+      setConnectionAttempts((prev) => prev + 1);
+      setWsError(
+        'Failed to connect to WebSocket server. Check URL and server status.',
+      );
+    },
+  });
+
+  const sendJsonMessageRef = useRef(sendJsonMessage);
+  const readyStateRef = useRef(readyState);
+
+  useEffect(() => {
+    sendJsonMessageRef.current = sendJsonMessage;
+    readyStateRef.current = readyState;
+  }, [sendJsonMessage, readyState]);
+
+  const handleAudioPacket = useCallback((packet: AudioPacket) => {
+    if (readyStateRef.current === ReadyState.OPEN) {
+      sendJsonMessageRef.current(packet);
+    }
+  }, []);
+
+  const {
+    isRecording,
+    packetsSent,
+    supportedMimeType,
+    error: audioError,
+  } = useAudioStreaming({
+    stream: mediaStream,
+    onAudioPacket: handleAudioPacket,
+    isActive: isCallActive && readyState === ReadyState.OPEN,
+    timeSlice: 1000,
+  });
+
+  const handleStreamToggle = useCallback(
+    (streaming: boolean) => {
+      setIsCallActive(streaming);
+      if (streaming) {
+        connect(inputUrl);
+      } else {
+        disconnect(1000, 'Call ended');
+      }
+    },
+    [inputUrl, connect, disconnect],
+  );
+
+  const staticTranscriptions: TranscriptionProps[] = [
+    {
+      isIA: true,
+      speaker: 'AI',
+      text: "Hello, thank you for joining me. Let's start the interview.",
+    },
+    {
+      isIA: false,
+      speaker: 'You',
+      text: "Hello, I'm delighted to be here. I look forward to discussing how my experience can benefit your team.",
+    },
+    {
+      isIA: true,
+      speaker: 'AI',
+      text: 'Excellent. Can you tell me about a recent project where you faced a particularly difficult technical challenge, and how you overcame it?',
+    },
+  ];
+
   return (
-    <div className="p-2">
-      <h3 className="text-primary">Simulations</h3>
-      <p>Simulations</p>
+    <div className="p-6 h-full">
+      <div className="flex justify-between items-start mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Simulations</h1>
+          <p className="text-gray-600">
+            Simulations let you practice interview scenarios in a safe
+            environment.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-[1fr_20rem] gap-6">
+        <div>
+          <SimulationVideoArea
+            onStreamToggle={handleStreamToggle}
+            onStreamChange={setMediaStream}
+          />
+          <SimulationTranscriptionArea transcriptions={staticTranscriptions} />
+        </div>
+
+        <div className="space-y-6">
+          <WebSocketDebugPanel
+            inputUrl={inputUrl}
+            onInputUrlChange={setInputUrl}
+            readyState={readyState}
+            isCallActive={isCallActive}
+            sendMessage={sendMessage}
+            sendJsonMessage={sendJsonMessage}
+            sendPing={sendPing}
+            lastMessage={lastMessage}
+            lastJsonMessage={lastJsonMessage}
+            isRecording={isRecording}
+            packetsSent={packetsSent}
+            supportedMimeType={supportedMimeType}
+            audioError={audioError}
+            wsError={wsError}
+            connectionAttempts={connectionAttempts}
+          />
+
+          <InfoBox
+            title="Statistics Overview"
+            text="Real-time statistics will appear here."
+            icon="notifications"
+          />
+
+          <InfoBox
+            title="Real time advice"
+            text="Remember to keep your hands above the table"
+            icon="check"
+          />
+
+          <img src="/avatarworking.png" alt="Avatar Working" />
+        </div>
+      </div>
     </div>
   );
 }
