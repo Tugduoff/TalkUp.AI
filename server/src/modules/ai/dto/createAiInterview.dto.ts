@@ -31,6 +31,7 @@ export class CreateAiInterviewDto {
     description: "The current status of the AI interview request.",
     example: AiInterviewStatus.ASKED,
     default: AiInterviewStatus.ASKED,
+    enum: AiInterviewStatus,
   })
   @IsOptional()
   @IsEnum(AiInterviewStatus, {
