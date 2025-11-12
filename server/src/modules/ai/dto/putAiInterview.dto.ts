@@ -7,6 +7,7 @@ import {
   IsInt,
   Min,
   Max,
+  IsString,
 } from "class-validator";
 
 import { CreateAiInterviewDto } from "./createAiInterview.dto";
@@ -49,6 +50,7 @@ export class PutAiInterviewDto extends PartialType(CreateAiInterviewDto) {
     required: false,
   })
   @IsOptional()
+  @IsString()
   @Length(0, 500, {
     message: "Feedback must be at most 500 characters long.",
   })
