@@ -4,7 +4,7 @@ import {
   ApiSchema,
   PartialType,
 } from "@nestjs/swagger";
-import { IsOptional, Length, IsEnum, IsUrl, IsInt } from "class-validator";
+import { IsOptional, Length, IsEnum, IsUrl, IsInt, Min, Max } from "class-validator";
 
 import { CreateAiInterviewDto } from "./createAiInterview.dto";
 import { AiInterviewStatus } from "@common/enums/AiInterviewStatus";
@@ -28,11 +28,13 @@ export class PutAiInterviewDto extends PartialType(CreateAiInterviewDto) {
   status: AiInterviewStatus;
 
   @ApiPropertyOptional({
-    description: "The score achieved in the AI interview, if applicable.",
+    description: "The score achieved in the AI interview, if applicable. starts at 0, maximum 100.",
     example: 85,
     required: false,
   })
   @IsOptional()
+  @Min(0)
+  @Max(100)
   @IsInt()
   score: number;
 

@@ -15,7 +15,7 @@ export class GetInterviewsQueryDto {
   @Min(1)
   page?: number;
 
-  @ApiPropertyOptional({ description: "Items per page" })
+  @ApiPropertyOptional({ description: "Items per page, default at 20, starts at 1, maximum 100" })
   @IsOptional()
   @Type(() => Number)
   @IsInt()
