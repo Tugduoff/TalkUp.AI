@@ -28,8 +28,11 @@ import { HealthController } from "./health.controller";
         const config = pgConfig();
         return {
           ...config,
-          dateStrings: ["timestamp with time zone"],
-          timezone: "UTC",
+          extra: {
+            ...config.extra,
+            dateStrings: ["timestamp with time zone"],
+            timezone: "UTC",
+          },
         };
       },
     }),
