@@ -1,5 +1,4 @@
 import {
-  ApiProperty,
   ApiPropertyOptional,
   ApiSchema,
   PartialType,
