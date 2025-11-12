@@ -1,8 +1,4 @@
-import {
-  ApiPropertyOptional,
-  ApiSchema,
-  PartialType,
-} from "@nestjs/swagger";
+import { ApiPropertyOptional, ApiSchema, PartialType } from "@nestjs/swagger";
 import {
   IsOptional,
   Length,
