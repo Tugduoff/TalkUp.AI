@@ -2,7 +2,7 @@
   "plugins": ["react", "jsx-a11y", "import", "unicorn", "promise"],
   "categories": {
     "correctness": "error",
-    "suspicious": "error", 
+    "suspicious": "error",
     "pedantic": "warn",
     "style": "warn"
   },
@@ -30,7 +30,7 @@
   },
   "ignore": [
     "dist/**",
-    "src/routeTree.gen.ts", 
+    "src/routeTree.gen.ts",
     "src/routeTree.gen.d.ts",
     "coverage/**",
     "node_modules/**"
