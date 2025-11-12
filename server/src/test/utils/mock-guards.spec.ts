@@ -1,7 +1,7 @@
-import applyMockAccessTokenGuard from './mock-guards';
+import applyMockAccessTokenGuard from "./mock-guards";
 
-describe('applyMockAccessTokenGuard helper', () => {
-  it('calls overrideGuard and returns builder', () => {
+describe("applyMockAccessTokenGuard helper", () => {
+  it("calls overrideGuard and returns builder", () => {
     const called = { override: false, use: false, invoked: false };
     const fakeBuilder = {
       overrideGuard: () => {
@@ -10,7 +10,7 @@ describe('applyMockAccessTokenGuard helper', () => {
           useValue: (val: { canActivate: () => boolean }) => {
             called.use = true;
             // call the provided canActivate so the jest.fn produced is executed
-            if (val && typeof val.canActivate === 'function') {
+            if (val && typeof val.canActivate === "function") {
               const r = val.canActivate();
               called.invoked = r === true;
             }

@@ -1,9 +1,11 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { AiController } from "./ai.controller";
-import { AccessTokenGuard } from "@common/guards/accessToken.guard";
+
 import { AiInterviewStatus } from "@common/enums/AiInterviewStatus";
-import { AiService } from "./ai.service";
+
 import applyMockAccessTokenGuard from "../../test/utils/mock-guards";
+
+import { AiService } from "./ai.service";
+import { AiController } from "./ai.controller";
 
 describe("AiController", () => {
   let controller: AiController;
@@ -43,9 +45,8 @@ describe("AiController", () => {
     });
 
     // override the real guard so JwtService and DB repos are not required in unit tests
-    const module: TestingModule = await applyMockAccessTokenGuard(
-      moduleBuilder,
-    ).compile();
+    const module: TestingModule =
+      await applyMockAccessTokenGuard(moduleBuilder).compile();
 
     controller = module.get<AiController>(AiController);
   });
@@ -79,7 +80,10 @@ describe("AiController", () => {
 
       const res = await controller.getUserInterviews(query, userId);
 
-      expect(mockAiService.getUserInterviews).toHaveBeenCalledWith(query, userId);
+      expect(mockAiService.getUserInterviews).toHaveBeenCalledWith(
+        query,
+        userId,
+      );
       expect(res).toEqual(serviceResult);
     });
 
@@ -90,7 +94,11 @@ describe("AiController", () => {
 
       const res = await controller.getOneInterview(id, userId);
 
-      expect(mockAiService.getInterviewById).toHaveBeenCalledWith(id, userId, true);
+      expect(mockAiService.getInterviewById).toHaveBeenCalledWith(
+        id,
+        userId,
+        true,
+      );
       expect(res).toEqual({});
     });
 
@@ -104,7 +112,11 @@ describe("AiController", () => {
 
       const res = await controller.getOneInterview(id, userId);
 
-      expect(mockAiService.getInterviewById).toHaveBeenCalledWith(id, userId, true);
+      expect(mockAiService.getInterviewById).toHaveBeenCalledWith(
+        id,
+        userId,
+        true,
+      );
       expect(res).toEqual(interviewWithTranscripts);
     });
 
@@ -116,20 +128,35 @@ describe("AiController", () => {
 
       const res = await controller.editAiInterview(id, dto, userId);
 
-      expect(mockAiService.editAiInterview).toHaveBeenCalledWith(id, dto, userId);
+      expect(mockAiService.editAiInterview).toHaveBeenCalledWith(
+        id,
+        dto,
+        userId,
+      );
       expect(res).toEqual(true);
     });
 
     it("addTranscripts should call service and return result", async () => {
       const id = "i1";
-      const dto = { transcripts: [{ content: "hello", who_stated: "user" }] } as any;
+      const dto = {
+        transcripts: [{ content: "hello", who_stated: "user" }],
+      } as any;
       const userId = "user-1";
-      const serviceResult = { inserted: 1, data: [{ id: 1, content: "hello" }] };
-      (mockAiService.addTranscripts as jest.Mock).mockResolvedValueOnce(serviceResult);
+      const serviceResult = {
+        inserted: 1,
+        data: [{ id: 1, content: "hello" }],
+      };
+      (mockAiService.addTranscripts as jest.Mock).mockResolvedValueOnce(
+        serviceResult,
+      );
 
       const res = await controller.addTranscripts(id, dto, userId);
 
-      expect(mockAiService.addTranscripts).toHaveBeenCalledWith(id, dto, userId);
+      expect(mockAiService.addTranscripts).toHaveBeenCalledWith(
+        id,
+        dto,
+        userId,
+      );
       expect(res).toEqual(serviceResult);
     });
   });

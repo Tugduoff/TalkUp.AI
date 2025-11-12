@@ -1,16 +1,15 @@
-// @ts-nocheck
-import { UserId, getUserIdFromContext } from './userId.decorator';
+import { getUserIdFromContext } from "./userId.decorator";
 
-describe('UserId decorator', () => {
-  it('extracts userId from request', () => {
+describe("UserId decorator", () => {
+  it("extracts userId from request", () => {
     const ctx = {
       switchToHttp: () => ({
-        getRequest: () => ({ userId: 'u-123' }),
+        getRequest: () => ({ userId: "u-123" }),
       }),
     };
 
     // call the helper directly
     const res = getUserIdFromContext(ctx as any);
-    expect(res).toBe('u-123');
+    expect(res).toBe("u-123");
   });
 });
