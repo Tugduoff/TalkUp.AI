@@ -63,6 +63,7 @@ export class PutAiInterviewDto extends PartialType(CreateAiInterviewDto) {
     required: false,
   })
   @IsOptional()
+  @IsString()
   @IsUrl()
   videoLink: string;
 }

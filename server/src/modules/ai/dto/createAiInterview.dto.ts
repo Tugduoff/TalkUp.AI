@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional, ApiSchema } from "@nestjs/swagger";
-import { IsEnum, IsOptional, Length } from "class-validator";
+import { IsEnum, IsOptional, IsString, Length } from "class-validator";
 
 import { AiInterviewStatus } from "@common/enums/AiInterviewStatus";
 
@@ -12,6 +12,7 @@ export class CreateAiInterviewDto {
     description: "The type of AI interview to be conducted.",
     example: "technical",
   })
+  @IsString()
   @Length(3, 50, {
     message: "Interview type must be between 3 and 50 characters long.",
   })
@@ -22,6 +23,7 @@ export class CreateAiInterviewDto {
     example: "French",
     default: "French",
   })
+  @IsString()
   @Length(2, 30, {
     message: "The language must be between 2 and 30 characters long.",
   })
