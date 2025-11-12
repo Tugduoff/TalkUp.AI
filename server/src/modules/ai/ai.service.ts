@@ -82,7 +82,9 @@ export class AiService {
     } catch (error) {
       this.logger.error(
         `Failed to call AI server for user ${userId}: ${error.message}` +
-        (error.response?.data ? ` | Response data: ${JSON.stringify(error.response.data)}` : ""),
+          (error.response?.data
+            ? ` | Response data: ${JSON.stringify(error.response.data)}`
+            : ""),
         error.stack,
       );
       throw new InternalServerErrorException(
