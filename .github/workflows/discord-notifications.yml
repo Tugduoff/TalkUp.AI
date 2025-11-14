@@ -81,4 +81,4 @@ jobs:
             **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
             **Requested Reviewers:** `${{ join(github.event.pull_request.requested_reviewers.*.login, '`, `') }}`\n
             **By:** `${{ github.actor }}`\n
-            usernames: ${{ join(github.event.pull_request.requested_reviewers.*.login, ' ') }}
+          usernames: ${{ join(github.event.pull_request.requested_reviewers.*.login, ' ') }}
