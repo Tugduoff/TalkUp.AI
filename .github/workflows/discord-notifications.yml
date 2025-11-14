@@ -78,7 +78,7 @@ jobs:
           title: "👀 Reviewer(s) on PR now ready"
           color: 16776960
           description: |
-            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
-            **Requested Reviewers:** ${{ join(github.event.pull_request.requested_reviewers.*.login, ', ') }}
-            **By:** `${{ github.actor }}`
-          usernames: ${{ join(github.event.pull_request.requested_reviewers.*.login, ',') }}
+            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})\n
+            **Requested Reviewers:** `${{ join(github.event.pull_request.requested_reviewers.*.login, '`, `') }}`\n
+            **By:** `${{ github.actor }}`\n
+          usernames: ${{ github.event.pull_request.requested_reviewers.*.login }}
