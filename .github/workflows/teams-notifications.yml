@@ -71,7 +71,7 @@ jobs:
         with:
           webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
           title: "👀 Reviewers: PR now ready"
-          type: "reviewer_ready"
+          type: "review_requested"
           author: ${{ github.event.pull_request.user.login }}
           reviewer: ${{ join(github.event.pull_request.requested_reviewers.*.login, ',') }}
           pr_url: ${{ github.event.pull_request.html_url }}
