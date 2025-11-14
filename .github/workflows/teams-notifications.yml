@@ -73,5 +73,5 @@ jobs:
           title: "👀 Reviewers: PR now ready"
           type: "reviewer_ready"
           author: ${{ github.event.pull_request.user.login }}
-          reviewer: ${{ toJson(github.event.pull_request.requested_reviewers) }}
+          reviewer: ${{ join(github.event.pull_request.requested_reviewers.*.login, ',') }}
           pr_url: ${{ github.event.pull_request.html_url }}

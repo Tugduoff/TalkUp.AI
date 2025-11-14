@@ -79,6 +79,6 @@ jobs:
           color: 16776960
           description: |
             **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
-            **Requested Reviewers:** ${{ toJson(github.event.pull_request.requested_reviewers) }}
+            **Requested Reviewers:** ${{ join(github.event.pull_request.requested_reviewers.*.login, ', ') }}
             **By:** `${{ github.actor }}`
-          usernames: ${{ github.event.pull_request.user.login }}
+          usernames: ${{ join(github.event.pull_request.requested_reviewers.*.login, ',') }}
