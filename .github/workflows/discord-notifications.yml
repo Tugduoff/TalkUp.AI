@@ -2,7 +2,7 @@ name: PR Notifications
 
 on:
   pull_request:
-    types: [opened, review_requested, closed]
+    types: [opened, review_requested, ready_for_review, closed]
   pull_request_review:
     types: [submitted]
 
@@ -15,7 +15,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Notify PR opened
-        if: github.event.action == 'opened'
+        # Only notify for opened PRs that are not drafts
+        if: github.event.action == 'opened' && github.event.pull_request.draft == false
         uses: ./.github/actions/notify-discord
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -28,7 +29,7 @@ jobs:
           usernames: ${{ github.actor }}
 
       - name: Notify reviewer requested
-        if: github.event.action == 'review_requested'
+        if: github.event.action == 'review_requested' && github.event.pull_request.draft == false
         uses: ./.github/actions/notify-discord
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -67,3 +68,17 @@ jobs:
             **Title:** `${{ github.event.pull_request.title }}`\n
             **Merged By:** `${{ github.event.pull_request.merged_by.login }}`
           usernames: "${{ github.actor }}"
+
+      - name: Notify reviewers when a draft PR is marked ready
+        # If the PR was originally a draft and is now marked as ready, notify any reviewers that were already set before ready
+        if: github.event.action == 'ready_for_review' && toJson(github.event.pull_request.requested_reviewers) != '[]'
+        uses: ./.github/actions/notify-discord
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: "👀 Reviewer(s) on PR now ready"
+          color: 16776960
+          description: |
+            **PR:** [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
+            **Requested Reviewers:** ${{ toJson(github.event.pull_request.requested_reviewers) }}
+            **By:** `${{ github.actor }}`
+          usernames: ${{ github.event.pull_request.user.login }}
