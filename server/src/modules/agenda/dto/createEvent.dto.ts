@@ -1,12 +1,18 @@
 import { ApiProperty, ApiPropertyOptional, ApiSchema } from "@nestjs/swagger";
-import { IsNotEmpty, IsOptional, IsString, IsBoolean, IsISO8601, IsHexColor } from "class-validator";
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsBoolean,
+  IsISO8601,
+  IsHexColor,
+} from "class-validator";
 
 @ApiSchema({
-    name: "CreateEventDto",
-    description: "Data Transfer Object for creating a new agenda event",
+  name: "CreateEventDto",
+  description: "Data Transfer Object for creating a new agenda event",
 })
 export class CreateEventDto {
-
   @ApiProperty({
     description: "Title of the event",
     example: "Team Meeting",

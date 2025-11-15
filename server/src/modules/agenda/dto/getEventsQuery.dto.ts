@@ -1,10 +1,9 @@
 import { ApiPropertyOptional, ApiSchema } from "@nestjs/swagger";
-import { IsOptional, IsIn, IsString, IsISO8601 } from "class-validator";
+import { IsOptional, IsString, IsISO8601 } from "class-validator";
 
 @ApiSchema({
   name: "GetEventsQueryDto",
-  description:
-    "Query parameters for fetching agenda events with from ",
+  description: "Query parameters for fetching agenda events with from ",
 })
 export class GetEventsQueryDto {
   @ApiPropertyOptional({

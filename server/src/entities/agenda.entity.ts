@@ -46,20 +46,19 @@ export class agenda_event {
   @Column({ nullable: true })
   timezone: string;
 
-  @CreateDateColumn ({
+  @CreateDateColumn({
     type: "timestamptz",
-    default: () => "CURRENT_TIMESTAMP" })
+    default: () => "CURRENT_TIMESTAMP",
+  })
   created_at: Date;
 
   @UpdateDateColumn({
     type: "timestamptz",
-    default: () => "CURRENT_TIMESTAMP"
+    default: () => "CURRENT_TIMESTAMP",
   })
   updated_at: Date;
 
-
   /*----- UUID manual generation to ensure V7 format ------ */
-
 
   @BeforeInsert()
   generateUUIDv7() {

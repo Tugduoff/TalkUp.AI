@@ -13,11 +13,11 @@ import { AgendaController } from "./agenda.controller";
   imports: [
     TypeOrmModule.forFeature([agenda_event, user]),
     JwtModule.register({
-        global: true,
-        secret: process.env.JWT_SECRET,
-        signOptions: { expiresIn: "7d" },
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: "7d" },
     }),
-],
+  ],
   controllers: [AgendaController],
   providers: [AgendaService, AccessTokenGuard],
   exports: [AgendaService],
