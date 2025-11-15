@@ -12,6 +12,7 @@ import { AiModule } from "./modules/ai/ai.module";
 import { LoggerMiddleware } from "@common/middleware/logger";
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
 import { HealthController } from "./health.controller";
+import { AgendaModule } from "./modules/agenda/agenda.module";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { HealthController } from "./health.controller";
     AuthModule,
     UsersModule,
     LinkedInModule,
+    AgendaModule,
     TypeOrmModule.forRootAsync({
       useFactory: () => {
         const config = pgConfig();
