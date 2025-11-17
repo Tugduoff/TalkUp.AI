@@ -86,6 +86,18 @@ describe("AgendaService", () => {
         InternalServerErrorException,
       );
     });
+
+    it("should throw BadRequestException if end_at is before start_at", async () => {
+      const payload = {
+        title: "Invalid Meeting",
+        start_at: new Date("2025-01-01T12:00:00.000Z"),
+        end_at: new Date("2025-01-01T11:00:00.000Z"),
+      } as any;
+
+      await expect(service.create("user-1", payload)).rejects.toThrow(
+        "End time cannot be before start time.",
+      );
+    });
   });
 
   describe("findOne", () => {
@@ -141,6 +153,26 @@ describe("AgendaService", () => {
         service.update("user-1", "nope", { title: "x" } as any),
       ).rejects.toThrow(NotFoundException);
     });
+
+    it("should throw BadRequestException if end_at is before start_at", async () => {
+      (mockRepo.findOne as jest.Mock).mockResolvedValue(mockEvent);
+
+      await expect(
+        service.update("user-1", "evt-1", {
+          start_at: new Date("2025-01-01T12:00:00.000Z"),
+          end_at: new Date("2025-01-01T11:00:00.000Z"),
+        } as any),
+      ).rejects.toThrow("End time cannot be before start time.");
+    });
+
+    it("should log and throw on error", async () => {
+      (mockRepo.findOne as jest.Mock).mockResolvedValue(mockEvent);
+      mockRepo.save.mockRejectedValueOnce(new Error("DB error"));
+
+      await expect(
+        service.update("user-1", "evt-1", { title: "Updated" } as any),
+      ).rejects.toThrow(InternalServerErrorException);
+    });
   });
 
   describe("remove", () => {
@@ -162,6 +194,15 @@ describe("AgendaService", () => {
 
       await expect(service.remove("user-1", "nope")).rejects.toThrow(
         NotFoundException,
+      );
+    });
+
+    it("should log and throw on error", async () => {
+      (mockRepo.findOne as jest.Mock).mockResolvedValue(mockEvent);
+      mockRepo.remove.mockRejectedValueOnce(new Error("DB error"));
+
+      await expect(service.remove("user-1", "evt-1")).rejects.toThrow(
+        InternalServerErrorException,
       );
     });
   });
