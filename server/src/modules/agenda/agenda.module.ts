@@ -10,10 +10,7 @@ import { AgendaService } from "./agenda.service";
 import { AgendaController } from "./agenda.controller";
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([agenda_event, user]),
-    JwtModule,
-  ],
+  imports: [TypeOrmModule.forFeature([agenda_event, user]), JwtModule],
   controllers: [AgendaController],
   providers: [AgendaService, AccessTokenGuard],
   exports: [AgendaService],

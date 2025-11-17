@@ -26,9 +26,7 @@ export class AgendaService {
 
   async create(user_id: string, payload: CreateEventDto) {
     if (payload.end_at && payload.end_at <= payload.start_at) {
-      throw new BadRequestException(
-        "End time cannot be before start time.",
-      );
+      throw new BadRequestException("End time cannot be before start time.");
     }
 
     try {
@@ -74,9 +72,7 @@ export class AgendaService {
       payload.start_at &&
       payload.end_at <= payload.start_at
     ) {
-      throw new BadRequestException(
-        "End time cannot be before start time.",
-      );
+      throw new BadRequestException("End time cannot be before start time.");
     }
     Object.assign(agenda, payload);
 
@@ -113,7 +109,11 @@ export class AgendaService {
   async listForRange(user_id: string, from: Date, to: Date) {
     try {
       return await this.repo.find({
-        where: { user_id, start_at: LessThanOrEqual(to), end_at: MoreThanOrEqual(from) },
+        where: {
+          user_id,
+          start_at: LessThanOrEqual(to),
+          end_at: MoreThanOrEqual(from),
+        },
         order: { start_at: "ASC" },
       });
     } catch (error) {
