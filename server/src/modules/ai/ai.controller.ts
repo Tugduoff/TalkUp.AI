@@ -18,6 +18,7 @@ import {
   ApiOkResponse,
   ApiBearerAuth,
   ApiExtraModels,
+  ApiNotFoundResponse,
 } from "@nestjs/swagger";
 
 import { UsePipes } from "@nestjs/common/decorators/core/use-pipes.decorator";
@@ -85,8 +86,9 @@ export class AiController {
   @ApiBadRequestResponse({
     description: "Badly formatted parameter.",
   })
-  @ApiBearerAuth("access-token")
-  @UseGuards(AccessTokenGuard)
+  @ApiNotFoundResponse({
+    description: "AI interview not found.",
+  })
   @Get("interviews/:id")
   async getOneInterview(@Param("id") id: string, @UserId() userId: string) {
     const interview = await this.aiService.getInterviewById(id, userId, true);
@@ -108,7 +110,9 @@ export class AiController {
   @ApiUnprocessableEntityResponse({
     description: "Missing parameter in request.",
   })
-  @ApiBearerAuth("access-token")
+  @ApiNotFoundResponse({
+    description: "AI interview not found.",
+  })
   @UsePipes(new PostValidationPipe())
   @UseGuards(AccessTokenGuard)
   @Put("interviews/:id")
@@ -126,7 +130,9 @@ export class AiController {
   @ApiBadRequestResponse({
     description: "Badly formatted parameter.",
   })
-  @ApiBearerAuth("access-token")
+  @ApiNotFoundResponse({
+    description: "AI interview not found.",
+  })
   @UsePipes(new PostValidationPipe())
   @UseGuards(AccessTokenGuard)
   @Post("interviews/:id/transcripts")
