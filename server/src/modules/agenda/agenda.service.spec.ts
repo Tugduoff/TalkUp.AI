@@ -1,7 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { In, Repository } from "typeorm";
-import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { Repository } from "typeorm";
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
 
 import { AgendaService } from "./agenda.service";
 import { agenda_event } from "@entities/agenda.entity";
@@ -47,25 +50,41 @@ describe("AgendaService", () => {
 
   describe("create", () => {
     it("should create and save an event", async () => {
-      const payload = { title: "Meeting", start_at: new Date(), end_at: new Date() } as any;
+      const payload = {
+        title: "Meeting",
+        start_at: new Date(),
+        end_at: new Date(),
+      } as any;
 
       (mockRepo.create as jest.Mock).mockReturnValue(payload);
-      (mockRepo.save as jest.Mock).mockResolvedValue({ ...payload, event_id: "evt-1" });
+      (mockRepo.save as jest.Mock).mockResolvedValue({
+        ...payload,
+        event_id: "evt-1",
+      });
 
       const result = await service.create("user-1", payload);
 
-      expect(mockRepo.create).toHaveBeenCalledWith({ ...payload, user_id: "user-1" });
+      expect(mockRepo.create).toHaveBeenCalledWith({
+        ...payload,
+        user_id: "user-1",
+      });
       expect(mockRepo.save).toHaveBeenCalledWith(payload);
       expect(result).toEqual({ ...payload, event_id: "evt-1" });
     });
 
     it("should log and throw on error", async () => {
-      const payload = { title: "Meeting", start_at: new Date(), end_at: new Date() } as any;
+      const payload = {
+        title: "Meeting",
+        start_at: new Date(),
+        end_at: new Date(),
+      } as any;
 
       mockRepo.create.mockReturnValue(payload);
       mockRepo.save.mockRejectedValueOnce(new Error("DB error"));
 
-      await expect(service.create("user-1", payload)).rejects.toThrow(InternalServerErrorException);
+      await expect(service.create("user-1", payload)).rejects.toThrow(
+        InternalServerErrorException,
+      );
     });
   });
 
@@ -75,7 +94,9 @@ describe("AgendaService", () => {
 
       const result = await service.findOne("user-1", "evt-1");
 
-      expect(mockRepo.findOne).toHaveBeenCalledWith({ where: { user_id: "user-1", event_id: "evt-1" } });
+      expect(mockRepo.findOne).toHaveBeenCalledWith({
+        where: { user_id: "user-1", event_id: "evt-1" },
+      });
       expect(result).toEqual(mockEvent);
     });
 
@@ -90,7 +111,9 @@ describe("AgendaService", () => {
     it("should log and throw on error", async () => {
       mockRepo.findOne.mockRejectedValueOnce(new Error("DB error"));
 
-      await expect(service.findOne("user-1", "evt-1")).rejects.toThrow(InternalServerErrorException);
+      await expect(service.findOne("user-1", "evt-1")).rejects.toThrow(
+        InternalServerErrorException,
+      );
     });
   });
 
@@ -100,9 +123,13 @@ describe("AgendaService", () => {
       (mockRepo.findOne as jest.Mock).mockResolvedValue(mockEvent);
       (mockRepo.save as jest.Mock).mockResolvedValue(updated);
 
-      const result = await service.update("user-1", "evt-1", { title: "Updated" } as any);
+      const result = await service.update("user-1", "evt-1", {
+        title: "Updated",
+      } as any);
 
-      expect(mockRepo.findOne).toHaveBeenCalledWith({ where: { user_id: "user-1", event_id: "evt-1" } });
+      expect(mockRepo.findOne).toHaveBeenCalledWith({
+        where: { user_id: "user-1", event_id: "evt-1" },
+      });
       expect(mockRepo.save).toHaveBeenCalledWith(updated);
       expect(result).toEqual(updated);
     });
@@ -110,7 +137,9 @@ describe("AgendaService", () => {
     it("should throw NotFoundException when event missing", async () => {
       (mockRepo.findOne as jest.Mock).mockResolvedValue(null);
 
-      await expect(service.update("user-1", "nope", { title: "x" } as any)).rejects.toThrow(NotFoundException);
+      await expect(
+        service.update("user-1", "nope", { title: "x" } as any),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -121,7 +150,9 @@ describe("AgendaService", () => {
 
       const result = await service.remove("user-1", "evt-1");
 
-      expect(mockRepo.findOne).toHaveBeenCalledWith({ where: { user_id: "user-1", event_id: "evt-1" } });
+      expect(mockRepo.findOne).toHaveBeenCalledWith({
+        where: { user_id: "user-1", event_id: "evt-1" },
+      });
       expect(mockRepo.remove).toHaveBeenCalledWith(mockEvent);
       expect(result).toBe(true);
     });
@@ -129,7 +160,9 @@ describe("AgendaService", () => {
     it("should throw NotFoundException when event missing", async () => {
       (mockRepo.findOne as jest.Mock).mockResolvedValue(null);
 
-      await expect(service.remove("user-1", "nope")).rejects.toThrow(NotFoundException);
+      await expect(service.remove("user-1", "nope")).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -151,7 +184,9 @@ describe("AgendaService", () => {
 
       mockRepo.find.mockRejectedValueOnce(new Error("DB error"));
 
-      await expect(service.listForRange("user-1", from, to)).rejects.toThrow(InternalServerErrorException);
+      await expect(service.listForRange("user-1", from, to)).rejects.toThrow(
+        InternalServerErrorException,
+      );
     });
   });
 });

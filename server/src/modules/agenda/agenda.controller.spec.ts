@@ -89,7 +89,10 @@ describe("AgendaController", () => {
 
   describe("list", () => {
     it("should call service.listForRange and return events when query provided", async () => {
-      const query = { start_at: "2025-01-01T00:00:00.000Z", end_at: "2025-01-08T00:00:00.000Z" } as any;
+      const query = {
+        start_at: "2025-01-01T00:00:00.000Z",
+        end_at: "2025-01-08T00:00:00.000Z",
+      } as any;
       const res = await controller.list("user-1", query);
       expect(res).toEqual([mockEvent]);
       expect(mockService.listForRange).toHaveBeenCalled();
