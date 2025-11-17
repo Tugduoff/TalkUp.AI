@@ -6,7 +6,7 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, Between } from "typeorm";
+import { Repository, LessThanOrEqual, MoreThanOrEqual } from "typeorm";
 
 import { CreateEventDto } from "./dto/createEvent.dto";
 import { UpdateEventDto } from "./dto/updateEvent.dto";
@@ -114,7 +114,7 @@ export class AgendaService {
   async listForRange(user_id: string, from: Date, to: Date) {
     try {
       return await this.repo.find({
-        where: { user_id, start_at: Between(from, to) },
+        where: { user_id, start_at: LessThanOrEqual(to), end_at: MoreThanOrEqual(from) },
         order: { start_at: "ASC" },
       });
     } catch (error) {
