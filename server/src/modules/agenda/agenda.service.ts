@@ -89,11 +89,26 @@ export class AgendaService {
   }
 
   async remove(user_id: string, event_id: string) {
-    const agenda = await this.findOne(user_id, event_id);
+    try {
+      const agenda = await this.findOne(user_id, event_id);
 
-    if (!agenda) throw new NotFoundException("Event not found.");
-    await this.repo.remove(agenda);
-    return true;
+      if (!agenda) throw new NotFoundException("Event not found.");
+      await this.repo.remove(agenda);
+      return true;
+    } catch (error) {
+
+      // Re-throw known exceptions from findOne method, to avoid relogging them
+      if (error instanceof NotFoundException || error instanceof InternalServerErrorException) {
+        throw error;
+      }
+      this.logger.error(
+        `Error removing agenda event ${event_id} for user ${user_id}: ${error.message}`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        "Internal server error while removing agenda event.",
+      );
+    }
   }
 
   async listForRange(user_id: string, from: Date, to: Date) {
