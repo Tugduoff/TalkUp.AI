@@ -89,10 +89,7 @@ export class AiController {
   })
   @Get("interviews/:id")
   async getOneInterview(@Param("id") id: string, @UserId() userId: string) {
-    const interview = await this.aiService.getInterviewById(id, userId, true);
-
-    if (!interview) return {};
-    return interview;
+    return await this.aiService.getInterviewById(id, userId, true);
   }
 
   @ApiOkResponse({
