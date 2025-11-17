@@ -3,6 +3,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Logger,
+  BadRequestException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, Between } from "typeorm";
@@ -24,6 +25,12 @@ export class AgendaService {
   }
 
   async create(user_id: string, payload: CreateEventDto) {
+    if (payload.end_at && payload.end_at <= payload.start_at) {
+      throw new BadRequestException(
+        "End time cannot be before start time.",
+      );
+    }
+
     try {
       const entity = this.repo.create({ ...payload, user_id });
 
