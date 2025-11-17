@@ -94,7 +94,15 @@ describe("AiController", () => {
         new Error("NotFoundException"),
       );
 
-      await expect(controller.getOneInterview(id, userId)).rejects.toThrow();
+      await expect(controller.getOneInterview(id, userId)).rejects.toThrow(
+        "NotFoundException",
+      );
+
+      expect(mockAiService.getInterviewById).toHaveBeenCalledWith(
+        id,
+        userId,
+        true,
+      );
     });
 
     it("getOneInterview should return interview when found", async () => {

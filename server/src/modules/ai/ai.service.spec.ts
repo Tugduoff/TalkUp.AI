@@ -285,9 +285,9 @@ describe("AiService", () => {
 
   describe("getInterviewById", () => {
     it("throws NotFoundException when no interviewId provided", async () => {
-      await expect(
-        service.getInterviewById("", "user-1"),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.getInterviewById("", "user-1")).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it("throws NotFoundException when interview not found", async () => {
