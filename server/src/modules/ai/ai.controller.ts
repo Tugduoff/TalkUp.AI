@@ -18,6 +18,7 @@ import {
   ApiOkResponse,
   ApiBearerAuth,
   ApiExtraModels,
+  ApiNotFoundResponse,
 } from "@nestjs/swagger";
 
 import { UsePipes } from "@nestjs/common/decorators/core/use-pipes.decorator";
@@ -35,6 +36,8 @@ import { CreateAiTranscriptsDto } from "./dto/createAiTranscripts.dto";
 
 @ApiTags("AI")
 @Controller("ai")
+@ApiBearerAuth("access-token")
+@UseGuards(AccessTokenGuard)
 export class AiController {
   constructor(private readonly aiService: AiService) {}
 
@@ -51,9 +54,7 @@ export class AiController {
   @ApiUnprocessableEntityResponse({
     description: "Missing parameter in request.",
   })
-  @ApiBearerAuth("access-token")
   @UsePipes(new PostValidationPipe())
-  @UseGuards(AccessTokenGuard)
   @Post("interviews")
   async createAiInterview(
     @Body() createAiInterviewDto: CreateAiInterviewDto,
@@ -69,8 +70,6 @@ export class AiController {
   @ApiBadRequestResponse({
     description: "Badly formatted parameter.",
   })
-  @ApiBearerAuth("access-token")
-  @UseGuards(AccessTokenGuard)
   @Get("interviews")
   async getUserInterviews(
     @Query() query: GetInterviewsQueryDto,
@@ -85,14 +84,12 @@ export class AiController {
   @ApiBadRequestResponse({
     description: "Badly formatted parameter.",
   })
-  @ApiBearerAuth("access-token")
-  @UseGuards(AccessTokenGuard)
+  @ApiNotFoundResponse({
+    description: "AI interview not found.",
+  })
   @Get("interviews/:id")
   async getOneInterview(@Param("id") id: string, @UserId() userId: string) {
-    const interview = await this.aiService.getInterviewById(id, userId, true);
-
-    if (!interview) return {};
-    return interview;
+    return await this.aiService.getInterviewById(id, userId, true);
   }
 
   @ApiOkResponse({
@@ -108,9 +105,10 @@ export class AiController {
   @ApiUnprocessableEntityResponse({
     description: "Missing parameter in request.",
   })
-  @ApiBearerAuth("access-token")
+  @ApiNotFoundResponse({
+    description: "AI interview not found.",
+  })
   @UsePipes(new PostValidationPipe())
-  @UseGuards(AccessTokenGuard)
   @Put("interviews/:id")
   async editAiInterview(
     @Param("id") id: string,
@@ -126,9 +124,10 @@ export class AiController {
   @ApiBadRequestResponse({
     description: "Badly formatted parameter.",
   })
-  @ApiBearerAuth("access-token")
+  @ApiNotFoundResponse({
+    description: "AI interview not found.",
+  })
   @UsePipes(new PostValidationPipe())
-  @UseGuards(AccessTokenGuard)
   @Post("interviews/:id/transcripts")
   async addTranscripts(
     @Param("id") interviewId: string,

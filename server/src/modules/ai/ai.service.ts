@@ -3,7 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  UnauthorizedException,
+  NotFoundException,
 } from "@nestjs/common";
 
 import { InjectRepository } from "@nestjs/typeorm";
@@ -130,13 +130,6 @@ export class AiService {
   ) {
     let alreadyExists = await this.getInterviewById(interviewId, userId);
 
-    if (!alreadyExists) {
-      this.logger.warn(
-        `AI interview with id ${interviewId} not found for user ${userId}.`,
-      );
-      throw new UnauthorizedException("AI interview not found.");
-    }
-
     // if interview is completed, set ended_at date
     if (
       dto.status &&
@@ -226,14 +219,8 @@ export class AiService {
     dto: CreateAiTranscriptsDto,
     userId: string,
   ) {
-    const interview = await this.getInterviewById(interviewId, userId);
-
-    if (!interview) {
-      this.logger.warn(
-        `AI interview with id ${interviewId} not found for user ${userId}.`,
-      );
-      throw new UnauthorizedException("AI interview not found.");
-    }
+    // Check that interview exists and belongs to user, if not throw error
+    await this.getInterviewById(interviewId, userId);
 
     const records = dto.transcripts.map((t) =>
       this.aiTranscriptRepository.create({
@@ -271,15 +258,17 @@ export class AiService {
     userId: string,
     getTranscripts: boolean = false,
   ) {
-    // No interview to check
-    if (!interviewId) return null;
-
     try {
       const interview = await this.aiInterviewRepository.findOne({
         where: { user_id: userId, interview_id: interviewId },
       });
 
-      if (!interview) return null;
+      if (!interview) {
+        this.logger.warn(
+          `AI interview with id ${interviewId} not found for user ${userId}.`,
+        );
+        throw new NotFoundException("AI interview not found.");
+      }
 
       const transcripts = getTranscripts
         ? await this.aiTranscriptRepository.find({
@@ -289,6 +278,8 @@ export class AiService {
         : [];
       return { ...interview, transcripts };
     } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+
       this.logger.error(
         `Failed to check existing interview for user ${userId} and id ${interviewId}: ${error.message}`,
         error.stack,

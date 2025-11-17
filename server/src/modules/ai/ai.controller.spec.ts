@@ -87,19 +87,22 @@ describe("AiController", () => {
       expect(res).toEqual(serviceResult);
     });
 
-    it("getOneInterview should return {} when service returns null", async () => {
+    it("getOneInterview should throw NotFoundException when interview not found", async () => {
       const id = "i-nonexistent";
       const userId = "user-1";
-      (mockAiService.getInterviewById as jest.Mock).mockResolvedValueOnce(null);
+      (mockAiService.getInterviewById as jest.Mock).mockRejectedValueOnce(
+        new Error("NotFoundException"),
+      );
 
-      const res = await controller.getOneInterview(id, userId);
+      await expect(controller.getOneInterview(id, userId)).rejects.toThrow(
+        "NotFoundException",
+      );
 
       expect(mockAiService.getInterviewById).toHaveBeenCalledWith(
         id,
         userId,
         true,
       );
-      expect(res).toEqual({});
     });
 
     it("getOneInterview should return interview when found", async () => {
