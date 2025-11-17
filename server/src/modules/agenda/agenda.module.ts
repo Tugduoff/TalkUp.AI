@@ -12,11 +12,7 @@ import { AgendaController } from "./agenda.controller";
 @Module({
   imports: [
     TypeOrmModule.forFeature([agenda_event, user]),
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: "7d" },
-    }),
+    JwtModule,
   ],
   controllers: [AgendaController],
   providers: [AgendaService, AccessTokenGuard],
