@@ -52,8 +52,8 @@ describe("AgendaService", () => {
     it("should create and save an event", async () => {
       const payload = {
         title: "Meeting",
-        start_at: new Date(),
-        end_at: new Date(),
+        start_at: new Date("2025-01-01T10:00:00.000Z"),
+        end_at: new Date("2025-01-01T11:00:00.000Z"),
       } as any;
 
       (mockRepo.create as jest.Mock).mockReturnValue(payload);
@@ -75,8 +75,8 @@ describe("AgendaService", () => {
     it("should log and throw on error", async () => {
       const payload = {
         title: "Meeting",
-        start_at: new Date(),
-        end_at: new Date(),
+        start_at: new Date("2025-01-01T10:00:00.000Z"),
+        end_at: new Date("2025-01-01T11:00:00.000Z"),
       } as any;
 
       mockRepo.create.mockReturnValue(payload);
@@ -100,12 +100,12 @@ describe("AgendaService", () => {
       expect(result).toEqual(mockEvent);
     });
 
-    it("should return null when not found", async () => {
+    it("should throw NotFoundException when not found", async () => {
       (mockRepo.findOne as jest.Mock).mockResolvedValue(null);
 
-      const result = await service.findOne("user-1", "nope");
-
-      expect(result).toBeNull();
+      await expect(service.findOne("user-1", "nope")).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it("should log and throw on error", async () => {

@@ -3,6 +3,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { applyMockAccessTokenGuard } from "@src/test/utils/mock-guards";
 
 import { AgendaController } from "./agenda.controller";
+import { NotFoundException } from "@nestjs/common";
 import { AgendaService } from "./agenda.service";
 
 describe("AgendaController", () => {
@@ -63,10 +64,14 @@ describe("AgendaController", () => {
       expect(res).toEqual(mockEvent);
     });
 
-    it("should return empty object when not found", async () => {
-      (mockService.findOne as jest.Mock).mockResolvedValue(null);
-      const res = await controller.getOne("user-1", "nope");
-      expect(res).toEqual({});
+    it("should throw NotFoundException when not found", async () => {
+      (mockService.findOne as jest.Mock).mockRejectedValue(
+        new NotFoundException('Event not found.'),
+      );
+
+      await expect(controller.getOne("user-1", "nope")).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
