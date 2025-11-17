@@ -74,7 +74,18 @@ export class AgendaService {
       );
     }
     Object.assign(agenda, payload);
-    return this.repo.save(agenda);
+
+    try {
+      return await this.repo.save(agenda);
+    } catch (error) {
+      this.logger.error(
+        `Error updating agenda event ${event_id} for user ${user_id}: ${error.message}`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        "Internal server error while updating agenda event.",
+      );
+    }
   }
 
   async remove(user_id: string, event_id: string) {
