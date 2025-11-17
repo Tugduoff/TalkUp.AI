@@ -64,6 +64,15 @@ export class AgendaService {
     const agenda = await this.findOne(user_id, event_id);
 
     if (!agenda) throw new NotFoundException("Event not found.");
+    if (
+      payload.end_at &&
+      payload.start_at &&
+      payload.end_at <= payload.start_at
+    ) {
+      throw new BadRequestException(
+        "End time cannot be before start time.",
+      );
+    }
     Object.assign(agenda, payload);
     return this.repo.save(agenda);
   }
