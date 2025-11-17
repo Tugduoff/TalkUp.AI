@@ -64,11 +64,12 @@ export class AgendaController {
   @ApiBadRequestResponse({
     description: "Badly formatted event id.",
   })
+  @ApiNotFoundResponse({
+    description: "Event not found.",
+  })
   @Get(":id")
   async getOne(@UserId() userId: string, @ParamId() id: string) {
-    const event = await this.service.findOne(userId, id);
-    if (!event) return {};
-    return event;
+    return await this.service.findOne(userId, id);
   }
 
   @ApiOkResponse({

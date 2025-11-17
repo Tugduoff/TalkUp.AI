@@ -48,8 +48,14 @@ export class AgendaService {
 
   async findOne(user_id: string, event_id: string) {
     try {
-      return await this.repo.findOne({ where: { user_id, event_id } });
+      const agenda = await this.repo.findOne({ where: { user_id, event_id } });
+
+      if (!agenda) throw new NotFoundException("Event not found.");
+      return agenda;
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       this.logger.error(
         `Error retrieving agenda event ${event_id} for user ${user_id}: ${error.message}`,
         error.stack,
@@ -63,7 +69,6 @@ export class AgendaService {
   async update(user_id: string, event_id: string, payload: UpdateEventDto) {
     const agenda = await this.findOne(user_id, event_id);
 
-    if (!agenda) throw new NotFoundException("Event not found.");
     if (
       payload.end_at &&
       payload.start_at &&
@@ -89,18 +94,12 @@ export class AgendaService {
   }
 
   async remove(user_id: string, event_id: string) {
-    try {
-      const agenda = await this.findOne(user_id, event_id);
+    const agenda = await this.findOne(user_id, event_id);
 
-      if (!agenda) throw new NotFoundException("Event not found.");
+    try {
       await this.repo.remove(agenda);
       return true;
     } catch (error) {
-
-      // Re-throw known exceptions from findOne method, to avoid relogging them
-      if (error instanceof NotFoundException || error instanceof InternalServerErrorException) {
-        throw error;
-      }
       this.logger.error(
         `Error removing agenda event ${event_id} for user ${user_id}: ${error.message}`,
         error.stack,
