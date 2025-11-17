@@ -1,7 +1,7 @@
 import {
   ConflictException,
   InternalServerErrorException,
-  UnauthorizedException,
+  NotFoundException,
 } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
@@ -150,14 +150,14 @@ describe("AiService", () => {
   });
 
   describe("editAiInterview", () => {
-    it("throws UnauthorizedException when interview not found", async () => {
+    it("throws NotFoundException when interview not found", async () => {
       jest
         .spyOn(service, "getInterviewById")
-        .mockResolvedValueOnce(null as any);
+        .mockRejectedValueOnce(new NotFoundException());
 
       await expect(
         service.editAiInterview("nope", "" as any, "user-1"),
-      ).rejects.toThrow(UnauthorizedException);
+      ).rejects.toThrow(NotFoundException);
     });
 
     it("updates interview and returns true when successful", async () => {
@@ -242,14 +242,14 @@ describe("AiService", () => {
   });
 
   describe("addTranscripts", () => {
-    it("throws UnauthorizedException when interview not found", async () => {
+    it("throws NotFoundException when interview not found", async () => {
       jest
         .spyOn(service, "getInterviewById")
-        .mockResolvedValueOnce(null as any);
+        .mockRejectedValueOnce(new NotFoundException());
 
       await expect(
         service.addTranscripts("i1", { transcripts: [] } as any, "user-1"),
-      ).rejects.toThrow(UnauthorizedException);
+      ).rejects.toThrow(NotFoundException);
     });
 
     it("saves transcripts and returns inserted count", async () => {
@@ -284,16 +284,18 @@ describe("AiService", () => {
   });
 
   describe("getInterviewById", () => {
-    it("returns null when no interviewId provided", async () => {
-      const res = await service.getInterviewById("", "user-1");
-      expect(res).toBeNull();
+    it("throws NotFoundException when no interviewId provided", async () => {
+      await expect(
+        service.getInterviewById("", "user-1"),
+      ).rejects.toThrow(NotFoundException);
     });
 
-    it("returns null when interview not found", async () => {
+    it("throws NotFoundException when interview not found", async () => {
       mockAiInterviewRepo.findOne.mockResolvedValueOnce(null);
-      const res = await service.getInterviewById("i100", "user-1");
+      await expect(service.getInterviewById("i100", "user-1")).rejects.toThrow(
+        NotFoundException,
+      );
       expect(mockAiInterviewRepo.findOne).toHaveBeenCalled();
-      expect(res).toBeNull();
     });
 
     it("returns interview with transcripts when requested", async () => {
