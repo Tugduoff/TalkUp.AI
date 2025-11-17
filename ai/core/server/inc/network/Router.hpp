@@ -38,9 +38,16 @@ namespace talkup_network {
              * @brief Get the environment key used by the server.
              *
              */
-            std::string get_env_key(void);
+            void get_env_key(void);
 
         protected:
         private:
+            enum __ErrorCode {
+                SUCCESS = 200,
+                FAILURE = 400,
+                INV_KEY = 401,
+                KEY_NOT_SET = 500,
+            };
+            std::map<std::string, std::string> __env_variables;
     };
 }
