@@ -56,7 +56,7 @@ export class AgendaController {
 
   @ApiOkResponse({
     description: "The event has been successfully retrieved.",
-    type: CreateEventDto || {},
+    type: CreateEventDto,
   })
   @ApiUnprocessableEntityResponse({
     description: "Missing or invalid parameters in request.",
