@@ -3,7 +3,7 @@ import { IsOptional, IsString, IsISO8601 } from "class-validator";
 
 @ApiSchema({
   name: "GetEventsQueryDto",
-  description: "Query parameters for fetching agenda events with from ",
+  description: "Query parameters for fetching agenda events with from start and end date filters",
 })
 export class GetEventsQueryDto {
   @ApiPropertyOptional({
