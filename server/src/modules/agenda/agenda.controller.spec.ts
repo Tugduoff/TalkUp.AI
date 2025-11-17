@@ -66,7 +66,7 @@ describe("AgendaController", () => {
 
     it("should throw NotFoundException when not found", async () => {
       (mockService.findOne as jest.Mock).mockRejectedValue(
-        new NotFoundException('Event not found.'),
+        new NotFoundException("Event not found."),
       );
 
       await expect(controller.getOne("user-1", "nope")).rejects.toThrow(
