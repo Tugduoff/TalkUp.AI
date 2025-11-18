@@ -2,6 +2,7 @@ import { Extension } from '@tiptap/core';
 import { Color } from '@tiptap/extension-color';
 import { FontFamily } from '@tiptap/extension-font-family';
 import Highlight from '@tiptap/extension-highlight';
+import Placeholder from '@tiptap/extension-placeholder';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
 import TextAlign from '@tiptap/extension-text-align';
@@ -184,8 +185,12 @@ export const useRichTextEditor = (initialContent?: string) => {
       TaskItem.configure({
         nested: true,
       }),
+      Placeholder.configure({
+        placeholder: 'Start writing your note...',
+        emptyEditorClass: 'is-editor-empty',
+      }),
     ],
-    content: initialContent || '<h2>Start writing your note...</h2><p></p>',
+    content: initialContent || '',
     editorProps: {
       attributes: {
         // Scoped class to avoid affecting other prose elements
