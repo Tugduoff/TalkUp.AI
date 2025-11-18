@@ -15,6 +15,7 @@ export const useNoteAutoSave = (
   const hasUnsavedChanges = useRef(false);
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
   const lastSavedContent = useRef('');
+  const savePromiseRef = useRef<Promise<void> | null>(null);
 
   useEffect(() => {
     if (editor && note?.content) {
@@ -27,29 +28,41 @@ export const useNoteAutoSave = (
     const saveNote = async () => {
       if (!note || !hasUnsavedChanges.current || !editor) return;
 
+      const p = (async () => {
+        try {
+          setSaveStatus('saving');
+          const content = editor.getHTML();
+
+          const safeTitle =
+            typeof title === 'string' && title.trim()
+              ? title
+              : note?.title || 'Untitled Note';
+
+          await updateNote(noteId, {
+            title: safeTitle,
+            content,
+          });
+
+          lastSavedContent.current = content;
+          hasUnsavedChanges.current = false;
+          setSaveStatus('saved');
+        } catch (err) {
+          console.error('Error saving note:', err);
+          setSaveStatus('error');
+          throw err;
+        }
+      })();
+
+      savePromiseRef.current = p;
       try {
-        setSaveStatus('saving');
-        const content = editor.getHTML();
-
-        const safeTitle = title && title.trim() ? title : 'Untitled Note';
-
-        await updateNote(noteId, {
-          title: safeTitle,
-          content,
-        });
-
-        lastSavedContent.current = content;
-        hasUnsavedChanges.current = false;
-        setSaveStatus('saved');
-      } catch (err) {
-        console.error('Error saving note:', err);
-        setSaveStatus('error');
+        await p;
+      } finally {
+        if (savePromiseRef.current === p) savePromiseRef.current = null;
       }
     };
 
     autoSaveInterval.current = setInterval(() => {
-      saveNote();
-      console.log('Saving');
+      void saveNote();
     }, 1000);
 
     return () => {
@@ -79,16 +92,27 @@ export const useNoteAutoSave = (
 
   useEffect(() => {
     return () => {
-      if (note && editor && hasUnsavedChanges.current) {
-        const content = editor.getHTML();
-        const safeTitle = title && title.trim() ? title : 'Untitled Note';
-        updateNote(noteId, {
-          title: safeTitle,
-          content,
-        }).catch((err) => {
+      (async () => {
+        try {
+          if (savePromiseRef.current) {
+            await savePromiseRef.current.catch(() => undefined);
+          }
+
+          if (note && editor && hasUnsavedChanges.current) {
+            const content = editor.getHTML();
+            const safeTitle =
+              typeof title === 'string' && title.trim()
+                ? title
+                : note?.title || 'Untitled Note';
+            await updateNote(noteId, {
+              title: safeTitle,
+              content,
+            });
+          }
+        } catch (err) {
           console.error('Error saving note on unmount:', err);
-        });
-      }
+        }
+      })();
     };
   }, [note, editor, noteId, title]);
 
@@ -98,12 +122,22 @@ export const useNoteAutoSave = (
     try {
       setSaveStatus('saving');
       const content = editor.getHTML();
-      const safeTitle = title && title.trim() ? title : 'Untitled Note';
-      await updateNote(noteId, {
-        title: safeTitle,
-        content,
-      });
+
+      const p = (async () => {
+        const safeTitle =
+          typeof title === 'string' && title.trim()
+            ? title
+            : note?.title || 'Untitled Note';
+        await updateNote(noteId, {
+          title: safeTitle,
+          content,
+        });
+      })();
+
+      savePromiseRef.current = p;
+      await p;
       setSaveStatus('saved');
+      savePromiseRef.current = null;
     } catch (err) {
       console.error('Error saving note before exit:', err);
     }
