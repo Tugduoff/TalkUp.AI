@@ -57,6 +57,7 @@ export const NoteCard = ({
   onClick,
 }: NoteCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isBtnHovered, setIsBtnHovered] = useState(false);
 
   const handleBookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -76,7 +77,7 @@ export const NoteCard = ({
   return (
     <div
       tabIndex={0}
-      className="bg-[#ECEDF6] hover:bg-[#dfe0e9] rounded-lg p-3 transition-all duration-200 cursor-pointer h-full flex flex-col gap-3"
+      className={`bg-[#ECEDF6] ${!isBtnHovered ? 'hover:bg-[#dfe0e9]' : ''} rounded-lg p-3 transition-all duration-200 cursor-pointer h-full flex flex-col gap-3`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleCardClick}
@@ -99,6 +100,11 @@ export const NoteCard = ({
           variant="text"
           color="neutral"
           size="sm"
+          className="stop-propagation"
+          onMouseEnter={() => setIsBtnHovered(true)}
+          onMouseLeave={() => setIsBtnHovered(false)}
+          onFocus={() => setIsBtnHovered(true)}
+          onBlur={() => setIsBtnHovered(false)}
           aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
         >
           <Icon
