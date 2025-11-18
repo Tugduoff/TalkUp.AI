@@ -1,13 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsPhoneNumber, IsStrongPassword, Length } from "class-validator";
+import { IsEmail, IsStrongPassword, Length } from "class-validator";
 
 export class UpdatePasswordDto {
-  @IsPhoneNumber(undefined)
+  @IsEmail()
   @ApiProperty({
-    description: "The user's phone number.",
-    example: "+33640404040",
+    description:
+      "The user's email address. It will be used for login and verification.",
+    example: "john.doe@example.com",
   })
-  phoneNumber: string;
+  email: string;
 
   @IsStrongPassword({
     minLength: 8,

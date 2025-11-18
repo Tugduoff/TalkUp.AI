@@ -9,8 +9,8 @@ describe("UpdatePasswordDto", () => {
   });
 
   describe("Valid DTOs", () => {
-    it("should pass validation with valid phone number and password", async () => {
-      dto.phoneNumber = "+33640404040";
+    it("should pass validation with valid email and password", async () => {
+      dto.email = "test@example.com";
       dto.newPassword = "NewPassword123!";
 
       const errors = await validate(dto);
@@ -33,7 +33,7 @@ describe("UpdatePasswordDto", () => {
 
       for (const password of validPasswords) {
         const testDto = new UpdatePasswordDto();
-        testDto.phoneNumber = "+33640404040";
+        testDto.email = "test@example.com";
         testDto.newPassword = password;
 
         const errors = await validate(testDto);
@@ -42,49 +42,46 @@ describe("UpdatePasswordDto", () => {
     });
   });
 
-  describe("Invalid phone number", () => {
+  describe("Invalid email", () => {
     beforeEach(() => {
       dto.newPassword = "Hello@2012";
     });
 
-    it("should fail validation for missing phone number", async () => {
+    it("should fail validation for missing email", async () => {
       const errors = await validate(dto);
 
       expect(errors).toHaveLength(1);
-      expect(errors[0].property).toBe("phoneNumber");
-      expect(errors[0].constraints).toHaveProperty("isPhoneNumber");
+      expect(errors[0].property).toBe("email");
+      expect(errors[0].constraints).toHaveProperty("isEmail");
     });
 
-    it("should fail validation for empty phone number", async () => {
-      dto.phoneNumber = "";
-
+    it("should fail validation for empty email", async () => {
+      dto.email = "";
       const errors = await validate(dto);
 
       expect(errors).toHaveLength(1);
-      expect(errors[0].property).toBe("phoneNumber");
-      expect(errors[0].constraints).toHaveProperty("isPhoneNumber");
+      expect(errors[0].property).toBe("email");
+      expect(errors[0].constraints).toHaveProperty("isEmail");
     });
 
-    it("should fail validation for non-string phone number", async () => {
+    it("should fail validation for email malformed", async () => {
       const testDto = new UpdatePasswordDto();
-      testDto.phoneNumber = 33640404040 as unknown as string;
+      testDto.email = "testexamplecom" as unknown as string;
 
       const errors = await validate(testDto);
 
       expect(errors.length).toBeGreaterThan(0);
-      const phoneError = errors.find(
-        (error) => error.property === "phoneNumber",
-      );
-      expect(phoneError).toBeDefined();
+      const emailError = errors.find((error) => error.property === "email");
+      expect(emailError).toBeDefined();
     });
 
-    it("should fail validation for null/undefined phone number", async () => {
+    it("should fail validation for null/undefined email", async () => {
       const testDto = new UpdatePasswordDto();
-      testDto.phoneNumber = null as unknown as string;
+      testDto.email = null as unknown as string;
       let errors = await validate(testDto);
       expect(errors.length).toBeGreaterThan(0);
 
-      testDto.phoneNumber = undefined as unknown as string;
+      testDto.email = undefined as unknown as string;
       errors = await validate(testDto);
       expect(errors.length).toBeGreaterThan(0);
     });
@@ -92,7 +89,7 @@ describe("UpdatePasswordDto", () => {
 
   describe("Invalid password", () => {
     beforeEach(() => {
-      dto.phoneNumber = "+33640404040";
+      dto.email = "test@example.com";
     });
 
     it("should fail validation for missing password", async () => {
@@ -118,7 +115,7 @@ describe("UpdatePasswordDto", () => {
 
     it("should fail validation for non-string password", async () => {
       const testDto = new UpdatePasswordDto();
-      testDto.phoneNumber = "+33640404040";
+      testDto.email = "test@example.com";
       testDto.newPassword = 12345678 as unknown as string;
 
       const errors = await validate(testDto);
@@ -133,7 +130,7 @@ describe("UpdatePasswordDto", () => {
 
     it("should fail validation for null/undefined password", async () => {
       const testDto = new UpdatePasswordDto();
-      testDto.phoneNumber = "+33640404040";
+      testDto.email = "test@example.com";
       testDto.newPassword = null as unknown as string;
       let errors = await validate(testDto);
       expect(errors.length).toBeGreaterThan(0);
@@ -155,7 +152,7 @@ describe("UpdatePasswordDto", () => {
 
       for (const password of invalidPasswords) {
         const testDto = new UpdatePasswordDto();
-        testDto.phoneNumber = "+33640404040";
+        testDto.email = "test@example.com";
         testDto.newPassword = password as unknown as string;
 
         const errors = await validate(testDto);
@@ -172,35 +169,33 @@ describe("UpdatePasswordDto", () => {
   describe("Multiple validation errors", () => {
     it("should return multiple errors when both fields are invalid", async () => {
       const testDto = new UpdatePasswordDto();
-      testDto.phoneNumber = "invalid-phone";
+      testDto.email = "invalid-email";
       testDto.newPassword = 12345 as unknown as string;
 
       const errors = await validate(testDto);
 
       expect(errors).toHaveLength(2);
 
-      const phoneError = errors.find(
-        (error) => error.property === "phoneNumber",
-      );
+      const emailError = errors.find((error) => error.property === "email");
       const passwordError = errors.find(
         (error) => error.property === "newPassword",
       );
 
-      expect(phoneError).toBeDefined();
+      expect(emailError).toBeDefined();
       expect(passwordError).toBeDefined();
     });
 
     it("should handle all fields being null", async () => {
       const testDto = new UpdatePasswordDto();
-      testDto.phoneNumber = null as unknown as string;
+      testDto.email = null as unknown as string;
       testDto.newPassword = null as unknown as string;
 
       const errors = await validate(testDto);
 
       expect(errors).toHaveLength(2);
       expect(errors.map((e) => e.property).sort()).toEqual([
+        "email",
         "newPassword",
-        "phoneNumber",
       ]);
     });
 
@@ -209,15 +204,15 @@ describe("UpdatePasswordDto", () => {
 
       expect(errors).toHaveLength(2);
       expect(errors.map((e) => e.property).sort()).toEqual([
+        "email",
         "newPassword",
-        "phoneNumber",
       ]);
     });
   });
 
   describe("Edge cases", () => {
     it("should handle very long but valid phone numbers", async () => {
-      dto.phoneNumber = "+333456789012345";
+      dto.email = "test@example.com";
       dto.newPassword = "ValidPassword";
 
       const errors = await validate(dto);
@@ -237,7 +232,7 @@ describe("UpdatePasswordDto", () => {
 
       for (const password of specialPasswords) {
         const testDto = new UpdatePasswordDto();
-        testDto.phoneNumber = "+33640404040";
+        testDto.email = "test@example.com";
         testDto.newPassword = password;
 
         const errors = await validate(testDto);
@@ -258,7 +253,7 @@ describe("UpdatePasswordDto", () => {
 
       for (const password of whitespacePasswords) {
         const testDto = new UpdatePasswordDto();
-        testDto.phoneNumber = "+33640404040";
+        testDto.email = "test@example.com";
         testDto.newPassword = password;
 
         const errors = await validate(testDto);
@@ -269,7 +264,7 @@ describe("UpdatePasswordDto", () => {
 
   describe("Real-world scenarios", () => {
     it("should validate typical password update request", async () => {
-      dto.phoneNumber = "+33640404040";
+      dto.email = "test@example.com";
       dto.newPassword = "NewSecurePassword2023!";
 
       const errors = await validate(dto);
@@ -277,7 +272,7 @@ describe("UpdatePasswordDto", () => {
     });
 
     it("should validate international user password update", async () => {
-      dto.phoneNumber = "+33123456789";
+      dto.email = "test@example.com";
       dto.newPassword = "UpdatedPassword123!";
 
       const errors = await validate(dto);
@@ -285,11 +280,11 @@ describe("UpdatePasswordDto", () => {
     });
 
     it("should validate password update with common phone number formats", async () => {
-      const commonPhones = ["+33612345678", "+33123456789"];
+      const commonEmails = ["ok@talkup.com", "test@example.com"];
 
-      for (const phone of commonPhones) {
+      for (const email of commonEmails) {
         const testDto = new UpdatePasswordDto();
-        testDto.phoneNumber = phone;
+        testDto.email = email;
         testDto.newPassword = "MyNewPassword123!";
 
         const errors = await validate(testDto);
