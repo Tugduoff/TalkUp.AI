@@ -87,7 +87,7 @@ export const NoteCard = ({
         }
       }}
     >
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex items-center pl-1 justify-between gap-3">
         <div className="flex items-center gap-4">
           <Bubble size="sm" color={color} />
           <h3 className="text-h3 text-text-idle font-semibold line-clamp-2 flex-1">
