@@ -6,7 +6,8 @@ export interface AddNoteCardProps {
 
 /**
  * AddNoteCard component
- * @param onClick - function called when clicking the button
+ * @param {AddNoteCardProps} props - component props
+ * @param {() => void} props.onClick - function called when clicking the button
  * @returns JSX.Element
  */
 export const AddNoteCard = ({ onClick }: AddNoteCardProps) => {
