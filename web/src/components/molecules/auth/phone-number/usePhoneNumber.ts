@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import type { PhoneNumberValue } from './type';
+import type { PhoneNumberValue } from './types';
 
 interface UsePhoneNumberParams {
   value?: PhoneNumberValue;
