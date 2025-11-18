@@ -74,7 +74,7 @@ Separator.displayName = 'Separator';
 
 /**
  * EditorToolbar: a toolbar component for text editing actions.
- * 
+ *
  * @param props:
  * - editor: the rich text editor instance
  * - [editorProps]: fontFamilyOptions, fontSizeOptions, onFontFamilyChange, onFontSizeChange,
@@ -82,7 +82,7 @@ Separator.displayName = 'Separator';
  *   onUnderlineClick, onStrikeClick, onTextColorChange, onHighlightColorChange, onRemoveFormat,
  *   onOrderedListClick, onTaskListClick, onBulletListClick, onAlignLeftClick, onAlignCenterClick,
  *   onAlignRightClick, onAlignJustifyClick, onUndoClick, onRedoClick
- * 
+ *
  * @returns: JSX.Element - the rendered toolbar component
  */
 export const EditorToolbar: FC<EditorToolbarProps> = ({
