@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Saira:wght@400;500;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
 @import 'tailwindcss';
-@import './rich-text-editor.css';
 
 @source inline('{text,fill}-{primary,accent}');
 @source inline('{,hover:,active:}{bg,border,text}-{primary,accent,black,white,error,warning,success,neutral}{,-hover,-active,-weak,-weaker}');

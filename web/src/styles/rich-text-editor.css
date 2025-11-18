@@ -89,3 +89,13 @@
   display: inline !important;
   margin: 0 !important;
 }
+
+.rich-editor-prose p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #a4a4b2;
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+  opacity: 0.6;
+}
