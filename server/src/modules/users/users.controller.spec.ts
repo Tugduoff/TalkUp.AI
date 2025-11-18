@@ -1,5 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { UnauthorizedException } from "@nestjs/common";
+import { NotFoundException, UnauthorizedException } from "@nestjs/common";
 
 import { UsersController } from "./users.controller";
 import { UsersService } from "./users.service";
@@ -33,7 +33,7 @@ describe("UsersController", () => {
 
   describe("updatePassword", () => {
     const updatePasswordDto: UpdatePasswordDto = {
-      phoneNumber: "+33640404040",
+      email: "test@example.com",
       newPassword: "newPassword123",
     };
 
@@ -44,27 +44,27 @@ describe("UsersController", () => {
 
       expect(result).toBe(true);
       expect(mockUsersService.changeUserPassword).toHaveBeenCalledWith(
-        "+33640404040",
+        "test@example.com",
         "newPassword123",
       );
       expect(mockUsersService.changeUserPassword).toHaveBeenCalledTimes(1);
     });
 
-    it("should throw UnauthorizedException when user not found", async () => {
+    it("should throw NotFoundException when user not found", async () => {
       mockUsersService.changeUserPassword = jest
         .fn()
         .mockRejectedValue(
-          new UnauthorizedException("There is no user with that phone number"),
+          new NotFoundException("There is no user with that email"),
         );
 
       await expect(
         controller.updatePassword(updatePasswordDto),
       ).rejects.toThrow(
-        new UnauthorizedException("There is no user with that phone number"),
+        new NotFoundException("There is no user with that email"),
       );
 
       expect(mockUsersService.changeUserPassword).toHaveBeenCalledWith(
-        "+33640404040",
+        "test@example.com",
         "newPassword123",
       );
       expect(mockUsersService.changeUserPassword).toHaveBeenCalledTimes(1);
@@ -81,14 +81,14 @@ describe("UsersController", () => {
       ).rejects.toThrow(serviceError);
 
       expect(mockUsersService.changeUserPassword).toHaveBeenCalledWith(
-        "+33640404040",
+        "test@example.com",
         "newPassword123",
       );
     });
 
     it("should pass correct parameters to service", async () => {
       const customDto: UpdatePasswordDto = {
-        phoneNumber: "+1234567890",
+        email: "test@example.com",
         newPassword: "superSecretPassword!@#",
       };
 
@@ -97,7 +97,7 @@ describe("UsersController", () => {
       await controller.updatePassword(customDto);
 
       expect(mockUsersService.changeUserPassword).toHaveBeenCalledWith(
-        "+1234567890",
+        "test@example.com",
         "superSecretPassword!@#",
       );
     });
