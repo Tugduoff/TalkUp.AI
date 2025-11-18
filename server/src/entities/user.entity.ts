@@ -106,12 +106,9 @@ export class user_email {
   @Column({ nullable: false, unique: true })
   email: string;
 
-  @Column({ nullable: false })
-  user_id: string;
-
-  @OneToOne(() => user)
+  @OneToOne(() => user, (user) => user.user_id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "user_id" })
-  user: user;
+  user_id: string;
 
   @Column({
     default: false,
