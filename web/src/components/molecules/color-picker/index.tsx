@@ -69,9 +69,7 @@ export const ColorPicker = ({
             color="neutral"
             onClick={() => onColorSelect(color)}
             className={`p-2 rounded-lg hover:bg-neutral-weaker transition-colors ${
-              currentColor === color
-                ? 'bg-accent/10 ring-2 ring-accent'
-                : ''
+              currentColor === color ? 'bg-accent/10 ring-2 ring-accent' : ''
             }`}
             title={`Select ${color} color`}
           >

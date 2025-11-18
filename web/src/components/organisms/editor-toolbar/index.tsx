@@ -132,7 +132,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
     <>
       <div
         ref={containerRef}
-        className="relative flex items-center gap-2 h-10 overflow-hidden bg-white w-full min-w-0 px-1 rounded-[10px]"
+        className="relative flex justify-between items-center gap-2 h-10 overflow-hidden bg-white w-full min-w-0 px-1 rounded-[10px]"
         role="toolbar"
         aria-label="Text formatting toolbar"
       >

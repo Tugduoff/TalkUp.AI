@@ -119,7 +119,6 @@ export const useToolbarResize = () => {
 
       const toHide: string[] = [];
       let visibleWidth = totalWidth;
-      let currentVisibleCount = groupCount;
 
       for (const group of priorities) {
         const groupWidth = widthsCache.current[group] || 0;
@@ -128,7 +127,6 @@ export const useToolbarResize = () => {
         if (visibleWidth <= availableForGroups) break;
 
         toHide.push(group);
-        currentVisibleCount--;
 
         // Hiding a group removes: group width + separator (1px) + 2 gaps (16px total)
         visibleWidth -= groupWidth + SEPARATOR_WIDTH + 2 * GAP_SIZE;
@@ -155,6 +153,7 @@ export const useToolbarResize = () => {
       ro.disconnect();
       window.removeEventListener('resize', calculateHiddenGroups);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Close dropdown when clicking outside toolbar and dropdown

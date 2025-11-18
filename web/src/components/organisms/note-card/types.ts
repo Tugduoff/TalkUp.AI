@@ -1,4 +1,4 @@
-import { BubbleProps } from "@/components/atoms/bubble/types";
+import { BubbleProps } from '@/components/atoms/bubble/types';
 
 /**
  * @property id - Unique identifier for the note.

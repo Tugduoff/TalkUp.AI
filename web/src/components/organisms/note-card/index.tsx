@@ -3,6 +3,7 @@ import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import { formatRelativeDate } from '@/utils/time';
 import { useState } from 'react';
+
 import { NoteCardProps } from './types';
 
 /**
@@ -74,10 +75,17 @@ export const NoteCard = ({
 
   return (
     <div
+      tabIndex={0}
       className="bg-[#ECEDF6] hover:bg-[#dfe0e9] rounded-lg p-3 transition-all duration-200 cursor-pointer h-full flex flex-col gap-3"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleCardClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-4">

@@ -1,6 +1,7 @@
 import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import { useEffect } from 'react';
+
 import { ConfirmModalProps } from './types';
 
 /**
@@ -89,9 +90,11 @@ export const ConfirmModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
+      <button
+        type="button"
         className="absolute inset-0 bg-black/50 transition-opacity"
         onClick={onCancel}
+        aria-label="Close modal"
       />
 
       <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full mx-4 animate-fadeIn">

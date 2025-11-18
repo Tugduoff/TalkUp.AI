@@ -49,7 +49,7 @@ function Notes() {
         addNote(newNote);
         navigateToNote(newNote.note_id);
       }
-    } catch (err) {
+    } catch {
       setError('Failed to create note. Please try again.');
     }
   };

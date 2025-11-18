@@ -152,7 +152,6 @@ function RouteComponent() {
                     }
                   }}
                   className="text-h1 text-text-idle bg-transparent border-b-2 border-accent focus:outline-none"
-                  autoFocus
                 />
                 <Button
                   variant="text"
