@@ -22,9 +22,6 @@ export class UsersController {
   @UsePipes(new PostValidationPipe())
   @Put("password")
   async updatePassword(@Body() body: UpdatePasswordDto) {
-    return this.usersService.changeUserPassword(
-      body.email,
-      body.newPassword,
-    );
+    return this.usersService.changeUserPassword(body.email, body.newPassword);
   }
 }

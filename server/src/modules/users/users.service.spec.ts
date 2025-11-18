@@ -1,7 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
 
 import { UsersService } from "./users.service";
 import { user, user_email, user_password } from "@entities/user.entity";
@@ -75,72 +78,6 @@ describe("UsersService", () => {
     expect(service).toBeDefined();
   });
 
-  // describe("findUserWithPasswordByPhoneNumber", () => {
-  //   it("should return user with password hash when found", async () => {
-  //     mockPhoneNumberRepo.findOne = jest
-  //       .fn()
-  //       .mockResolvedValue(mockPhoneNumber);
-  //     mockPasswordRepo.findOne = jest.fn().mockResolvedValue(mockPassword);
-  //     mockUserRepo.findOne = jest.fn().mockResolvedValue(mockUser);
-
-  //     const result =
-  //       await service.findUserWithPasswordByPhoneNumber("+33640404040");
-
-  //     expect(result).toEqual({
-  //       user: mockUser,
-  //       passwordHash: "hashedpassword123",
-  //     });
-  //     expect(mockPhoneNumberRepo.findOne).toHaveBeenCalledWith({
-  //       where: { phone_number: "+33640404040" },
-  //     });
-  //     expect(mockPasswordRepo.findOne).toHaveBeenCalledWith({
-  //       where: { user_id: "test-user-id" },
-  //     });
-  //     expect(mockUserRepo.findOne).toHaveBeenCalledWith({
-  //       where: { user_id: "test-user-id" },
-  //     });
-  //   });
-
-  //   it("should return null when phone number not found", async () => {
-  //     mockPhoneNumberRepo.findOne = jest.fn().mockResolvedValue(null);
-
-  //     const result =
-  //       await service.findUserWithPasswordByPhoneNumber("+33640404040");
-
-  //     expect(result).toBeNull();
-  //     expect(mockPhoneNumberRepo.findOne).toHaveBeenCalledWith({
-  //       where: { phone_number: "+33640404040" },
-  //     });
-  //     expect(mockPasswordRepo.findOne).not.toHaveBeenCalled();
-  //     expect(mockUserRepo.findOne).not.toHaveBeenCalled();
-  //   });
-
-  //   it("should return null when password not found", async () => {
-  //     mockPhoneNumberRepo.findOne = jest
-  //       .fn()
-  //       .mockResolvedValue(mockPhoneNumber);
-  //     mockPasswordRepo.findOne = jest.fn().mockResolvedValue(null);
-
-  //     const result =
-  //       await service.findUserWithPasswordByPhoneNumber("+33640404040");
-
-  //     expect(result).toBeNull();
-  //   });
-
-  //   it("should return null when user not found", async () => {
-  //     mockPhoneNumberRepo.findOne = jest
-  //       .fn()
-  //       .mockResolvedValue(mockPhoneNumber);
-  //     mockPasswordRepo.findOne = jest.fn().mockResolvedValue(mockPassword);
-  //     mockUserRepo.findOne = jest.fn().mockResolvedValue(null);
-
-  //     const result =
-  //       await service.findUserWithPasswordByPhoneNumber("+33640404040");
-
-  //     expect(result).toBeNull();
-  //   });
-  // });
-
   describe("changeUserPassword", () => {
     it("should throw NotFoundException when email not found", async () => {
       mockEmailRepo.findOne = jest.fn().mockResolvedValue(null);
@@ -162,9 +99,7 @@ describe("UsersService", () => {
         password: "newHashedPassword",
       };
 
-      mockEmailRepo.findOne = jest
-        .fn()
-        .mockResolvedValue(mockEmail);
+      mockEmailRepo.findOne = jest.fn().mockResolvedValue(mockEmail);
       mockPasswordRepo.findOne = jest.fn().mockResolvedValue(null);
       mockPasswordRepo.create = jest.fn().mockReturnValue(newPasswordEntity);
       mockPasswordRepo.save = jest.fn((_entity: user_password) =>
@@ -190,9 +125,7 @@ describe("UsersService", () => {
 
     it("should update existing password when user has password", async () => {
       const existingPassword = { ...mockPassword };
-      mockEmailRepo.findOne = jest
-        .fn()
-        .mockResolvedValue(mockEmail);
+      mockEmailRepo.findOne = jest.fn().mockResolvedValue(mockEmail);
       mockPasswordRepo.findOne = jest.fn().mockResolvedValue(existingPassword);
       const updatedPassword: user_password = {
         ...existingPassword,
@@ -215,12 +148,16 @@ describe("UsersService", () => {
     });
 
     it("should throw InternalServerErrorException when save fails", async () => {
-      mockEmailRepo.findOne = jest.fn().mockRejectedValueOnce(new Error("DB error"));
+      mockEmailRepo.findOne = jest
+        .fn()
+        .mockRejectedValueOnce(new Error("DB error"));
 
       await expect(
         service.changeUserPassword("test@example.com", "newPassword123"),
       ).rejects.toThrow(
-        new InternalServerErrorException("Internal server error while changing password."),
+        new InternalServerErrorException(
+          "Internal server error while changing password.",
+        ),
       );
 
       expect(mockEmailRepo.findOne).toHaveBeenCalledWith({

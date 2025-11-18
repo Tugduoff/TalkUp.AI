@@ -71,9 +71,7 @@ describe("UpdatePasswordDto", () => {
       const errors = await validate(testDto);
 
       expect(errors.length).toBeGreaterThan(0);
-      const emailError = errors.find(
-        (error) => error.property === "email",
-      );
+      const emailError = errors.find((error) => error.property === "email");
       expect(emailError).toBeDefined();
     });
 
@@ -178,9 +176,7 @@ describe("UpdatePasswordDto", () => {
 
       expect(errors).toHaveLength(2);
 
-      const emailError = errors.find(
-        (error) => error.property === "email",
-      );
+      const emailError = errors.find((error) => error.property === "email");
       const passwordError = errors.find(
         (error) => error.property === "newPassword",
       );

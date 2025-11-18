@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { user, user_password, user_email } from "@entities/user.entity";
@@ -34,16 +39,13 @@ export class UsersService {
     email: string,
     newUserPassword: string,
   ): Promise<boolean> {
-
     try {
       const emailEntity = await this.emailRepo.findOne({
         where: { email },
       });
 
       if (!emailEntity) {
-        throw new NotFoundException(
-          "There is no user with that email",
-        );
+        throw new NotFoundException("There is no user with that email");
       }
 
       const hashedPassword = await hashPassword(newUserPassword);
@@ -70,7 +72,9 @@ export class UsersService {
       this.logger.error(
         `Failed to change password for email ${email}: ${error.message}`,
       );
-      throw new InternalServerErrorException("Internal server error while changing password.");
+      throw new InternalServerErrorException(
+        "Internal server error while changing password.",
+      );
     }
   }
 }
