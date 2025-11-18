@@ -31,8 +31,10 @@ export const useNoteAutoSave = (
         setSaveStatus('saving');
         const content = editor.getHTML();
 
+        const safeTitle = title && title.trim() ? title : 'Untitled Note';
+
         await updateNote(noteId, {
-          title,
+          title: safeTitle,
           content,
         });
 
@@ -79,8 +81,9 @@ export const useNoteAutoSave = (
     return () => {
       if (note && editor && hasUnsavedChanges.current) {
         const content = editor.getHTML();
+        const safeTitle = title && title.trim() ? title : 'Untitled Note';
         updateNote(noteId, {
-          title,
+          title: safeTitle,
           content,
         }).catch((err) => {
           console.error('Error saving note on unmount:', err);
@@ -95,8 +98,9 @@ export const useNoteAutoSave = (
     try {
       setSaveStatus('saving');
       const content = editor.getHTML();
+      const safeTitle = title && title.trim() ? title : 'Untitled Note';
       await updateNote(noteId, {
-        title,
+        title: safeTitle,
         content,
       });
       setSaveStatus('saved');
