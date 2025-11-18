@@ -49,6 +49,7 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
     CROW_ROUTE(app, "/process/initialization").methods("POST"_method)([&](const crow::request& req){
         try {
             static const std::string SERVER_KEY = __env_variables["COMMUNICATION"];
+            static const std::string WS_ADDRESS = __env_variables["WS_ADDRESS"];
 
             if (req.body.empty()) {
                 nlohmann::json err;
@@ -122,7 +123,7 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
             ok["key"] = SERVER_KEY;
             ok["type"] = "initialization_response";
             ok["format"] = "text";
-            ok["data"] = "ws://51.75.255.115:8088/ws";
+            ok["data"] = WS_ADDRESS;
             crow::response res(ok.dump());
             res.set_header("Content-Type", "application/json");
             res.code = __ErrorCode::SUCCESS;

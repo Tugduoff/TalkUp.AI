@@ -10,6 +10,7 @@ import { useVideoStream } from '../../../hooks/streams/useVideoStream';
 
 interface SimulationVideoAreaProps {
   onStreamToggle?: (streaming: boolean) => void;
+  onStreamChange?: (stream: MediaStream | null) => void;
 }
 
 /**
@@ -18,10 +19,12 @@ interface SimulationVideoAreaProps {
  */
 const SimulationVideoArea = ({
   onStreamToggle,
+  onStreamChange,
 }: SimulationVideoAreaProps = {}): React.ReactElement => {
   const audioElementRef = useRef<HTMLAudioElement>(null);
   const [shouldStartWithMic, setShouldStartWithMic] = useState(true);
   const [shouldStartWithCamera, setShouldStartWithCamera] = useState(true);
+  const [stream, setStream] = useState<MediaStream | null>(null);
 
   const { videoRef, isStreaming, elapsedTime, toggleStream } = useVideoStream({
     shouldStartWithMic,
@@ -40,20 +43,30 @@ const SimulationVideoArea = ({
     onCameraChange: setShouldStartWithCamera,
   });
 
-  const stream =
-    typeof MediaStream !== 'undefined' &&
-    videoRef.current?.srcObject instanceof MediaStream
-      ? (videoRef.current.srcObject as MediaStream)
-      : null;
-
   const { isSpeaking } = useAudioAnalyzer(stream);
 
-  // Notify parent component when stream state changes
+  useEffect(() => {
+    const currentStream =
+      typeof MediaStream !== 'undefined' &&
+      videoRef.current?.srcObject instanceof MediaStream
+        ? (videoRef.current.srcObject as MediaStream)
+        : null;
+
+    setStream(currentStream);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isStreaming]);
+
   useEffect(() => {
     if (onStreamToggle) {
       onStreamToggle(isStreaming);
     }
   }, [isStreaming, onStreamToggle]);
+
+  useEffect(() => {
+    if (onStreamChange) {
+      onStreamChange(stream);
+    }
+  }, [stream, onStreamChange]);
 
   useEffect(() => {
     if (!audioElementRef.current || !videoRef.current) return;
@@ -67,9 +80,7 @@ const SimulationVideoArea = ({
         if (stream.getAudioTracks().length > 0) {
           audioElement.srcObject = stream;
           audioElement.muted = !isSpeakerActive;
-          audioElement.play().catch((err) => {
-            console.error('Error playing audio:', err);
-          });
+          audioElement.play().catch(() => {});
         }
       }
     } else {

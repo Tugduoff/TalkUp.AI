@@ -1,0 +1,20 @@
+{
+    "name": "test-ws-server",
+    "type": "module",
+    "version": "1.0.0",
+    "description": "A very simple WebSocket test server",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "keywords": [
+        "ws",
+        "websocket",
+        "test"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "ws": "^8.18.3"
+    }
+}

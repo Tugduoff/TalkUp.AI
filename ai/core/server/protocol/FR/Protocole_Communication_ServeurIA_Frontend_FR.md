@@ -16,7 +16,7 @@ Tous les messages sont au format **JSON** et doivent contenir les champs suivant
 | Champ | Type | Description |
 |-------|------|-------------|
 | `type` | string | Type du message (ex: `ping`, `stream_chunk`, `error`) |
-| `timestamp` | int | Horodatage UNIX du message |
+| `timestamp` | uint_64 | Horodatage UNIX du message |
 | `data` | object | Contenu spécifique au message |
 
 ---

@@ -2,7 +2,7 @@ name: PR Teams Notifications
 
 on:
   pull_request:
-    types: [opened, review_requested, closed]
+    types: [opened, review_requested, ready_for_review, closed]
   pull_request_review:
     types: [submitted]
 
@@ -15,7 +15,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Notify PR opened
-        if: github.event.action == 'opened'
+        # Only notify for opened PR that are not draft
+        if: github.event.action == 'opened' && github.event.pull_request.draft == false
         uses: ./.github/actions/notify-teams
         with:
           webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
@@ -26,7 +27,8 @@ jobs:
           pr_url: ${{ github.event.pull_request.html_url }}
 
       - name: Notify reviewer requested
-        if: github.event.action == 'review_requested'
+        # Only notify reviewer requests when the PR is not a draft.
+        if: github.event.action == 'review_requested' && github.event.pull_request.draft == false
         uses: ./.github/actions/notify-teams
         with:
           webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
@@ -60,4 +62,16 @@ jobs:
           author: ${{ github.event.pull_request.user.login }}
           merger: ${{ github.event.pull_request.merged_by.login }}
           avatar_url: ${{ github.event.pull_request.merged_by.avatar_url }}
+          pr_url: ${{ github.event.pull_request.html_url }}
+
+      - name: Notify reviewers when a draft PR is marked ready
+        # If the PR was originally a draft and is now marked as ready, notify any reviewers that were already set before ready
+        if: github.event.action == 'ready_for_review' && toJson(github.event.pull_request.requested_reviewers) != '[]'
+        uses: ./.github/actions/notify-teams
+        with:
+          webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          title: "👀 Reviewers: PR now ready"
+          type: "review_requested"
+          author: ${{ github.event.pull_request.user.login }}
+          reviewer: ${{ join(github.event.pull_request.requested_reviewers.*.login, ',') }}
           pr_url: ${{ github.event.pull_request.html_url }}
