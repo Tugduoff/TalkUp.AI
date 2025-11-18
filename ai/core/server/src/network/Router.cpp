@@ -17,49 +17,40 @@
 #include "ExceptionManager.hpp"
 #include "Router.hpp"
 
-std::string talkup_network::Router::get_env_key(void)
+void talkup_network::Router::get_env_key(void)
 {
-    std::ifstream f(".env");
+    std::ifstream env_file(".env");
     std::string line;
-    std::string val;
 
-    if (!f.is_open())
-        return std::string();
-    while (std::getline(f, line)) {
-        bool allws = true;
-        for (char c : line) if (!std::isspace((unsigned char)c)) { allws = false; break; }
-        if (allws) continue;
-        auto pos = line.find('=');
-        if (pos != std::string::npos) val = line.substr(pos + 1);
-        else {
-            std::istringstream iss(line);
-            std::vector<std::string> toks;
-            std::string t;
-            while (iss >> t) toks.push_back(t);
-            if (!toks.empty()) val = toks.back();
+    if (!env_file.is_open())
+        return;
+    while (std::getline(env_file, line)) {
+        size_t delim_pos = line.find('=');
+        if (delim_pos == std::string::npos) {
+            continue;
         }
-        auto tmp = [&](std::string &s){ while(!s.empty() && std::isspace((unsigned char)s.front()))
-            s.erase(s.begin()); while(!s.empty() && std::isspace((unsigned char)s.back())) s.pop_back(); };
-        tmp(val);
-        if (!val.empty())
-            return val;
+        std::string key = line.substr(0, delim_pos);
+        std::string value = line.substr(delim_pos + 1);
+        key.erase(0, key.find_first_not_of(" \t\n\r"));
+        key.erase(key.find_last_not_of(" \t\n\r") + 1);
+        value.erase(0, value.find_first_not_of(" \t\n\r"));
+        value.erase(value.find_last_not_of(" \t\n\r") + 1);
+        __env_variables[key] = value;
     }
-    return std::string();
+    env_file.close();
 }
 
 void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
 {
-    auto load_server_key = [&]() {
-        Router router;
-        return router.get_env_key();
-    };
-
+    get_env_key();
     CROW_ROUTE(app, "/")([](){
         return "Hello world";
     });
     CROW_ROUTE(app, "/process/initialization").methods("POST"_method)([&](const crow::request& req){
         try {
-            static const std::string SERVER_KEY = load_server_key();
+            static const std::string SERVER_KEY = __env_variables["COMMUNICATION"];
+            static const std::string WS_ADDRESS = __env_variables["WS_ADDRESS"];
+
             if (req.body.empty()) {
                 nlohmann::json err;
                 err["type"] = "error";
@@ -68,7 +59,7 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
                 err["data"] = { {"message", "empty request body"} };
                 crow::response res(err.dump());
                 res.set_header("Content-Type", "application/json");
-                res.code = 400;
+                res.code = __ErrorCode::FAILURE;
                 return res;
             }
             auto j = nlohmann::json::parse(req.body);
@@ -80,7 +71,7 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
                 err["data"] = { {"message", "missing required fields: key/type/format"} };
                 crow::response res(err.dump());
                 res.set_header("Content-Type", "application/json");
-                res.code = 400;
+                res.code = __ErrorCode::FAILURE;
                 return res;
             }
             if (!SERVER_KEY.empty()) {
@@ -93,7 +84,7 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
                         err["data"] = { {"message", "unauthorized: invalid key"} };
                         crow::response res(err.dump());
                         res.set_header("Content-Type", "application/json");
-                        res.code = 401;
+                        res.code = __ErrorCode::INV_KEY;
                         return res;
                     }
                 } catch (...) {
@@ -103,7 +94,7 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
                     err["data"] = { {"message", "invalid key format"} };
                     crow::response res(err.dump());
                     res.set_header("Content-Type", "application/json");
-                    res.code = 400;
+                    res.code = __ErrorCode::FAILURE;
                     return res;
                 }
             } else {
@@ -114,7 +105,7 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
                 err["data"] = { {"message", "server key not set"} };
                 crow::response res(err.dump());
                 res.set_header("Content-Type", "application/json");
-                res.code = 500;
+                res.code = __ErrorCode::KEY_NOT_SET;
                 return res;
             }
             if (j["type"].get<std::string>() != "initialization") {
@@ -125,17 +116,17 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
                 err["data"] = { {"message", "invalid type for this endpoint"} };
                 crow::response res(err.dump());
                 res.set_header("Content-Type", "application/json");
-                res.code = 400;
+                res.code = __ErrorCode::FAILURE;
                 return res;
             }
             nlohmann::json ok;
             ok["key"] = SERVER_KEY;
             ok["type"] = "initialization_response";
             ok["format"] = "text";
-            ok["data"] = "51.75.255.115:8088/ws";
+            ok["data"] = WS_ADDRESS;
             crow::response res(ok.dump());
             res.set_header("Content-Type", "application/json");
-            res.code = 200;
+            res.code = __ErrorCode::SUCCESS;
             return res;
         } catch (const std::exception &e) {
             nlohmann::json err;
@@ -145,7 +136,7 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
             err["data"] = { {"message", std::string("invalid json: ") + e.what()} };
             crow::response res(err.dump());
             res.set_header("Content-Type", "application/json");
-            res.code = 400;
+            res.code = __ErrorCode::FAILURE;
             return res;
         }
     });
@@ -161,7 +152,7 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
         oss << "[WS] Connection closed: " << (void*)&conn << " reason: " << reason;
         std::cout << oss.str() << std::endl;
     })
-    .onmessage([](crow::websocket::connection& conn, const std::string& data, bool is_binary){
+    .onmessage([this](crow::websocket::connection& conn, const std::string& data, bool is_binary){
         try {
             if (is_binary) {
                 return;
@@ -169,14 +160,13 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
             talkup_network::WsManager wsManager;
             auto j = nlohmann::json::parse(data);
 
-            if (!j.contains("type")) {
+            if (!j.contains("type") || !j.contains("stream_id") || !j.contains("format") ||
+                !j.contains("timestamp") || !j.contains("data") || !j.contains("key") ) {
+                    throw ExceptionManager::NetworkInvalidJsonException();
+            }
+            if (__env_variables["COMMUNICATION"] != j["key"].get<std::string>()) {
                 nlohmann::json err;
-                err["type"] = "error";
-                err["timestamp"] = std::chrono::duration_cast<std::chrono::seconds>(
-                    std::chrono::system_clock::now().time_since_epoch()).count();
-                err["data"] = { {"message", "missing type field"} };
-                conn.send_text(err.dump());
-                throw ExceptionManager::NetworkMissingTypeField();
+                throw ExceptionManager::NetworkInvalidKeyException();
             }
             wsManager.connection_type_manager(j, conn);
         } catch (const std::exception &e) {

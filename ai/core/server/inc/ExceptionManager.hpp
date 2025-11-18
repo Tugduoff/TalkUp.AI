@@ -93,6 +93,16 @@ class ExceptionManager {
                 const char *what() const noexcept override;
         };
 
+        class NetworkInvalidKeyException : public std::exception {
+            public:
+                const char *what() const noexcept override;
+        };
+
+        class NetworkEmptyBodyException : public std::exception {
+            public:
+                const char *what() const noexcept override;
+        };
+
     protected:
     private:
 };

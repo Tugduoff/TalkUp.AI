@@ -16,7 +16,7 @@ All messages are in **JSON** format and must include the following fields:
 | Field | Type | Description |
 |-------|------|-------------|
 | `type` | string | Message type (e.g., `ping`, `stream_chunk`, `error`) |
-| `timestamp` | int | UNIX timestamp of the message |
+| `timestamp` | uint_64 | UNIX timestamp of the message |
 | `data` | object | Message-specific content |
 
 ---
@@ -49,20 +49,21 @@ The Frontend can send audio and video streams for processing. **Important:** the
 ### Example: Frontend → AI Server
 ```json
 {
-  "key": "exemple_key"
+  "key": "exemple_key",
   "type": "stream_chunk",
   "stream_id": "abc123",
-  "format": "audio/opus",
-  "sequence": 12,
+  "format": "audio",
   "timestamp": 1739592334,
   "data": "<base64 encoded chunk>"
 }
 ```
 
+Type format can be `audio`, `video`, `image` or `text` depending on the stream content.
+
 ### Example: AI Server → Frontend (processed media stream)
 ```json
 {
-  "key": "exemple_key"
+  "key": "exemple_key",
   "type": "stream_output",
   "stream_id": "abc123",
   "format": "audio/opus",
@@ -74,7 +75,7 @@ The Frontend can send audio and video streams for processing. **Important:** the
 ### Example: AI Server → Frontend (transcript name / id)
 ```json
 {
-  "key": "exemple_key"
+  "key": "exemple_key",
   "type": "transcript_name",
   "stream_id": "abc123",
   "text_id": "transcript_20251015_001.txt",

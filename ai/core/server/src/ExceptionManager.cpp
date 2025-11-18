@@ -41,3 +41,13 @@ const char *ExceptionManager::NetworkUnknownTypeException::what() const noexcept
 {
     return "Unknown type received in network message.";
 }
+
+const char *ExceptionManager::NetworkInvalidKeyException::what() const noexcept
+{
+    return "Invalid key received in network message.";
+}
+
+const char *ExceptionManager::NetworkEmptyBodyException::what() const noexcept
+{
+    return "Empty body received in network message.";
+}
