@@ -1,7 +1,12 @@
 import { Body, Controller, Put } from "@nestjs/common";
 import { UsePipes } from "@nestjs/common/decorators/core/use-pipes.decorator";
 
-import { ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiBadRequestResponse } from "@nestjs/swagger";
+import {
+  ApiTags,
+  ApiOkResponse,
+  ApiNotFoundResponse,
+  ApiBadRequestResponse,
+} from "@nestjs/swagger";
 
 import { UpdatePasswordDto } from "./dto/updatePassword.dto";
 import { PostValidationPipe } from "@common/pipes/PostValidationPipe";
