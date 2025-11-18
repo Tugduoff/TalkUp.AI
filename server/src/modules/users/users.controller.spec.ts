@@ -1,5 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { NotFoundException } from "@nestjs/common";
 
 import { UsersController } from "./users.controller";
 import { UsersService } from "./users.service";

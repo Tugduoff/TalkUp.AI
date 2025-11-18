@@ -15,15 +15,6 @@ describe("UsersService", () => {
   let mockEmailRepo: Partial<Repository<user_email>>;
   let mockPasswordRepo: Partial<Repository<user_password>>;
 
-  const mockUser = {
-    user_id: "test-user-id",
-    username: "testuser",
-    profile_picture: null,
-    provider: null,
-    created_at: new Date(),
-    updated_at: new Date(),
-  };
-
   const mockEmail = {
     email_id: 1,
     user_id: "test-user-id",
