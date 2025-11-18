@@ -42,6 +42,8 @@ import {
   PiArrowClockwise,
   PiArrowCounterClockwise,
   PiBookmarkSimple,
+  PiBookmarkSimpleFill,
+  PiClock,
   PiHighlighter,
   PiListBullets,
   PiListChecks,
@@ -146,6 +148,9 @@ export const iconMap = {
   // Notes icons (Phosphor)
   share: PiShare,
   favorite: PiBookmarkSimple,
+  bookmark: PiBookmarkSimple,
+  'bookmark-filled': PiBookmarkSimpleFill,
+  clock: PiClock,
   delete: PiTrash,
   pencil: PiPencilSimple,
 
