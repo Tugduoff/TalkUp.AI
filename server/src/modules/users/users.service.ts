@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { user, user_password, user_email } from "@entities/user.entity";
+import { user_password, user_email } from "@entities/user.entity";
 import { hashPassword } from "@common/utils/passwordHasher";
 
 @Injectable()
@@ -70,7 +70,7 @@ export class UsersService {
         throw error;
       }
       this.logger.error(
-        `Failed to change password for email ${email}: ${error.message}`,
+        `Failed to change password for email ${email}: ${error}`,
       );
       throw new InternalServerErrorException(
         "Internal server error while changing password.",
