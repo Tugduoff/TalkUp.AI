@@ -1,8 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Saira:wght@400;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Saira:wght@400;500;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
 @import 'tailwindcss';
+@import './rich-text-editor.css';
 
 @source inline('{text,fill}-{primary,accent}');
 @source inline('{,hover:,active:}{bg,border,text}-{primary,accent,black,white,error,warning,success,neutral}{,-hover,-active,-weak,-weaker}');
+@source inline('text-text-{idle,active}');
 
 @theme {
   --color-primary: #29457a;
@@ -41,6 +44,8 @@
   --color-text-weak: #383850;
   --color-text-weaker: #5f5f77;
   --color-text-weakest: #a4a4b2;
+  --color-text-idle: #57585e;
+  --color-text-active: #1e2229;
 
   --color-border: #e2e2ea;
   --color-border-strong: #c8c8d4;
@@ -74,4 +79,49 @@
   --color-icon-hover: #24242d;
 
   --font-display: 'Saira', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Typography styles */
+  --font-size-h1: 40px;
+  --font-size-h2: 32px;
+  --font-size-h5: 20px;
+  --font-size-body-m: 14px;
+  --font-size-body-s: 12px;
+}
+
+@layer utilities {
+  .text-h1 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .text-h2 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-h2);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .text-h5 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-h5);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .text-body-m {
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-m);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .text-body-s {
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-s);
+    font-weight: 400;
+    line-height: 1.5;
+  }
 }
