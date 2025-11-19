@@ -1,18 +1,20 @@
 import { createNote } from '@/services/notes/notesService';
 import type { Note } from '@/services/notes/types';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 /** Custom hook for creating notes */
 export const useNoteCreation = () => {
   const [isCreating, setIsCreating] = useState(false);
+  const isCreatingRef = useRef(false);
 
   const createNewNote = async (
     title: string = 'Untitled Note',
     content: string = '',
     color: string = 'blue',
   ): Promise<Note | null> => {
-    if (isCreating) return null;
+    if (isCreatingRef.current) return null;
 
+    isCreatingRef.current = true;
     setIsCreating(true);
 
     try {
@@ -26,6 +28,7 @@ export const useNoteCreation = () => {
       console.error('Error creating note:', err);
       throw err;
     } finally {
+      isCreatingRef.current = false;
       setIsCreating(false);
     }
   };

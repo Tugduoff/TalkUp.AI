@@ -1,4 +1,5 @@
 import type { BubbleProps } from '@/components/atoms/bubble/types';
+import { useNotesList } from '@/hooks/notes/useNotesList';
 import { deleteNote, updateNote } from '@/services/notes/notesService';
 import type { Note } from '@/services/notes/types';
 import { useState } from 'react';
@@ -9,8 +10,9 @@ export const useNoteActions = (
   note: Note | null,
   setNote: (note: Note) => void,
 ) => {
+  const { updateNoteInList, deleteNoteFromList } = useNotesList();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState('');
+  const [editedTitle, setEditedTitle] = useState(note?.title || '');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
 
@@ -26,6 +28,7 @@ export const useNoteActions = (
 
     try {
       await updateNote(noteId, { title: editedTitle });
+      updateNoteInList(noteId, { title: editedTitle });
       setNote({ ...note, title: editedTitle });
       setIsEditing(false);
     } catch (err) {
@@ -45,6 +48,7 @@ export const useNoteActions = (
 
     try {
       await updateNote(noteId, { color: color as string });
+      updateNoteInList(noteId, { color: color as string });
       setNote({ ...note, color: color as string });
       setShowColorPicker(false);
     } catch (err) {
@@ -55,6 +59,7 @@ export const useNoteActions = (
   const handleDelete = async () => {
     try {
       await deleteNote(noteId);
+      deleteNoteFromList(noteId);
       return true;
     } catch (err) {
       console.error('Error deleting note:', err);

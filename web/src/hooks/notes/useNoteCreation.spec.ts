@@ -1,0 +1,93 @@
+import { act, renderHook, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { createNote } from '@/services/notes/notesService';
+import { useNoteCreation } from './useNoteCreation';
+
+// Mock dependencies
+vi.mock('@/services/notes/notesService', () => ({
+  createNote: vi.fn(),
+}));
+
+describe('useNoteCreation', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('initializes with isCreating false', () => {
+    const { result } = renderHook(() => useNoteCreation());
+    expect(result.current.isCreating).toBe(false);
+  });
+
+  it('creates a new note successfully', async () => {
+    const mockNote = {
+      note_id: 'new-note-1',
+      user_id: 'user-1',
+      title: 'My Note',
+      content: 'Content',
+      color: 'red',
+      is_favorite: false,
+      created_at: '2024-01-01T00:00:00Z',
+      updated_at: '2024-01-01T00:00:00Z'
+    };
+    (createNote as any).mockImplementation(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      return mockNote;
+    });
+
+    const { result } = renderHook(() => useNoteCreation());
+
+    let promise: Promise<any>;
+    act(() => {
+      promise = result.current.createNewNote('My Note', 'Content', 'red');
+    });
+
+    // Check isCreating is true after state update
+    expect(result.current.isCreating).toBe(true);
+
+    const note = await promise!;
+
+    expect(createNote).toHaveBeenCalledWith({
+      title: 'My Note',
+      content: 'Content',
+      color: 'red',
+    });
+    expect(note).toEqual(mockNote);
+
+    // Wait for state to update to false
+    await waitFor(() => {
+      expect(result.current.isCreating).toBe(false);
+    });
+  });
+
+  it('handles creation errors', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (createNote as any).mockRejectedValue(new Error('Creation failed'));
+
+    const { result } = renderHook(() => useNoteCreation());
+
+    await expect(
+      result.current.createNewNote()
+    ).rejects.toThrow('Creation failed');
+
+    expect(result.current.isCreating).toBe(false);
+    consoleSpy.mockRestore();
+  });
+
+  it('prevents multiple simultaneous creations', async () => {
+    (createNote as any).mockImplementation(
+      () => new Promise((resolve) => setTimeout(resolve, 100))
+    );
+
+    const { result } = renderHook(() => useNoteCreation());
+
+    // Start first creation
+    const promise1 = result.current.createNewNote();
+    
+    // Try second creation immediately
+    const promise2 = result.current.createNewNote();
+
+    expect(await promise2).toBeNull();
+    await promise1;
+  });
+});

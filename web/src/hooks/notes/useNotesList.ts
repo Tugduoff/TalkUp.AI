@@ -57,6 +57,10 @@ export const useNotesList = () => {
     });
   };
 
+  const deleteNoteFromList = (noteId: string) => {
+    setNotes((prevNotes) => prevNotes.filter((n) => n.note_id !== noteId));
+  };
+
   return {
     notes,
     isLoading,
@@ -65,5 +69,6 @@ export const useNotesList = () => {
     addNote,
     updateNoteInList,
     revertNoteInList,
+    deleteNoteFromList,
   };
 };

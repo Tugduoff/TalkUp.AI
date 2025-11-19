@@ -49,7 +49,6 @@ export const useNoteAutoSave = (
         } catch (err) {
           console.error('Error saving note:', err);
           setSaveStatus('error');
-          throw err;
         }
       })();
 
