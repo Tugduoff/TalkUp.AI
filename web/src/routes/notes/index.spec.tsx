@@ -4,7 +4,6 @@ import { useNoteNavigation } from '@/hooks/notes/useNoteNavigation';
 import { useNotesList } from '@/hooks/notes/useNotesList';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Notes } from './index';
@@ -67,8 +66,6 @@ describe('Notes Route', () => {
       createNewNote: mockCreateNewNote,
     });
   });
-
-
 
   it('renders list of notes', () => {
     render(<Notes />);

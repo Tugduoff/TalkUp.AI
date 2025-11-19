@@ -1,7 +1,7 @@
+import { createNote } from '@/services/notes/notesService';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createNote } from '@/services/notes/notesService';
 import { useNoteCreation } from './useNoteCreation';
 
 // Mock dependencies
@@ -28,7 +28,7 @@ describe('useNoteCreation', () => {
       color: 'red',
       is_favorite: false,
       created_at: '2024-01-01T00:00:00Z',
-      updated_at: '2024-01-01T00:00:00Z'
+      updated_at: '2024-01-01T00:00:00Z',
     };
     (createNote as any).mockImplementation(async () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -66,9 +66,9 @@ describe('useNoteCreation', () => {
 
     const { result } = renderHook(() => useNoteCreation());
 
-    await expect(
-      result.current.createNewNote()
-    ).rejects.toThrow('Creation failed');
+    await expect(result.current.createNewNote()).rejects.toThrow(
+      'Creation failed',
+    );
 
     expect(result.current.isCreating).toBe(false);
     consoleSpy.mockRestore();
@@ -76,14 +76,14 @@ describe('useNoteCreation', () => {
 
   it('prevents multiple simultaneous creations', async () => {
     (createNote as any).mockImplementation(
-      () => new Promise((resolve) => setTimeout(resolve, 100))
+      () => new Promise((resolve) => setTimeout(resolve, 100)),
     );
 
     const { result } = renderHook(() => useNoteCreation());
 
     // Start first creation
     const promise1 = result.current.createNewNote();
-    
+
     // Try second creation immediately
     const promise2 = result.current.createNewNote();
 
