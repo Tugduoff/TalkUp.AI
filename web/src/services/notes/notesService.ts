@@ -7,23 +7,38 @@ const NOTES_API_URL = '/v1/api/notes';
 void axiosInstance;
 void NOTES_API_URL;
 
-// TEMPORARY MOCK DATA - This will be replaced with real API calls
-const MOCK_NOTES: Note[] = [];
-let mockIdCounter = 1;
+const STORAGE_KEY = 'talkup_mock_notes';
+
+// Initialize mock data from localStorage or use empty array
+const getStoredNotes = (): Note[] => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveNotesToStorage = (notes: Note[]) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+  } catch (error) {
+    console.error('Failed to save notes to localStorage:', error);
+  }
+};
 
 /**
  * Temporary mock function to simulate fetching notes from backend
- * TODO: Replace with actual API call once backend is deployed
  */
 const getMockNotes = async (userId: string): Promise<Note[]> => {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 300));
-  return MOCK_NOTES.filter((note) => note.user_id === userId);
+  const notes = getStoredNotes();
+  return notes.filter((note) => note.user_id === userId);
 };
 
 /**
  * Temporary mock function to simulate creating a note
- * TODO: Replace with actual API call once backend is deployed
  */
 const createMockNote = async (
   userId: string,
@@ -32,8 +47,9 @@ const createMockNote = async (
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 300));
 
+  const notes = getStoredNotes();
   const newNote: Note = {
-    note_id: `mock-${mockIdCounter++}`,
+    note_id: `mock-${Date.now()}`,
     user_id: userId,
     title: dto.title,
     content: dto.content || '',
@@ -43,13 +59,13 @@ const createMockNote = async (
     updated_at: new Date().toISOString(),
   };
 
-  MOCK_NOTES.push(newNote);
+  notes.push(newNote);
+  saveNotesToStorage(notes);
   return newNote;
 };
 
 /**
  * Temporary mock function to simulate updating a note
- * TODO: Replace with actual API call once backend is deployed
  */
 const updateMockNote = async (
   noteId: string,
@@ -58,35 +74,38 @@ const updateMockNote = async (
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 300));
 
-  const noteIndex = MOCK_NOTES.findIndex((n) => n.note_id === noteId);
+  const notes = getStoredNotes();
+  const noteIndex = notes.findIndex((n) => n.note_id === noteId);
   if (noteIndex === -1) {
     throw new Error('Note not found');
   }
 
   const updatedNote = {
-    ...MOCK_NOTES[noteIndex],
+    ...notes[noteIndex],
     ...dto,
     updated_at: new Date().toISOString(),
   };
 
-  MOCK_NOTES[noteIndex] = updatedNote;
+  notes[noteIndex] = updatedNote;
+  saveNotesToStorage(notes);
   return updatedNote;
 };
 
 /**
  * Temporary mock function to simulate deleting a note
- * TODO: Replace with actual API call once backend is deployed
  */
 const deleteMockNote = async (noteId: string): Promise<void> => {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 300));
 
-  const noteIndex = MOCK_NOTES.findIndex((n) => n.note_id === noteId);
+  const notes = getStoredNotes();
+  const noteIndex = notes.findIndex((n) => n.note_id === noteId);
   if (noteIndex === -1) {
     throw new Error('Note not found');
   }
 
-  MOCK_NOTES.splice(noteIndex, 1);
+  notes.splice(noteIndex, 1);
+  saveNotesToStorage(notes);
 };
 
 /**
@@ -120,7 +139,8 @@ export const getNoteById = async (noteId: string): Promise<Note> => {
     // return response.data;
 
     // TEMPORARY: Using mock data
-    const note = MOCK_NOTES.find((n) => n.note_id === noteId);
+    const notes = getStoredNotes();
+    const note = notes.find((n) => n.note_id === noteId);
     if (!note) {
       throw new Error('Note not found');
     }
