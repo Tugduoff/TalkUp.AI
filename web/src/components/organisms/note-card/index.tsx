@@ -2,6 +2,7 @@ import { Bubble } from '@/components/atoms/bubble';
 import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import { formatRelativeDate } from '@/utils/time';
+import DOMPurify from 'dompurify';
 import { useState } from 'react';
 
 import { NoteCardProps } from './types';
@@ -136,7 +137,9 @@ export const NoteCard = ({
           >
             <div
               className="note-preview-content"
-              dangerouslySetInnerHTML={{ __html: preview }}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(preview),
+              }}
             />
           </div>
         )}
