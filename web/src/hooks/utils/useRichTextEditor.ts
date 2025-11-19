@@ -7,7 +7,6 @@ import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
 import TextAlign from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
-import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useState } from 'react';
@@ -168,7 +167,6 @@ export const useRichTextEditor = (initialContent?: string) => {
           levels: [1, 2, 3],
         },
       }),
-      Underline,
       TextStyle,
       FontFamily,
       FontSize,
@@ -193,7 +191,6 @@ export const useRichTextEditor = (initialContent?: string) => {
     content: initialContent || '',
     editorProps: {
       attributes: {
-        // Scoped class to avoid affecting other prose elements
         class:
           'rich-editor-prose prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[500px] p-4',
       },
