@@ -16,7 +16,7 @@ export const Route = createFileRoute('/notes/')({
   component: Notes,
 });
 
-function Notes() {
+export function Notes() {
   const {
     notes,
     isLoading,
