@@ -28,7 +28,7 @@ export const useNoteAutoSave = (
     const saveNote = async () => {
       if (!note || !hasUnsavedChanges.current || !editor) return;
 
-      const p = (async () => {
+      const savePromise = (async () => {
         try {
           setSaveStatus('saving');
           const content = editor.getHTML();
@@ -52,11 +52,12 @@ export const useNoteAutoSave = (
         }
       })();
 
-      savePromiseRef.current = p;
+      savePromiseRef.current = savePromise;
       try {
-        await p;
+        await savePromise;
       } finally {
-        if (savePromiseRef.current === p) savePromiseRef.current = null;
+        if (savePromiseRef.current === savePromise)
+          savePromiseRef.current = null;
       }
     };
 
@@ -122,7 +123,7 @@ export const useNoteAutoSave = (
       setSaveStatus('saving');
       const content = editor.getHTML();
 
-      const p = (async () => {
+      const savePromise = (async () => {
         const safeTitle =
           typeof title === 'string' && title.trim()
             ? title
@@ -133,8 +134,8 @@ export const useNoteAutoSave = (
         });
       })();
 
-      savePromiseRef.current = p;
-      await p;
+      savePromiseRef.current = savePromise;
+      await savePromise;
       setSaveStatus('saved');
       savePromiseRef.current = null;
     } catch (err) {
