@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
 import React from 'react';
 
-import { Country, PhoneNumberInputProps } from './type';
+import { Country, PhoneNumberInputProps } from './types';
 import { usePhoneNumber } from './usePhoneNumber';
 
 const countries: Country[] = [

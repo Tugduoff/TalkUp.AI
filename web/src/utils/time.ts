@@ -32,3 +32,27 @@ export const formatDurationISO = (seconds: number): string => {
 
   return duration;
 };
+
+/**
+ * Formats a date relative to now (e.g., "Just now", "5h ago", "3d ago", "Jan 15")
+ */
+export const formatRelativeDate = (date: Date): string => {
+  const now = new Date();
+  const diffInMs = now.getTime() - date.getTime();
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  if (diffInHours < 1) {
+    return 'Just now';
+  } else if (diffInHours < 24) {
+    return `${diffInHours}h ago`;
+  } else if (diffInDays < 7) {
+    return `${diffInDays}d ago`;
+  } else {
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
+    });
+  }
+};

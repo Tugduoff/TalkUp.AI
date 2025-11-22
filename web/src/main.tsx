@@ -1,7 +1,6 @@
 import ToasterConfig from '@/components/atoms/toaster';
 import { AuthProvider } from '@/contexts/AuthContext';
-import '@/styles/loader.css';
-import '@/styles/tailwind.css';
+import '@/styles/index';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider, createRouter } from '@tanstack/react-router';

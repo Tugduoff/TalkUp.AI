@@ -12,6 +12,7 @@ export interface SelectorInputProps
   options?: SelectorOption[];
   disabled?: boolean;
   required?: boolean;
+  hideCaret?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -38,6 +39,7 @@ export const SelectorInput: React.FC<SelectorInputProps> = ({
   options = [],
   disabled = false,
   required = false,
+  hideCaret = false,
   className,
   onChange = () => {},
   ...rest
@@ -53,7 +55,8 @@ export const SelectorInput: React.FC<SelectorInputProps> = ({
       required={required}
       aria-label={name}
       className={cn(
-        'px-4 py-2 text-sm font-normal transition-colors duration-200 ease-in-out border rounded-sm font-display focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50 border-border-strong',
+        'px-4 py-2 text-sm font-normal transition-colors duration-200 ease-in-out border rounded-sm font-display focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent cursor-pointer disabled:cursor-not-allowed disabled:bg-disabled disabled:opacity-50 border-border-strong',
+        hideCaret ? 'appearance-none' : '',
         className,
       )}
     >
