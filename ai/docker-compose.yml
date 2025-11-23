@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: ai_server
     ports:
-      - "8083:8083"
+      - "8088:8088"
     depends_on:
       - behavior_analyzer
       - emotional_analyzer
