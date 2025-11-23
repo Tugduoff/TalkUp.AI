@@ -19,6 +19,14 @@
 
 void talkup_network::Router::get_env_key(void)
 {
+    const char* comm = std::getenv("COMMUNICATION");
+    const char* ws = std::getenv("WS_ADDRESS");
+
+    if (comm) __env_variables["COMMUNICATION"] = std::string(comm);
+    if (ws) __env_variables["WS_ADDRESS"] = std::string(ws);
+    if (!__env_variables["COMMUNICATION"].empty() && !__env_variables["WS_ADDRESS"].empty())
+        return;
+
     std::ifstream env_file(".env");
     std::string line;
 
