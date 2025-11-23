@@ -1,4 +1,4 @@
-import { updateNote } from '@/services/notes/notesService';
+import { updateNote } from '@/services/notes/http';
 import type { Note } from '@/services/notes/types';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useNoteFavorite } from './useNoteFavorite';
 
 // Mock dependencies
-vi.mock('@/services/notes/notesService', () => ({
+vi.mock('@/services/notes/http', () => ({
   updateNote: vi.fn(),
 }));
 

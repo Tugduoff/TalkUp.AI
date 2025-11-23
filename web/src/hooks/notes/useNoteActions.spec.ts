@@ -20,7 +20,7 @@ vi.mock('@/hooks/notes/useNotesList', () => ({
   }),
 }));
 
-vi.mock('@/services/notes/notesService', () => ({
+vi.mock('@/services/notes/http', () => ({
   updateNote: mocks.updateNote,
   deleteNote: mocks.deleteNote,
 }));

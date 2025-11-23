@@ -6,7 +6,7 @@ import {
   getNoteById,
   getUserNotes,
   updateNote,
-} from './notesService';
+} from './http';
 
 describe('notesService', () => {
   const STORAGE_KEY = 'talkup_mock_notes';

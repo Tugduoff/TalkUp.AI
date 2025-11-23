@@ -1,4 +1,4 @@
-import { updateNote } from '@/services/notes/notesService';
+import { updateNote } from '@/services/notes/http';
 import type { Note } from '@/services/notes/types';
 import { useState } from 'react';
 

@@ -1,6 +1,6 @@
 import type { BubbleProps } from '@/components/atoms/bubble/types';
 import { useNotesList } from '@/hooks/notes/useNotesList';
-import { deleteNote, updateNote } from '@/services/notes/notesService';
+import { deleteNote, updateNote } from '@/services/notes/http';
 import type { Note } from '@/services/notes/types';
 import { useState } from 'react';
 

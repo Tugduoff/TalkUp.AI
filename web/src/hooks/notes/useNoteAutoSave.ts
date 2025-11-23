@@ -1,5 +1,5 @@
 import type { SaveStatusType } from '@/components/molecules/save-status';
-import { updateNote } from '@/services/notes/notesService';
+import { updateNote } from '@/services/notes/http';
 import type { Note } from '@/services/notes/types';
 import type { Editor } from '@tiptap/react';
 import { useEffect, useRef, useState } from 'react';

@@ -1,11 +1,11 @@
-import { updateNote } from '@/services/notes/notesService';
+import { updateNote } from '@/services/notes/http';
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useNoteAutoSave } from './useNoteAutoSave';
 
 // Mock dependencies
-vi.mock('@/services/notes/notesService', () => ({
+vi.mock('@/services/notes/http', () => ({
   updateNote: vi.fn(),
 }));
 

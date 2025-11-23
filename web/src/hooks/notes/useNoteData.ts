@@ -1,4 +1,4 @@
-import { getNoteById } from '@/services/notes/notesService';
+import { getNoteById } from '@/services/notes/http';
 import type { Note } from '@/services/notes/types';
 import { useEffect, useState } from 'react';
 
