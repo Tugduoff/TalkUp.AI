@@ -11,6 +11,7 @@ import { useVideoStream } from '../../../hooks/streams/useVideoStream';
 interface SimulationVideoAreaProps {
   onStreamToggle?: (streaming: boolean) => void;
   onStreamChange?: (stream: MediaStream | null) => void;
+  onToggleRef?: (toggleFn: (() => void) | null) => void;
 }
 
 /**
@@ -20,6 +21,7 @@ interface SimulationVideoAreaProps {
 const SimulationVideoArea = ({
   onStreamToggle,
   onStreamChange,
+  onToggleRef,
 }: SimulationVideoAreaProps = {}): React.ReactElement => {
   const audioElementRef = useRef<HTMLAudioElement>(null);
   const [shouldStartWithMic, setShouldStartWithMic] = useState(true);
@@ -30,6 +32,13 @@ const SimulationVideoArea = ({
     shouldStartWithMic,
     shouldStartWithCamera,
   });
+
+  useEffect(() => {
+    if (onToggleRef) {
+      onToggleRef(toggleStream);
+      return () => onToggleRef(null);
+    }
+  }, [toggleStream, onToggleRef]);
 
   const {
     isMicActive,
@@ -56,11 +65,17 @@ const SimulationVideoArea = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStreaming]);
 
+  const onStreamToggleRef = useRef(onStreamToggle);
+
   useEffect(() => {
-    if (onStreamToggle) {
-      onStreamToggle(isStreaming);
+    onStreamToggleRef.current = onStreamToggle;
+  }, [onStreamToggle]);
+
+  useEffect(() => {
+    if (onStreamToggleRef.current) {
+      onStreamToggleRef.current(isStreaming);
     }
-  }, [isStreaming, onStreamToggle]);
+  }, [isStreaming]);
 
   useEffect(() => {
     if (onStreamChange) {

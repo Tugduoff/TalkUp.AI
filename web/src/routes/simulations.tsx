@@ -6,6 +6,7 @@ import { WebSocketDebugPanel } from '@/components/organisms/websocket-debug-pane
 import {
   AudioPacket,
   useAudioStreaming,
+  useInterviewSession,
   useSimulationWebSocket,
 } from '@/hooks/simulation';
 import { createAuthGuard } from '@/utils/auth.guards';
@@ -19,11 +20,10 @@ export const Route = createFileRoute('/simulations')({
 });
 
 function Simulations() {
-  const [inputUrl, setInputUrl] = useState('ws://localhost:8080');
-  const [isCallActive, setIsCallActive] = useState(false);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [wsError, setWsError] = useState<string | null>(null);
   const [connectionAttempts, setConnectionAttempts] = useState(0);
+  const videoStreamToggleRef = useRef<(() => void) | null>(null);
 
   const {
     sendMessage,
@@ -35,7 +35,7 @@ function Simulations() {
     connect,
     disconnect,
   } = useSimulationWebSocket({
-    defaultUrl: inputUrl,
+    defaultUrl: '',
     onOpen: () => {
       setWsError(null);
       setConnectionAttempts(0);
@@ -54,6 +54,18 @@ function Simulations() {
         'Failed to connect to WebSocket server. Check URL and server status.',
       );
     },
+  });
+
+  const handleResumeStream = useCallback(() => {
+    if (videoStreamToggleRef.current) {
+      videoStreamToggleRef.current();
+    }
+  }, []);
+
+  const { isCallActive, inputUrl, handleStreamToggle } = useInterviewSession({
+    onConnect: connect,
+    onDisconnect: disconnect,
+    onResumeStream: handleResumeStream,
   });
 
   const sendJsonMessageRef = useRef(sendJsonMessage);
@@ -81,18 +93,6 @@ function Simulations() {
     isActive: isCallActive && readyState === ReadyState.OPEN,
     timeSlice: 1000,
   });
-
-  const handleStreamToggle = useCallback(
-    (streaming: boolean) => {
-      setIsCallActive(streaming);
-      if (streaming) {
-        connect(inputUrl);
-      } else {
-        disconnect(1000, 'Call ended');
-      }
-    },
-    [inputUrl, connect, disconnect],
-  );
 
   const staticTranscriptions: TranscriptionProps[] = [
     {
@@ -129,6 +129,9 @@ function Simulations() {
           <SimulationVideoArea
             onStreamToggle={handleStreamToggle}
             onStreamChange={setMediaStream}
+            onToggleRef={(toggleFn) => {
+              videoStreamToggleRef.current = toggleFn;
+            }}
           />
           <SimulationTranscriptionArea transcriptions={staticTranscriptions} />
         </div>
@@ -136,7 +139,6 @@ function Simulations() {
         <div className="space-y-6">
           <WebSocketDebugPanel
             inputUrl={inputUrl}
-            onInputUrlChange={setInputUrl}
             readyState={readyState}
             isCallActive={isCallActive}
             sendMessage={sendMessage}
