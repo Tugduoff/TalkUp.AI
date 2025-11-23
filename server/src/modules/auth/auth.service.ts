@@ -11,6 +11,8 @@ import * as bcrypt from "bcrypt";
 
 import { CreateUserDto } from "./dto/createUser.dto";
 
+import { EditUserDto } from "./dto/editUser.dto"
+
 import { user, user_password, user_email } from "@entities/user.entity";
 
 import { hashPassword } from "@common/utils/passwordHasher";
@@ -141,5 +143,39 @@ export class AuthService {
     return {
       accessToken: await this.jwtService.signAsync(payload),
     };
+  }
+  /**
+   *Upadate some information from the user account
+   * @param userId -It is the current user Id
+   * @param EditUserDto -There is all the information that user whant to update in his/her account
+   * @returns  A message if the user is upadte succesfully or not
+ */
+  async editUser(userId: string, EditUserDto: EditUserDto) {
+    const user = await this.userRepository.findOne({
+      where: { user_id: userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException("User not found");
+    }
+    if (EditUserDto.username) user.username = EditUserDto.username;
+    // This part will be uncommented when those arguments will be added in the user's infos
+    // if (EditUserDto.phone) user.phone = EditUserDto.phone;
+    // if (EditUserDto.profilePicture) user.profilePicture = EditUserDto.profilePicture;
+    // if (EditUserDto.cv) user.cv = EditUserDto.cv;
+    // if (EditUserDto.activitySector) user.activitySector = EditUserDto.activitySector;
+
+    if (EditUserDto.email) {
+      const emailEntity = await this.userEmailRepository.findOne({
+        where: { user_id: userId },
+      });
+
+      if (emailEntity) {
+        emailEntity.email = EditUserDto.email;
+        await this.userEmailRepository.save(emailEntity);
+      }
+    }
+
+    return await this.userRepository.save(user);
   }
 }
