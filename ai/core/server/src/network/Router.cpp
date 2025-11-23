@@ -59,9 +59,6 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
             static const std::string SERVER_KEY = __env_variables["COMMUNICATION"];
             static const std::string WS_ADDRESS = __env_variables["WS_ADDRESS"];
 
-            std::cout << "WebSocket Address: " << WS_ADDRESS << std::endl;
-            std::cout << "Server Key: " << SERVER_KEY << std::endl;
-
             if (req.body.empty()) {
                 nlohmann::json err;
                 err["type"] = "error";
