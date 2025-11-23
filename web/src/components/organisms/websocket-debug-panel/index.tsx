@@ -51,8 +51,8 @@ export function WebSocketDebugPanel({
           label="Socket URL"
           type="base"
           value={inputUrl}
-          onChange={(e) => onInputUrlChange(e.target.value)}
-          disabled={isCallActive}
+          onChange={(e) => onInputUrlChange?.(e.target.value)}
+          disabled={isCallActive || !onInputUrlChange}
         />
         <div className="flex items-center gap-2 text-sm">
           <span className="text-gray-600">Status:</span>
