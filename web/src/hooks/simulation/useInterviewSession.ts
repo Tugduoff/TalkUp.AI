@@ -8,6 +8,9 @@ const STORAGE_KEYS = {
   IS_STREAMING: 'isInterviewStreaming',
 } as const;
 
+const WEBSOCKET_CLOSE_CODE_NORMAL = 1000;
+const STREAM_RESUME_DELAY_MS = 100;
+
 /**
  * Props for the useInterviewSession hook.
  */
@@ -82,7 +85,7 @@ export function useInterviewSession({
       if (wasStreaming && onResumeStream) {
         setTimeout(() => {
           onResumeStream();
-        }, 100);
+        }, STREAM_RESUME_DELAY_MS);
       }
 
       toast.success('Resumed your interview session');
@@ -114,8 +117,14 @@ export function useInterviewSession({
           processingRef.current = false;
         }
       } else {
-        onDisconnect(1000, 'Call ended');
         const interviewID = localStorage.getItem(STORAGE_KEYS.INTERVIEW_ID);
+
+        try {
+          onDisconnect(WEBSOCKET_CLOSE_CODE_NORMAL, 'Call ended');
+        } catch (error) {
+          console.error('Failed to disconnect WebSocket:', error);
+        }
+
         if (interviewID) {
           try {
             await updateInterview(interviewID, { status: 'completed' });
@@ -124,12 +133,10 @@ export function useInterviewSession({
             localStorage.removeItem(STORAGE_KEYS.IS_STREAMING);
           } catch (error) {
             console.error('Failed to update interview status:', error);
-          } finally {
-            processingRef.current = false;
           }
-        } else {
-          processingRef.current = false;
         }
+
+        processingRef.current = false;
       }
     },
     [onConnect, onDisconnect],
