@@ -19,6 +19,14 @@
 
 void talkup_network::Router::get_env_key(void)
 {
+    const char* comm = std::getenv("COMMUNICATION");
+    const char* ws = std::getenv("WS_ADDRESS");
+
+    if (comm) __env_variables["COMMUNICATION"] = std::string(comm);
+    if (ws) __env_variables["WS_ADDRESS"] = std::string(ws);
+    if (!__env_variables["COMMUNICATION"].empty() && !__env_variables["WS_ADDRESS"].empty())
+        return;
+
     std::ifstream env_file(".env");
     std::string line;
 
@@ -50,6 +58,9 @@ void talkup_network::Router::set_routes_definitions(crow::SimpleApp& app)
         try {
             static const std::string SERVER_KEY = __env_variables["COMMUNICATION"];
             static const std::string WS_ADDRESS = __env_variables["WS_ADDRESS"];
+
+            std::cout << "WebSocket Address: " << WS_ADDRESS << std::endl;
+            std::cout << "Server Key: " << SERVER_KEY << std::endl;
 
             if (req.body.empty()) {
                 nlohmann::json err;
