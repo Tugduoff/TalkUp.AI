@@ -97,7 +97,6 @@ export function useInterviewSession({
       if (processingRef.current) return;
       processingRef.current = true;
 
-      setIsCallActive(streaming);
       if (streaming) {
         try {
           const { entrypoint, interviewID } = await createInterview({
@@ -108,11 +107,11 @@ export function useInterviewSession({
           localStorage.setItem(STORAGE_KEYS.INTERVIEW_URL, entrypoint);
           localStorage.setItem(STORAGE_KEYS.IS_STREAMING, 'true');
           setInputUrl(entrypoint);
+          setIsCallActive(true);
           onConnect(entrypoint);
         } catch (error) {
           console.error('Failed to start interview:', error);
           toast.error('Failed to start interview. Please try again.');
-          setIsCallActive(false);
         } finally {
           processingRef.current = false;
         }
