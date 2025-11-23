@@ -18,7 +18,7 @@ import {
  *         Errors are logged to the console before being rethrown.
  * @async
  * @example
- * const created = await createInterview({ title: "Interview 1", prompts: [...] });
+ * const created = await createInterview({ type: "technical", language: "English" });
  */
 export const createInterview = async (
   dto: CreateAiInterviewDto,
@@ -47,7 +47,7 @@ export const createInterview = async (
  * @throws Propagates any error thrown by the underlying HTTP client if the request fails.
  *
  * @example
- * const dto: UpdateAiInterviewDto = { title: 'Updated title', questions: [...] };
+ * const dto: UpdateAiInterviewDto = { status: 'completed', score: 85, feedback: 'Great performance' };
  * await updateInterview('abc123', dto);
  */
 export const updateInterview = async (
