@@ -66,10 +66,12 @@ const SimulationVideoArea = ({
   }, [isStreaming]);
 
   const onStreamToggleRef = useRef(onStreamToggle);
+  const onStreamChangeRef = useRef(onStreamChange);
 
   useEffect(() => {
     onStreamToggleRef.current = onStreamToggle;
-  }, [onStreamToggle]);
+    onStreamChangeRef.current = onStreamChange;
+  }, [onStreamToggle, onStreamChange]);
 
   useEffect(() => {
     if (onStreamToggleRef.current) {
@@ -78,10 +80,10 @@ const SimulationVideoArea = ({
   }, [isStreaming]);
 
   useEffect(() => {
-    if (onStreamChange) {
-      onStreamChange(stream);
+    if (onStreamChangeRef.current) {
+      onStreamChangeRef.current(stream);
     }
-  }, [stream, onStreamChange]);
+  }, [stream]);
 
   useEffect(() => {
     if (!audioElementRef.current || !videoRef.current) return;
