@@ -2,7 +2,7 @@ import { ReadyState } from 'react-use-websocket';
 
 export interface WebSocketDebugPanelProps {
   inputUrl: string;
-  onInputUrlChange: (url: string) => void;
+  onInputUrlChange?: (url: string) => void;
   readyState: ReadyState;
   isCallActive: boolean;
 

@@ -11,3 +11,9 @@ export type {
   UseAudioStreamingReturn,
   AudioPacket,
 } from './useAudioStreaming';
+
+export { useInterviewSession } from './useInterviewSession';
+export type {
+  UseInterviewSessionProps,
+  UseInterviewSessionReturn,
+} from './useInterviewSession';

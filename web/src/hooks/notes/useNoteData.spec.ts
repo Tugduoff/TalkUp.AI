@@ -1,11 +1,11 @@
-import { getNoteById } from '@/services/notes/notesService';
+import { getNoteById } from '@/services/notes/http';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useNoteData } from './useNoteData';
 
 // Mock dependencies
-vi.mock('@/services/notes/notesService', () => ({
+vi.mock('@/services/notes/http', () => ({
   getNoteById: vi.fn(),
 }));
 
