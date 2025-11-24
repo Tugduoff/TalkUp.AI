@@ -53,6 +53,7 @@ import {
   PiMicrophoneFill,
   PiMicrophoneSlashFill,
   PiMinus,
+  PiMoon,
   PiPaintBrushBroad,
   PiPalette,
   PiPencilSimple,
@@ -62,6 +63,7 @@ import {
   PiShare,
   PiSpeakerSimpleHighFill,
   PiSpeakerSlashFill,
+  PiSun,
   PiTextAa,
   PiTextAlignCenter,
   PiTextAlignJustify,
@@ -110,6 +112,8 @@ export const iconMap = {
   // Phosphor icons (used across app)
   plus: PiPlus,
   minus: PiMinus,
+  sun: PiSun,
+  moon: PiMoon,
 
   // Editor icons (Phosphor)
   bold: PiTextB,
