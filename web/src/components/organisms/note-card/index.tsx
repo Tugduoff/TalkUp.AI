@@ -78,7 +78,7 @@ export const NoteCard = ({
   return (
     <div
       tabIndex={0}
-      className={`bg-[#ECEDF6] ${!isBtnHovered ? 'hover:bg-[#dfe0e9]' : ''} rounded-lg p-3 transition-all duration-200 cursor-pointer h-full flex flex-col gap-3`}
+      className={`bg-note-card ${!isBtnHovered ? 'hover:bg-note-card-hover' : ''} rounded-lg p-3 transition-all duration-200 cursor-pointer h-full flex flex-col gap-3`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleCardClick}

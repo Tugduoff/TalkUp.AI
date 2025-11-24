@@ -2,6 +2,7 @@ import Logo from '@/components/molecules/logo';
 import { MenuButton } from '@/components/molecules/menu-button';
 import NavLink from '@/components/molecules/nav-link';
 import { Profile } from '@/components/molecules/profile';
+import { ThemeToggle } from '@/components/molecules/theme-toggle';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLogout } from '@/hooks/auth/useLogout';
 import { useRouter } from '@tanstack/react-router';
@@ -27,6 +28,7 @@ const NavBar = () => {
         <div className="mb-8 ml-2">
           <Logo variant="line" color="accent" />
         </div>
+        <ThemeToggle />
         <div className="flex flex-col space-y-4">
           <NavLink to="/" label="Home" icon="home" />
           <NavLink to="/about" label="About" icon="help" />
@@ -46,6 +48,7 @@ const NavBar = () => {
 
         <div className="flex flex-col space-y-4">
           <div className="flex flex-col space-y-2">
+            <ThemeToggle />
             <NavLink to="/dashboard" label="Dashboard" icon="home" />
           </div>
 

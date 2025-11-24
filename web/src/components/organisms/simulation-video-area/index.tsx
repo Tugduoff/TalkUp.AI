@@ -109,7 +109,7 @@ const SimulationVideoArea = ({
   }, [isStreaming, isSpeakerActive, videoRef]);
 
   return (
-    <div className="relative w-full aspect-video bg-neutral rounded-lg overflow-hidden">
+    <div className="relative w-full aspect-video bg-video-off rounded-lg overflow-hidden">
       {isStreaming && (
         <img
           src="/interviewer.jpg"
@@ -126,7 +126,7 @@ const SimulationVideoArea = ({
       >
         <video
           ref={videoRef}
-          className="w-full h-full object-cover transition-all bg-[#000]"
+          className="w-full h-full object-cover transition-all bg-video-off"
           muted
         />
         <div className="flex absolute top-2 right-2 space-x-2">

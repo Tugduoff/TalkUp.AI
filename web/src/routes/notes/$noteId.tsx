@@ -215,7 +215,7 @@ function RouteComponent() {
           Last updated {new Date(note.updated_at).toLocaleString()}
         </p>
       </div>
-      <div className="grid grid-rows-[40px_1fr] bg-[#ECEDF6] rounded-t-[20px] px-6 pt-4 pb-0 gap-3 w-full min-w-0 h-full overflow-hidden">
+      <div className="grid grid-rows-[40px_1fr] bg-note-card rounded-t-[20px] px-6 pt-4 pb-0 gap-3 w-full min-w-0 h-full overflow-hidden">
         <div className="bg-white rounded-[10px] w-full min-w-0">
           <EditorToolbar {...editorData} />
         </div>

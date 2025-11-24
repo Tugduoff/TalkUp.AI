@@ -6,7 +6,7 @@ export const Route = createRootRoute({
   component: () => (
     <div className="grid grid-cols-[256px_1fr] h-screen w-full">
       <NavBar />
-      <main className="overflow-auto w-full">
+      <main className="overflow-auto w-full bg-white">
         <Outlet />
       </main>
       <TanStackRouterDevtools />
