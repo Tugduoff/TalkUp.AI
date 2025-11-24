@@ -14,7 +14,7 @@ export const AddNoteCard = ({ onClick }: AddNoteCardProps) => {
   return (
     <button
       onClick={onClick}
-      className="bg-[#ECEDF6]/50 hover:bg-[#ECEDF6] rounded-lg p-3 transition-all duration-200 cursor-pointer h-full flex flex-col items-center justify-center gap-3 min-h-[240px] group"
+      className="bg-note-card/50 hover:bg-note-card rounded-lg p-3 transition-all duration-200 cursor-pointer h-full flex flex-col items-center justify-center gap-3 min-h-[240px] group"
     >
       <div className="w-12 h-12 rounded-full bg-neutral-weaker group-hover:bg-accent-weaker flex items-center justify-center transition-colors">
         <Icon

@@ -3,7 +3,7 @@
 @import 'tailwindcss';
 
 @source inline('{text,fill}-{primary,accent}');
-@source inline('{,hover:,active:}{bg,border,text}-{primary,accent,black,white,error,warning,success,neutral}{,-hover,-active,-weak,-weaker}');
+@source inline('{,hover:,active:}{bg,border,text}-{primary,accent,black,white,error,warning,success,neutral,note-card,video-off}{,-hover,-active,-weak,-weaker}');
 @source inline('text-text-{idle,active}');
 
 /* Smooth theme transitions */
@@ -37,6 +37,11 @@
   --color-background: #fff;
   --color-surface: #fff;
   --color-surface-raised: #fbfbfc;
+
+  --color-note-card: #ecedf6;
+  --color-note-card-hover: #dfe0e9;
+
+  --color-video-off: #000;
 
   --color-text-accent: #f0effb;
   --color-accent: #2b70c9;
@@ -120,6 +125,11 @@
   --color-background: #121212;
   --color-surface: #1e1e1e;
   --color-surface-raised: #2a2a2a;
+
+  --color-note-card: #2a2a3a;
+  --color-note-card-hover: #35354a;
+
+  --color-video-off: #0a0a15;
 
   --color-text-accent: #2a2a3a;
   --color-accent: #5a8fe8;
