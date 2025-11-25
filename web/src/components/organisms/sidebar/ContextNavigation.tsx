@@ -16,9 +16,7 @@ import { NavigationProps } from './types';
  * - Settings context: Shows settings-specific navigation items
  * - Other contexts: To be defined
  */
-export const ContextNavigation = ({
-  isCollapsed = false,
-}: NavigationProps) => {
+export const ContextNavigation = ({ isCollapsed = false }: NavigationProps) => {
   const { contextType, contextData } = useNavigation();
   const [expandedAppId, setExpandedAppId] = useState<string | null>(
     (contextData?.applicationId as string | undefined) || null,

@@ -42,7 +42,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
 
   return (
     <aside
-      className={`h-screen bg-surface-sidebar border-r border-border p-4 transition-all ${isCollapsed ? 'w-16' : 'w-64'}`}
+      className={`h-screen bg-surface-sidebar p-4 transition-all ${isCollapsed ? 'w-16' : 'w-64'}`}
     >
       <div className={`${isCollapsed && 'w-8'} flex flex-col gap-4 h-full`}>
         <div className={`${isCollapsed ? 'gap-4' : 'gap-5.5'} flex flex-col`}>

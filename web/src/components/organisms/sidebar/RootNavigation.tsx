@@ -9,9 +9,7 @@ import { NavigationProps } from './types';
  * Shows the main navigation items: Applications, CV, Notes
  * In collapsed mode, shows icon-only squared buttons
  */
-export const RootNavigation = ({
-  isCollapsed = false,
-}: NavigationProps) => {
+export const RootNavigation = ({ isCollapsed = false }: NavigationProps) => {
   const rootContext = navigationContexts['root'];
   const rootItems = rootContext ? rootContext.items : [];
 

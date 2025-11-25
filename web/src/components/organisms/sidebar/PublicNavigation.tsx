@@ -8,9 +8,7 @@ import { NavigationProps } from './types';
  *
  * Shows navigation items for unauthenticated users: Home, About, Login, Sign Up
  */
-export const PublicNavigation = ({
-  isCollapsed = false,
-}: NavigationProps) => {
+export const PublicNavigation = ({ isCollapsed = false }: NavigationProps) => {
   const publicContext = navigationContexts['public'];
   const items = publicContext ? publicContext.items : [];
 
