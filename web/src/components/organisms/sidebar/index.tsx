@@ -2,17 +2,17 @@ import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import IconAction from '@/components/atoms/icon-action';
 import Logo from '@/components/molecules/logo';
+import NotificationBanner from '@/components/molecules/notification-banner';
 import { UserProfileSwitcher } from '@/components/molecules/user-profile-switcher';
 import { useAuth } from '@/contexts/AuthContext';
-// import NotificationBanner from '@/components/molecules/notification-banner'; To be uncommented when notification system is ready
 import { useNavigation } from '@/contexts/NavigationContext';
 import { Link } from '@tanstack/react-router';
+import { useState } from 'react';
 
 import { ActionNavigation } from './ActionNavigation';
 import { ContextNavigation } from './ContextNavigation';
 import { PublicNavigation } from './PublicNavigation';
 import { RootNavigation } from './RootNavigation';
-// import { useState } from 'react'; To be uncommented when notification system is ready
 import { SidebarProps } from './types';
 
 /**
@@ -38,7 +38,7 @@ import { SidebarProps } from './types';
 const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
   const { isLoading } = useNavigation();
   const { isAuthenticated } = useAuth();
-  // const [notificationVisible, setNotificationVisible] = useState(true); To be uncommented when notification system is ready
+  const [notificationVisible, setNotificationVisible] = useState(true);
 
   return (
     <aside
@@ -100,16 +100,18 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
               )}
             </div>
 
-            {/* Notification Banner - hidden for now as no notification system yet */}
-            {/* {!isCollapsed && notificationVisible && (<NotificationBanner
-              badge="New"
-              title="TalkUp new AI content"
-              description="Explore the new AI content we have prepared for you in 2026"
-              ctaText="Try it out"
-              ctaIcon="arrow-right-up"
-              onCtaClick={() => console.log('CTA clicked')}
-              onDismiss={() => setNotificationVisible(false)}
-            />)} */}
+            {/* Notification Banner */}
+            {!isCollapsed && notificationVisible && (
+              <NotificationBanner
+                badge="New"
+                title="TalkUp new AI content"
+                description="Explore the new AI content we have prepared for you in 2026"
+                ctaText="Try it out"
+                ctaIcon="arrow-right-up"
+                onCtaClick={() => console.log('CTA clicked')}
+                onDismiss={() => setNotificationVisible(false)}
+              />
+            )}
 
             {/* Action navigation (Settings & Help) */}
             <ActionNavigation isCollapsed={isCollapsed} />

@@ -1,6 +1,7 @@
 import { Badge } from '@/components/atoms/badge';
 import { IconAction } from '@/components/atoms/icon-action';
 import LinkButton from '@/components/atoms/link-button';
+import useThemeStore from '@/stores/useThemeStore';
 
 import { NotificationBannerProps } from './types';
 
@@ -36,8 +37,12 @@ export const NotificationBanner = ({
   onCtaClick,
   onDismiss,
 }: NotificationBannerProps) => {
+  const { theme } = useThemeStore();
+
   return (
-    <div className="w-full p-3 bg-[#F8F9FF] rounded-lg border border-accent-weak flex flex-col gap-3">
+    <div
+      className={`w-full p-3 rounded-lg border ${theme === 'light' ? 'bg-notification-banner border-accent-weak' : 'border-border'} flex flex-col gap-3`}
+    >
       <div className="flex justify-between items-start">
         <Badge>{badge}</Badge>
 
