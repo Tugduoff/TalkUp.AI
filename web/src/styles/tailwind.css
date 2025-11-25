@@ -70,7 +70,7 @@
   --color-surface-sidebar-hover: #E2E4F0;
   --color-surface-sidebar-active: #E2E4F0;
 
-  --color-border: #E2E4F0;
+  --color-border: #d9dbeb;
   --color-border-strong: #c8c8d4;
   --color-border-hover: #5f5f77;
 
@@ -158,6 +158,17 @@
   --color-text-weakest: #606068;
   --color-text-idle: #a0a0a8;
   --color-text-active: #f0f0f0;
+
+  --color-idle: #9595A2;
+  --color-active: #f0f0f0;
+  --color-hover: #e8e8e8;
+  --color-weak: #b8b8c0;
+  --color-weaker: #909098;
+  --color-weakest: #606068;
+
+  --color-surface-sidebar: #232429;
+  --color-surface-sidebar-hover: #312F3D;
+  --color-surface-sidebar-active: #312F3D;
 
   --color-border: #3a3a3a;
   --color-border-strong: #4a4a4a;
