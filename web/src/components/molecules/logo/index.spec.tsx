@@ -175,10 +175,7 @@ describe('Logo Component', () => {
       const logoText = getByTestId('line-logo').querySelector('h1');
       expect(logoText).toBeInTheDocument();
       expect(logoText).toHaveTextContent('TALKUP');
-      expect(logoText).toHaveClass(
-        'text-primary',
-        'text-h4',
-      );
+      expect(logoText).toHaveClass('text-primary', 'text-h4');
     });
 
     it('shows text for column variant', () => {
@@ -186,10 +183,7 @@ describe('Logo Component', () => {
       const logoText = getByTestId('column-logo').querySelector('h1');
       expect(logoText).toBeInTheDocument();
       expect(logoText).toHaveTextContent('TALKUP');
-      expect(logoText).toHaveClass(
-        'text-primary',
-        'text-h4',
-      );
+      expect(logoText).toHaveClass('text-primary', 'text-h4');
     });
 
     it('does not show text for no-text variant', () => {
