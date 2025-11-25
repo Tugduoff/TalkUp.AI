@@ -1,7 +1,7 @@
 import ToasterConfig from '@/components/atoms/toaster';
 import { AuthProvider } from '@/contexts/AuthContext';
-import '@/styles/loader.css';
-import '@/styles/tailwind.css';
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import '@/styles/index';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
@@ -24,11 +24,13 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <ToasterConfig />
-          <RouterProvider router={router} />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <ToasterConfig />
+            <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </AuthProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </StrictMode>,
   );

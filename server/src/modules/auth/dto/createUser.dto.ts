@@ -33,7 +33,7 @@ export class CreateUserDto {
   @Length(8, 50)
   @ApiProperty({
     description:
-      "The user's password. It will be hashed before added to the database.",
+      "The user's password. It will be hashed before added to the database. It must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and symbols.",
     minLength: 8,
     example: "Abcdefg1*",
   })

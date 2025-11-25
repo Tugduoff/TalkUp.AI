@@ -5,7 +5,13 @@ import {
   createMemoryHistory,
   createRouter,
 } from '@tanstack/react-router';
-import { act, render, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { ReadyState } from 'react-use-websocket';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -26,6 +32,9 @@ vi.mock('@/utils/auth.guards', () => ({
   createAuthGuard: vi.fn(() => () => Promise.resolve()),
 }));
 
+const mockConnect = vi.fn();
+const mockDisconnect = vi.fn();
+
 vi.mock('react-use-websocket', () => ({
   default: vi.fn(() => ({
     sendMessage: vi.fn(),
@@ -34,6 +43,8 @@ vi.mock('react-use-websocket', () => ({
     lastJsonMessage: null,
     readyState: ReadyState.CLOSED,
     getWebSocket: vi.fn(() => ({ close: vi.fn() })),
+    connect: mockConnect,
+    disconnect: mockDisconnect,
   })),
   ReadyState: {
     CONNECTING: 0,
@@ -41,6 +52,66 @@ vi.mock('react-use-websocket', () => ({
     CLOSING: 2,
     CLOSED: 3,
     UNINSTANTIATED: -1,
+  },
+}));
+
+const mockCreateInterview = vi.fn();
+
+vi.mock('@/services/ai/http', () => ({
+  createInterview: (...args: any[]) => mockCreateInterview(...args),
+}));
+
+const mockHandleStreamToggle = vi.fn();
+
+vi.mock('@/hooks/simulation', () => ({
+  useSimulationWebSocket: vi.fn(() => ({
+    sendMessage: vi.fn(),
+    sendJsonMessage: vi.fn(),
+    sendPing: vi.fn(),
+    lastMessage: null,
+    lastJsonMessage: null,
+    readyState: 1, // Open
+    connect: mockConnect,
+    disconnect: mockDisconnect,
+  })),
+  useAudioStreaming: vi.fn(() => ({
+    isRecording: false,
+    packetsSent: 0,
+    supportedMimeType: 'audio/webm',
+    error: null,
+  })),
+  useInterviewSession: vi.fn(() => ({
+    isCallActive: false,
+    inputUrl: '',
+    handleStreamToggle: mockHandleStreamToggle,
+  })),
+}));
+
+vi.mock('@/components/organisms/simulation-video-area', () => ({
+  default: ({
+    onToggleRef,
+    onStreamToggle,
+  }: {
+    onToggleRef?: (toggleFn: (() => void) | null) => void;
+    onStreamToggle?: (streaming: boolean) => void;
+  }) => {
+    // Simulate providing the toggle function via ref
+    if (onToggleRef) {
+      onToggleRef(() => {
+        // Mock toggle function
+        if (onStreamToggle) {
+          onStreamToggle(true);
+        }
+      });
+    }
+    return (
+      <button
+        onClick={() => onStreamToggle?.(true)}
+        aria-label="Start new call"
+      >
+        Start Stream
+      </button>
+    );
   },
 }));
 
@@ -71,6 +142,7 @@ const renderWithProviders = (component: React.ReactElement) => {
  */
 describe('Simulations', () => {
   beforeEach(async () => {
+    vi.clearAllMocks();
     router.history.push('/simulations');
 
     await act(async () => {
@@ -107,5 +179,16 @@ describe('Simulations', () => {
     renderWithProviders(<RouterProvider router={router} />);
     expect(await screen.findByText(/Statistics Overview/i)).toBeInTheDocument();
     expect(screen.getByText(/Real time advice/i)).toBeInTheDocument();
+  });
+
+  it('calls handleStreamToggle when stream is toggled on', async () => {
+    renderWithProviders(<RouterProvider router={router} />);
+
+    const toggleButton = screen.getByRole('button', { name: /start/i });
+    fireEvent.click(toggleButton);
+
+    await waitFor(() => {
+      expect(mockHandleStreamToggle).toHaveBeenCalledWith(true);
+    });
   });
 });

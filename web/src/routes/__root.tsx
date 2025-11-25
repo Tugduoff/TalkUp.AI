@@ -4,9 +4,9 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 export const Route = createRootRoute({
   component: () => (
-    <div className="grid grid-cols-[256px_1fr] h-screen">
+    <div className="grid grid-cols-[256px_1fr] h-screen w-full">
       <NavBar />
-      <main className="overflow-auto">
+      <main className="overflow-auto w-full bg-white">
         <Outlet />
       </main>
       <TanStackRouterDevtools />

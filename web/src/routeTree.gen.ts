@@ -13,7 +13,6 @@ import { Route as SimulationsRouteImport } from './routes/simulations'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ProgressionRouteImport } from './routes/progression'
 import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as NotesRouteImport } from './routes/notes'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DiaryRouteImport } from './routes/diary'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -21,6 +20,8 @@ import { Route as CvAnalysisRouteImport } from './routes/cv-analysis'
 import { Route as AiChatRouteImport } from './routes/ai-chat'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NotesIndexRouteImport } from './routes/notes/index'
+import { Route as NotesNoteIdRouteImport } from './routes/notes/$noteId'
 
 const SimulationsRoute = SimulationsRouteImport.update({
   id: '/simulations',
@@ -40,11 +41,6 @@ const ProgressionRoute = ProgressionRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotesRoute = NotesRouteImport.update({
-  id: '/notes',
-  path: '/notes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -82,6 +78,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotesIndexRoute = NotesIndexRouteImport.update({
+  id: '/notes/',
+  path: '/notes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotesNoteIdRoute = NotesNoteIdRouteImport.update({
+  id: '/notes/$noteId',
+  path: '/notes/$noteId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -91,11 +97,12 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/diary': typeof DiaryRoute
   '/login': typeof LoginRoute
-  '/notes': typeof NotesRoute
   '/profile': typeof ProfileRoute
   '/progression': typeof ProgressionRoute
   '/signup': typeof SignupRoute
   '/simulations': typeof SimulationsRoute
+  '/notes/$noteId': typeof NotesNoteIdRoute
+  '/notes': typeof NotesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -105,11 +112,12 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/diary': typeof DiaryRoute
   '/login': typeof LoginRoute
-  '/notes': typeof NotesRoute
   '/profile': typeof ProfileRoute
   '/progression': typeof ProgressionRoute
   '/signup': typeof SignupRoute
   '/simulations': typeof SimulationsRoute
+  '/notes/$noteId': typeof NotesNoteIdRoute
+  '/notes': typeof NotesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -120,11 +128,12 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/diary': typeof DiaryRoute
   '/login': typeof LoginRoute
-  '/notes': typeof NotesRoute
   '/profile': typeof ProfileRoute
   '/progression': typeof ProgressionRoute
   '/signup': typeof SignupRoute
   '/simulations': typeof SimulationsRoute
+  '/notes/$noteId': typeof NotesNoteIdRoute
+  '/notes/': typeof NotesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -136,11 +145,12 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/diary'
     | '/login'
-    | '/notes'
     | '/profile'
     | '/progression'
     | '/signup'
     | '/simulations'
+    | '/notes/$noteId'
+    | '/notes'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -150,11 +160,12 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/diary'
     | '/login'
-    | '/notes'
     | '/profile'
     | '/progression'
     | '/signup'
     | '/simulations'
+    | '/notes/$noteId'
+    | '/notes'
   id:
     | '__root__'
     | '/'
@@ -164,11 +175,12 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/diary'
     | '/login'
-    | '/notes'
     | '/profile'
     | '/progression'
     | '/signup'
     | '/simulations'
+    | '/notes/$noteId'
+    | '/notes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -179,11 +191,12 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   DiaryRoute: typeof DiaryRoute
   LoginRoute: typeof LoginRoute
-  NotesRoute: typeof NotesRoute
   ProfileRoute: typeof ProfileRoute
   ProgressionRoute: typeof ProgressionRoute
   SignupRoute: typeof SignupRoute
   SimulationsRoute: typeof SimulationsRoute
+  NotesNoteIdRoute: typeof NotesNoteIdRoute
+  NotesIndexRoute: typeof NotesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -214,13 +227,6 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notes': {
-      id: '/notes'
-      path: '/notes'
-      fullPath: '/notes'
-      preLoaderRoute: typeof NotesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -272,6 +278,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notes/': {
+      id: '/notes/'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof NotesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notes/$noteId': {
+      id: '/notes/$noteId'
+      path: '/notes/$noteId'
+      fullPath: '/notes/$noteId'
+      preLoaderRoute: typeof NotesNoteIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -283,11 +303,12 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   DiaryRoute: DiaryRoute,
   LoginRoute: LoginRoute,
-  NotesRoute: NotesRoute,
   ProfileRoute: ProfileRoute,
   ProgressionRoute: ProgressionRoute,
   SignupRoute: SignupRoute,
   SimulationsRoute: SimulationsRoute,
+  NotesNoteIdRoute: NotesNoteIdRoute,
+  NotesIndexRoute: NotesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

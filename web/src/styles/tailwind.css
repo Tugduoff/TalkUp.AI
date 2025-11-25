@@ -1,10 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Saira:wght@400;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Saira:wght@400;500;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
 @import 'tailwindcss';
 
 @source inline('{text,fill}-{primary,accent}');
-@source inline('{,hover:,active:}{bg,border,text}-{primary,accent,black,white,error,warning,success,neutral}{,-hover,-active,-weak,-weaker}');
+@source inline('{,hover:,active:}{bg,border,text}-{primary,accent,black,white,error,warning,success,neutral,note-card,video-off}{,-hover,-active,-weak,-weaker}');
+@source inline('text-text-{idle,active}');
+
+/* Smooth theme transitions */
+:root {
+  color-scheme: light dark;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
 @theme {
+  /* Light Mode Colors (Default) */
   --color-primary: #29457a;
   --color-primary-hover: #1f2d5b;
   --color-primary-active: #162045;
@@ -29,6 +38,11 @@
   --color-surface: #fff;
   --color-surface-raised: #fbfbfc;
 
+  --color-note-card: #ecedf6;
+  --color-note-card-hover: #dfe0e9;
+
+  --color-video-off: #000;
+
   --color-text-accent: #f0effb;
   --color-accent: #2b70c9;
   --color-accent-hover: #205497;
@@ -41,6 +55,8 @@
   --color-text-weak: #383850;
   --color-text-weaker: #5f5f77;
   --color-text-weakest: #a4a4b2;
+  --color-text-idle: #57585e;
+  --color-text-active: #1e2229;
 
   --color-border: #e2e2ea;
   --color-border-strong: #c8c8d4;
@@ -74,4 +90,127 @@
   --color-icon-hover: #24242d;
 
   --font-display: 'Saira', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Typography styles */
+  --font-size-h1: 40px;
+  --font-size-h2: 32px;
+  --font-size-h5: 20px;
+  --font-size-body-m: 14px;
+  --font-size-body-s: 12px;
+}
+
+/* Dark Mode Colors */
+.dark {
+  --color-primary: #4a6ba8;
+  --color-primary-hover: #5a7db8;
+  --color-primary-active: #6a8fc8;
+  --color-primary-weak: #2a3a5a;
+  --color-primary-weaker: #1a2a4a;
+
+  --color-black: #e8e8e8;
+  --color-black-hover: #d0d0d0;
+  --color-black-active: #e8e8e8;
+  --color-black-weak: #3a3a3a;
+  --color-black-weaker: #2a2a2a;
+
+  --color-white: #1a1a1a;
+  --color-white-hover: #2a2a2a;
+  --color-white-active: #3a3a3a;
+  --color-white-weak: #3a3a3a;
+  --color-white-weaker: #2a2a2a;
+
+  --color-disabled: #4a4a4a;
+
+  --color-background: #121212;
+  --color-surface: #1e1e1e;
+  --color-surface-raised: #2a2a2a;
+
+  --color-note-card: #2a2a3a;
+  --color-note-card-hover: #35354a;
+
+  --color-video-off: #0a0a15;
+
+  --color-text-accent: #2a2a3a;
+  --color-accent: #5a8fe8;
+  --color-accent-hover: #6a9ff8;
+  --color-accent-active: #7aafff;
+  --color-accent-weak: #2a3a4a;
+  --color-accent-weaker: #1a2a3a;
+  --color-text-link: #5a8fe8;
+
+  --color-text: #e8e8e8;
+  --color-text-weak: #b8b8c0;
+  --color-text-weaker: #909098;
+  --color-text-weakest: #606068;
+  --color-text-idle: #a0a0a8;
+  --color-text-active: #f0f0f0;
+
+  --color-border: #3a3a3a;
+  --color-border-strong: #4a4a4a;
+  --color-border-hover: #909098;
+
+  --color-success-weak: #1a3a1a;
+  --color-success-weaker: #0a2a0a;
+  --color-success: #2a9a32;
+  --color-success-hover: #3aaa42;
+  --color-success-active: #4aba52;
+
+  --color-neutral-weak: #3a3a4a;
+  --color-neutral-weaker: #2a2a3a;
+  --color-neutral: #b8b8c0;
+  --color-neutral-hover: #c8c8d0;
+  --color-neutral-active: #d8d8e0;
+
+  --color-warning-weak: #3a3a1a;
+  --color-warning-weaker: #2a2a0a;
+  --color-warning: #d8b040;
+  --color-warning-hover: #e8c050;
+  --color-warning-active: #f8d060;
+
+  --color-error-weak: #3a1a1a;
+  --color-error-weaker: #2a0a0a;
+  --color-error: #d84a35;
+  --color-error-hover: #e85a45;
+  --color-error-active: #f86a55;
+
+  --color-icon: #909098;
+  --color-icon-hover: #e8e8e8;
+}
+
+@layer utilities {
+  .text-h1 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .text-h2 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-h2);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .text-h5 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-h5);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .text-body-m {
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-m);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .text-body-s {
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-s);
+    font-weight: 400;
+    line-height: 1.5;
+  }
 }

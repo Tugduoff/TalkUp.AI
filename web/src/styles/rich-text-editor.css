@@ -1,0 +1,101 @@
+.rich-editor-prose ol {
+  list-style: decimal !important;
+  list-style-position: outside;
+  padding-left: 1.5rem;
+  margin: 0 0 1rem 0;
+}
+
+.rich-editor-prose ul {
+  list-style: disc !important;
+  list-style-position: outside;
+  padding-left: 1.5rem;
+  margin: 0 0 1rem 0;
+}
+
+.rich-editor-prose li {
+  margin: 0.25rem 0;
+}
+
+.rich-editor-prose ul[data-type='taskList'] {
+  padding-left: 0 !important;
+}
+
+.rich-editor-prose li[data-type='taskItem'],
+.rich-editor-prose .taskItem {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 1.5rem;
+}
+
+.rich-editor-prose li[data-type='taskItem'] label,
+.rich-editor-prose .taskItem label,
+.rich-editor-prose li[data-type='taskItem'] > div,
+.rich-editor-prose .taskItem > div {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rich-editor-prose input[type='checkbox'] {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+.rich-editor-prose li[data-type='taskItem'] > p,
+.rich-editor-prose .taskItem > p {
+  display: inline;
+  margin: 0;
+}
+
+.rich-editor-prose li[data-type='taskItem'],
+.rich-editor-prose .taskItem {
+  list-style: none !important;
+  padding-left: 0 !important;
+}
+
+.rich-editor-prose li input[type='checkbox'],
+.rich-editor-prose li > label > input[type='checkbox'],
+.rich-editor-prose li > div > input[type='checkbox'] {
+  list-style: none !important;
+}
+
+.rich-editor-prose li:has(input[type='checkbox']) {
+  list-style: none !important;
+  padding-left: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.rich-editor-prose li:has(input[type='checkbox'])::marker {
+  content: none !important;
+}
+
+.rich-editor-prose li:has(input[type='checkbox']) > label,
+.rich-editor-prose li:has(input[type='checkbox']) > div,
+.rich-editor-prose li[data-type='taskItem'] > label,
+.rich-editor-prose li[data-type='taskItem'] > div,
+.rich-editor-prose .taskItem > label,
+.rich-editor-prose .taskItem > div {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.rich-editor-prose li:has(input[type='checkbox']) > label p,
+.rich-editor-prose li[data-type='taskItem'] > label p,
+.rich-editor-prose .taskItem > label p {
+  display: inline !important;
+  margin: 0 !important;
+}
+
+.rich-editor-prose p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #a4a4b2;
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+  opacity: 0.6;
+}

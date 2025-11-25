@@ -10,6 +10,8 @@ import { useVideoStream } from '../../../hooks/streams/useVideoStream';
 
 interface SimulationVideoAreaProps {
   onStreamToggle?: (streaming: boolean) => void;
+  onStreamChange?: (stream: MediaStream | null) => void;
+  onToggleRef?: (toggleFn: (() => void) | null) => void;
 }
 
 /**
@@ -18,15 +20,25 @@ interface SimulationVideoAreaProps {
  */
 const SimulationVideoArea = ({
   onStreamToggle,
+  onStreamChange,
+  onToggleRef,
 }: SimulationVideoAreaProps = {}): React.ReactElement => {
   const audioElementRef = useRef<HTMLAudioElement>(null);
   const [shouldStartWithMic, setShouldStartWithMic] = useState(true);
   const [shouldStartWithCamera, setShouldStartWithCamera] = useState(true);
+  const [stream, setStream] = useState<MediaStream | null>(null);
 
   const { videoRef, isStreaming, elapsedTime, toggleStream } = useVideoStream({
     shouldStartWithMic,
     shouldStartWithCamera,
   });
+
+  useEffect(() => {
+    if (onToggleRef) {
+      onToggleRef(toggleStream);
+      return () => onToggleRef(null);
+    }
+  }, [toggleStream, onToggleRef]);
 
   const {
     isMicActive,
@@ -40,20 +52,38 @@ const SimulationVideoArea = ({
     onCameraChange: setShouldStartWithCamera,
   });
 
-  const stream =
-    typeof MediaStream !== 'undefined' &&
-    videoRef.current?.srcObject instanceof MediaStream
-      ? (videoRef.current.srcObject as MediaStream)
-      : null;
-
   const { isSpeaking } = useAudioAnalyzer(stream);
 
-  // Notify parent component when stream state changes
   useEffect(() => {
-    if (onStreamToggle) {
-      onStreamToggle(isStreaming);
+    const currentStream =
+      typeof MediaStream !== 'undefined' &&
+      videoRef.current?.srcObject instanceof MediaStream
+        ? (videoRef.current.srcObject as MediaStream)
+        : null;
+
+    setStream(currentStream);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isStreaming]);
+
+  const onStreamToggleRef = useRef(onStreamToggle);
+  const onStreamChangeRef = useRef(onStreamChange);
+
+  useEffect(() => {
+    onStreamToggleRef.current = onStreamToggle;
+    onStreamChangeRef.current = onStreamChange;
+  }, [onStreamToggle, onStreamChange]);
+
+  useEffect(() => {
+    if (onStreamToggleRef.current) {
+      onStreamToggleRef.current(isStreaming);
     }
-  }, [isStreaming, onStreamToggle]);
+  }, [isStreaming]);
+
+  useEffect(() => {
+    if (onStreamChangeRef.current) {
+      onStreamChangeRef.current(stream);
+    }
+  }, [stream]);
 
   useEffect(() => {
     if (!audioElementRef.current || !videoRef.current) return;
@@ -67,9 +97,7 @@ const SimulationVideoArea = ({
         if (stream.getAudioTracks().length > 0) {
           audioElement.srcObject = stream;
           audioElement.muted = !isSpeakerActive;
-          audioElement.play().catch((err) => {
-            console.error('Error playing audio:', err);
-          });
+          audioElement.play().catch(() => {});
         }
       }
     } else {
@@ -81,7 +109,7 @@ const SimulationVideoArea = ({
   }, [isStreaming, isSpeakerActive, videoRef]);
 
   return (
-    <div className="relative w-full aspect-video bg-neutral rounded-lg overflow-hidden">
+    <div className="relative w-full aspect-video bg-video-off rounded-lg overflow-hidden">
       {isStreaming && (
         <img
           src="/interviewer.jpg"
@@ -98,7 +126,7 @@ const SimulationVideoArea = ({
       >
         <video
           ref={videoRef}
-          className="w-full h-full object-cover transition-all bg-[#000]"
+          className="w-full h-full object-cover transition-all bg-video-off"
           muted
         />
         <div className="flex absolute top-2 right-2 space-x-2">
