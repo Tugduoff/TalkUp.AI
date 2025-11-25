@@ -40,8 +40,7 @@ export const NavMenu = ({
               label={item.label}
               icon={item.icon}
               isActive={
-                currentPath === item.to ||
-                currentPath.startsWith(`${item.to}/`)
+                currentPath === item.to || currentPath.startsWith(`${item.to}/`)
               }
               isCollapsed={isCollapsed}
             />

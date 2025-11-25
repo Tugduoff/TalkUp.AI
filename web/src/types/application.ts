@@ -1,5 +1,5 @@
 /**
- * Application type definition 
+ * Application type definition
  */
 export interface Application {
   /** Unique identifier */
