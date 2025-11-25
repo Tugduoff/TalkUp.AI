@@ -1,6 +1,7 @@
 import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import { Link } from '@tanstack/react-router';
+
 import { NavLinkProps } from './types';
 
 /**

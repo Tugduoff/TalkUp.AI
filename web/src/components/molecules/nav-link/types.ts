@@ -1,5 +1,5 @@
-import { IconName } from "@/components/atoms/icon/icon-map";
-import { IconProps } from "@/components/atoms/icon/types";
+import { IconName } from '@/components/atoms/icon/icon-map';
+import { IconProps } from '@/components/atoms/icon/types';
 
 /**
  * Props for a navigation link component used in the application's sidebar/top navigation.
