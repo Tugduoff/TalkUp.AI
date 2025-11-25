@@ -1,8 +1,8 @@
 import Sidebar from '@/components/organisms/sidebar';
 import { NavigationProvider } from '@/contexts/NavigationContext';
 import { Outlet, createRootRoute } from '@tanstack/react-router';
-import { useState } from 'react';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { useState } from 'react';
 
 const RootComponent = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
