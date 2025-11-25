@@ -238,7 +238,7 @@ describe('IconAction Component', () => {
           data-testid="icon-action-test"
         />,
       );
-      const buttonElement = screen.getByRole('button', { name: 'Favorite' });
+      const buttonElement = screen.getByRole('button', { name: 'Search' });
       expect(buttonElement).toHaveAttribute('id', 'test-icon-action');
       expect(buttonElement).toHaveAttribute('data-testid', 'icon-action-test');
     });
