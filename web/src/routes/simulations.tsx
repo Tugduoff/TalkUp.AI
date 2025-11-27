@@ -19,10 +19,6 @@ export const Route = createFileRoute('/simulations')({
   component: Simulations,
 });
 
-/**
- * Simulations Page Component
- * @returns The Simulations page component.
- */
 function Simulations() {
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [wsError, setWsError] = useState<string | null>(null);
@@ -97,24 +93,6 @@ function Simulations() {
     isActive: isCallActive && readyState === ReadyState.OPEN,
     timeSlice: 1000,
   });
-
-  const staticTranscriptions: TranscriptionProps[] = [
-    {
-      isIA: true,
-      speaker: 'AI',
-      text: "Hello, thank you for joining me. Let's start the interview.",
-    },
-    {
-      isIA: false,
-      speaker: 'You',
-      text: "Hello, I'm delighted to be here. I look forward to discussing how my experience can benefit your team.",
-    },
-    {
-      isIA: true,
-      speaker: 'AI',
-      text: 'Excellent. Can you tell me about a recent project where you faced a particularly difficult technical challenge, and how you overcame it?',
-    },
-  ];
 
   const staticTranscriptions: TranscriptionProps[] = [
     {
