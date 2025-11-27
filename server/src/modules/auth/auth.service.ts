@@ -99,7 +99,7 @@ export class AuthService {
    */
   async validateUser(email: string, password: string): Promise<user> {
     const emailEntity = await this.userEmailRepository.findOne({
-      where: { email: email },
+      where: { email },
     });
 
     if (!emailEntity) {
@@ -141,5 +141,11 @@ export class AuthService {
     return {
       accessToken: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async getUserById(userId: string): Promise<user | null> {
+    return this.userRepository.findOne({
+      where: { user_id: userId },
+    });
   }
 }
