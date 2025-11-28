@@ -27,10 +27,9 @@ export class EditUserDto {
   @IsOptional()
   @ApiProperty({
     required: false,
-    description:
-      "The user's phone number",
+    description: "The user's phone number",
     example: "+33 0767987834",
-    })
+  })
   phone?: string;
 
   @IsString()
@@ -39,7 +38,7 @@ export class EditUserDto {
     required: false,
     description:
       "The user's profile picture. It will be usefull to reconize his/her",
-    })
+  })
   profilePicture?: string;
 
   @IsString()
@@ -48,15 +47,14 @@ export class EditUserDto {
     required: false,
     description:
       "The user's CV. It will be usefull for the IA to reconize the user activity sector and his/her competences or others important things for the interview simulation",
-    })
+  })
   cv?: string;
 
   @IsString()
   @IsOptional()
   @ApiProperty({
     required: false,
-    description:
-      "The user's activity sector",
-    })
+    description: "The user's activity sector",
+  })
   activitySector?: string;
 }

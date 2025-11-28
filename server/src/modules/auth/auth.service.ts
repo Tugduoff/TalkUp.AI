@@ -149,7 +149,7 @@ export class AuthService {
    * @param userId -It is the current user Id
    * @param EditUserDto -There is all the information that user whant to update in his/her account
    * @returns  A message if the user is upadte succesfully or not
-  */
+   */
   async editUser(userId: string, EditUserDto: EditUserDto) {
     const user = await this.userRepository.findOne({
       where: { user_id: userId },

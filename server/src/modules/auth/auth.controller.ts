@@ -8,7 +8,7 @@ import {
   ApiUnprocessableEntityResponse,
   ApiTags,
   ApiOkResponse,
-  ApiBearerAuth
+  ApiBearerAuth,
 } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
 
@@ -61,12 +61,12 @@ export class AuthController {
   }
 
   @Patch("editUser")
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard("jwt"))
   @ApiOkResponse({ description: "User updated successfully." })
   async editUser(
-    @CurrentUser('id') userId: string,
-    @Body() editUserDto: EditUserDto
-    ) {
-      return await this.authService.editUser(userId, editUserDto);
+    @CurrentUser("id") userId: string,
+    @Body() editUserDto: EditUserDto,
+  ) {
+    return await this.authService.editUser(userId, editUserDto);
   }
 }
