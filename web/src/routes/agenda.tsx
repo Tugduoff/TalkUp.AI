@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import {
@@ -9,22 +8,24 @@ import MiniCalendar from '@/components/molecules/mini-calendar';
 import NextEventCard from '@/components/molecules/next-event-card';
 import CalendarContainer from '@/components/organisms/calendar-container';
 import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo } from 'react';
 import {
-  format,
-  startOfMonth,
-  getDaysInMonth,
-  addMonths,
   addDays,
-  isSameDay,
+  addMonths,
+  format,
   getDay,
+  getDaysInMonth,
+  isSameDay,
+  startOfMonth,
 } from 'date-fns';
+import { useMemo, useState } from 'react';
+
 interface CalendarContainerProps {
   initialView: 'Table' | 'List';
   mainDate: Date;
   onDateChange: (newDate: Date) => void;
 }
-const CalendarContainerFixed = CalendarContainer as React.FC<CalendarContainerProps>;
+const CalendarContainerFixed =
+  CalendarContainer as React.FC<CalendarContainerProps>;
 
 interface MiniCalendarViewProps {
   monthYear: string;
@@ -72,18 +73,18 @@ const getMiniCalendarDaysData = (
   const start = startOfMonth(monthDate);
   const daysInMonth = getDaysInMonth(monthDate);
   const days: MiniCalendarViewProps['days'] = [];
-  const startDayIndex = (getDay(start) + 6) % 7; 
+  const startDayIndex = (getDay(start) + 6) % 7;
   const daysBefore = startDayIndex;
-  
+
   for (let i = 0; i < daysBefore; i++) {
     days.push({ date: 0, isGray: true });
   }
 
   for (let i = 1; i <= daysInMonth; i++) {
     const date = addDays(start, i - 1);
-    
-    const hasEvent = allEvents.some((event) => 
-      event.fullDate && isSameDay(event.fullDate, date)
+
+    const hasEvent = allEvents.some(
+      (event) => event.fullDate && isSameDay(event.fullDate, date),
     );
 
     days.push({
@@ -95,7 +96,7 @@ const getMiniCalendarDaysData = (
 
   const totalCells = days.length;
   const remainingCells = 42 - totalCells;
-  
+
   for (let i = 0; i < remainingCells; i++) {
     days.push({ date: 0, isGray: true });
   }
@@ -111,7 +112,7 @@ const DEFAULT_START_DATE = new Date('2025-11-17T00:00:00');
  */
 function Agenda() {
   const { events, getNextUpcomingEvent } = useCalendarStore();
-  
+
   /**
    * The next upcoming event fetched from the global calendar store.
    */
@@ -123,7 +124,7 @@ function Agenda() {
   }, [currentMonthIndex]);
 
   const monthYearLabel = format(currentMonthDate, 'MMMM yyyy');
-  
+
   const miniCalendarDays = useMemo(() => {
     return getMiniCalendarDaysData(currentMonthDate, events);
   }, [currentMonthDate, events]);
@@ -132,7 +133,10 @@ function Agenda() {
    */
   const handleDateChange = (newDate: Date) => {
     setMainViewDate(new Date(newDate));
-    const newMonthIndex = newDate.getMonth() - DEFAULT_START_DATE.getMonth() + (12 * (newDate.getFullYear() - DEFAULT_START_DATE.getFullYear()));
+    const newMonthIndex =
+      newDate.getMonth() -
+      DEFAULT_START_DATE.getMonth() +
+      12 * (newDate.getFullYear() - DEFAULT_START_DATE.getFullYear());
     setCurrentMonthIndex(newMonthIndex);
   };
 
@@ -193,7 +197,7 @@ function Agenda() {
             onPrevMonth={handlePrevMonth}
             onNextMonth={handleNextMonth}
             onSelectDate={(date: Date) => {
-                handleMiniCalendarSelectDate(date);
+              handleMiniCalendarSelectDate(date);
             }}
           />
 

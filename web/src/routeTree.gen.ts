@@ -19,6 +19,7 @@ import { Route as DiaryRouteImport } from './routes/diary'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CvAnalysisRouteImport } from './routes/cv-analysis'
 import { Route as AiChatRouteImport } from './routes/ai-chat'
+import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -72,6 +73,11 @@ const AiChatRoute = AiChatRouteImport.update({
   path: '/ai-chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgendaRoute = AgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -86,6 +92,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/agenda': typeof AgendaRoute
   '/ai-chat': typeof AiChatRoute
   '/cv-analysis': typeof CvAnalysisRoute
   '/dashboard': typeof DashboardRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/agenda': typeof AgendaRoute
   '/ai-chat': typeof AiChatRoute
   '/cv-analysis': typeof CvAnalysisRoute
   '/dashboard': typeof DashboardRoute
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/agenda': typeof AgendaRoute
   '/ai-chat': typeof AiChatRoute
   '/cv-analysis': typeof CvAnalysisRoute
   '/dashboard': typeof DashboardRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/agenda'
     | '/ai-chat'
     | '/cv-analysis'
     | '/dashboard'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/agenda'
     | '/ai-chat'
     | '/cv-analysis'
     | '/dashboard'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/agenda'
     | '/ai-chat'
     | '/cv-analysis'
     | '/dashboard'
@@ -174,6 +186,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AgendaRoute: typeof AgendaRoute
   AiChatRoute: typeof AiChatRoute
   CvAnalysisRoute: typeof CvAnalysisRoute
   DashboardRoute: typeof DashboardRoute
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agenda': {
+      id: '/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof AgendaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -278,6 +298,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AgendaRoute: AgendaRoute,
   AiChatRoute: AiChatRoute,
   CvAnalysisRoute: CvAnalysisRoute,
   DashboardRoute: DashboardRoute,
